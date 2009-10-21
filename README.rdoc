@@ -1,1 +1,3 @@
 = Hamster
+
+See http://lamp.epfl.ch/papers/idealhashtrees.pdf
