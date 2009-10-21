@@ -31,6 +31,7 @@ module Hamster
         child.put(key, value)
       else
         @entries[index] = Entry.new(key, value)
+        entry && entry.value
       end
     end
 
