@@ -5,11 +5,11 @@ module Hamster
   describe Trie do
   
     before do
-      @hash = {}
+      @expected_pairs = {}
       @trie = Trie.new
 
       ("A".."Z").each do |letter|
-        @hash.store(letter, letter.downcase)
+        @expected_pairs.store(letter, letter.downcase)
         @trie.store(letter, letter.downcase)
       end
     end
@@ -19,19 +19,19 @@ module Hamster
       describe "internal iteration" do
         
         before do
-          @actual = {}
+          @actual_pairs = {}
         end
 
-        it "returns key value pairs" do
+        it "returns all key value pairs" do
           @trie.each do |key, value|
-            @actual[key] = value
+            @actual_pairs[key] = value
           end
         end
 
       end
       
       after do
-        @actual.should == @hash
+        @actual_pairs.should == @expected_pairs
       end
 
     end
