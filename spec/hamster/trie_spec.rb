@@ -5,7 +5,7 @@ module Hamster
   describe Trie do
   
     before do
-      @trie = Trie.new(0)
+      @trie = Trie.new
 
       ("A".."Z").each do |letter|
         @trie.put(letter, letter.downcase)

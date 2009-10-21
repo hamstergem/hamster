@@ -17,7 +17,7 @@ module Hamster
 
     end
     
-    def initialize(significant_bits)
+    def initialize(significant_bits = 0)
       @significant_bits = significant_bits
       @entries = []
       @children = []
@@ -55,7 +55,7 @@ module Hamster
         end
       end
     end
-    
+
     def index_for(key)
       (key.hash.abs >> @significant_bits) & 31
     end
