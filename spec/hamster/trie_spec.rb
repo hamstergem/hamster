@@ -16,7 +16,7 @@ module Hamster
 
     describe "#each" do
       
-      describe "internal enumeration" do
+      describe "internal iteration" do
         
         before do
           @actual = {}
