@@ -13,6 +13,16 @@ module Hamster
     def size
       0
     end
+    
+    def each
+      @entries.each do |entry|
+        yield entry.key, entry.value if entry
+      end
+
+      @children.each do |child|
+        child.each { |key, value| yield key, value } if child
+      end
+    end
 
     def has_key?(key)
       !! entry_for(key)

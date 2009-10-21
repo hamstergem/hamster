@@ -5,11 +5,35 @@ module Hamster
   describe Trie do
   
     before do
+      @hash = {}
       @trie = Trie.new
 
       ("A".."Z").each do |letter|
+        @hash.store(letter, letter.downcase)
         @trie.store(letter, letter.downcase)
-      end    
+      end
+    end
+
+    describe "#each" do
+      
+      describe "internal enumeration" do
+        
+        before do
+          @actual = {}
+        end
+
+        it "returns key value pairs" do
+          @trie.each do |key, value|
+            @actual[key] = value
+          end
+        end
+
+      end
+      
+      after do
+        @actual.should == @hash
+      end
+
     end
 
     describe "#[]" do
