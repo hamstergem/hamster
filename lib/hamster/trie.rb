@@ -1,22 +1,22 @@
 module Hamster
-  
+
   class Trie
 
     include Enumerable
-    
+
     def initialize(significant_bits = 0)
       @significant_bits = significant_bits
       @entries = []
       @children = []
     end
-    
+
     def size
       0
     end
-    
+
     def each
       block_given? or return enum_for(__method__)
-      
+
       @entries.each do |entry|
         yield entry.key, entry.value if entry
       end
@@ -54,7 +54,7 @@ module Hamster
     end
 
     protected
-    
+
     def entry_for(key)
       index = index_for(key)
       entry = @entries[index]
