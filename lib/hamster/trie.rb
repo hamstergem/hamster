@@ -9,7 +9,12 @@ module Hamster
     end
 
     def size
-      0
+      # TODO: This definitely won't scale!
+      to_a.size
+    end
+
+    def empty?
+      size == 0
     end
 
     def each
@@ -19,6 +24,7 @@ module Hamster
       end
       self
     end
+    alias :each_pair :each
 
     def has_key?(key)
       !! @root.get(key)
@@ -105,5 +111,5 @@ module Hamster
     end
 
   end
-  
+
 end
