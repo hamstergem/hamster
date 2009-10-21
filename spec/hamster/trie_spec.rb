@@ -13,17 +13,33 @@ module Hamster
         @trie.store(letter, letter.downcase)
       end
     end
+    
+    it "is Enumerable" do
+      Trie.is_a?(Enumerable)
+    end
 
     describe "#each" do
+        
+      before do
+        @actual_pairs = {}
+      end
       
       describe "internal iteration" do
-        
-        before do
-          @actual_pairs = {}
-        end
 
         it "returns all key value pairs" do
           @trie.each do |key, value|
+            @actual_pairs[key] = value
+          end
+        end
+
+      end
+
+      describe "external iteration" do
+
+        it "returns all key value pairs" do
+          enum = @trie.to_enum
+          loop do
+            key, value = enum.next
             @actual_pairs[key] = value
           end
         end
