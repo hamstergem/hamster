@@ -15,6 +15,8 @@ module Hamster
     end
     
     def each
+      block_given? or return enum_for(__method__)
+      
       @entries.each do |entry|
         yield entry.key, entry.value if entry
       end
@@ -22,6 +24,8 @@ module Hamster
       @children.each do |child|
         child.each { |key, value| yield key, value } if child
       end
+
+      self
     end
 
     def has_key?(key)

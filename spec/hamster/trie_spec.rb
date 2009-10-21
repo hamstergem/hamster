@@ -21,33 +21,36 @@ module Hamster
     describe "#each" do
         
       before do
-        @actual_pairs = {}
       end
       
-      describe "internal iteration" do
-
-        it "returns all key value pairs" do
+      describe "with a block (internal iteration)" do
+        
+        it "returns self" do
+          @trie.each {}.should == @trie          
+        end
+        
+        it "yields all key value pairs" do
+          actual_pairs = {}
           @trie.each do |key, value|
-            @actual_pairs[key] = value
+            actual_pairs[key] = value
           end
+          actual_pairs.should == @expected_pairs
         end
 
       end
 
-      describe "external iteration" do
+      describe "with no block (external iteration)" do
 
-        it "returns all key value pairs" do
-          enum = @trie.to_enum
+        it "returns an enumerator over all key value pairs" do
+          actual_pairs = {}
+          enum = @trie.each
           loop do
             key, value = enum.next
-            @actual_pairs[key] = value
+            actual_pairs[key] = value
           end
+          actual_pairs.should == @expected_pairs
         end
 
-      end
-      
-      after do
-        @actual_pairs.should == @expected_pairs
       end
 
     end
