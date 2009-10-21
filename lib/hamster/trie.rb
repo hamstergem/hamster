@@ -11,7 +11,7 @@ module Hamster
         @value = value
       end
 
-      def for?(key)
+      def has_key?(key)
         @key == key
       end
 
@@ -22,11 +22,19 @@ module Hamster
       @entries = []
       @children = []
     end
+    
+    def size
+      0
+    end
+    
+    def has_key?(key)
+      false
+    end
 
     def put(key, value)
       index = index_for(key)
       entry = @entries[index]
-      if entry && !entry.for?(key)
+      if entry && !entry.has_key?(key)
         child = @children[index] ||= Trie.new(@significant_bits + 5)
         child.put(key, value)
       else
@@ -39,7 +47,7 @@ module Hamster
       index = index_for(key)
       entry = @entries[index]
       if entry
-        if entry.for?(key)
+        if entry.has_key?(key)
           entry.value
         else
           child = @children[index]
@@ -51,6 +59,7 @@ module Hamster
     def index_for(key)
       (key.hash.abs >> @significant_bits) & 31
     end
+    private :index_for
 
   end
   

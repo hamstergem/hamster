@@ -24,6 +24,20 @@ describe Hamster::Trie do
     
   end
   
+  describe "#has_key?" do
+
+    it "returns true with existing keys" do
+      ("A".."Z").each do |letter|
+        @trie.has_key?(letter).should be_true
+      end
+    end
+    
+    it "returns false for non-existing" do
+        @trie.has_key?("missing").should be_false
+    end
+
+  end
+  
   describe "#put" do
     
     describe "with keys that already exist" do
@@ -37,6 +51,10 @@ describe Hamster::Trie do
         @trie.get("A").should == "Aye"
       end
       
+      it "leaves size unchanged" do
+        @trie.size.should == 26
+      end
+      
     end
     
     describe "with keys that don't exist"
@@ -48,6 +66,11 @@ describe Hamster::Trie do
       it "sets the value" do
         @trie.put("missing", "in action")
         @trie.get("missing").should == "in action"
+      end
+      
+      it "increases size by 1" do
+        @trie.put("missing", "in action")
+        @trie.size.should == 27
       end
 
   end
