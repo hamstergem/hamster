@@ -1,7 +1,7 @@
 require 'lib/hamster/version'
 
 Gem::Specification.new do |s|
-  s.name             = "Hamster"
+  s.name             = "hamster"
   s.version          = Hamster::VERSION
   s.platform         = Gem::Platform::RUBY
   s.has_rdoc         = true
