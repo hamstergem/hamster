@@ -55,8 +55,6 @@ module Hamster
       end
     end
 
-    protected
-
     def put!(key, value)
       index = index_for(key)
       entry = @entries[index]
