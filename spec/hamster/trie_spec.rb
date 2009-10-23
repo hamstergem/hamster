@@ -10,7 +10,7 @@ module Hamster
 
       ("A".."Z").each do |letter|
         @expected_pairs.store(letter, letter.downcase)
-        @trie.store(letter, letter.downcase)
+        @trie.put(letter, letter.downcase)
       end
     end
 
@@ -64,16 +64,16 @@ module Hamster
 
     end
 
-    describe "#[]" do
+    describe "#get" do
 
       it "returns values associated with existing keys" do
         ("A".."Z").each do |letter|
-          @trie[letter].should == letter.downcase
+          @trie.get(letter).should == letter.downcase
         end
       end
 
       it "returns nil for non-existing" do
-        @trie["missing"].should be_nil
+        @trie.get("missing").should be_nil
       end
 
     end
@@ -92,17 +92,17 @@ module Hamster
 
     end
 
-    describe "#store" do
+    describe "#put" do
 
       describe "with keys that already exist" do
 
-        it "returns the previous value" do
-          @trie.store("A", "Aye").should == "a"
+        it "returns self" do
+          @trie.put("A", "Aye").should == @trie
         end
 
         it "replaces the previous value" do
-          @trie.store("A", "Aye")
-          @trie["A"].should == "Aye"
+          @trie.put("A", "Aye")
+          @trie.get("A").should == "Aye"
         end
 
         it "leaves size unchanged" do
@@ -113,17 +113,17 @@ module Hamster
 
       describe "with keys that don't exist"
 
-        it "returns nil" do
-          @trie.store("missing", "in action").should be_nil
+        it "returns self" do
+          @trie.put("missing", "in action").should == @trie
         end
 
         it "sets the value" do
-          @trie.store("missing", "in action")
-          @trie["missing"].should == "in action"
+          @trie.put("missing", "in action")
+          @trie.get("missing").should == "in action"
         end
 
         it "increases size by 1" do
-          @trie.store("missing", "in action")
+          @trie.put("missing", "in action")
           @trie.size.should == 27
         end
 
