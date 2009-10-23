@@ -14,6 +14,14 @@ module Hamster
       end
     end
 
+    def self.it_returns_values_associated_with_existing_keys
+      it "returns values associated with existing keys" do
+        ("A".."Z").each do |letter|
+          @trie.get(letter).should == letter.downcase
+        end
+      end
+    end
+
     it "is Enumerable" do
       Trie.is_a?(Enumerable)
     end
@@ -66,11 +74,7 @@ module Hamster
 
     describe "#get" do
 
-      it "returns values associated with existing keys" do
-        ("A".."Z").each do |letter|
-          @trie.get(letter).should == letter.downcase
-        end
-      end
+      it_returns_values_associated_with_existing_keys
 
       it "returns nil for non-existing" do
         @trie.get("missing").should be_nil
@@ -80,14 +84,14 @@ module Hamster
 
     describe "#has_key?" do
 
-      it "returns true with existing keys" do
+      it "returns true for existing keys" do
         ("A".."Z").each do |letter|
           @trie.has_key?(letter).should be_true
         end
       end
 
       it "returns false for non-existing" do
-          @trie.has_key?("missing").should be_false
+        @trie.has_key?("missing").should be_false
       end
 
     end
@@ -110,12 +114,10 @@ module Hamster
 
         describe "the original" do
 
-          it "has the original contents" do
-
-          end
+          it_returns_values_associated_with_existing_keys
 
           it "doesn't contain the new key/value pair" do
-            @copy.has_key?("missing").should == false
+            @copy.has_key?("missing").should be_false
           end
 
           it "has the original size" do
@@ -126,9 +128,7 @@ module Hamster
 
         describe "the modified copy" do
 
-          it "has the original contents" do
-
-          end
+          it_returns_values_associated_with_existing_keys
 
           it "has the new key/value pair" do
             @copy.get("missing").should == "in action"
