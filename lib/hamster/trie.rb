@@ -72,7 +72,7 @@ module Hamster
       end
       self
     end
-key
+
     private
 
     def initialize_copy(other)
