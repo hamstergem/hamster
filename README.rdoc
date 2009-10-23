@@ -1,5 +1,5 @@
 = Hamster
 
-Hash Array Mapped Trie (HAMT) for Ruby.
+Hash Array Mapped Tries (HAMT) for Ruby.
 
 See http://lamp.epfl.ch/papers/idealhashtrees.pdf

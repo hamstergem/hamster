@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.platform         = Gem::Platform::RUBY
   s.has_rdoc         = true
   s.extra_rdoc_files = ["README.rdoc", "History.rdoc", "TODO", "LICENSE"]
-  s.summary          = "Hash Array Mapped Tries for Ruby"
+  s.summary          = "Hash Array Mapped Tries (HAMT) for Ruby"
   s.description      = s.summary
   s.author           = "Simon Harris"
   s.email            = "haruki.zaemon@gmail.com"
