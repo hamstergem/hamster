@@ -75,12 +75,6 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>self</tt>.
     def remove(key)
-      has_key?(key) or return self
-      dup.remove!(key)
-    end
-
-    # Removes the given key/value pair and returns <tt>self</tt>
-    def remove!(key)
       self
     end
 
