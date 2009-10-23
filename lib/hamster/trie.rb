@@ -77,7 +77,23 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>self</tt>.
     def remove(key)
-      self
+      index = index_for(key)
+      entry = @entries[index]
+      child = @children[index]
+      if entry && entry.has_key?(key)
+        # TODO: Probably should "pull up" a child entry
+        entries = @entries.dup
+        entries[index] = nil
+        self.class.new(@significant_bits, entries, @children)
+      elsif child
+        new_child = child.remove(key)
+        if new_child != child
+          # TODO: Probably should "prune" empty children
+          children = @children.dup
+          children[index] = new_child
+          self.class.new(@significant_bits, @entries, children)
+        end
+      end || self
     end
 
     protected
@@ -90,7 +106,9 @@ module Hamster
     private
 
     def index_for(key)
-      (key.hash.abs >> @significant_bits) & 31
+      key.hash.abs & 31
+      # puts "#{key}##{key.object_id}:#{key.hash}"
+      # (key.hash.abs >> @significant_bits) & 31
     end
 
   end

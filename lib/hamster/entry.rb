@@ -10,7 +10,7 @@ module Hamster
     end
 
     def has_key?(key)
-      @key == key
+      @key.eql?(key)
     end
 
   end

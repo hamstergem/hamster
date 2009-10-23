@@ -106,13 +106,13 @@ module Hamster
 
         describe "the original" do
 
-          it "returns values associated with existing keys" do
+          it "still has the original key/value pairs" do
             @expected_pairs.each do |key, value|
               @trie.get(key).should == value
             end
           end
 
-          it "has the original size" do
+          it "still has the original size" do
             @trie.size.should == @expected_pairs.size
           end
 
@@ -144,7 +144,7 @@ module Hamster
 
         describe "the original" do
 
-          it "returns values associated with existing keys" do
+          it "still has the original key/value pairs" do
             @expected_pairs.each do |key, value|
               @trie.get(key).should == value
             end
@@ -154,7 +154,7 @@ module Hamster
             @trie.has_key?("missing").should be_false
           end
 
-          it "has the original size" do
+          it "still has the original size" do
             @trie.size.should == @expected_pairs.size
           end
 
@@ -182,6 +182,13 @@ module Hamster
 
     describe "#remove" do
 
+      it "can be used successively to remove all key/value pairs" do
+        @expected_pairs.each do |key, value|
+          @trie = @trie.remove(key)
+        end
+        @trie.should be_empty
+      end
+
       describe "with existing keys" do
 
         before do
@@ -194,13 +201,13 @@ module Hamster
 
         describe "the original" do
 
-          it "returns values associated with existing keys" do
+          it "still has the original key/value pairs" do
             @expected_pairs.each do |key, value|
               @trie.get(key).should == value
             end
           end
 
-          it "has the original size" do
+          it "still has the original size" do
             @trie.size.should == @expected_pairs.size
           end
 
