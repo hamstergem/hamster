@@ -10,7 +10,7 @@ module Hamster
 
       ("A".."Z").each do |letter|
         @expected_pairs.store(letter, letter.downcase)
-        @trie.put(letter, letter.downcase)
+        @trie = @trie.put(letter, letter.downcase)
       end
     end
 
@@ -94,37 +94,50 @@ module Hamster
 
     describe "#put" do
 
-      describe "with keys that already exist" do
-
-        it "returns self" do
-          @trie.put("A", "Aye").should == @trie
-        end
-
-        it "replaces the previous value" do
-          @trie.put("A", "Aye")
-          @trie.get("A").should == "Aye"
-        end
-
-        it "leaves size unchanged" do
-          @trie.size.should == 26
-        end
+      describe "with key/value pairs that already exists" do
 
       end
 
-      describe "with keys that don't exist"
+      describe "with key/value pairs that don't exist"
 
-        it "returns self" do
-          @trie.put("missing", "in action").should == @trie
+        before do
+          @copy = @trie.put("missing", "in action")
         end
 
-        it "sets the value" do
-          @trie.put("missing", "in action")
-          @trie.get("missing").should == "in action"
+        it "returns a modified copy" do
+          @copy.should_not === @trie
         end
 
-        it "increases size by 1" do
-          @trie.put("missing", "in action")
-          @trie.size.should == 27
+        describe "the original" do
+
+          it "has the original contents" do
+
+          end
+
+          it "doesn't contain the new key/value pair" do
+            @copy.has_key?("missing").should == false
+          end
+
+          it "has the original size" do
+            @copy.size.should == 26
+          end
+
+        end
+
+        describe "the modified copy" do
+
+          it "has the original contents" do
+
+          end
+
+          it "has the new key/value pair" do
+            @copy.get("missing").should == "in action"
+          end
+
+          it "size is increased by 1" do
+            @copy.size.should == 27
+          end
+
         end
 
     end
