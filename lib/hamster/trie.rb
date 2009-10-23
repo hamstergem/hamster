@@ -79,7 +79,7 @@ module Hamster
       dup.remove!(key)
     end
 
-    # Removes the given key/value pair.
+    # Removes the given key/value pair and returns <tt>self</tt>
     def remove!(key)
       self
     end
