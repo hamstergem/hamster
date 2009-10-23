@@ -7,18 +7,15 @@ module Hamster
     before do
       @expected_pairs = {}
       @trie = Trie.new
-
       ("A".."Z").each do |letter|
         @expected_pairs.store(letter, letter.downcase)
         @trie = @trie.put(letter, letter.downcase)
       end
     end
 
-    def self.it_returns_values_associated_with_existing_keys
-      it "returns values associated with existing keys" do
-        ("A".."Z").each do |letter|
-          @trie.get(letter).should == letter.downcase
-        end
+    it "returns values associated with existing keys" do
+      @expected_pairs.each do |key, value|
+        @trie.get(key).should == value
       end
     end
 
@@ -43,7 +40,8 @@ module Hamster
       describe "with a block (internal iteration)" do
 
         it "returns self" do
-          @trie.each {}.should == @trie          
+          @trie.each {}.should == @trie
+
         end
 
         it "yields all key value pairs" do
@@ -74,7 +72,11 @@ module Hamster
 
     describe "#get" do
 
-      it_returns_values_associated_with_existing_keys
+      it "returns values associated with existing keys" do
+        @expected_pairs.each do |key, value|
+          @trie.get(key).should == value
+        end
+      end
 
       it "returns nil for non-existing" do
         @trie.get("missing").should be_nil
@@ -85,12 +87,12 @@ module Hamster
     describe "#has_key?" do
 
       it "returns true for existing keys" do
-        ("A".."Z").each do |letter|
-          @trie.has_key?(letter).should be_true
+        @expected_pairs.each_key do |key|
+          @trie.has_key?(key).should be_true
         end
       end
 
-      it "returns false for non-existing" do
+      it "returns false for non-existing keys" do
         @trie.has_key?("missing").should be_false
       end
 
@@ -101,7 +103,7 @@ module Hamster
       describe "with key/value pairs that already exists" do
 
         before do
-          @copy = @trie.put("A", "aye")
+          @copy = @trie.put("J", "jay")
         end
 
         it "returns a modified copy" do
@@ -110,10 +112,14 @@ module Hamster
 
         describe "the original" do
 
-          it_returns_values_associated_with_existing_keys
+          it "returns values associated with existing keys" do
+            @expected_pairs.each do |key, value|
+              @trie.get(key).should == value
+            end
+          end
 
           it "has the original size" do
-            @trie.size.should == 26
+            @trie.size.should == @expected_pairs.size
           end
 
         end
@@ -121,11 +127,11 @@ module Hamster
         describe "the modified copy" do
 
           it "has the new key/value pair" do
-            @copy.get("A").should == "aye"
+            @copy.get("J").should == "jay"
           end
 
           it "has the original size" do
-            @trie.size.should == 26
+            @trie.size.should == @expected_pairs.size
           end
 
         end
@@ -144,31 +150,114 @@ module Hamster
 
         describe "the original" do
 
-          it_returns_values_associated_with_existing_keys
+          it "returns values associated with existing keys" do
+            @expected_pairs.each do |key, value|
+              @trie.get(key).should == value
+            end
+          end
 
           it "doesn't contain the new key/value pair" do
             @trie.has_key?("missing").should be_false
           end
 
           it "has the original size" do
-            @trie.size.should == 26
+            @trie.size.should == @expected_pairs.size
           end
 
         end
 
         describe "the modified copy" do
 
-          it_returns_values_associated_with_existing_keys
+          it "returns values associated with existing keys" do
+            @expected_pairs.each do |key, value|
+              @copy.get(key).should == value
+            end
+          end
 
           it "has the new key/value pair" do
             @copy.get("missing").should == "in action"
           end
 
           it "size is increased by 1" do
-            @copy.size.should == 27
+            @copy.size.should == @expected_pairs.size + 1
           end
 
         end
+
+    end
+
+    describe "#remove" do
+
+      describe "with existing keys" do
+
+        before do
+          @copy = @trie.remove("J")
+        end
+
+        it "returns a modified copy" do
+          @copy.should_not === @trie
+        end
+
+        describe "the original" do
+
+          it "returns values associated with existing keys" do
+            @expected_pairs.each do |key, value|
+              @trie.get(key).should == value
+            end
+          end
+
+          it "has the original size" do
+            @trie.size.should == @expected_pairs.size
+          end
+
+        end
+
+        describe "the modified copy" do
+
+          it "doesn't have the removed key" do
+            @copy.has_key?("J").should be_false
+          end
+
+          it "returns values associated with all but the removed key" do
+            @expected_pairs.each do |key, value|
+              next if key == "J"
+              @copy.get(key).should == value
+            end
+          end
+
+          it "has one less than the original" do
+            @copy.size.should == @expected_pairs.size - 1
+          end
+
+        end
+
+      end
+
+      describe "with non-existing keys" do
+
+        before do
+          @copy = @trie.remove("missing")
+        end
+
+        it "returns self" do
+          @copy.should === @trie
+        end
+
+        describe "the original" do
+
+          it "returns values associated with existing keys" do
+            @expected_pairs.each do |key, value|
+              @trie.get(key).should == value
+            end
+          end
+
+          it "has the original size" do
+            @trie.size.should == @expected_pairs.size
+          end
+
+        end
+
+      end
 
     end
 

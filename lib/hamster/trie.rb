@@ -42,20 +42,6 @@ module Hamster
       self.dup.put!(key, value)
     end
 
-    # Retrieves the value corresponding to the given key. If not found, returns nil.
-    def get(key)
-      index = index_for(key)
-      entry = @entries[index]
-      if entry
-        if entry.has_key?(key)
-          entry.value
-        else
-          child = @children[index]
-          child.get(key) if child
-        end
-      end
-    end
-
     # Associates the given value with the key and returns <tt>self</tt>
     def put!(key, value)
       index = index_for(key)
@@ -70,6 +56,28 @@ module Hamster
       else
         @entries[index] = Entry.new(key, value)
       end
+      self
+    end
+
+    # Retrieves the value corresponding to the given key. If not found, returns nil.
+    def get(key)
+      index = index_for(key)
+      entry = @entries[index]
+      if entry
+        if entry.has_key?(key)
+          entry.value
+        else
+          child = @children[index]
+          child.get(key) if child
+        end
+      end
+    end
+
+    def remove(key)
+      self.dup.remove!(key)
+    end
+
+    def remove!(key)
       self
     end
 
