@@ -9,7 +9,7 @@ HAMTs are hash tables with one really neat property: their structure enables you
 	trie = Hamster::Trie.new
 
 	trie.put("Name", "Simon")
-	trie.get("Name")						# => nil
+	trie.get("Name")          # => nil
 
 Huh? That's not much use!
 
@@ -18,7 +18,7 @@ Remember, each instance of a trie is immutable. #put creates an efficient copy c
 	trie = Hamster::Trie.new
 
 	trie = trie.put("Name", "Simon")
-	trie.get("Name")									# => "Simon"
+	trie.get("Name")                 # => "Simon"
 
 The same goes for remove:
 
@@ -27,12 +27,12 @@ The same goes for remove:
 	trie = trie.put("Name", "Simon")
 	trie = trie.put("Gender", "Male")
 	trie = trie.remove("Name")
-	trie.get("Name")									# => nil
-	trie.get("Gender")								# => "Male"
+	trie.get("Name")    # => nil
+	trie.get("Gender")  # => "Male"
 
 So tell me again why I care?
 
-As mentioned earlier, HAMTs perform a copy whenever they are modified means that there is never a chance that two threads could be modifying the same instance at any one time. And the fact that they are very efficient copies means you don't need to worry about using up gobs of heap space.
+As mentioned earlier, HAMTs perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of heap space in the process.
 
 So what's the downside?
 
