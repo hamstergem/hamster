@@ -27,6 +27,7 @@ module Hamster
     end
 
     # Calls <tt>block</tt> once for each key in the trie, passing the key-value pair as parameters.
+    # Returns <tt>self</tt>
     def each
       block_given? or return enum_for(__method__)
       @entries.each { |entry| yield entry.key, entry.value if entry }
@@ -36,7 +37,7 @@ module Hamster
       self
     end
 
-    # Associates the value given by with the key.
+    # Returns a copy of <tt>self</tt> with given value associated with the key.
     def put(key, value)
       self.dup.put!(key, value)
     end
@@ -55,6 +56,7 @@ module Hamster
       end
     end
 
+    # Associates the given value with the key and returns <tt>self</tt>
     def put!(key, value)
       index = index_for(key)
       entry = @entries[index]
