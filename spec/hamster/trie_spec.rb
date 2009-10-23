@@ -13,12 +13,6 @@ module Hamster
       end
     end
 
-    it "returns values associated with existing keys" do
-      @expected_pairs.each do |key, value|
-        @trie.get(key).should == value
-      end
-    end
-
     it "is Enumerable" do
       Trie.is_a?(Enumerable)
     end

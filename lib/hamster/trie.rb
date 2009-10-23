@@ -4,10 +4,10 @@ module Hamster
 
     include Enumerable
 
-    def initialize(significant_bits = 0)
+    def initialize(significant_bits = 0, entries = [], children = [])
       @significant_bits = significant_bits
-      @entries = []
-      @children = []
+      @entries = entries
+      @children = children
     end
 
     # Returns the number of key-value pairs in the trie.
@@ -37,26 +37,28 @@ module Hamster
       self
     end
 
-    # Returns a copy of <tt>self</tt> with given value associated with the key.
+    # Returns a copy of <tt>self</tt> with the given value associated with the key.
     def put(key, value)
-      dup.put!(key, value)
-    end
-
-    # Associates the given value with the key and returns <tt>self</tt>
-    def put!(key, value)
       index = index_for(key)
       entry = @entries[index]
+
       if entry && !entry.has_key?(key)
-        child = @children[index]
-        @children[index] = if child
+        children = @children.dup
+        child = children[index]
+
+        children[index] = if child
           child.put(key, value)
         else
           self.class.new(@significant_bits + 5).put!(key, value)
         end
+
+        self.class.new(@significant_bits, @entries, children)
       else
-        @entries[index] = Entry.new(key, value)
+        entries = @entries.dup
+        entries[index] = Entry.new(key, value)
+
+        self.class.new(@significant_bits, entries, @children)
       end
-      self
     end
 
     # Retrieves the value corresponding to the given key. If not found, returns <tt>nil</tt>.
@@ -78,13 +80,14 @@ module Hamster
       self
     end
 
-    private
+    protected
 
-    def initialize_copy(other)
-      @significant_bits = other.instance_eval{@significant_bits}
-      @entries = other.instance_eval{@entries}.dup
-      @children = other.instance_eval{@children}.dup
+    def put!(key, value)
+      @entries[index_for(key)] = Entry.new(key, value)
+      self
     end
+
+    private
 
     def index_for(key)
       (key.hash.abs >> @significant_bits) & 31
