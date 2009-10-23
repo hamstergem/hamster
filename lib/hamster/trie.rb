@@ -39,7 +39,7 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> with given value associated with the key.
     def put(key, value)
-      self.dup.put!(key, value)
+      dup.put!(key, value)
     end
 
     # Associates the given value with the key and returns <tt>self</tt>
@@ -59,7 +59,7 @@ module Hamster
       self
     end
 
-    # Retrieves the value corresponding to the given key. If not found, returns nil.
+    # Retrieves the value corresponding to the given key. If not found, returns <tt>nil</tt>.
     def get(key)
       index = index_for(key)
       entry = @entries[index]
@@ -73,10 +73,13 @@ module Hamster
       end
     end
 
+    # Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>self</tt>.
     def remove(key)
-      self.dup.remove!(key)
+      has_key?(key) or return self
+      dup.remove!(key)
     end
 
+    # Removes the given key/value pair.
     def remove!(key)
       self
     end
