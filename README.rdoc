@@ -1,5 +1,39 @@
 = Hamster
 
-Hash Array Mapped Tries (HAMT) for Ruby.
+Hash Array Mapped Tries (HAMT) for Ruby (See http://lamp.epfl.ch/papers/idealhashtrees.pdf).
 
-See http://lamp.epfl.ch/papers/idealhashtrees.pdf
+Why do you care?
+
+HAMTs are hash tables with one really neat property: their structure enables you to perform very efficient write-on-copy. For example:
+
+	trie = Hamster::Trie.new
+
+	trie.put("Name", "Simon")
+	trie.get("Name")						# => nil
+
+Huh? That's not much use!
+
+Remember, each instance of a trie is immutable. #put creates an efficient copy containing the modifications. So, let's try that again:
+
+	trie = Hamster::Trie.new
+
+	trie = trie.put("Name", "Simon")
+	trie.get("Name")									# => "Simon"
+
+The same goes for remove:
+
+	trie = Hamster::Trie.new
+
+	trie = trie.put("Name", "Simon")
+	trie = trie.put("Gender", "Male")
+	trie = trie.remove("Name")
+	trie.get("Name")									# => nil
+	trie.get("Gender")								# => "Male"
+
+So tell me again why I care?
+
+As mentioned earlier, HAMTs perform a copy whenever they are modified means that there is never a chance that two threads could be modifying the same instance at any one time. And the fact that they are very efficient copies means you don't need to worry about using up gobs of heap space.
+
+So what's the downside?
+
+The downside is that because the implementation is pure Ruby, MRI's built-in, native, hand-crafted C-code implementation of Hash is 10-times faster!
