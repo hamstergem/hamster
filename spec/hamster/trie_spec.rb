@@ -117,11 +117,11 @@ module Hamster
           it_returns_values_associated_with_existing_keys
 
           it "doesn't contain the new key/value pair" do
-            @copy.has_key?("missing").should be_false
+            @trie.has_key?("missing").should be_false
           end
 
           it "has the original size" do
-            @copy.size.should == 26
+            @trie.size.should == 26
           end
 
         end

@@ -4,10 +4,10 @@ module Hamster
 
     include Enumerable
 
-    def initialize(significant_bits = 0)
+    def initialize(significant_bits = 0, entries = [], children = [])
       @significant_bits = significant_bits
-      @entries = []
-      @children = []
+      @entries = entries
+      @children = children
     end
 
     def size
@@ -33,11 +33,19 @@ module Hamster
     end
 
     def put(key, value)
+      self.dup.put!(key, value)
+    end
+
+    def put!(key, value)
       index = index_for(key)
       entry = @entries[index]
       if entry && !entry.has_key?(key)
-        child = @children[index] ||= self.class.new(@significant_bits + 5)
-        child.put(key, value)
+        child = @children[index]
+        @children[index] = if child
+          child.put(key, value)
+        else
+          self.class.new(@significant_bits + 5).put!(key, value)
+        end
       else
         @entries[index] = Entry.new(key, value)
       end
@@ -55,6 +63,10 @@ module Hamster
           child.get(key) if child
         end
       end
+    end
+
+    def dup
+      self.class.new(@significant_bits, @entries.dup, @children.dup)
     end
 
     private
