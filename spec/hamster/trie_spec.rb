@@ -100,6 +100,36 @@ module Hamster
 
       describe "with key/value pairs that already exists" do
 
+        before do
+          @copy = @trie.put("A", "aye")
+        end
+
+        it "returns a modified copy" do
+          @copy.should_not === @trie
+        end
+
+        describe "the original" do
+
+          it_returns_values_associated_with_existing_keys
+
+          it "has the original size" do
+            @trie.size.should == 26
+          end
+
+        end
+
+        describe "the modified copy" do
+
+          it "has the new key/value pair" do
+            @copy.get("A").should == "aye"
+          end
+
+          it "has the original size" do
+            @trie.size.should == 26
+          end
+
+        end
+
       end
 
       describe "with key/value pairs that don't exist"
