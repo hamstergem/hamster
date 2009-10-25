@@ -34,6 +34,12 @@ So tell me again why I care?
 
 As mentioned earlier, HAMTs perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of heap space in the process.
 
+Thats nice but I don't really have mutli-threading issues.
+
+OK, how about transactional memory:
+
+	Need an example
+
 So what's the downside?
 
 The downside is that because the implementation is pure Ruby, MRI's built-in, native, hand-crafted C-code implementation of Hash is 10-times faster!

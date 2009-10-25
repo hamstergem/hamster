@@ -1,3 +1,7 @@
+=== 0.1.1 / 2009-10-23
+
+* Added #remove
+
 === 0.1.0 / 2009-10-21
 
 * Initial version

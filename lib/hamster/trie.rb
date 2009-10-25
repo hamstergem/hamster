@@ -81,7 +81,7 @@ module Hamster
       entry = @entries[index]
       child = @children[index]
       if entry && entry.has_key?(key)
-        # TODO: Probably should "pull up" a child entry
+        # TODO: NEED to "pull up" a child entry
         entries = @entries.dup
         entries[index] = nil
         self.class.new(@significant_bits, entries, @children)
@@ -106,9 +106,7 @@ module Hamster
     private
 
     def index_for(key)
-      key.hash.abs & 31
-      # puts "#{key}##{key.object_id}:#{key.hash}"
-      # (key.hash.abs >> @significant_bits) & 31
+      (key.hash.abs >> @significant_bits) & 31
     end
 
   end
