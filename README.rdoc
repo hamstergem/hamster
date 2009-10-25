@@ -34,7 +34,7 @@ So tell me again why I care?
 
 As mentioned earlier, HAMTs perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of heap space in the process.
 
-Thats nice but I don't really have mutli-threading issues.
+Thats nice but I don't really have multi-threading issues.
 
 OK, how about transactional memory:
 
