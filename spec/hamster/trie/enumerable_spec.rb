@@ -5,7 +5,7 @@ module Hamster
   describe Trie do
 
     it "is Enumerable" do
-      Trie.is_a?(Enumerable)
+      Trie.ancestors.should include(Enumerable)
     end
 
   end

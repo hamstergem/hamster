@@ -81,14 +81,12 @@ module Hamster
       entry = @entries[index]
       child = @children[index]
       if entry && entry.has_key?(key)
-        # TODO: NEED to "pull up" a child entry
         entries = @entries.dup
         entries[index] = nil
         self.class.new(@significant_bits, entries, @children)
       elsif child
         new_child = child.remove(key)
         if new_child != child
-          # TODO: Probably should "prune" empty children
           children = @children.dup
           children[index] = new_child
           self.class.new(@significant_bits, @entries, children)

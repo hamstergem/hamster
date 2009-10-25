@@ -79,15 +79,25 @@ module Hamster
           def hash; 1; end
         end
 
+        def number_of_tries
+          ObjectSpace.garbage_collect
+          @number_of_tries_before = ObjectSpace.each_object(Trie) {}
+        end
+
         before do
           a = Key.new
           @b = Key.new
           @trie = Trie.new.put(a, "A").put(@b, "B")
+          @number_of_tries_before = number_of_tries
           @trie = @trie.remove(a)
         end
 
         it "continues to provide access to keys with the same hash value" do
           @trie.get(@b).should == "B"
+        end
+
+        it "cleans up empty tries" do
+          number_of_tries.should == @number_of_tries_before - 1
         end
 
       end
