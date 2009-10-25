@@ -89,7 +89,7 @@ module Hamster
           @b = Key.new
           @original = Trie.new.put(@a, "aye").put(@b, "bee")
         end
-
+        
         it "no longer provides access to the removed key" do
           copy = @original.remove(@b)
           copy.has_key?(@b).should be_false
@@ -100,14 +100,10 @@ module Hamster
           copy.get(@b).should == "bee"
         end
 
-        describe "" do # Work-around to make GC work predictably
-
-          it "cleans up empty tries" do
-            number_of_tries_before = number_of_tries
-            copy = @original.remove(@b)
-            number_of_tries.should == number_of_tries_before + 1
-          end
-
+        it "cleans up empty tries" do
+          number_of_tries_before = number_of_tries
+          copy = @original.remove(@b)
+          number_of_tries.should == number_of_tries_before + 1
         end
 
       end
