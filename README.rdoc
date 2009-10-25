@@ -1,10 +1,10 @@
 = Hamster
 
-Hash Array Mapped Tries (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf).
+An implementation of Hash Array Mapped Tries (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf).
 
 Why do you care?
 
-HAMTs are hash tables with one really neat property: their structure enables you to perform very efficient copy-on-write operations. For example:
+HAMTs are a Persistent Data Structure (see http://en.wikipedia.org/wiki/Persistent_data_structure) making it really easy to build hash tables with one neat property: very efficient copy-on-write operations. For example:
 
 	trie = Hamster::Trie.new
 
