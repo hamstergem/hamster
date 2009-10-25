@@ -90,19 +90,21 @@ module Hamster
     def remove!(key)
       index = index_for(key)
       entry = @entries[index]
-      child = @children[index]
       if entry && entry.has_key?(key)
         if size > 1
           entries = @entries.dup
           entries[index] = nil
           self.class.new(@significant_bits, entries, @children)
         end
-      elsif child
-        new_child = child.remove!(key)
-        if new_child != child
-          children = @children.dup
-          children[index] = new_child
-          self.class.new(@significant_bits, @entries, children)
+      else
+        child = @children[index]
+        if child
+          new_child = child.remove!(key)
+          if new_child != child
+            children = @children.dup
+            children[index] = new_child
+            self.class.new(@significant_bits, @entries, children)
+          end
         end
       end
     end
