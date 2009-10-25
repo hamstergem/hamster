@@ -9,6 +9,7 @@ HAMTs are hash tables with one really neat property: their structure enables you
 	trie = Hamster::Trie.new
 
 	trie.put("Name", "Simon")
+	trie.has_key?("Name")     # => false
 	trie.get("Name")          # => nil
 
 Huh? That's not much use!
@@ -18,6 +19,7 @@ Remember, each instance of a trie is immutable. #put creates an efficient copy c
 	trie = Hamster::Trie.new
 
 	trie = trie.put("Name", "Simon")
+	trie.has_key?("Name")            # => true
 	trie.get("Name")                 # => "Simon"
 
 The same goes for remove:
