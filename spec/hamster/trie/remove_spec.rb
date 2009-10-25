@@ -90,12 +90,12 @@ module Hamster
           @original = Trie.new.put(@a, "aye").put(@b, "bee")
         end
         
-        it "doesn't provide access to the removed key" do
+        it "no longer provides access to the removed key" do
           copy = @original.remove(@b)
           copy.has_key?(@b).should be_false
         end
 
-        it "continues to provide access to keys with the same hash value" do
+        it "provides access to the remaining keys" do
           copy = @original.remove(@a)
           copy.get(@b).should == "bee"
         end
