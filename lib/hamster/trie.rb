@@ -41,22 +41,18 @@ module Hamster
     def put(key, value)
       index = index_for(key)
       entry = @entries[index]
-
       if entry && !entry.has_key?(key)
         children = @children.dup
         child = children[index]
-
         children[index] = if child
           child.put(key, value)
         else
           self.class.new(@significant_bits + 5).put!(key, value)
         end
-
         self.class.new(@significant_bits, @entries, children)
       else
         entries = @entries.dup
         entries[index] = Entry.new(key, value)
-
         self.class.new(@significant_bits, entries, @children)
       end
     end
