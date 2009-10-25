@@ -102,7 +102,7 @@ module Hamster
 
         it "cleans up empty tries" do
           number_of_tries_before = number_of_tries
-          copy = @original.remove(@b)
+          @copy = @original.remove(@b)  # Use instance variable assignment to prevent predictive GC
           number_of_tries.should == number_of_tries_before + 1
         end
 
