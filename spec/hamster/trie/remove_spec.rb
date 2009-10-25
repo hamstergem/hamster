@@ -87,18 +87,23 @@ module Hamster
         before do
           @a = Key.new
           @b = Key.new
-          @trie = Trie.new.put(@a, "A").put(@b, "B")
+          @original = Trie.new.put(@a, "aye").put(@b, "bee")
+        end
+        
+        it "doesn't provide access to the removed key" do
+          copy = @original.remove(@b)
+          copy.has_key?(@b).should be_false
         end
 
         it "continues to provide access to keys with the same hash value" do
-          @trie = @trie.remove(@a)
-          @trie.get(@b).should == "B"
+          copy = @original.remove(@a)
+          copy.get(@b).should == "bee"
         end
 
         it "cleans up empty tries" do
-          @number_of_tries_before = number_of_tries
-          @trie = @trie.remove(@b)
-          number_of_tries.should == @number_of_tries_before - 1
+          number_of_tries_before = number_of_tries
+          copy = @original.remove(@b)
+          number_of_tries.should == number_of_tries_before + 1
         end
 
       end

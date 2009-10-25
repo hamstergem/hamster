@@ -77,21 +77,7 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>self</tt>.
     def remove(key)
-      index = index_for(key)
-      entry = @entries[index]
-      child = @children[index]
-      if entry && entry.has_key?(key)
-        entries = @entries.dup
-        entries[index] = nil
-        self.class.new(@significant_bits, entries, @children)
-      elsif child
-        new_child = child.remove(key)
-        if new_child != child
-          children = @children.dup
-          children[index] = new_child
-          self.class.new(@significant_bits, @entries, children)
-        end
-      end || self
+      remove!(key) || self
     end
 
     protected
@@ -99,6 +85,24 @@ module Hamster
     def put!(key, value)
       @entries[index_for(key)] = Entry.new(key, value)
       self
+    end
+    
+    def remove!(key)
+      index = index_for(key)
+      entry = @entries[index]
+      child = @children[index]
+      if entry && entry.has_key?(key)
+        entries = @entries.dup
+        entries[index] = nil
+        self.class.new(@significant_bits, entries, @children) unless size == 1
+      elsif child
+        new_child = child.remove!(key)
+        if new_child != child
+          children = @children.dup
+          children[index] = new_child
+          self.class.new(@significant_bits, @entries, children)
+        end
+      end
     end
 
     private
