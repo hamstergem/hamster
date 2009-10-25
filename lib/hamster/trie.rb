@@ -61,12 +61,12 @@ module Hamster
     def get(key)
       index = index_for(key)
       entry = @entries[index]
-      if entry
-        if entry.has_key?(key)
-          entry.value
-        else
-          child = @children[index]
-          child.get(key) if child
+      if entry && entry.has_key?(key)
+        entry.value
+      else
+        child = @children[index]
+        if child
+          child.get(key)
         end
       end
     end
