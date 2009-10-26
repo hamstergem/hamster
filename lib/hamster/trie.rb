@@ -26,7 +26,7 @@ module Hamster
       !! get(key)
     end
 
-    # Calls <tt>block</tt> once for each key in the trie, passing the key-value pair as parameters.
+    # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
     # Returns <tt>self</tt>
     def each
       block_given? or return enum_for(__method__)

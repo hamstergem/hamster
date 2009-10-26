@@ -6,15 +6,7 @@ module Hamster
 
     include Enumerable
 
-    def self.new(*args)
-      if args.empty?
-        Empty.instance
-      else
-        super
-      end
-    end
-
-    def initialize(head, tail)
+    def initialize(head = nil, tail = self)
       @head = head
       @tail = tail
     end
@@ -31,55 +23,27 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> without the first item.
     def tail
-      @tail || self
+      @tail
     end
 
     # Returns <tt>true</tt> if the list contains no items.
     def empty?
-      @tail.nil?
+      @tail == self
     end
 
     # Returns the number of items in the list.
     def size
-      @tail.size + 1
+      if @tail == self
+        0
+      else
+        @tail.size + 1
+      end
     end
 
+    # Calls <tt>block</tt> once for each item in the list, passing the item as the only parameter.
+    # Returns <tt>self</tt>
     def each
       self
-    end
-
-    private
-
-    class Empty
-
-      include Singleton
-
-      include Enumerable
-
-      def cons(item)
-        List.new(item, self)
-      end
-
-      def head
-        nil
-      end
-
-      def tail
-        self
-      end
-
-      def empty?
-        true
-      end
-
-      def size
-        0
-      end
-
-      def each
-        self
-      end
-
     end
 
   end
