@@ -11,7 +11,7 @@ module Hamster
       self.class.new(@items.cons(item))
     end
 
-    # Returns a copy of <tt>self</tt> with all but the top item.
+    # Returns a copy of <tt>self</tt> without the top item.
     def pop
       @items.tail
     end
