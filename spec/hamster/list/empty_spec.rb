@@ -11,7 +11,7 @@ module Hamster
       end
 
       it "returns false once items have been added" do
-        list = List.new("A")
+        list = List.new.cons("A")
         list.should_not be_empty
       end
 
