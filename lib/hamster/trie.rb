@@ -72,6 +72,13 @@ module Hamster
       remove!(key) || self
     end
 
+    # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
+    def eql?(other)
+      blammo!
+    end
+    alias :== :eql?
+
+
     protected
 
     def put!(key, value)

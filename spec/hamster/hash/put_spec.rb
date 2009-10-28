@@ -12,7 +12,7 @@ describe Hamster::Hash do
       end
 
       it "returns a modified copy" do
-        @copy.should_not === @original
+        @copy.should_not equal(@original)
       end
 
       describe "the original" do
@@ -51,7 +51,7 @@ describe Hamster::Hash do
       end
 
       it "returns a modified copy" do
-        @copy.should_not === @original
+        @copy.should_not equal(@original)
       end
 
       describe "the original" do

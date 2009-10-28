@@ -50,6 +50,12 @@ module Hamster
       self
     end
 
+    # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
+    def eql?(other)
+      equal?(other) || (self.class.equal?(other.class) && @trie.eql?(other.instance_eval{@trie}))
+    end
+    alias :== :eql?
+
   end
 
 end
