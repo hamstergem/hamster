@@ -1,5 +1,3 @@
-require 'singleton'
-
 module Hamster
 
   class List
