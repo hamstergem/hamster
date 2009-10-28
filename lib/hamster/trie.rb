@@ -95,10 +95,10 @@ module Hamster
       else
         child = @children[index]
         if child
-          new_child = child.remove!(key)
-          if new_child != child
+          copy = child.remove!(key)
+          if !copy.equal?(child)
             children = @children.dup
-            children[index] = new_child
+            children[index] = copy
             self.class.new(@significant_bits, @entries, children)
           end
         end

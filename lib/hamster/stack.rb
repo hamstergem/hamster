@@ -13,7 +13,12 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> without the top item.
     def pop
-      @items.tail
+      copy = @items.tail
+      if !copy.equal?(@items)
+        self.class.new(copy)
+      else
+        self
+      end
     end
 
     # Returns the item at the top of the stack.
