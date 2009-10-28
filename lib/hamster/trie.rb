@@ -2,8 +2,6 @@ module Hamster
 
   class Trie
 
-    include Enumerable
-
     def initialize(significant_bits = 0, entries = [], children = [])
       @significant_bits = significant_bits
       @entries = entries
@@ -12,8 +10,9 @@ module Hamster
 
     # Returns the number of key-value pairs in the trie.
     def size
-      # TODO: This definitely won't scale!
-      to_a.size
+      count = 0
+      each { count += 1 }
+      count
     end
 
     # Returns <tt>true</tt> if the trie contains no key-value pairs.
@@ -29,12 +28,10 @@ module Hamster
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
     # Returns <tt>self</tt>
     def each
-      block_given? or return enum_for(__method__)
       @entries.each { |entry| yield entry.key, entry.value if entry }
       @children.each do |child|
         child.each { |key, value| yield key, value } if child
       end
-      self
     end
 
     # Returns a copy of <tt>self</tt> with the given value associated with the key.

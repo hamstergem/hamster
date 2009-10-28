@@ -1,4 +1,6 @@
+require 'hamster/trie'
 require 'hamster/list'
 require 'hamster/stack'
-require 'hamster/trie'
+require 'hamster/set'
+require 'hamster/hash'
 require 'hamster/version'

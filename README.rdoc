@@ -1,36 +1,36 @@
 = Hamster
 
-An implementation of Hash Array Mapped Tries (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf).
+An implementation of Hash Array Mapped Hashs (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf).
 
 Why do you care?
 
 HAMTs are a Persistent Data Structure (see http://en.wikipedia.org/wiki/Persistent_data_structure) making it really easy to build hash tables with one neat property: very efficient copy-on-write operations. For example:
 
-	trie = Hamster::Trie.new
+	hash = Hamster::Hash.new
 
-	trie.put("Name", "Simon")
-	trie.has_key?("Name")     # => false
-	trie.get("Name")          # => nil
+	hash.put("Name", "Simon")
+	hash.has_key?("Name")     # => false
+	hash.get("Name")          # => nil
 
 Huh? That's not much use!
 
-Remember, each instance of a trie is immutable. #put creates an efficient copy containing the modifications. So, let's try that again:
+Remember, each instance is immutable--#put creates an efficient copy containing the modifications. So, let's try that again:
 
-	trie = Hamster::Trie.new
+	hash = Hamster::Hash.new
 
-	trie = trie.put("Name", "Simon")
-	trie.has_key?("Name")            # => true
-	trie.get("Name")                 # => "Simon"
+	hash = hash.put("Name", "Simon")
+	hash.has_key?("Name")            # => true
+	hash.get("Name")                 # => "Simon"
 
 The same goes for remove:
 
-	trie = Hamster::Trie.new
+	hash = Hamster::Hash.new
 
-	trie = trie.put("Name", "Simon")
-	trie = trie.put("Gender", "Male")
-	trie = trie.remove("Name")
-	trie.get("Name")    # => nil
-	trie.get("Gender")  # => "Male"
+	hash = hash.put("Name", "Simon")
+	hash = hash.put("Gender", "Male")
+	hash = hash.remove("Name")
+	hash.get("Name")    # => nil
+	hash.get("Gender")  # => "Male"
 
 So tell me again why I care?
 

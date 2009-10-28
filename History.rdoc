@@ -1,3 +1,7 @@
+=== 0.1.4 / 2009-10-26
+
+* Simplify and share Trie between Hash and Set
+
 === 0.1.3 / 2009-10-26
 
 * All known issues fixed.
