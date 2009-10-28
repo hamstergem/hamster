@@ -78,7 +78,6 @@ module Hamster
     end
     alias :== :eql?
 
-
     protected
 
     def put!(key, value)
