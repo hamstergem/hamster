@@ -2,28 +2,23 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::List do
 
-  describe "#cadr" do
+  (1..5).each do |i|
 
-    it "initially returns nil" do
-      Hamster::List.new.cadr.should be_nil
-    end
+    method_name = "ca#{'d' * i}r"
+    values = (1..6).to_a
+    expected_result = i + 1
 
-    it "[1, 2, 3] is 2" do
-      list = Hamster::List.new.cons(3).cons(2).cons(1)
-      list.cadr.should == 2
-    end
+    describe "##{method_name}" do
 
-  end
+      it "initially returns nil" do
+        Hamster::List.new.send(method_name).should be_nil
+      end
 
-  describe "#caddr" do
+      it "with #{values} is #{i + 1}" do
+        list = values.reverse.inject(Hamster::List.new) { |list, i| list.cons(i) }
+        list.send(method_name).should == expected_result
+      end
 
-    it "initially returns nil" do
-      Hamster::List.new.caddr.should be_nil
-    end
-
-    it "[1, 2, 3] is 2" do
-      list = Hamster::List.new.cons(3).cons(2).cons(1)
-      list.caddr.should == 3
     end
 
   end
