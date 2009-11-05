@@ -60,18 +60,6 @@ module Hamster
       self
     end
     alias :clone :dup
-
-    def caar(count = 1)
-      list = self
-      count.times { list = list.car }
-      list.car
-    end
-
-    def cadr(count = 1)
-      list = self
-      count.times { list = list.cdr }
-      list.car
-    end
     
     def map
       if empty?
@@ -85,9 +73,7 @@ module Hamster
       if empty?
         memo
       else
-        @tail.reduce(yield(memo, @head)) do |memo, item|
-          yield(memo, item)
-        end
+        @tail.reduce(yield(memo, @head)) { |memo, item| yield(memo, item) }
       end
     end
 
@@ -95,10 +81,14 @@ module Hamster
 
     def method_missing(name, *args, &block)
       case name.to_s
-      when /^ca(a{2,})r$/ then caar($1.length)
-      when /^ca(d{2,})r$/ then cadr($1.length)
+      when /^ca(a+)r$/ then repeat($1.length) { |list| list.car }
+      when /^ca(d+)r$/ then repeat($1.length) { |list| list.cdr }
       else super
       end
+    end
+    
+    def repeat(count = 1, &block)
+      count.times.inject(self, &block).car
     end
 
   end
