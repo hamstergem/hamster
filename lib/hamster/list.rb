@@ -42,10 +42,9 @@ module Hamster
     # Returns <tt>self</tt>
     def each
       block_given? or return enum_for(__method__)
-      list = self
-      until list.empty? do
-        yield list.head
-        list = list.tail
+      unless empty?
+        yield @head
+        @tail.each { |item| yield item }
       end
       self
     end
