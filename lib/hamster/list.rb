@@ -72,6 +72,19 @@ module Hamster
       count.times { list = list.cdr }
       list.car
     end
+    
+    def map
+      result = self
+      unless empty?
+        replacement = yield @head
+        result = @tail.map { |item| yield item }.cons(replacement)
+      end
+      result
+    end
+    
+    def reduce(initial = car)
+      blammo!
+    end
 
     private
 
