@@ -1,0 +1,1 @@
+* Implement Enumerable methods such that they return instances of the class (or List as a last resort) rather than Array.
