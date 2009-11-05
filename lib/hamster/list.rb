@@ -24,12 +24,12 @@ module Hamster
     end
 
     # Returns the first item.
-    def head
+    def car
       @head
     end
 
     # Returns a copy of <tt>self</tt> without the first item.
-    def tail
+    def cdr
       @tail
     end
 

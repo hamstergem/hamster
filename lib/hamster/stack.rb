@@ -18,7 +18,7 @@ module Hamster
 
     # Returns the item at the top of the stack.
     def top
-      @list.head
+      @list.car
     end
 
     # Returns a copy of <tt>self</tt> with the given item as the new top
@@ -28,7 +28,7 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> without the top item.
     def pop
-      copy = @list.tail
+      copy = @list.cdr
       if !copy.equal?(@list)
         self.class.new(copy)
       else
