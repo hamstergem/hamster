@@ -55,6 +55,12 @@ module Hamster
     end
     alias :== :eql?
 
+    # Returns <tt>self</tt>
+    def dup
+      self
+    end
+    alias :clone :dup
+
   end
 
 end

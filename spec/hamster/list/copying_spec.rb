@@ -1,15 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Hamster::Hash do
+describe Hamster::List do
 
   before do
-    @hash = Hamster::Hash.new
+    @list = Hamster::List.new
   end
 
   describe "#dup" do
 
     it "returns self" do
-      @hash.dup.should equal(@hash)
+      @list.dup.should equal(@list)
     end
 
   end
@@ -17,7 +17,7 @@ describe Hamster::Hash do
   describe "#clone" do
 
     it "returns self" do
-      @hash.clone.should equal(@hash)
+      @list.clone.should equal(@list)
     end
 
   end
