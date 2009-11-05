@@ -15,7 +15,7 @@ describe Hamster::Hash do
     describe "with a block (internal iteration)" do
 
       it "returns self" do
-        @hash.each {}.should == @hash
+        @hash.each {}.should equal(@hash)
       end
 
       it "yields all key value pairs" do

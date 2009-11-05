@@ -42,6 +42,11 @@ module Hamster
     # Returns <tt>self</tt>
     def each
       block_given? or return enum_for(__method__)
+      list = self
+      until list.empty? do
+        yield list.head
+        list = list.tail
+      end
       self
     end
 
