@@ -80,15 +80,24 @@ module Hamster
     private
 
     def method_missing(name, *args, &block)
-      case name.to_s
-      when /^ca(a+)r$/ then repeat($1.length) { |list| list.car }
-      when /^ca(d+)r$/ then repeat($1.length) { |list| list.cdr }
-      else super
+      if name.to_s =~ /^c([ad]+)r$/
+        access($1)
+      else
+        super
       end
     end
-    
-    def repeat(count = 1, &block)
-      count.times.inject(self, &block).car
+
+    # Perform compositions of <tt>car</tt> and <tt>cdr</tt> operations. Their names consist of a 'c', followed by at
+    # least one 'a' or 'd', and finally an 'r'. The series of 'a's and 'd's in each function's name is chosen to
+    # identify the series of car and cdr operations that is performed by the function. The order in which the 'a's and
+    # 'd's appear is the inverse of the order in which the corresponding operations are performed.
+    def access(sequence)
+      sequence.split(//).reverse!.inject(self) do |memo, char|
+        case char
+        when "a" then memo.car
+        when "d" then memo.cdr
+        end
+      end
     end
 
   end
