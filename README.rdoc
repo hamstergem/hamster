@@ -1,6 +1,6 @@
 = Hamster
 
-Hamster started out as an implementation of Hash Array Mapped Hashs (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since been expanded to other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) for Sets, Lists, Stacks, etc.
+Hamster started out as an implementation of Hash Array Mapped Hashs (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
 
 == Huh?
 
@@ -16,27 +16,26 @@ Persistent data structures have a really neat property: very efficient copy-on-w
 
 == Huh? That's not much use!
 
-Whoops! Remember, each call to #put creates an efficient copy containing the modifications, leaving the original unmodified. So, unlike Ruby's built-in <tt>Hash</tt> all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
+Whoops! Remember, each call to <tt>#put</tt> creates an efficient copy containing the modifications, leaving the original unmodified. So, unlike Ruby's built-in <tt>Hash</tt> all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
 
 	require 'hamster'
 
-	hash = Hamster::Hash.new
+	original = Hamster::Hash.new
+	copy = hash.put("Name", "Simon")
 
-	hash = hash.put("Name", "Simon")
-	hash.has_key?("Name")            # => true
-	hash.get("Name")                 # => "Simon"
+	original.get("Name")             # => nil
+	copy.get("Name")                 # => "Simon"
 
-The same goes for #remove:
+The same goes for <tt>#remove</tt>:
 
 	require 'hamster'
 
-	hash = Hamster::Hash.new
-
-	hash = hash.put("Name", "Simon")
-	hash = hash.put("Gender", "Male")
-	hash = hash.remove("Name")
-	hash.get("Name")    # => nil
-	hash.get("Gender")  # => "Male"
+	original = Hamster::Hash.new
+	original = hash.put("Name", "Simon")
+	copy = hash.remove("Name")
+	
+	original.get("Name")  # => Simon
+	copy.get("Name")      # => nil
 
 == That's great but I still don't get why I should care?
 
@@ -87,5 +86,7 @@ Impressive huh? What's even better is--or worse depending on your perspective--i
 The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster!
 
 == Sure, but as you say, you still need synchronisation so why bother with the copying?
+
+TODO: Add synchronised example
 
 == And that, my friends, is why you might want to use one :)
