@@ -6,36 +6,36 @@ Hamster started out as an implementation of Hash Array Mapped Hashs (HAMT) for R
 
 Persistent data structures have a really neat property: very efficient copy-on-write operations. That allows you to create immutable data-structures that only need copying when something changes. For example:
 
-	require 'hamster'
+  require 'hamster'
 
-	hash = Hamster::Hash.new
+  hash = Hamster::Hash.new
 
-	hash.put("Name", "Simon")
-	hash.has_key?("Name")     # => false
-	hash.get("Name")          # => nil
+  hash.put("Name", "Simon")
+  hash.has_key?("Name")     # => false
+  hash.get("Name")          # => nil
 
 == Double Huh? That's not much use!
 
 Whoops! Remember, each call to <tt>#put</tt> creates an efficient copy containing the modifications, leaving the original unmodified. So, unlike Ruby's built-in <tt>Hash</tt> all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
 
-	require 'hamster'
+  require 'hamster'
 
-	original = Hamster::Hash.new
-	copy = hash.put("Name", "Simon")
+  original = Hamster::Hash.new
+  copy = hash.put("Name", "Simon")
 
-	original.get("Name")             # => nil
-	copy.get("Name")                 # => "Simon"
+  original.get("Name")             # => nil
+  copy.get("Name")                 # => "Simon"
 
 The same goes for <tt>#remove</tt>:
 
-	require 'hamster'
+  require 'hamster'
 
-	original = Hamster::Hash.new
-	original = hash.put("Name", "Simon")
-	copy = hash.remove("Name")
-	
-	original.get("Name")  # => Simon
-	copy.get("Name")      # => nil
+  original = Hamster::Hash.new
+  original = hash.put("Name", "Simon")
+  copy = hash.remove("Name")
+  
+  original.get("Name")  # => Simon
+  copy.get("Name")      # => nil
 
 == Oh, I get it. Cool. But I still don't understand why I should care?
 
@@ -45,17 +45,17 @@ As mentioned earlier, persistent data structures perform a copy whenever they ar
 
 There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of <tt>Hash</tt>. For example:
 
-	require 'hamster'
+  require 'hamster'
 
-	hash = Hamster::Hash.new
-	(1..10000).each { |i| hash = hash.put(i, i) }	# => 0.05s
-	(1..10000).each { |i| hash.get(i) }	# => 0.008s
+  hash = Hamster::Hash.new
+  (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
+  (1..10000).each { |i| hash.get(i) }  # => 0.008s
 
 versus
 
-	hash = {}
-	(1..10000).each { |i| hash[i] = i }  # => 0.004s
-	(1..10000).each { |i| hash[i] }  # => 0.001s
+  hash = {}
+  (1..10000).each { |i| hash[i] = i }  # => 0.004s
+  (1..10000).each { |i| hash[i] }  # => 0.001s
 
 == That seems pretty bad?
 
@@ -65,21 +65,21 @@ Well, yes and no. The previous comparison wasn't really fair. Sure, if all you w
 
 A more realistic comparison might look like:
 
-	require 'hamster'
+  require 'hamster'
 
-	hash = Hamster::Hash.new
-	(1..10000).each { |i| hash = hash.put(i, i) }	# => 0.05s
-	(1..10000).each { |i| hash.get(i) }	# => 0.008s
+  hash = Hamster::Hash.new
+  (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
+  (1..10000).each { |i| hash.get(i) }  # => 0.008s
 
 versus
 
-	hash = {}
-	(1..10000).each { |i|
-		hash = hash.dup
-		hash[i] = i
-	} # => 19.8s
+  hash = {}
+  (1..10000).each { |i|
+    hash = hash.dup
+    hash[i] = i
+  } # => 19.8s
 
-	(1..10000).each { |i| hash[i] }  # => 0.001s
+  (1..10000).each { |i| hash[i] }  # => 0.001s
 
 Impressive huh? What's even better is--or worse depending on your perspective--is that after all that, the native <tt>Hash</tt> version still isn't thread-safe and still requires some synchronisation around it slowing it down even further!
 
