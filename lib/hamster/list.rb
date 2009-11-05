@@ -60,6 +60,28 @@ module Hamster
       self
     end
     alias :clone :dup
+    
+    private
+
+    def method_missing(name, *args, &block)
+      case name.to_s
+      when /^ca(a+)r$/ then caar($1.length)
+      when /^ca(d+)r$/ then cadr($1.length)
+      else super
+      end
+    end
+
+    def caar(count)
+      list = self
+      count.times { list = list.car }
+      list.car
+    end
+
+    def cadr(count)
+      list = self
+      count.times { list = list.cdr }
+      list.car
+    end
 
   end
 
