@@ -2,8 +2,6 @@ module Hamster
 
   class Hash
 
-    include Enumerable
-
     def initialize(trie = Trie.new)
       @trie = trie
     end

@@ -2,8 +2,6 @@ module Hamster
 
   class Set
 
-    include Enumerable
-
     def initialize(trie = Trie.new)
       @trie = trie
     end
