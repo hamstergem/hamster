@@ -2,9 +2,9 @@
 
 Hamster started out as an implementation of Hash Array Mapped Hashs (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since been expanded to other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) for Sets, Lists, Stacks, etc.
 
-== Why do you care?
+== Huh?
 
-Persistent data structures have a really neat property: very efficient copy-on-write operations. For example:
+Persistent data structures have a really neat property: very efficient copy-on-write operations. That allows you to create immutable data-structures that only need copying when something changes. For example:
 
 	require 'hamster'
 
@@ -16,7 +16,7 @@ Persistent data structures have a really neat property: very efficient copy-on-w
 
 == Huh? That's not much use!
 
-Remember, each call to #put creates an efficient copy containing the modifications, leaving the original unmodified. So, let's try that again:
+Whoops! Remember, each call to #put creates an efficient copy containing the modifications, leaving the original unmodified. So, unlike Ruby's built-in <tt>Hash</tt> all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
 
 	require 'hamster'
 
@@ -38,11 +38,11 @@ The same goes for #remove:
 	hash.get("Name")    # => nil
 	hash.get("Gender")  # => "Male"
 
-== So tell me again why I care?
+== That's great but I still don't get why I should care?
 
 As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of heap space in the process.
 
-== So what's the downside?
+== OK, that sounds interesting. What's the downside--there's always a downside?
 
 There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of <tt>Hash</tt>. For example:
 
@@ -60,7 +60,11 @@ versus
 
 == That seems pretty bad?
 
-Well, yes and no. The previous comparison wasn't really fair. Sure, if all you want to do is replace your existing uses of <tt>Hash</tt> in single-threaded environments then don't even bother. However, if you need something that can be used efficiently in concurrent environments where multiple threads are accessing the contents--both read AND writing--a more realistic comparison might look like:
+Well, yes and no. The previous comparison wasn't really fair. Sure, if all you want to do is replace your existing uses of <tt>Hash</tt> in single-threaded environments then don't even bother. However, if you need something that can be used efficiently in concurrent environments where multiple threads are accessing--reading AND writing--the contents things get much better.
+
+== OK, so what's a better example?
+
+A more realistic comparison might look like:
 
 	require 'hamster'
 
@@ -82,4 +86,6 @@ Impressive huh? What's even better is--or worse depending on your perspective--i
 
 The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster!
 
-And that, my friends, is why you might want to use one :)
+== Sure, but as you say, you still need synchronisation so why bother with the copying?
+
+== And that, my friends, is why you might want to use one :)
