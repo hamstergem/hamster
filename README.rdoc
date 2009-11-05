@@ -14,7 +14,7 @@ Persistent data structures have a really neat property: very efficient copy-on-w
 	hash.has_key?("Name")     # => false
 	hash.get("Name")          # => nil
 
-== Huh? That's not much use!
+== Double Huh? That's not much use!
 
 Whoops! Remember, each call to <tt>#put</tt> creates an efficient copy containing the modifications, leaving the original unmodified. So, unlike Ruby's built-in <tt>Hash</tt> all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
 
@@ -37,11 +37,11 @@ The same goes for <tt>#remove</tt>:
 	original.get("Name")  # => Simon
 	copy.get("Name")      # => nil
 
-== That's great but I still don't get why I should care?
+== Oh, I get it. Cool. But I still don't understand why I should care?
 
 As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of heap space in the process.
 
-== OK, that sounds interesting. What's the downside--there's always a downside?
+== OK, that sounds mildly interesting. What's the downside--there's always a downside?
 
 There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of <tt>Hash</tt>. For example:
 
@@ -61,7 +61,7 @@ versus
 
 Well, yes and no. The previous comparison wasn't really fair. Sure, if all you want to do is replace your existing uses of <tt>Hash</tt> in single-threaded environments then don't even bother. However, if you need something that can be used efficiently in concurrent environments where multiple threads are accessing--reading AND writing--the contents things get much better.
 
-== OK, so what's a better example?
+== Do you have a better example?
 
 A more realistic comparison might look like:
 
@@ -87,6 +87,6 @@ The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the orig
 
 == Sure, but as you say, you still need synchronisation so why bother with the copying?
 
-TODO: Add synchronised example
+Well, I could show you one but I'd have to re-write--or at least wrap--most <tt>Hash</tt> methods to make it generic, or at least write some application-specific code that synchronised using a <tt>Mutex</tt> and ... well ... it's hard, I always make mistakes, I always end up with weird edge cases and race conditions so, I'll leave that as an exercise for you :)
 
 == And that, my friends, is why you might want to use one :)
