@@ -74,21 +74,22 @@ module Hamster
     end
     
     def map
-      result = self
-      unless empty?
+      if empty?
+        self
+      else
         replacement = yield @head
-        result = @tail.map { |item| yield item }.cons(replacement)
+        @tail.map { |item| yield item }.cons(replacement)
       end
-      result
     end
     
     def reduce(memo)
-      unless empty?
-        memo = @tail.reduce(yield(memo, @head)) do |memo, item|
+      if empty?
+        memo
+      else
+        @tail.reduce(yield(memo, @head)) do |memo, item|
           yield(memo, item)
         end
       end
-      memo
     end
 
     private
