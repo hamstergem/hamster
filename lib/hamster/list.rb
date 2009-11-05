@@ -77,8 +77,7 @@ module Hamster
       if empty?
         self
       else
-        replacement = yield @head
-        @tail.map { |item| yield item }.cons(replacement)
+        @tail.map { |item| yield item }.cons(yield(@head))
       end
     end
     
