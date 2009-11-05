@@ -43,8 +43,8 @@ module Hamster
     def each
       block_given? or return enum_for(__method__)
       unless empty?
-        yield @head
-        @tail.each { |item| yield item }
+        yield(@head)
+        @tail.each { |item| yield(item) }
       end
       self
     end
@@ -82,8 +82,13 @@ module Hamster
       result
     end
     
-    def reduce(initial = car)
-      blammo!
+    def reduce(memo)
+      unless empty?
+        memo = @tail.reduce(yield(memo, @head)) do |memo, item|
+          yield(memo, item)
+        end
+      end
+      memo
     end
 
     private
