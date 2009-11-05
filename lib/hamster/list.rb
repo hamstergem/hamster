@@ -81,7 +81,7 @@ module Hamster
 
     def method_missing(name, *args, &block)
       if name.to_s =~ /^c([ad]+)r$/
-        access($1)
+        accessor($1)
       else
         super
       end
@@ -91,7 +91,7 @@ module Hamster
     # least one 'a' or 'd', and finally an 'r'. The series of 'a's and 'd's in each function's name is chosen to
     # identify the series of car and cdr operations that is performed by the function. The order in which the 'a's and
     # 'd's appear is the inverse of the order in which the corresponding operations are performed.
-    def access(sequence)
+    def accessor(sequence)
       sequence.split(//).reverse!.inject(self) do |memo, char|
         case char
         when "a" then memo.car
