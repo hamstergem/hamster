@@ -9,7 +9,7 @@ describe Hamster::Hash do
       hash.should eql(hash)
     end
 
-    it "is true for two empty stacks" do
+    it "is true for two empty instances" do
       pending do
         Hamster::Hash.new.should eql(Hamster::Hash.new)
       end

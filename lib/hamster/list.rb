@@ -41,6 +41,7 @@ module Hamster
     # Calls <tt>block</tt> once for each item in the list, passing the item as the only parameter.
     # Returns <tt>self</tt>
     def each
+      block_given? or return enum_for(__method__)
       self
     end
 

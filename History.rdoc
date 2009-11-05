@@ -1,3 +1,7 @@
+=== 0.1.5 / 2009-11-5
+
+* Add some examples
+
 === 0.1.4 / 2009-10-26
 
 * Simplify and share Trie between Hash and Set

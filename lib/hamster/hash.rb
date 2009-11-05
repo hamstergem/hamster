@@ -56,6 +56,12 @@ module Hamster
       equal?(other) || (self.class.equal?(other.class) && @trie.eql?(other.instance_eval{@trie}))
     end
     alias :== :eql?
+    
+    # Returns <tt>self</tt>
+    def dup
+      self
+    end
+    alias :clone :dup
 
   end
 

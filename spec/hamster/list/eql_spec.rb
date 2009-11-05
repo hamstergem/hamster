@@ -11,7 +11,7 @@ describe Hamster::List do
       end
     end
 
-    it "is true for two empty stacks" do
+    it "is true for two empty instances" do
       pending do
         Hamster::List.new.should eql(Hamster::List.new)
       end
