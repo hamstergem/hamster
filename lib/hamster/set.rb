@@ -13,7 +13,7 @@ module Hamster
 
     # Returns <tt>true</tt> if the set contains no items.
     def empty?
-      @trie.size
+      @trie.empty?
     end
 
     # Returns <tt>true</tt> if the given item is present in the set.
