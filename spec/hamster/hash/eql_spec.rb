@@ -15,6 +15,20 @@ describe Hamster::Hash do
       end
     end
 
+    it "is true for two instances with the same key/value pairs" do
+      pending do
+        a = Hamster::Hash.new.put("a", "Aye").put("b", "Bee").put("c", "See")
+        b = Hamster::Hash.new.put("a", "Aye").put("b", "Bee").put("c", "See")
+        a.should eql(b)
+      end
+    end
+
+    it "is false for two instances with different key/value pairs" do
+      a = Hamster::Hash.new.put("a", "Aye").put("b", "Bee").put("c", "See")
+      b = Hamster::Hash.new.put("a", "Aye").put("b", "Bee")
+      a.should_not eql(b)
+    end
+
   end
 
 end

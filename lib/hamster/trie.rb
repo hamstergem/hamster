@@ -74,7 +74,7 @@ module Hamster
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
-      blammo!
+      false
     end
     alias :== :eql?
 
@@ -84,7 +84,7 @@ module Hamster
       @entries[index_for(key)] = Entry.new(key, value)
       self
     end
-    
+
     def remove!(key)
       index = index_for(key)
       entry = @entries[index]
