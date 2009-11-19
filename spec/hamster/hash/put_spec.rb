@@ -88,6 +88,18 @@ describe Hamster::Hash do
 
     end
 
+    describe "with a nil key" do
+
+      before do
+        @hash = Hamster::Hash.new.put(nil, "NIL")
+      end
+
+      it "can locate the key/value pair" do
+        @hash.get(nil).should == "NIL"
+      end
+
+    end
+
   end
 
 end
