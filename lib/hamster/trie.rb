@@ -37,7 +37,7 @@ module Hamster
     def put(key, value)
       index = index_for(key)
       entry = @entries[index]
-      if entry && !entry.has_key?(key)
+      if entry && !entry.is_key?(key)
         children = @children.dup
         child = children[index]
         children[index] = if child
@@ -57,7 +57,7 @@ module Hamster
     def get(key)
       index = index_for(key)
       entry = @entries[index]
-      if entry && entry.has_key?(key)
+      if entry && entry.is_key?(key)
         entry
       else
         child = @children[index]
@@ -71,7 +71,7 @@ module Hamster
     def remove(key)
       index = index_for(key)
       entry = @entries[index]
-      if entry && entry.has_key?(key)
+      if entry && entry.is_key?(key)
         if size > 1
           entries = @entries.dup
           entries[index] = nil
@@ -118,7 +118,7 @@ module Hamster
         @value = value
       end
 
-      def has_key?(key)
+      def is_key?(key)
         @key.eql?(key)
       end
 
