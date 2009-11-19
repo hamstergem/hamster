@@ -34,10 +34,10 @@ module Hamster
     # Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>self</tt>.
     def remove(key)
       copy = @trie.remove(key)
-      if copy.equal?(@trie)
-        self
-      else
+      if copy
         self.class.new(copy)
+      else
+        self
       end
     end
 

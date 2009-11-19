@@ -67,9 +67,27 @@ module Hamster
       end
     end
 
-    # Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>self</tt>.
+    # Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>nil</tt>.
     def remove(key)
-      remove!(key) || self
+      index = index_for(key)
+      entry = @entries[index]
+      if entry && entry.has_key?(key)
+        if size > 1
+          entries = @entries.dup
+          entries[index] = nil
+          self.class.new(@significant_bits, entries, @children)
+        end
+      else
+        child = @children[index]
+        if child
+          copy = child.remove(key)
+          if !copy.equal?(child)
+            children = @children.dup
+            children[index] = copy
+            self.class.new(@significant_bits, @entries, children)
+          end
+        end
+      end
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
@@ -83,28 +101,6 @@ module Hamster
     def put!(key, value)
       @entries[index_for(key)] = Entry.new(key, value)
       self
-    end
-
-    def remove!(key)
-      index = index_for(key)
-      entry = @entries[index]
-      if entry && entry.has_key?(key)
-        if size > 1
-          entries = @entries.dup
-          entries[index] = nil
-          self.class.new(@significant_bits, entries, @children)
-        end
-      else
-        child = @children[index]
-        if child
-          copy = child.remove!(key)
-          if !copy.equal?(child)
-            children = @children.dup
-            children[index] = copy
-            self.class.new(@significant_bits, @entries, children)
-          end
-        end
-      end
     end
 
     private
