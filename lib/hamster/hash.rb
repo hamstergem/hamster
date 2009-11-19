@@ -23,7 +23,10 @@ module Hamster
 
     # Retrieves the value corresponding to the given key. If not found, returns <tt>nil</tt>.
     def get(key)
-      @trie.get(key)
+      entry = @trie.get(key)
+      if entry
+        entry.value
+      end
     end
 
     # Returns a copy of <tt>self</tt> with the given value associated with the key.
@@ -45,7 +48,7 @@ module Hamster
     # Returns <tt>self</tt>
     def each
       block_given? or return enum_for(__method__)
-      @trie.each { |key, value| yield key, value }
+      @trie.each { |entry| yield entry.key, entry.value }
       self
     end
 

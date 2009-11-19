@@ -44,7 +44,7 @@ module Hamster
     # Returns <tt>self</tt>
     def each
       block_given? or return enum_for(__method__)
-      @trie.each { |key, value| yield key }
+      @trie.each { |entry| yield entry.key }
       self
     end
 

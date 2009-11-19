@@ -27,9 +27,9 @@ module Hamster
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
     def each
-      @entries.each { |entry| yield entry.key, entry.value if entry }
+      @entries.each { |entry| yield entry if entry }
       @children.each do |child|
-        child.each { |key, value| yield key, value } if child
+        child.each { |entry| yield entry } if child
       end
     end
 
@@ -53,12 +53,12 @@ module Hamster
       end
     end
 
-    # Retrieves the value corresponding to the given key. If not found, returns <tt>nil</tt>.
+    # Retrieves the entry corresponding to the given key. If not found, returns <tt>nil</tt>.
     def get(key)
       index = index_for(key)
       entry = @entries[index]
       if entry && entry.has_key?(key)
-        entry.value
+        entry
       else
         child = @children[index]
         if child
