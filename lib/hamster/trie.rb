@@ -72,11 +72,9 @@ module Hamster
       index = index_for(key)
       entry = @entries[index]
       if entry && entry.is_key?(key)
-        if size > 1
-          entries = @entries.dup
-          entries[index] = nil
-          self.class.new(@significant_bits, entries, @children)
-        end
+        entries = @entries.dup
+        entries[index] = nil
+        self.class.new(@significant_bits, entries, @children)
       else
         child = @children[index]
         if child
