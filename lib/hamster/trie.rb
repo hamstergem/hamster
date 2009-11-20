@@ -127,3 +127,42 @@ module Hamster
   end
 
 end
+
+__END__
+
+# Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>nil</tt>.
+def remove(key)
+  index = index_for(key)
+  entry = @entries[index]
+  if entry && entry.key_eql?(key)
+    remove_at(index)
+  else
+    child = @children[index]
+    if child
+      copy = child.remove(key)
+      if !copy.equal?(child)
+        children = @children.dup
+        children[index] = copy
+        self.class.new(@significant_bits, @entries, children)
+      end
+    end
+  end
+end
+
+# Returns a replacement instance after removing a specified entry. If empty, returns <tt>nil</tt>
+def remove_at(index = @entries.index { |e| e })
+  yield @entries[index] if block_given?
+  if size > 1
+    entries = @entries.dup
+    child = @children[index]
+    if child
+      children = @children.dup
+      children[index] = child.remove_at do |entry|
+        entries[index] = entry
+      end
+    else
+      entries[index] = nil
+    end
+    self.class.new(@significant_bits, entries, children || @children)
+  end
+end
