@@ -3,6 +3,18 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Hamster::Hash do
 
   describe "#remove" do
+    
+    describe "the last key" do
+
+      before do
+        @hash = Hamster::Hash.new.put("A", "aye").remove("A")
+      end
+
+      it "no longer provides access to the removed key" do
+        @hash.has_key?("A").should be_false
+      end
+      
+    end
 
     describe "with an existing key" do
 
