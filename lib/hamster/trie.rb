@@ -37,7 +37,7 @@ module Hamster
     def put(key, value)
       index = index_for(key)
       entry = @entries[index]
-      if !entry || entry.is_key?(key)
+      if !entry || entry.key_eql?(key)
         entries = @entries.dup
         entries[index] = Entry.new(key, value)
         self.class.new(@significant_bits, entries, @children)
@@ -57,7 +57,7 @@ module Hamster
     def get(key)
       index = index_for(key)
       entry = @entries[index]
-      if entry && entry.is_key?(key)
+      if entry && entry.key_eql?(key)
         entry
       else
         child = @children[index]
@@ -67,25 +67,9 @@ module Hamster
       end
     end
 
-    # Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>nil</tt>.
+    # Returns a copy of <tt>self</tt> with the given key (and associated value) removed. If not found, returns <tt>self</tt>.
     def remove(key)
-      index = index_for(key)
-      entry = @entries[index]
-      if entry && entry.is_key?(key)
-        entries = @entries.dup
-        entries[index] = nil
-        self.class.new(@significant_bits, entries, @children)
-      else
-        child = @children[index]
-        if child
-          copy = child.remove(key)
-          if !copy.equal?(child)
-            children = @children.dup
-            children[index] = copy
-            self.class.new(@significant_bits, @entries, children)
-          end
-        end
-      end
+      xxx(key) || Trie.new(@significant_bits)
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
@@ -96,9 +80,50 @@ module Hamster
 
     protected
 
+    # Returns <tt>self</tt> after overwriting the element associated with the specified key.
     def put!(key, value)
       @entries[index_for(key)] = Entry.new(key, value)
       self
+    end
+
+    # Returns a replacement instance after removing the specified key.
+    # If not found, returns <tt>self</tt>.
+    # If empty, returns <tt>nil</tt>.
+    def xxx(key)
+      index = index_for(key)
+      entry = @entries[index]
+      if entry && entry.key_eql?(key)
+        return remove_at(index)
+      else
+        child = @children[index]
+        if child
+          copy = child.xxx(key)
+          if !copy.equal?(child)
+            children = @children.dup
+            children[index] = copy
+            return self.class.new(@significant_bits, @entries, children)
+          end
+        end
+      end
+      self
+    end
+
+    # Returns a replacement instance after removing the specified entry. If empty, returns <tt>nil</tt>
+    def remove_at(index = @entries.index { |e| e })
+      yield @entries[index] if block_given?
+      if size > 1
+        entries = @entries.dup
+        child = @children[index]
+        if child
+          children = @children.dup
+          children[index] = child.remove_at do |entry|
+            entries[index] = entry
+          end
+        else
+          entries[index] = nil
+        end
+        self.class.new(@significant_bits, entries, children || @children)
+      end
     end
 
     private
@@ -116,7 +141,7 @@ module Hamster
         @value = value
       end
 
-      def is_key?(key)
+      def key_eql?(key)
         @key.eql?(key)
       end
 
@@ -124,43 +149,4 @@ module Hamster
 
   end
 
-end
-
-__END__
-
-# Returns a copy of <tt>self</tt> with the given key/value pair removed. If not found, returns <tt>nil</tt>.
-def remove(key)
-  index = index_for(key)
-  entry = @entries[index]
-  if entry && entry.key_eql?(key)
-    remove_at(index)
-  else
-    child = @children[index]
-    if child
-      copy = child.remove(key)
-      if !copy.equal?(child)
-        children = @children.dup
-        children[index] = copy
-        self.class.new(@significant_bits, @entries, children)
-      end
-    end
-  end
-end
-
-# Returns a replacement instance after removing a specified entry. If empty, returns <tt>nil</tt>
-def remove_at(index = @entries.index { |e| e })
-  yield @entries[index] if block_given?
-  if size > 1
-    entries = @entries.dup
-    child = @children[index]
-    if child
-      children = @children.dup
-      children[index] = child.remove_at do |entry|
-        entries[index] = entry
-      end
-    else
-      entries[index] = nil
-    end
-    self.class.new(@significant_bits, entries, children || @children)
-  end
 end

@@ -91,7 +91,7 @@ describe Hamster::Hash do
 
       def instance_count
         ObjectSpace.garbage_collect
-        ObjectSpace.each_object(Hamster::Hash) {}
+        ObjectSpace.each_object(Hamster::Trie) {}
       end
 
       before do
@@ -111,11 +111,9 @@ describe Hamster::Hash do
       end
 
       it "cleans up empty instances" do
-        pending do
-          instance_count_before = instance_count
-          # copy = @original.remove(@b)
-          instance_count.should == instance_count_before + 1
-        end
+        instance_count_before_remove = instance_count
+        copy = @original.remove(@b)
+        instance_count.should == instance_count_before_remove + 1
       end
 
     end
