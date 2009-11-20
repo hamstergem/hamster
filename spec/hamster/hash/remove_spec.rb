@@ -110,12 +110,6 @@ describe Hamster::Hash do
         copy.get(@b).should == "bee"
       end
 
-      it "cleans up empty instances" do
-        instance_count_before_remove = instance_count
-        copy = @original.remove(@b)
-        instance_count.should == instance_count_before_remove + 1
-      end
-
     end
 
   end
