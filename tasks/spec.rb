@@ -1,4 +1,4 @@
-require "spec/rake/spectask"
+require 'spec/rake/spectask'
 
 desc "Run specifications"
 Spec::Rake::SpecTask.new(:spec) do |t|
