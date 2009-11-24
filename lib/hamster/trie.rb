@@ -69,7 +69,7 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> with the given key (and associated value) removed. If not found, returns <tt>self</tt>.
     def remove(key)
-      xxx(key) || Trie.new(@significant_bits)
+      find_and_remove(key) || Trie.new(@significant_bits)
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
@@ -89,7 +89,7 @@ module Hamster
     # Returns a replacement instance after removing the specified key.
     # If not found, returns <tt>self</tt>.
     # If empty, returns <tt>nil</tt>.
-    def xxx(key)
+    def find_and_remove(key)
       index = index_for(key)
       entry = @entries[index]
       if entry && entry.key_eql?(key)
@@ -97,7 +97,7 @@ module Hamster
       else
         child = @children[index]
         if child
-          copy = child.xxx(key)
+          copy = child.find_and_remove(key)
           if !copy.equal?(child)
             children = @children.dup
             children[index] = copy
