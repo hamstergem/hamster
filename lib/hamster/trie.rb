@@ -37,7 +37,7 @@ module Hamster
     def put(key, value)
       index = index_for(key)
       entry = @entries[index]
-      if !entry || entry.key_eql?(key)
+      if !entry || entry.key.eql?(key)
         entries = @entries.dup
         entries[index] = Entry.new(key, value)
         self.class.new(@significant_bits, entries, @children)
@@ -57,7 +57,7 @@ module Hamster
     def get(key)
       index = index_for(key)
       entry = @entries[index]
-      if entry && entry.key_eql?(key)
+      if entry && entry.key.eql?(key)
         entry
       else
         child = @children[index]
@@ -72,9 +72,17 @@ module Hamster
       find_and_remove(key) || Trie.new(@significant_bits)
     end
 
+    def include?(key, value)
+      entry = get(key)
+      entry && value.eql?(entry.value)
+    end
+
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
-      false
+      return true if equal?(other)
+      return false unless self.class.equal?(other.class) && self.size == other.size
+      each { |entry| return false unless other.include?(entry.key, entry.value) }
+      true
     end
     alias :== :eql?
 
@@ -92,7 +100,7 @@ module Hamster
     def find_and_remove(key)
       index = index_for(key)
       entry = @entries[index]
-      if entry && entry.key_eql?(key)
+      if entry && entry.key.eql?(key)
         return remove_at(index)
       else
         child = @children[index]
@@ -139,10 +147,6 @@ module Hamster
       def initialize(key, value)
         @key = key
         @value = value
-      end
-
-      def key_eql?(key)
-        @key.eql?(key)
       end
 
     end
