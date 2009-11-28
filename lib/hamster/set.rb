@@ -2,6 +2,10 @@ module Hamster
 
   class Set
 
+    def self.[](*items)
+      items.reduce(self.new) { |set, item| set.add(item) }
+    end
+
     def initialize(trie = Trie.new)
       @trie = trie
     end

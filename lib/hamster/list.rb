@@ -3,7 +3,7 @@ module Hamster
   class List
 
     def self.[](*items)
-      list = List.new
+      list = self.new
       items.reverse_each { |item| list = list.cons(item) }
       list
     end
