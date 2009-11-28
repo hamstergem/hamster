@@ -36,9 +36,9 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> with the given item removed. If not found, returns <tt>self</tt>.
     def remove(key)
-      copy = @trie.remove(item)
-      if !copy.equal?(@trie)
-        self.class.new(copy)
+      trie = @trie.remove(item)
+      if !trie.equal?(@trie)
+        self.class.new(trie)
       else
         self
       end
@@ -50,6 +50,13 @@ module Hamster
       block_given? or return enum_for(__method__)
       @trie.each { |entry| yield entry.key }
       self
+    end
+
+    def map
+      block_given? or return enum_for(:each)
+      trie = Trie.new
+      each { |item| trie = trie.put(yield(item), nil) }
+      self.class.new(trie)
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>

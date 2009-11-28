@@ -9,7 +9,7 @@ describe Hamster::Hash do
     end
 
     it "is equivalent to repeatedly using #put" do
-      @hash.should eql(Hamster::Hash.new.put("A", "aye").put("B", "bee").put("C", "see"))
+      @hash.should == Hamster::Hash.new.put("A", "aye").put("B", "bee").put("C", "see")
     end
 
   end

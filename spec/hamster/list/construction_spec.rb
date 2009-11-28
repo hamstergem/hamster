@@ -9,7 +9,7 @@ describe Hamster::List do
     end
 
     it "is equivalent to repeatedly using #cons" do
-      @list.should eql(Hamster::List.new.cons("C").cons("B").cons("A"))
+      @list.should == Hamster::List.new.cons("C").cons("B").cons("A")
     end
 
   end
