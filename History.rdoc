@@ -1,6 +1,10 @@
+=== 0.1.8 / 2009-11-29
+
+* Add convenience constructors: List[], Set[], and Hash[]
+
 === 0.1.7 / 2009-11-27
 
-* Implemented eql?/== for Hash and Set.
+* Implemented #eql?/== for Hash and Set.
 
 === 0.1.6 / 2009-11-23
 
