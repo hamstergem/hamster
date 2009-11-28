@@ -2,8 +2,6 @@ module Hamster
 
   class List
 
-    include Enumerable
-
     def initialize(head = nil, tail = self)
       @head = head
       @tail = tail
