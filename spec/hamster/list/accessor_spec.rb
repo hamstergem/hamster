@@ -10,7 +10,7 @@ describe Hamster::List do
 
     describe "##{method_name}" do
 
-      it "initially returns nil" do
+      it "when empty is nil" do
         Hamster::List.new.send(method_name).should be_nil
       end
 
