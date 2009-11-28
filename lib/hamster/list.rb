@@ -51,7 +51,7 @@ module Hamster
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
-      blammo!
+      false
     end
     alias :== :eql?
 
@@ -60,7 +60,7 @@ module Hamster
       self
     end
     alias :clone :dup
-    
+
     def map
       if empty?
         self
@@ -68,7 +68,7 @@ module Hamster
         @tail.map { |item| yield(item) }.cons(yield(@head))
       end
     end
-    
+
     def reduce(memo)
       if empty?
         memo

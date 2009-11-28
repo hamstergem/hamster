@@ -38,7 +38,7 @@ module Hamster
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
-      equal?(other) || (self.class.equal?(other.class) && @list.eql?(other.instance_eval{@list}))
+      other.is_a?(self.class) && @list.eql?(other.instance_eval{@list})
     end
     alias :== :eql?
 
