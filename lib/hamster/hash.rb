@@ -2,6 +2,10 @@ module Hamster
 
   class Hash
 
+    def self.[](pairs)
+      pairs.reduce(Hash.new) { |hash, pair| hash.put(pair.first, pair.last) }
+    end
+
     def initialize(trie = Trie.new)
       @trie = trie
     end
