@@ -33,6 +33,11 @@ module Hamster
       end
     end
 
+    def reduce(memo)
+      each { |entry| memo = yield(memo, entry) }
+      memo
+    end
+
     # Returns a copy of <tt>self</tt> with the given value associated with the key.
     def put(key, value)
       index = index_for(key)

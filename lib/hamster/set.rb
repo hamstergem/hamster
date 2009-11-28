@@ -54,9 +54,7 @@ module Hamster
 
     def map
       block_given? or return enum_for(:each)
-      trie = Trie.new
-      each { |item| trie = trie.put(yield(item), nil) }
-      self.class.new(trie)
+      self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(yield(entry.key), nil) })
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
