@@ -56,6 +56,11 @@ module Hamster
       self
     end
 
+    def map
+      block_given? or return enum_for(:each)
+      self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
+    end
+
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
