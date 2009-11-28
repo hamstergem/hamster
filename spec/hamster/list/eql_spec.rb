@@ -6,15 +6,11 @@ describe Hamster::List do
 
     it "is true for the same instance" do
       list = Hamster::List.new
-      pending do
-        list.should eql(list)
-      end
+      list.should eql(list)
     end
 
     it "is true for two empty instances" do
-      pending do
-        Hamster::List.new.should eql(Hamster::List.new)
-      end
+      Hamster::List.new.should eql(Hamster::List.new)
     end
 
   end

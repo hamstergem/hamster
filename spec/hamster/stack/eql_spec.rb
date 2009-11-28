@@ -6,15 +6,11 @@ describe Hamster::Stack do
 
     it "is true for the same instance" do
       stack = Hamster::Stack.new
-      pending do
-        stack.should eql(stack)
-      end
+      stack.should eql(stack)
     end
 
     it "is true for two empty instances" do
-      pending do
-        Hamster::Stack.new.should eql(Hamster::Stack.new)
-      end
+      Hamster::Stack.new.should eql(Hamster::Stack.new)
     end
 
   end

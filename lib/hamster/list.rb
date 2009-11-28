@@ -24,12 +24,12 @@ module Hamster
     end
 
     # Returns the first item.
-    def car
+    def head
       @head
     end
 
     # Returns a copy of <tt>self</tt> without the first item.
-    def cdr
+    def tail
       @tail
     end
 
@@ -51,7 +51,10 @@ module Hamster
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
-      false
+      return true if other.equal?(self)
+      return false unless other.is_a?(self.class)
+      return true if other.empty? && empty?
+      return other.head == head && other.tail.eql?(tail)
     end
     alias :== :eql?
 
@@ -94,8 +97,8 @@ module Hamster
     def accessor(sequence)
       sequence.split(//).reverse!.inject(self) do |memo, char|
         case char
-        when "a" then memo.car
-        when "d" then memo.cdr
+        when "a" then memo.head
+        when "d" then memo.tail
         end
       end
     end
