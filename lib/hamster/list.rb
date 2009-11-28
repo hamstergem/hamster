@@ -2,6 +2,12 @@ module Hamster
 
   class List
 
+    def self.[](*items)
+      list = List.new
+      items.reverse_each { |item| list = list.cons(item) }
+      list
+    end
+
     def initialize(head = nil, tail = self)
       @head = head
       @tail = tail
