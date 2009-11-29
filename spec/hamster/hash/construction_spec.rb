@@ -6,8 +6,12 @@ describe Hamster::Hash do
 
     describe "with nothing" do
 
+      before do
+        @hash = Hamster::Hash[]
+      end
+
       it "returns an empty hash" do
-        Hamster::Hash[].should be_empty
+        @hash.should be_empty
       end
 
     end
@@ -19,19 +23,7 @@ describe Hamster::Hash do
       end
 
       it "is equivalent to repeatedly using #put" do
-        @hash.should == Hamster::Hash.new.put("A", "aye").put("B", "bee").put("C", "see")
-      end
-
-    end
-
-    describe "with key/value pairs" do
-
-      before do
-        @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
-      end
-
-      it "is equivalent to repeatedly using #put" do
-        @hash.should == Hamster::Hash.new.put("A", "aye").put("B", "bee").put("C", "see")
+        @hash.should == Hamster::Hash[].put("A", "aye").put("B", "bee").put("C", "see")
       end
 
     end

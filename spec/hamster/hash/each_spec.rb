@@ -5,11 +5,7 @@ describe Hamster::Hash do
   describe "#each" do
 
     before do
-      @hash = Hamster::Hash.new
-      @expected_pairs = { "A" => "aye", "B" => "bee", "C" => "sea" }
-      @expected_pairs.each do |key, value|
-        @hash = @hash.put(key, value)
-      end
+      @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
     end
 
     describe "with a block (internal iteration)" do
@@ -23,7 +19,7 @@ describe Hamster::Hash do
         @hash.each do |key, value|
           actual_pairs[key] = value
         end
-        actual_pairs.should == @expected_pairs
+        actual_pairs.should == {"A" => "aye", "B" => "bee", "C" => "see"}
       end
 
     end
@@ -31,13 +27,7 @@ describe Hamster::Hash do
     describe "with no block (external iteration)" do
 
       it "returns an enumerator over all key value pairs" do
-        actual_pairs = {}
-        enum = @hash.each
-        loop do
-          key, value = enum.next
-          actual_pairs[key] = value
-        end
-        actual_pairs.should == @expected_pairs
+        Hash[*@hash.each.to_a.flatten].should == {"A" => "aye", "B" => "bee", "C" => "see"}
       end
 
     end
