@@ -52,6 +52,11 @@ module Hamster
       self
     end
 
+    def reduce(memo)
+      memo
+      @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
+    end
+
     def map
       block_given? or return enum_for(:each)
       if empty?
