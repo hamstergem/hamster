@@ -58,7 +58,7 @@ module Hamster
       return true if other.equal?(self)
       return false unless other.is_a?(self.class)
       return true if other.empty? && empty?
-      return other.head == head && other.tail.eql?(tail)
+      other.head == head && other.tail.eql?(tail)
     end
     alias :== :eql?
 
