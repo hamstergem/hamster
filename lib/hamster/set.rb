@@ -54,7 +54,11 @@ module Hamster
 
     def map
       block_given? or return enum_for(:each)
-      self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(yield(entry.key), nil) })
+      if empty?
+        self
+      else
+        self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(yield(entry.key), nil) })
+      end
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>

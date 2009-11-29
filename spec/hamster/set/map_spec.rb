@@ -6,9 +6,13 @@ describe Hamster::Set do
 
     describe "when empty" do
 
+      before do
+        @original = Hamster::Set[]
+        @mapped = @original.map {}
+      end
+
       it "returns self" do
-        hash = Hamster::Hash[]
-        hash.map {}.should equal(hash)
+        @mapped.should equal(@original)
       end
 
     end

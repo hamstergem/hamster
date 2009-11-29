@@ -4,37 +4,55 @@ describe Hamster::Hash do
 
   describe "#map" do
 
-    before do
-      @original = Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
-    end
-
-    describe "with a block" do
+    describe "when empty" do
 
       before do
-        @mapped = @original.map { |key, value| [key.chr, value.downcase] }
+        @original = Hamster::Hash[]
+        @mapped = @original.map {}
       end
 
-      it "preserves the original values" do
-        @original.should == Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
-      end
-
-      it "returns a new hash with the mapped values" do
-        @mapped.should == Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
+      it "returns self" do
+        @mapped.should equal(@original)
       end
 
     end
 
-    describe "with no block" do
+    describe "when not empty" do
+
 
       before do
-        @enumerator = @original.map
+        @original = Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
       end
 
-      it "preserves the original values" do
-        @original.should == Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
+      describe "with a block" do
+
+        before do
+          @mapped = @original.map { |key, value| [key.chr, value.downcase] }
+        end
+
+        it "preserves the original values" do
+          @original.should == Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
+        end
+
+        it "returns a new hash with the mapped values" do
+          @mapped.should == Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
+        end
+
       end
 
-      it "returns an enumerator over the key value pairs"
+      describe "with no block" do
+
+        before do
+          @enumerator = @original.map
+        end
+
+        it "preserves the original values" do
+          @original.should == Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
+        end
+
+        it "returns an enumerator over the key value pairs"
+
+      end
 
     end
 
