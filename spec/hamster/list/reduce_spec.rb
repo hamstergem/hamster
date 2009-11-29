@@ -4,24 +4,23 @@ describe Hamster::List do
 
   describe "#reduce" do
 
-    it "initially returns memo" do
-      Hamster::List.new.reduce(0).should == 0
+    describe "when empty" do
+
+      it "returns the memo" do
+        Hamster::List.new.reduce("ABC").should == "ABC"
+      end
+
     end
-    
+
     describe "with values" do
 
       before do
-        @list = Hamster::List.new.cons(1).cons(2).cons(3).cons(4)
+        @list = Hamster::List["A", "B", "C"]
+        @result = @list.reduce(0) { |memo, item| memo + 1 }
       end
 
-      it "works with an initial value" do
-        @list.reduce(0) { |memo, i| memo + i }.should == 10
-      end
-
-      it "defaults to the first item in the list" do
-        pending do
-          @list.reduce { |memo, i| memo + i }.should == 10
-        end
+      it "returns the resulting memo" do
+        @result.should == 3
       end
 
     end
