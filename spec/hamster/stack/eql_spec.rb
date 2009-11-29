@@ -4,13 +4,24 @@ describe Hamster::Stack do
 
   describe "#eql?" do
 
-    it "is true for the same instance" do
-      stack = Hamster::Stack.new
-      stack.should eql(stack)
+    before do
+      @stack = Hamster::Stack.new.push("A").push("B").push("C")
     end
 
-    it "is true for two empty instances" do
-      Hamster::Stack.new.should eql(Hamster::Stack.new)
+    it "is true for the same instance" do
+      @stack.should eql(@stack)
+    end
+
+    it "is true for two instances with the same sequence of values" do
+      @stack.should eql(Hamster::Stack.new.push("A").push("B").push("C"))
+    end
+
+    it "is false for two instances with the difference sequence of values" do
+      @stack.should_not eql(Hamster::Stack.new.push("A").push("C").push("B"))
+    end
+
+    it "is false for two instances with the similar but differently sized sequence of values" do
+      @stack.should_not eql(Hamster::Stack.new.push("A").push("B"))
     end
 
   end

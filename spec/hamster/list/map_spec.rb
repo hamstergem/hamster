@@ -4,36 +4,32 @@ describe Hamster::List do
 
   describe "#map" do
 
-    it "initially returns self" do
-      list = Hamster::List.new
-      list.map {}.should equal(list)
+    describe "when empty" do
+
+      before do
+        @original = Hamster::List.new
+        @mapped = @original.map {}
+      end
+
+      it "returns self" do
+        @mapped.should equal(@original)
+      end
+
     end
 
     describe "when not empty" do
 
       before do
-        @original = Hamster::List[1, 2, 3, 4]
-        @copy = @original.map { |i| i + 5 }
+        @original = Hamster::List["A", "B", "C"]
+        @mapped = @original.map { |item| item.downcase }
       end
 
-      it "returns a modified copy" do
-        @copy.should_not equal(@original)
+      it "preserves the original values" do
+        @original.should == Hamster::List["A", "B", "C"]
       end
 
-      describe "the original" do
-
-        it "has the original values" do
-          @original.to_enum.to_a.should == [1, 2, 3, 4]
-        end
-
-      end
-
-      describe "the modified copy" do
-
-        it "has the mapped values" do
-          @copy.to_enum.to_a.should == [6, 7, 8, 9]
-        end
-
+      it "returns a new list with the mapped values" do
+        @mapped.should == Hamster::List["a", "b", "c"]
       end
 
     end

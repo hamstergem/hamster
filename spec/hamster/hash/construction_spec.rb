@@ -12,6 +12,18 @@ describe Hamster::Hash do
 
     end
 
+    describe "with an implicit hash" do
+
+      before do
+        @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
+      end
+
+      it "is equivalent to repeatedly using #put" do
+        @hash.should == Hamster::Hash.new.put("A", "aye").put("B", "bee").put("C", "see")
+      end
+
+    end
+
     describe "with key/value pairs" do
 
       before do

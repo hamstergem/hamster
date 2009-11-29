@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Hamster::Stack do
 
   before do
-    @stack = Hamster::Stack.new
+    @stack = Hamster::Stack.new.push("A").push("B").push("C")
   end
 
   describe "#dup" do

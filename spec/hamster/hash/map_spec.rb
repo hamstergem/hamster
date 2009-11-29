@@ -21,21 +21,21 @@ describe Hamster::Hash do
 
 
       before do
-        @original = Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
+        @original = Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
       end
 
       describe "with a block" do
 
         before do
-          @mapped = @original.map { |key, value| [key.chr, value.downcase] }
+          @mapped = @original.map { |key, value| [key.downcase, value.upcase] }
         end
 
         it "preserves the original values" do
-          @original.should == Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
+          @original.should == Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
         end
 
         it "returns a new hash with the mapped values" do
-          @mapped.should == Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
+          @mapped.should == Hamster::Hash["a" => "AYE", "b"  => "BEE", "c" => "SEE"]
         end
 
       end
@@ -47,10 +47,12 @@ describe Hamster::Hash do
         end
 
         it "preserves the original values" do
-          @original.should == Hamster::Hash[65 => "AYE", 66  => "BEE", 67 => "SEE"]
+          @original.should == Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
         end
 
-        it "returns an enumerator over the key value pairs"
+        it "returns an enumerator over the key value pairs" do
+          Hamster::Hash[@enumerator.to_a].should == @original
+        end
 
       end
 

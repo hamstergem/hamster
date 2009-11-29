@@ -20,21 +20,21 @@ describe Hamster::Set do
     describe "when not empty" do
 
       before do
-        @original = Hamster::Set[65, 66, 67]
+        @original = Hamster::Set["A", "B", "C"]
       end
 
       describe "with a block" do
 
         before do
-          @mapped = @original.map { |item| item.chr }
+          @mapped = @original.map { |item| item.downcase }
         end
 
         it "preserves the original values" do
-          @original.should == Hamster::Set[65, 66, 67]
+          @original.should == Hamster::Set["A", "B", "C"]
         end
 
         it "returns a new set with the mapped values" do
-          @mapped.should == Hamster::Set["A", "B", "C"]
+          @mapped.should == Hamster::Set["a", "b", "c"]
         end
 
       end
@@ -46,7 +46,7 @@ describe Hamster::Set do
         end
 
         it "preserves the original values" do
-          @original.should == Hamster::Set[65, 66, 67]
+          @original.should == Hamster::Set["A", "B", "C"]
         end
 
         it "returns an enumerator over the values" do
