@@ -4,31 +4,22 @@ describe Hamster::Hash do
 
   describe "#eql?" do
 
-    it "is true for the same instance" do
-      hash = Hamster::Hash.new
-      hash.should eql(hash)
-    end
+    [
+      [[], [], true],
+      [["A" => "aye"], [], false],
+      [[], ["A" => "aye"], false],
+      [["A" => "aye"], ["A" => "aye"], true],
+      [["A" => "aye"], ["B" => "bee"], false],
+      [["A" => "aye", "B" => "bee"], ["A" => "aye"], false],
+      [["A" => "aye"], ["A" => "aye", "B" => "bee"], false],
+      [["A" => "aye", "B" => "bee", "C" => "see"], ["A" => "aye", "B" => "bee", "C" => "see"], true],
+      [["C" => "see", "A" => "aye", "B" => "bee"], ["A" => "aye", "B" => "bee", "C" => "see"], true],
+    ].each do |a, b, result|
 
-    it "is true for two empty instances" do
-      Hamster::Hash.new.should eql(Hamster::Hash.new)
-    end
+      it "returns #{result} for #{a.inspect} and #{b.inspect}" do
+        Hamster::Hash[*a].eql?(Hamster::Hash[*b]).should == result
+      end
 
-    it "is true for two instances with the same key/value pairs" do
-      a = Hamster::Hash.new.put("a", "Aye").put("b", "Bee").put("c", "See")
-      b = Hamster::Hash.new.put("a", "Aye").put("b", "Bee").put("c", "See")
-      a.should eql(b)
-    end
-
-    it "is false for two instances with different key/value pairs" do
-      a = Hamster::Hash.new.put("a", "Aye").put("b", "Bee").put("c", "See")
-      b = Hamster::Hash.new.put("a", "Aye").put("b", "Bee").put("d", "Dee")
-      a.should_not eql(b)
-    end
-
-    it "is false for two instances with different numbers of overlapping key/value pairs" do
-      a = Hamster::Hash.new.put("a", "Aye").put("b", "Bee").put("c", "See")
-      b = Hamster::Hash.new.put("a", "Aye").put("b", "Bee")
-      a.should_not eql(b)
     end
 
   end
