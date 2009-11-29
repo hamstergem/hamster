@@ -65,6 +65,11 @@ module Hamster
       end
     end
 
+    def reduce(memo)
+      block_given? or return memo
+      @trie.reduce(memo) { |memo, entry| yield(memo, entry.key, entry.value) }
+    end
+
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
