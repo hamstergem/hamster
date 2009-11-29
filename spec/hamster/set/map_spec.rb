@@ -4,38 +4,51 @@ describe Hamster::Set do
 
   describe "#map" do
 
-    before do
-      @original = Hamster::Set[65, 66, 67]
-    end
+    describe "when empty" do
 
-    describe "with a block" do
-
-      before do
-        @mapped = @original.map { |item| item.chr }
-      end
-
-      it "preserves the original values" do
-        @original.should == Hamster::Set[65, 66, 67]
-      end
-
-      it "returns a new set with the mapped values" do
-        @mapped.should == Hamster::Set["A", "B", "C"]
+      it "returns self" do
+        hash = Hamster::Hash[]
+        hash.map {}.should equal(hash)
       end
 
     end
 
-    describe "with no block" do
+    describe "when not empty" do
 
       before do
-        @enumerator = @original.map
+        @original = Hamster::Set[65, 66, 67]
       end
 
-      it "preserves the original values" do
-        @original.should == Hamster::Set[65, 66, 67]
+      describe "with a block" do
+
+        before do
+          @mapped = @original.map { |item| item.chr }
+        end
+
+        it "preserves the original values" do
+          @original.should == Hamster::Set[65, 66, 67]
+        end
+
+        it "returns a new set with the mapped values" do
+          @mapped.should == Hamster::Set["A", "B", "C"]
+        end
+
       end
 
-      it "returns an enumerator over the values" do
-        Hamster::Set[*@enumerator.to_a].should == @original
+      describe "with no block" do
+
+        before do
+          @enumerator = @original.map
+        end
+
+        it "preserves the original values" do
+          @original.should == Hamster::Set[65, 66, 67]
+        end
+
+        it "returns an enumerator over the values" do
+          Hamster::Set[*@enumerator.to_a].should == @original
+        end
+
       end
 
     end

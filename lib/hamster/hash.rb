@@ -2,7 +2,7 @@ module Hamster
 
   class Hash
 
-    def self.[](pairs)
+    def self.[](pairs = {})
       pairs.reduce(self.new) { |hash, pair| hash.put(pair.first, pair.last) }
     end
 
@@ -58,7 +58,11 @@ module Hamster
 
     def map
       block_given? or return enum_for(:each)
-      self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
+      if empty?
+        self
+      else
+        self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
+      end
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
