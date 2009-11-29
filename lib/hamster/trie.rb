@@ -27,9 +27,9 @@ module Hamster
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
     def each
-      @entries.each { |entry| yield entry if entry }
+      @entries.each { |entry| yield(entry) if entry }
       @children.each do |child|
-        child.each { |entry| yield entry } if child
+        child.each { |entry| yield(entry) } if child
       end
     end
 
@@ -125,7 +125,7 @@ module Hamster
 
     # Returns a replacement instance after removing the specified entry. If empty, returns <tt>nil</tt>
     def remove_at(index = @entries.index { |e| e })
-      yield @entries[index] if block_given?
+      yield(@entries[index]) if block_given?
       if size > 1
         entries = @entries.dup
         child = @children[index]

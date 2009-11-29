@@ -48,13 +48,8 @@ module Hamster
     # Returns <tt>self</tt>
     def each
       block_given? or return enum_for(__method__)
-      @trie.each { |entry| yield entry.key }
+      @trie.each { |entry| yield(entry.key) }
       self
-    end
-
-    def reduce(memo)
-      block_given? or return memo
-      @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
     end
 
     def map
@@ -64,6 +59,11 @@ module Hamster
       else
         self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(yield(entry.key), nil) })
       end
+    end
+
+    def reduce(memo)
+      block_given? or return memo
+      @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
