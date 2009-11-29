@@ -1,17 +1,17 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Hamster::Hash do
+describe Hamster::Set do
 
   describe "#empty?" do
 
     describe "when empty" do
 
       before do
-        @hash = Hamster::Hash[]
+        @set = Hamster::Set[]
       end
 
       it "returns true" do
-        @hash.should be_empty
+        @set.should be_empty
       end
 
     end
@@ -19,11 +19,11 @@ describe Hamster::Hash do
     describe "when not empty" do
 
       before do
-        @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
+        @set = Hamster::Set["A", "B", "C"]
       end
 
       it "returns false" do
-        @hash.should_not be_empty
+        @set.should_not be_empty
       end
 
     end
