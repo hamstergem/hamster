@@ -4,26 +4,14 @@ describe Hamster::Hash do
 
   describe "#empty?" do
 
-    describe "when empty" do
+    [
+      [[], true],
+      [["A" => "aye"], false],
+      [["A" => "aye", "B" => "bee", "C" => "see"], false],
+    ].each do |pairs, result|
 
-      before do
-        @hash = Hamster::Hash[]
-      end
-
-      it "returns true" do
-        @hash.should be_empty
-      end
-
-    end
-
-    describe "when not empty" do
-
-      before do
-        @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
-      end
-
-      it "returns false" do
-        @hash.should_not be_empty
+      it "returns #{result} for #{pairs.inspect}" do
+        Hamster::Hash[*pairs].empty?.should == result
       end
 
     end

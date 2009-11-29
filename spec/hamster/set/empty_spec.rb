@@ -4,26 +4,14 @@ describe Hamster::Set do
 
   describe "#empty?" do
 
-    describe "when empty" do
+    [
+      [[], true],
+      [["A"], false],
+      [["A", "B", "C"], false],
+    ].each do |values, result|
 
-      before do
-        @set = Hamster::Set[]
-      end
-
-      it "returns true" do
-        @set.should be_empty
-      end
-
-    end
-
-    describe "when not empty" do
-
-      before do
-        @set = Hamster::Set["A", "B", "C"]
-      end
-
-      it "returns false" do
-        @set.should_not be_empty
+      it "returns #{result} for #{values.inspect}" do
+        Hamster::Set[*values].empty?.should == result
       end
 
     end
