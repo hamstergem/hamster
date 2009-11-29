@@ -38,15 +38,11 @@ describe Hamster::Set do
       describe "with no block" do
 
         before do
-          @enumerator = @original.map
+          @result = @original.reduce("ABC")
         end
 
-        it "preserves the original values" do
-          @original.should == Hamster::Set["A", "B", "C"]
-        end
-
-        it "returns an enumerator over the values" do
-          Hamster::Set[*@enumerator.to_a].should == @original
+        it "returns the memo" do
+          @result.should == "ABC"
         end
 
       end

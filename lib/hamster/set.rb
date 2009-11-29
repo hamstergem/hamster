@@ -53,7 +53,7 @@ module Hamster
     end
 
     def reduce(memo)
-      memo
+      block_given? or return memo
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
     end
 
