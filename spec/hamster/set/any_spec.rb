@@ -24,24 +24,20 @@ describe Hamster::Set do
 
       describe "with a block" do
 
-        describe "when not empty" do
+        before do
+          @set = Hamster::Set["A", "B", "C", nil]
+        end
 
-          before do
-            @set = Hamster::Set["A", "B", "C", nil]
+        ["A", "B", "C", nil].each do |value|
+
+          it "returns true if the block ever returns true (#{value.inspect})" do
+            @set.any? { |item| item == value }.should be_true
           end
 
-          ["A", "B", "C", nil].each do |value|
+        end
 
-            it "returns true if the block ever returns true (#{value.inspect})" do
-              @set.any? { |item| item == value }.should be_true
-            end
-
-          end
-
-          it "returns false if the block always returns false" do
-            @set.any? { |item| item == "D" }.should be_false
-          end
-
+        it "returns false if the block always returns false" do
+          @set.any? { |item| item == "D" }.should be_false
         end
 
       end
