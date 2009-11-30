@@ -14,7 +14,7 @@ describe Hamster::Hash do
         @hash.each {}.should equal(@hash)
       end
 
-      it "yields all key value pairs" do
+      it "yields all key/value pairs" do
         actual_pairs = {}
         @hash.each { |key, value| actual_pairs[key] = value }
         actual_pairs.should == {"A" => "aye", "B" => "bee", "C" => "see"}
@@ -24,7 +24,7 @@ describe Hamster::Hash do
 
     describe "with no block (external iteration)" do
 
-      it "returns an enumerator over all key value pairs" do
+      it "returns an enumerator over all key/value pairs" do
         Hash[*@hash.each.to_a.flatten].should == {"A" => "aye", "B" => "bee", "C" => "see"}
       end
 
