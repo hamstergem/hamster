@@ -3,21 +3,17 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Hamster::Hash do
 
   before do
-    @hash = Hamster::Hash[]
+    @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
   end
 
-  describe "#dup" do
+  [:dup, :clone].each do |method|
 
-    it "returns self" do
-      @hash.dup.should equal(@hash)
-    end
+    describe "##{method}" do
 
-  end
+      it "returns self" do
+        @hash.send(method).should equal(@hash)
+      end
 
-  describe "#clone" do
-
-    it "returns self" do
-      @hash.clone.should equal(@hash)
     end
 
   end

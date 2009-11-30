@@ -3,21 +3,17 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Hamster::Set do
 
   before do
-    @set = Hamster::Set[]
+    @set = Hamster::Set["A", "B", "C"]
   end
 
-  describe "#dup" do
+  [:dup, :clone].each do |method|
 
-    it "returns self" do
-      @set.dup.should equal(@set)
-    end
+    describe "##{method}" do
 
-  end
+      it "returns self" do
+        @set.send(method).should equal(@set)
+      end
 
-  describe "#clone" do
-
-    it "returns self" do
-      @set.clone.should equal(@set)
     end
 
   end
