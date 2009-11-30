@@ -10,22 +10,18 @@ module Hamster
       @trie = trie
     end
 
-    # Returns the number of items in the set.
     def size
       @trie.size
     end
 
-    # Returns <tt>true</tt> if the set contains no items.
     def empty?
       @trie.empty?
     end
 
-    # Returns <tt>true</tt> if the given item is present in the set.
     def include?(item)
       @trie.has_key?(item)
     end
 
-    # Returns a copy of <tt>self</tt> with the given item added. If already exists, returns <tt>self</tt>.
     def add(item)
       if include?(item)
         self
@@ -34,7 +30,6 @@ module Hamster
       end
     end
 
-    # Returns a copy of <tt>self</tt> with the given item removed. If not found, returns <tt>self</tt>.
     def remove(key)
       trie = @trie.remove(item)
       if !trie.equal?(@trie)
@@ -44,8 +39,6 @@ module Hamster
       end
     end
 
-    # Calls <tt>block</tt> once for each item in the set, passing the item as the only parameter.
-    # Returns <tt>self</tt>
     def each
       block_given? or return enum_for(__method__)
       @trie.each { |entry| yield(entry.key) }
@@ -66,13 +59,11 @@ module Hamster
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
     end
 
-    # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
     alias :== :eql?
 
-    # Returns <tt>self</tt>
     def dup
       self
     end

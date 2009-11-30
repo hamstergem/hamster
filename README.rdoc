@@ -1,6 +1,6 @@
 = Hamster
 
-Hamster started out as an implementation of Hash Array Mapped Hashs (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
+Hamster started out as an implementation of Hash Array Mapped Hashes (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
 
 == Huh?
 
