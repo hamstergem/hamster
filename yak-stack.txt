@@ -1,1 +1,19 @@
-* Implement Enumerable methods such that they return instances of the class (or List as a last resort) rather than Array.
+* Add specs for Set#add and Set#remove
+* Alias Set#add as #<<
+* Alias Set#size as #length
+* Implement Set#union aliased as #| and #+
+* Implement Set#intersection aliased as #&
+* Implement Set#difference aliased as #-
+* Implement Set#subtract
+* Implement Set#subset?
+* Implement Set#superset?
+* Implement Set#^ as equivalent to ((set | enum) - (set & enum))
+* Alias Set#include? as Set#member?
+* Cleanup specs for Hash#put and Hash#remove
+* Alias Hash#put as #[]=
+* Implement Hash#merge
+* Alias Hash#has_key? as #key? and #include? and #member?
+* Alias Hash#size as #length
+* Cleanup List specs
+* Cleanup Stack specs
+* Work out what we can extract into common "Enumerable-like" code.
