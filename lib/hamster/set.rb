@@ -68,6 +68,11 @@ module Hamster
       end
     end
 
+    def reject
+      block_given? or return enum_for(__method__)
+      select { |item| !yield(item) }
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
