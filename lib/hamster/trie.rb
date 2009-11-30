@@ -38,6 +38,10 @@ module Hamster
       memo
     end
 
+    def select
+      reduce(self) { |trie, entry| yield(entry) ? trie : trie.remove(entry.key) }
+    end
+
     # Returns a copy of <tt>self</tt> with the given value associated with the key.
     def put(key, value)
       index = index_for(key)

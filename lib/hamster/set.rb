@@ -59,6 +59,15 @@ module Hamster
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
     end
 
+    def select
+      block_given? or return enum_for(__method__)
+      if empty?
+        self
+      else
+        self.class.new(@trie.select { |entry| yield(entry.key) })
+      end
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
