@@ -4,11 +4,14 @@ describe Hamster::Set do
 
   describe "#reject" do
 
-    describe "when empty" do
+    before do
+      @original = Hamster::Set["A", "B", "C"]
+    end
+
+    describe "when nothing matches" do
 
       before do
-        @original = Hamster::Set[]
-        @result = @original.reject {}
+        @result = @original.reject { |item| false }
       end
 
       it "returns self" do
@@ -17,11 +20,7 @@ describe Hamster::Set do
 
     end
 
-    describe "when not empty" do
-
-      before do
-        @original = Hamster::Set["A", "B", "C"]
-      end
+    describe "when only some things match" do
 
       describe "with a block" do
 

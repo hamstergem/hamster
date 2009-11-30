@@ -65,10 +65,11 @@ module Hamster
 
     def select
       block_given? or return enum_for(__method__)
-      if empty?
-        self
+      trie = @trie.select { |entry| yield(entry.key, entry.value) }
+      if !trie.equal?(@trie)
+        self.class.new(trie)
       else
-        self.class.new(@trie.select { |entry| yield(entry.key, entry.value) })
+        self
       end
     end
 

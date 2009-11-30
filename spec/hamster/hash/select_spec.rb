@@ -4,11 +4,14 @@ describe Hamster::Hash do
 
   describe "#select" do
 
-    describe "when empty" do
+    before do
+      @original = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
+    end
+
+    describe "when everything matches" do
 
       before do
-        @original = Hamster::Hash[]
-        @result = @original.select {}
+        @result = @original.select { |key, value| true }
       end
 
       it "returns self" do
@@ -17,11 +20,7 @@ describe Hamster::Hash do
 
     end
 
-    describe "when not empty" do
-
-      before do
-        @original = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
-      end
+    describe "when only some things match" do
 
       describe "with a block" do
 
