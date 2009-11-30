@@ -32,7 +32,7 @@ describe Hamster::Set do
 
           ["A", "B", "C", nil].each do |value|
 
-            it "returns false if the block ever returns false (#{value.inspect})" do
+            it "returns false if the block ever returns true (#{value.inspect})" do
               @set.none? { |item| item == value }.should be_false
             end
 

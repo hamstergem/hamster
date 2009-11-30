@@ -96,6 +96,15 @@ module Hamster
       true
     end
 
+    def none?
+      if block_given?
+        each { |key, value| return false if yield(key, value) }
+      else
+        each { |pair| return false if pair }
+      end
+      true
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
