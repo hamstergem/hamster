@@ -40,11 +40,11 @@ describe Hamster::Set do
 
       describe "with no block" do
 
-        [nil, false].each do |value|
+        it "returns true if all values are truthy" do
+          Hamster::Set[true, "A"].all?.should be_true
+        end
 
-          it "returns true if all values are non-#{value.inspect}" do
-            Hamster::Set[!value, !value].all?.should be_true
-          end
+        [nil, false].each do |value|
 
           it "returns false if any value is #{value.inspect}" do
             Hamster::Set[value, true, "A"].all?.should be_false
