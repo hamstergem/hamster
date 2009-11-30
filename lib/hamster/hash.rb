@@ -57,6 +57,7 @@ module Hamster
         self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
       end
     end
+    alias :collect :map
 
     def reduce(memo)
       block_given? or return memo
