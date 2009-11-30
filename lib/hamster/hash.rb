@@ -32,6 +32,7 @@ module Hamster
         entry.value
       end
     end
+    alias :[] :get
 
     # Returns a copy of <tt>self</tt> with the given value associated with the key.
     def put(key, value)

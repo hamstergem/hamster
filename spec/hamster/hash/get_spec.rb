@@ -2,29 +2,33 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::Hash do
 
-  describe "#get" do
+  [:get, :[]].each do |method|
 
-    before do
-      @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"]
-    end
+    describe "##{method}" do
 
-    [
-      ["A", "aye"],
-      ["B", "bee"],
-      ["C", "see"],
-      [nil, "NIL"]
-    ].each do |key, value|
+      before do
+        @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"]
+      end
 
-      it "returns the value (#{value.inspect}) for an existing key (#{key.inspect})" do
-        @hash.get(key).should == value
+      [
+        ["A", "aye"],
+        ["B", "bee"],
+        ["C", "see"],
+        [nil, "NIL"]
+        ].each do |key, value|
+
+          it "returns the value (#{value.inspect}) for an existing key (#{key.inspect})" do
+            @hash.send(method, key).should == value
+          end
+
+        end
+
+        it "returns nil for a non-existing key" do
+          @hash.send(method, "D").should be_nil
+        end
+
       end
 
     end
 
-    it "returns nil for a non-existing key" do
-      @hash.get("D").should be_nil
-    end
-
   end
-
-end
