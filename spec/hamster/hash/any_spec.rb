@@ -4,41 +4,53 @@ describe Hamster::Hash do
 
   describe "#any?" do
 
-    describe "with a block" do
+    describe "when empty" do
+
+      before do
+        @hash = Hamster::Hash[]
+      end
+
+      it "with a block returns false" do
+        @hash.any? {}.should be_false
+      end
+
+      it "with no block returns false" do
+        @hash.any?.should be_false
+      end
+
+    end
+
+    describe "when not empty" do
 
       before do
         @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"]
       end
 
-      [
-        ["A", "aye"],
-        ["B", "bee"],
-        ["C", "see"],
-        [nil, "NIL"],
-      ].each do |pair|
+      describe "with a block" do
 
-        it "returns true if the block ever returns true (#{pair.inspect})" do
-          @hash.any? { |key, value| key == pair.first && value == pair.last }.should be_true
+        [
+          ["A", "aye"],
+          ["B", "bee"],
+          ["C", "see"],
+          [nil, "NIL"],
+        ].each do |pair|
+
+          it "returns true if the block ever returns true (#{pair.inspect})" do
+            @hash.any? { |key, value| key == pair.first && value == pair.last }.should be_true
+          end
+
+          it "returns false if the block always returns false" do
+            @hash.any? { |key, value| key == "D" && value == "dee" }.should be_false
+          end
+
         end
 
       end
 
-      it "returns false if the block always returns false" do
-        @hash.any? { |key, value| key == "D" && value == "dee" }.should be_false
-      end
+      describe "with no block" do
 
-    end
-
-    describe "with no block" do
-
-      [nil, false].each do |value|
-
-        it "returns true if any value is non-#{value.inspect}" do
-          Hamster::Hash[value => value, true => true, "A" => "aye"].any?.should be_true
-        end
-
-        it "returns false if all values are #{value.inspect}" do
-          Hamster::Hash[value => value, value => value].any?.should be_false
+        it "returns true" do
+          @hash.any?.should be_true
         end
 
       end

@@ -4,32 +4,52 @@ describe Hamster::Set do
 
   describe "#all?" do
 
-    describe "with a block" do
+    describe "when empty" do
 
       before do
-        @set = Hamster::Set["A", "B", "C"]
+        @set = Hamster::Set[]
       end
 
-      it "returns true if the block always returns true" do
-        @set.all? { |item| true }.should be_true
+      it "with a block returns true" do
+        @set.all? {}.should be_true
       end
 
-      it "returns false if the block ever returns false" do
-        @set.all? { |item| item == "D" }.should be_false
+      it "with no block returns true" do
+        @set.all?.should be_true
       end
 
     end
 
-    describe "with no block" do
+    describe "when not empty" do
 
-      [nil, false].each do |value|
+      describe "with a block" do
 
-        it "returns true if all values are non-#{value.inspect}" do
-          Hamster::Set[!value, !value].all?.should be_true
+        before do
+          @set = Hamster::Set["A", "B", "C"]
         end
 
-        it "returns false if any value is #{value.inspect}" do
-          Hamster::Set[value, true, "A"].all?.should be_false
+        it "returns true if the block always returns true" do
+          @set.all? { |item| true }.should be_true
+        end
+
+        it "returns false if the block ever returns false" do
+          @set.all? { |item| item == "D" }.should be_false
+        end
+
+      end
+
+      describe "with no block" do
+
+        [nil, false].each do |value|
+
+          it "returns true if all values are non-#{value.inspect}" do
+            Hamster::Set[!value, !value].all?.should be_true
+          end
+
+          it "returns false if any value is #{value.inspect}" do
+            Hamster::Set[value, true, "A"].all?.should be_false
+          end
+
         end
 
       end

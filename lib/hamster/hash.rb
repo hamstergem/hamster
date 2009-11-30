@@ -82,7 +82,7 @@ module Hamster
       if block_given?
         each { |key, value| return true if yield(key, value) }
       else
-        each { |key, value| return true if key && value }
+        each { |pair| return true if pair }
       end
       false
     end
@@ -91,7 +91,7 @@ module Hamster
       if block_given?
         each { |key, value| return false unless yield(key, value) }
       else
-        each { |key, value| return false unless key && value }
+        each { |pair| return false unless pair }
       end
       true
     end
