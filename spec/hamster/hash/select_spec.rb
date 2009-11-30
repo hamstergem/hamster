@@ -25,7 +25,7 @@ describe Hamster::Hash do
       describe "with a block" do
 
         before do
-          @result = @original.select { |key, value| key == "A" }
+          @result = @original.select { |key, value| key == "A" && value == "aye" }
         end
 
         it "preserves the original" do
