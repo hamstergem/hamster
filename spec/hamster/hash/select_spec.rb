@@ -1,13 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Hamster::Set do
+describe Hamster::Hash do
 
   describe "#select" do
 
     describe "when empty" do
 
       before do
-        @original = Hamster::Set[]
+        @original = Hamster::Hash[]
         @result = @original.select {}
       end
 
@@ -20,21 +20,21 @@ describe Hamster::Set do
     describe "when not empty" do
 
       before do
-        @original = Hamster::Set["A", "B", "C"]
+        @original = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
       end
 
       describe "with a block" do
 
         before do
-          @result = @original.select { |item| item == "A" }
+          @result = @original.select { |key, value| key == "A" }
         end
 
         it "preserves the original" do
-          @original.should == Hamster::Set["A", "B", "C"]
+          @original.should == Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
         end
 
         it "returns a set with the matching values" do
-          @result.should == Hamster::Set["A"]
+          @result.should == Hamster::Hash["A" => "aye"]
         end
 
       end
@@ -46,7 +46,7 @@ describe Hamster::Set do
         end
 
         it "returns an enumerator over the values" do
-          Hamster::Set[*@enumerator.to_a].should == Hamster::Set["A", "B", "C"]
+          Hamster::Hash[@enumerator.to_a].should == Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
         end
 
       end
