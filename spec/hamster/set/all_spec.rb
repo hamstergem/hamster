@@ -7,19 +7,15 @@ describe Hamster::Set do
     describe "with a block" do
 
       before do
-        @set = Hamster::Set["A", "B", "C", nil]
+        @set = Hamster::Set["A", "B", "C"]
       end
 
       it "returns true if the block always returns true" do
         @set.all? { |item| true }.should be_true
       end
 
-      ["A", "B", "C", nil].each do |value|
-
-        it "returns false if the block ever returns false (#{value.inspect})" do
-          @set.all? { |item| item == "D" }.should be_false
-        end
-
+      it "returns false if the block ever returns false" do
+        @set.all? { |item| item == "D" }.should be_false
       end
 
     end

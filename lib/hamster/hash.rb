@@ -78,6 +78,24 @@ module Hamster
       select { |key, value| !yield(key, value) }
     end
 
+    def any?
+      if block_given?
+        each { |key, value| return true if yield(key, value) }
+      else
+        each { |key, value| return true if key && value }
+      end
+      false
+    end
+
+    def all?
+      if block_given?
+        each { |key, value| return false unless yield(key, value) }
+      else
+        each { |key, value| return false unless key && value }
+      end
+      true
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
