@@ -5,19 +5,19 @@ describe Hamster::Hash do
   describe "#has_key?" do
 
     before do
-      @hash = Hamster::Hash.new.put("A", "aye").put("NIL", nil)
+      @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"]
     end
 
-    it "returns true for an existing key" do
-      @hash.has_key?("A").should be_true
+    ["A", "B", "C", nil].each do |key|
+
+      it "returns true for an existing key (#{key.inspect})" do
+        @hash.has_key?(key).should be_true
+      end
+
     end
 
     it "returns false for a non-existing key" do
-      @hash.has_key?("B").should be_false
-    end
-    
-    it "returns true for a nil value" do
-      @hash.has_key?("NIL").should be_true
+      @hash.has_key?("D").should be_false
     end
 
   end
