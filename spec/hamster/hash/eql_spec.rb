@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::Hash do
 
-  [:==, :eql?].each do |method|
+  [:eql?, :==].each do |method|
 
     describe "##{method}" do
 

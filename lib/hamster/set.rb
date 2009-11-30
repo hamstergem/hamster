@@ -58,6 +58,7 @@ module Hamster
       block_given? or return memo
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
     end
+    alias :inject :reduce
 
     def select
       block_given? or return enum_for(__method__)
