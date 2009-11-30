@@ -19,7 +19,6 @@ describe Hamster::Hash do
 
     describe "when not empty" do
 
-
       before do
         @original = Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
       end
