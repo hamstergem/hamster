@@ -95,7 +95,7 @@ module Hamster
       end
       true
     end
-    alias :== :eql?
+    alias_method :==, :eql?
 
     protected
 

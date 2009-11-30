@@ -34,12 +34,12 @@ module Hamster
     def eql?(other)
       other.is_a?(self.class) && @list.eql?(other.instance_eval{@list})
     end
-    alias :== :eql?
+    alias_method :==, :eql?
 
     def dup
       self
     end
-    alias :clone :dup
+    alias_method :clone, :dup
 
   end
 

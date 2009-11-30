@@ -53,13 +53,13 @@ module Hamster
         self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(yield(entry.key), nil) })
       end
     end
-    alias :collect :map
+    alias_method :collect, :map
 
     def reduce(memo)
       block_given? or return memo
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
     end
-    alias :inject :reduce
+    alias_method :inject, :reduce
 
     def select
       block_given? or return enum_for(__method__)
@@ -106,12 +106,12 @@ module Hamster
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
-    alias :== :eql?
+    alias_method :==, :eql?
 
     def dup
       self
     end
-    alias :clone :dup
+    alias_method :clone, :dup
 
   end
 

@@ -52,12 +52,12 @@ module Hamster
       return true if other.empty? && empty?
       other.head == head && other.tail.eql?(tail)
     end
-    alias :== :eql?
+    alias_method :==, :eql?
 
     def dup
       self
     end
-    alias :clone :dup
+    alias_method :clone, :dup
 
     def map
       if empty?
