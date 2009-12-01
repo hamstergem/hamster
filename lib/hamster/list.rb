@@ -37,6 +37,11 @@ module Hamster
         self
       end
 
+      def dup
+        self
+      end
+      alias_method :clone, :dup
+
     end
 
     class Cons
