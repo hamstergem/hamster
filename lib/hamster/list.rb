@@ -28,21 +28,17 @@ module Hamster
 
     class Cons
 
-      def initialize(head = nil, tail = self)
+      def initialize(head, tail)
         @head = head
         @tail = tail
       end
 
       def empty?
-        @tail.equal?(self)
+        false
       end
 
       def size
-        if empty?
-          0
-        else
-          @tail.size + 1
-        end
+        @tail.size + 1
       end
 
       def head
