@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::Set do
 
-  describe ".[]" do
+  describe ".set" do
 
     before do
       @set = Hamster.set("A", "B", "C")
