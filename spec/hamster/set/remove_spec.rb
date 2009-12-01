@@ -5,7 +5,7 @@ describe Hamster::Set do
   describe "#remove" do
 
     before do
-      @original = Hamster::Set["A", "B", "C"]
+      @original = Hamster::set("A", "B", "C")
     end
 
     describe "with an existing value" do
@@ -15,11 +15,11 @@ describe Hamster::Set do
       end
 
       it "preserves the original" do
-        @original.should == Hamster::Set["A", "B", "C"]
+        @original.should == Hamster::set("A", "B", "C")
       end
 
       it "returns a copy with the remaining of values" do
-        @result.should == Hamster::Set["A", "C"]
+        @result.should == Hamster::set("A", "C")
       end
 
     end
@@ -31,7 +31,7 @@ describe Hamster::Set do
       end
 
       it "preserves the original values" do
-        @original.should == Hamster::Set["A", "B", "C"]
+        @original.should == Hamster::set("A", "B", "C")
       end
 
       it "returns self" do

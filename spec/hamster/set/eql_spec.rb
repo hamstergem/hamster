@@ -19,7 +19,7 @@ describe Hamster::Set do
       ].each do |a, b, result|
 
         it "returns #{result} for #{a.inspect} and #{b.inspect}" do
-          Hamster::Set[*a].send(method, Hamster::Set[*b]).should == result
+          Hamster::set(*a).send(method, Hamster::set(*b)).should == result
         end
 
       end

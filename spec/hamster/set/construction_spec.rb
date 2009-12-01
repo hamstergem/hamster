@@ -5,7 +5,7 @@ describe Hamster::Set do
   describe ".[]" do
 
     before do
-      @set = Hamster::Set["A", "B", "C"]
+      @set = Hamster::set("A", "B", "C")
     end
 
     it "is equivalent to repeatedly using #add" do

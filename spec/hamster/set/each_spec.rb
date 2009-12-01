@@ -6,7 +6,7 @@ describe Hamster::Set do
   describe "#each" do
 
     before do
-      @set = Hamster::Set["A", "B", "C"]
+      @set = Hamster::set("A", "B", "C")
     end
 
     describe "with a block (internal iteration)" do

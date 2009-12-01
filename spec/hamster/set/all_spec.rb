@@ -7,7 +7,7 @@ describe Hamster::Set do
     describe "when empty" do
 
       before do
-        @set = Hamster::Set[]
+        @set = Hamster::set
       end
 
       it "with a block returns true" do
@@ -25,7 +25,7 @@ describe Hamster::Set do
       describe "with a block" do
 
         before do
-          @set = Hamster::Set["A", "B", "C"]
+          @set = Hamster::set("A", "B", "C")
         end
 
         it "returns true if the block always returns true" do
@@ -41,13 +41,13 @@ describe Hamster::Set do
       describe "with no block" do
 
         it "returns true if all values are truthy" do
-          Hamster::Set[true, "A"].all?.should be_true
+          Hamster::set(true, "A").all?.should be_true
         end
 
         [nil, false].each do |value|
 
           it "returns false if any value is #{value.inspect}" do
-            Hamster::Set[value, true, "A"].all?.should be_false
+            Hamster::set(value, true, "A").all?.should be_false
           end
 
         end
