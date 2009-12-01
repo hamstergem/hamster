@@ -5,7 +5,7 @@ describe Hamster::Hash do
   describe "#reject" do
 
     before do
-      @original = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
+      @original = Hamster::hash("A" => "aye", "B" => "bee", "C" => "see")
     end
 
     describe "when nothing matches" do
@@ -29,11 +29,11 @@ describe Hamster::Hash do
         end
 
         it "preserves the original" do
-          @original.should == Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
+          @original.should == Hamster::hash("A" => "aye", "B" => "bee", "C" => "see")
         end
 
         it "returns a set with the matching values" do
-          @result.should == Hamster::Hash["B" => "bee", "C" => "see"]
+          @result.should == Hamster::hash("B" => "bee", "C" => "see")
         end
 
       end
@@ -45,7 +45,7 @@ describe Hamster::Hash do
         end
 
         it "returns an enumerator over the values" do
-          Hamster::Hash[@enumerator.to_a].should == Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
+          Hamster::hash(@enumerator.to_a).should == Hamster::hash("A" => "aye", "B" => "bee", "C" => "see")
         end
 
       end

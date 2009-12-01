@@ -11,7 +11,7 @@ describe Hamster::Hash do
     ].each do |pairs, result|
 
       it "returns #{result} for #{pairs.inspect}" do
-        Hamster::Hash[*pairs].empty?.should == result
+        Hamster::hash(*pairs).empty?.should == result
       end
 
     end

@@ -19,7 +19,7 @@ describe Hamster::Hash do
       ].each do |a, b, result|
 
         it "returns #{result} for #{a.inspect} and #{b.inspect}" do
-          Hamster::Hash[*a].send(method, Hamster::Hash[*b]).should == result
+          Hamster::hash(*a).send(method, Hamster::hash(*b)).should == result
         end
 
       end

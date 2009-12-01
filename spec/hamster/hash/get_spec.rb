@@ -7,7 +7,7 @@ describe Hamster::Hash do
     describe "##{method}" do
 
       before do
-        @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"]
+        @hash = Hamster::hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
       end
 
       [

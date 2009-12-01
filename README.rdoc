@@ -8,7 +8,7 @@ Persistent data structures have a really neat property: very efficient copy-on-w
 
   require 'hamster'
 
-  hash = Hamster::Hash[]
+  hash = Hamster::hash
 
   hash.put("Name", "Simon")
   hash.has_key?("Name")     # => false
@@ -20,8 +20,8 @@ Whoops! Remember, each call to <tt>#put</tt> creates an efficient copy containin
 
   require 'hamster'
 
-  original = Hamster::Hash[]
-  copy = hash.put("Name", "Simon")
+  original = Hamster::hash
+  copy = original.put("Name", "Simon")
 
   original.get("Name")             # => nil
   copy.get("Name")                 # => "Simon"
@@ -30,8 +30,8 @@ The same goes for <tt>#remove</tt>:
 
   require 'hamster'
 
-  original = Hamster::Hash[]
-  original = hash.put("Name", "Simon")
+  original = Hamster::hash
+  original = original.put("Name", "Simon")
   copy = hash.remove("Name")
 
   original.get("Name")  # => Simon
@@ -47,7 +47,7 @@ There's a potential performance hit when compared with MRI's built-in, native, h
 
   require 'hamster'
 
-  hash = Hamster::Hash[]
+  hash = Hamster::hash
   (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
   (1..10000).each { |i| hash.get(i) }  # => 0.008s
 
@@ -67,7 +67,7 @@ A more realistic comparison might look like:
 
   require 'hamster'
 
-  hash = Hamster::Hash[]
+  hash = Hamster::hash
   (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
   (1..10000).each { |i| hash.get(i) }  # => 0.008s
 

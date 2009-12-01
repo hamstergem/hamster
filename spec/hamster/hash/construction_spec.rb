@@ -7,7 +7,7 @@ describe Hamster::Hash do
     describe "with nothing" do
 
       before do
-        @hash = Hamster::Hash[]
+        @hash = Hamster::hash
       end
 
       it "returns an empty hash" do
@@ -19,11 +19,11 @@ describe Hamster::Hash do
     describe "with an implicit hash" do
 
       before do
-        @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
+        @hash = Hamster::hash("A" => "aye", "B" => "bee", "C" => "see")
       end
 
       it "is equivalent to repeatedly using #put" do
-        @hash.should == Hamster::Hash[].put("A", "aye").put("B", "bee").put("C", "see")
+        @hash.should == Hamster::hash.put("A", "aye").put("B", "bee").put("C", "see")
       end
 
     end

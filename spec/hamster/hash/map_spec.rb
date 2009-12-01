@@ -9,7 +9,7 @@ describe Hamster::Hash do
       describe "when empty" do
 
         before do
-          @original = Hamster::Hash[]
+          @original = Hamster::hash
           @mapped = @original.send(method) {}
         end
 
@@ -22,7 +22,7 @@ describe Hamster::Hash do
       describe "when not empty" do
 
         before do
-          @original = Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
+          @original = Hamster::hash("A" => "aye", "B"  => "bee", "C" => "see")
         end
 
         describe "with a block" do
@@ -32,11 +32,11 @@ describe Hamster::Hash do
           end
 
           it "preserves the original values" do
-            @original.should == Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
+            @original.should == Hamster::hash("A" => "aye", "B"  => "bee", "C" => "see")
           end
 
           it "returns a new hash with the mapped values" do
-            @mapped.should == Hamster::Hash["a" => "AYE", "b"  => "BEE", "c" => "SEE"]
+            @mapped.should == Hamster::hash("a" => "AYE", "b"  => "BEE", "c" => "SEE")
           end
 
         end
@@ -48,11 +48,11 @@ describe Hamster::Hash do
           end
 
           it "preserves the original values" do
-            @original.should == Hamster::Hash["A" => "aye", "B"  => "bee", "C" => "see"]
+            @original.should == Hamster::hash("A" => "aye", "B"  => "bee", "C" => "see")
           end
 
           it "returns an enumerator over the key value pairs" do
-            Hamster::Hash[@enumerator.to_a].should == @original
+            Hamster::hash(@enumerator.to_a).should == @original
           end
 
         end

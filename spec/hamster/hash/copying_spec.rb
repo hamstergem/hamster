@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Hamster::Hash do
 
   before do
-    @hash = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
+    @hash = Hamster::hash("A" => "aye", "B" => "bee", "C" => "see")
   end
 
   [:dup, :clone].each do |method|
