@@ -6,7 +6,7 @@ module Hamster
 
   class Stack
 
-    def initialize(list = List.new)
+    def initialize(list = Hamster.list)
       @list = list
     end
 
