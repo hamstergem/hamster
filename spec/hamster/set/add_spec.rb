@@ -7,7 +7,7 @@ describe Hamster::Set do
     describe "##{method}" do
 
       before do
-        @original = Hamster::set("A", "B", "C")
+        @original = Hamster.set("A", "B", "C")
       end
 
       describe "with a unique value" do
@@ -17,11 +17,11 @@ describe Hamster::Set do
         end
 
         it "preserves the original" do
-          @original.should == Hamster::set("A", "B", "C")
+          @original.should == Hamster.set("A", "B", "C")
         end
 
         it "returns a copy with the superset of values" do
-          @result.should == Hamster::set("A", "B", "C", "D")
+          @result.should == Hamster.set("A", "B", "C", "D")
         end
 
       end
@@ -33,7 +33,7 @@ describe Hamster::Set do
         end
 
         it "preserves the original values" do
-          @original.should == Hamster::set("A", "B", "C")
+          @original.should == Hamster.set("A", "B", "C")
         end
 
         it "returns self" do

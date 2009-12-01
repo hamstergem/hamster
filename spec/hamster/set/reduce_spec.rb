@@ -9,7 +9,7 @@ describe Hamster::Set do
       describe "when empty" do
 
         before do
-          @original = Hamster::set
+          @original = Hamster.set
           @result = @original.send(method, "ABC") {}
         end
 
@@ -22,7 +22,7 @@ describe Hamster::Set do
       describe "when not empty" do
 
         before do
-          @original = Hamster::set("A", "B", "C")
+          @original = Hamster.set("A", "B", "C")
         end
 
         describe "with a block" do

@@ -5,7 +5,7 @@ describe Hamster::Stack do
   describe "#eql?" do
 
     before do
-      @stack = Hamster::stack.push("A").push("B").push("C")
+      @stack = Hamster.stack.push("A").push("B").push("C")
     end
 
     it "is true for the same instance" do
@@ -13,15 +13,15 @@ describe Hamster::Stack do
     end
 
     it "is true for two instances with the same sequence of values" do
-      @stack.should eql(Hamster::stack.push("A").push("B").push("C"))
+      @stack.should eql(Hamster.stack.push("A").push("B").push("C"))
     end
 
     it "is false for two instances with the difference sequence of values" do
-      @stack.should_not eql(Hamster::stack.push("A").push("C").push("B"))
+      @stack.should_not eql(Hamster.stack.push("A").push("C").push("B"))
     end
 
     it "is false for two instances with the similar but differently sized sequence of values" do
-      @stack.should_not eql(Hamster::stack.push("A").push("B"))
+      @stack.should_not eql(Hamster.stack.push("A").push("B"))
     end
 
   end

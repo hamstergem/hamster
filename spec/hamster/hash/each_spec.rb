@@ -5,7 +5,7 @@ describe Hamster::Hash do
   describe "#each" do
 
     before do
-      @hash = Hamster::hash("A" => "aye", "B" => "bee", "C" => "see")
+      @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
     end
 
     describe "with a block (internal iteration)" do

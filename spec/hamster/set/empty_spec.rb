@@ -11,7 +11,7 @@ describe Hamster::Set do
     ].each do |values, result|
 
       it "returns #{result} for #{values.inspect}" do
-        Hamster::set(*values).empty?.should == result
+        Hamster.set(*values).empty?.should == result
       end
 
     end

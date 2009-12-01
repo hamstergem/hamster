@@ -7,7 +7,7 @@ describe Hamster::Set do
     describe "##{method}" do
 
       before do
-        @set = Hamster::set("A", "B", "C", nil)
+        @set = Hamster.set("A", "B", "C", nil)
       end
 
       ["A", "B", "C", nil].each do |value|

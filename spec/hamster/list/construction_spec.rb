@@ -1,15 +1,39 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Hamster::List do
+describe Hamster do
 
-  describe ".[]" do
+  describe ".list" do
 
-    before do
-      @list = Hamster::list("A", "B", "C")
+    describe "with no arguments" do
+
+      before do
+        @list = Hamster.list
+      end
+
+      it "always returns the same instance" do
+        @list.should equal(Hamster.list)
+      end
+
+      it "returns an empty list" do
+        @list.should be_empty
+      end
+
     end
 
-    it "is equivalent to repeatedly using #cons" do
-      @list.should == Hamster::List.new.cons("C").cons("B").cons("A")
+    describe "with a number of items" do
+
+      before do
+        @list = Hamster.list("A", "B", "C")
+      end
+
+      it "always returns a different instance" do
+        @list.should_not equal(Hamster.list("A", "B", "C"))
+      end
+
+      it "is the same as repeatedly using #cons" do
+        @list.should eql(Hamster.list.cons("C").cons("B").cons("A"))
+      end
+
     end
 
   end

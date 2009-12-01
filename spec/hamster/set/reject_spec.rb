@@ -5,7 +5,7 @@ describe Hamster::Set do
   describe "#reject" do
 
     before do
-      @original = Hamster::set("A", "B", "C")
+      @original = Hamster.set("A", "B", "C")
     end
 
     describe "when nothing matches" do
@@ -29,11 +29,11 @@ describe Hamster::Set do
         end
 
         it "preserves the original" do
-          @original.should == Hamster::set("A", "B", "C")
+          @original.should == Hamster.set("A", "B", "C")
         end
 
         it "returns a set with the matching values" do
-          @result.should == Hamster::set("B", "C")
+          @result.should == Hamster.set("B", "C")
         end
 
       end
@@ -45,7 +45,7 @@ describe Hamster::Set do
         end
 
         it "returns an enumerator over the values" do
-          Hamster::set(*@enumerator.to_a).should == Hamster::set("A", "B", "C")
+          Hamster.set(*@enumerator.to_a).should == Hamster.set("A", "B", "C")
         end
 
       end

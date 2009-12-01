@@ -4,13 +4,16 @@ describe Hamster::List do
 
   describe "#empty?" do
 
-    it "initially returns true" do
-      Hamster::List.new.should be_empty
-    end
+    [
+      [[], true],
+      [["A"], false],
+      [["A", "B", "C"], false],
+    ].each do |values, result|
 
-    it "returns false once items have been added" do
-      list = Hamster::List.new.cons("A")
-      list.should_not be_empty
+      it "returns #{result} for #{values.inspect}" do
+        Hamster.list(*values).empty?.should == result
+      end
+
     end
 
   end

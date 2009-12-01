@@ -7,7 +7,7 @@ describe Hamster::Hash do
     describe "when empty" do
 
       before do
-        @hash = Hamster::hash
+        @hash = Hamster.hash
       end
 
       it "with a block returns true" do
@@ -23,7 +23,7 @@ describe Hamster::Hash do
     describe "when not empty" do
 
       before do
-        @hash = Hamster::hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
+        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
       end
 
       describe "with a block" do

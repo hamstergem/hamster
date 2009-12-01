@@ -7,7 +7,7 @@ describe Hamster::Hash do
     describe "#has_key?" do
 
       before do
-        @hash = Hamster::hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
+        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
       end
 
       ["A", "B", "C", nil].each do |key|
