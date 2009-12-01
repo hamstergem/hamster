@@ -1,5 +1,9 @@
 module Hamster
 
+  def self.stack
+    Stack.new
+  end
+
   class Stack
 
     def initialize(list = List.new)

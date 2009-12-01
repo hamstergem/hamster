@@ -5,7 +5,7 @@ describe Hamster::Stack do
   describe "#push" do
 
     before do
-      @original = Hamster::Stack.new.push("A")
+      @original = Hamster::stack.push("A")
       @result = @original.push("B")
     end
 
