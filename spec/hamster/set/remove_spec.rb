@@ -18,7 +18,7 @@ describe Hamster::Set do
         @original.should == Hamster::Set["A", "B", "C"]
       end
 
-      it "returns a copy with the subset of values" do
+      it "returns a copy with the remaining of values" do
         @result.should == Hamster::Set["A", "C"]
       end
 

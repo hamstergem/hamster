@@ -1,3 +1,4 @@
+* Alias Hash#size as #length
 * Alias Set#size as #length
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
@@ -6,9 +7,7 @@
 * Implement Set#subset?
 * Implement Set#superset?
 * Implement Set#^ as equivalent to ((set | enum) - (set & enum))
-* Cleanup specs for Hash#remove
 * Implement Hash#merge
-* Alias Hash#size as #length
 * Cleanup List specs
 * Cleanup Stack specs
 * Work out what we can extract into common "Enumerable-like" code.
