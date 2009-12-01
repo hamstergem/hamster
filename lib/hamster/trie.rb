@@ -38,7 +38,7 @@ module Hamster
       memo
     end
 
-    def select
+    def filter
       reduce(self) { |trie, entry| yield(entry) ? trie : trie.remove(entry.key) }
     end
 

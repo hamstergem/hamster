@@ -69,15 +69,16 @@ module Hamster
     end
     alias_method :inject, :reduce
 
-    def select
+    def filter
       block_given? or return enum_for(__method__)
-      trie = @trie.select { |entry| yield(entry.key, entry.value) }
+      trie = @trie.filter { |entry| yield(entry.key, entry.value) }
       if !trie.equal?(@trie)
         self.class.new(trie)
       else
         self
       end
     end
+    alias_method :select, :filter
 
     def reject
       block_given? or return enum_for(__method__)
