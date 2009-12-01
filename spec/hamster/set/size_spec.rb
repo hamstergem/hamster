@@ -6,10 +6,6 @@ describe Hamster::Set do
 
     describe "##{method}" do
 
-      it "returns 0 for the empty set" do
-        Hamster.set.send(method).should == 0
-      end
-
       [
         [[], 0],
         [["A"], 1],
