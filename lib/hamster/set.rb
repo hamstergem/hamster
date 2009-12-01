@@ -32,7 +32,7 @@ module Hamster
     alias_method :<<, :add
 
     def remove(key)
-      trie = @trie.remove(item)
+      trie = @trie.remove(key)
       if !trie.equal?(@trie)
         self.class.new(trie)
       else

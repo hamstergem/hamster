@@ -1,4 +1,3 @@
-* Add specs for Set#remove
 * Alias Set#size as #length
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
