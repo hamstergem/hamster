@@ -19,6 +19,7 @@ module Hamster
       def size
         0
       end
+      alias_method :length, :size
 
       def cons(item)
         Cons.new(item, self)
@@ -40,6 +41,7 @@ module Hamster
       def size
         @tail.size + 1
       end
+      alias_method :length, :size
 
       def head
         @head
