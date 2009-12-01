@@ -2,100 +2,44 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::Hash do
 
-  describe "#put" do
+  [:put, :[]=].each do |method|
 
-    describe "with a key/value pair that already exists" do
-
-      before do
-        @original = Hamster::Hash.new.put("A", "aye").put("B", "bee")
-        @copy = @original.put("A", "yes")
-      end
-
-      it "returns a modified copy" do
-        @copy.should_not equal(@original)
-      end
-
-      describe "the original" do
-
-        it "still has the original key/value pairs" do
-          @original.get("A").should == "aye"
-          @original.get("B").should == "bee"
-        end
-
-        it "still has the original size" do
-          @original.size.should == 2
-        end
-
-      end
-
-      describe "the modified copy" do
-
-        it "has the new key/value pairs" do
-          @copy.get("A").should == "yes"
-          @copy.get("B").should == "bee"
-        end
-
-        it "has the original size" do
-          @copy.size == 2
-        end
-
-      end
-
-    end
-
-    describe "with a key/value pair that doesn't exist" do
+    describe "##{method}" do
 
       before do
-        @original = Hamster::Hash.new.put("A", "aye")
-        @copy = @original.put("B", "bee")
+        @original = Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
       end
 
-      it "returns a modified copy" do
-        @copy.should_not equal(@original)
-      end
+      describe "with a unique key" do
 
-      describe "the original" do
-
-        it "still has the original key/value pairs" do
-          @original.get("A").should == "aye"
+        before do
+          @result = @original.send(method, "D", "dee")
         end
 
-        it "doesn't contain the new key/value pair" do
-          @original.has_key?("B").should be_false
+        it "preserves the original" do
+          @original.should == Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
         end
 
-        it "still has the original size" do
-          @original.size.should == 1
+        it "returns a copy with the superset of key/value pairs" do
+          @result.should == Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see", "D" => "dee"]
         end
 
       end
 
-      describe "the modified copy" do
+      describe "with a duplicate key" do
 
-        it "has the original key/value pairs" do
-          @copy.get("A").should == "aye"
+        before do
+          @result = @original.send(method, "C", "sea")
         end
 
-        it "has the new key/value pair" do
-          @copy.get("B").should == "bee"
+        it "preserves the original" do
+          @original.should == Hamster::Hash["A" => "aye", "B" => "bee", "C" => "see"]
         end
 
-        it "size is increased by one" do
-          @copy.size.should == 2
+        it "returns a copy with the superset of key/value pairs" do
+          @result.should == Hamster::Hash["A" => "aye", "B" => "bee", "C" => "sea"]
         end
 
-      end
-
-    end
-
-    describe "with a nil key" do
-
-      before do
-        @hash = Hamster::Hash.new.put(nil, "NIL")
-      end
-
-      it "can locate the key/value pair" do
-        @hash.get(nil).should == "NIL"
       end
 
     end

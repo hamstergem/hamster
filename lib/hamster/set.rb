@@ -29,6 +29,7 @@ module Hamster
         self.class.new(@trie.put(item, nil))
       end
     end
+    alias_method :<<, :add
 
     def remove(key)
       trie = @trie.remove(item)

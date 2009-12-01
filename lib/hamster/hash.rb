@@ -33,6 +33,7 @@ module Hamster
     def put(key, value)
       self.class.new(@trie.put(key, value))
     end
+    alias_method :[]=, :put
 
     def remove(key)
       trie = @trie.remove(key)

@@ -1,5 +1,4 @@
-* Add specs for Set#add and Set#remove
-* Alias Set#add as #<<
+* Add specs for Set#remove
 * Alias Set#size as #length
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
@@ -9,8 +8,7 @@
 * Implement Set#superset?
 * Implement Set#^ as equivalent to ((set | enum) - (set & enum))
 * Alias Set#include? as Set#member?
-* Cleanup specs for Hash#put and Hash#remove
-* Alias Hash#put as #[]=
+* Cleanup specs for Hash#remove
 * Implement Hash#merge
 * Alias Hash#has_key? as #key? and #include? and #member?
 * Alias Hash#size as #length
