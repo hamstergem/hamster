@@ -10,16 +10,20 @@ describe Hamster::List do
       ["A", "B", "C"],
     ].each do |values|
 
-      list = Hamster.list(*values)
+      describe "on #{values.inspect}" do
 
-      it "iterates over the items in order for #{values.inspect}" do
-        items = []
-        list.each { |value| items << value }
-        items.should == values
-      end
+        list = Hamster.list(*values)
 
-      it "returns self for #{values.inspect}" do
-        list.each {}.should == list
+        it "iterates over the items in order" do
+          items = []
+          list.each { |value| items << value }
+          items.should == values
+        end
+
+        it "returns self" do
+          list.each {}.should == list
+        end
+
       end
 
     end

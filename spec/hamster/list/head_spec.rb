@@ -10,8 +10,14 @@ describe Hamster::List do
       [["A", "B", "C"], "A"],
     ].each do |values, result|
 
-      it "returns #{result} for #{values.inspect}" do
-        Hamster.list(*values).head.should == result
+      describe "on #{values.inspect}" do
+
+        list = Hamster.list(*values)
+
+        it "returns #{result}" do
+          list.head.should == result
+        end
+
       end
 
     end

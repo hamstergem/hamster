@@ -6,10 +6,6 @@ describe Hamster::List do
 
     describe "##{method}" do
 
-      it "returns true for the empty list" do
-        Hamster.list.should eql(Hamster.list)
-      end
-
       [
         [[], [], true],
         [["A"], [], false],
@@ -22,8 +18,15 @@ describe Hamster::List do
         [["C", "A", "B"], ["A", "B", "C"], false],
       ].each do |a, b, result|
 
-        it "returns #{result} for #{a.inspect} and #{b.inspect}" do
-          Hamster.list(*a).send(method, Hamster.list(*b)).should == result
+        describe "on #{a.inspect} and #{b.inspect}" do
+
+          a = Hamster.list(*a)
+          b = Hamster.list(*b)
+
+          it "returns #{result}" do
+            a.send(method, b).should == result
+          end
+
         end
 
       end
