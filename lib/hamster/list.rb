@@ -21,6 +21,10 @@ module Hamster
       end
       alias_method :length, :size
 
+      def head
+        nil
+      end
+
       def cons(item)
         Cons.new(item, self)
       end
