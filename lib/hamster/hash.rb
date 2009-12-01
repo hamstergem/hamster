@@ -21,6 +21,9 @@ module Hamster
     def has_key?(key)
       @trie.has_key?(key)
     end
+    alias_method :key?, :has_key?
+    alias_method :include?, :has_key?
+    alias_method :member?, :has_key?
 
     def get(key)
       entry = @trie.get(key)

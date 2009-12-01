@@ -8,7 +8,6 @@
 * Implement Set#^ as equivalent to ((set | enum) - (set & enum))
 * Cleanup specs for Hash#remove
 * Implement Hash#merge
-* Alias Hash#has_key? as #key? and #include? and #member?
 * Alias Hash#size as #length
 * Cleanup List specs
 * Cleanup Stack specs
