@@ -16,6 +16,10 @@ module Hamster
         true
       end
 
+      def size
+        0
+      end
+
       def cons(item)
         Cons.new(item, self)
       end
