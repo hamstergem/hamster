@@ -10,13 +10,14 @@ module Hamster
       @trie = trie
     end
 
-    def size
-      @trie.size
-    end
-
     def empty?
       @trie.empty?
     end
+
+    def size
+      @trie.size
+    end
+    alias_method :length, :size
 
     def include?(item)
       @trie.has_key?(item)

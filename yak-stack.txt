@@ -1,5 +1,4 @@
 * Alias Hash#size as #length
-* Alias Set#size as #length
 * Cleanup List specs
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
