@@ -25,6 +25,10 @@ module Hamster
         nil
       end
 
+      def tail
+        self
+      end
+
       def cons(item)
         Cons.new(item, self)
       end
