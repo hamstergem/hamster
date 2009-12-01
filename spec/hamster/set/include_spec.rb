@@ -2,22 +2,26 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::Set do
 
-  describe "#include?" do
+  [:include?, :member?].each do |method|
 
-    before do
-      @set = Hamster::Set["A", "B", "C", nil]
-    end
+    describe "##{method}" do
 
-    ["A", "B", "C", nil].each do |value|
-
-      it "returns true for an existing value (#{value.inspect})" do
-        @set.include?(value).should be_true
+      before do
+        @set = Hamster::Set["A", "B", "C", nil]
       end
 
-    end
+      ["A", "B", "C", nil].each do |value|
 
-    it "returns false for a non-existing value" do
-      @set.include?("D").should be_false
+        it "returns true for an existing value (#{value.inspect})" do
+          @set.send(method, value).should be_true
+        end
+
+      end
+
+      it "returns false for a non-existing value" do
+        @set.send(method, "D").should be_false
+      end
+
     end
 
   end
