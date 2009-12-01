@@ -20,16 +20,16 @@ describe Hamster::List do
     describe "when not empty" do
 
       before do
-        @original = Hamster::List["A", "B", "C"]
+        @original = Hamster::list("A", "B", "C")
         @mapped = @original.map { |item| item.downcase }
       end
 
       it "preserves the original values" do
-        @original.should == Hamster::List["A", "B", "C"]
+        @original.should == Hamster::list("A", "B", "C")
       end
 
       it "returns a new list with the mapped values" do
-        @mapped.should == Hamster::List["a", "b", "c"]
+        @mapped.should == Hamster::list("a", "b", "c")
       end
 
     end

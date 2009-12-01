@@ -11,4 +11,4 @@
 * Cleanup List specs
 * Cleanup Stack specs
 * Work out what we can extract into common "Enumerable-like" code.
-* Support an infinite list. Eg Hamster::List[] { a_block }
+* Support an infinite list. Eg Hamster::list { a_block }

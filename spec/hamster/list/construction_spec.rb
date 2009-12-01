@@ -5,7 +5,7 @@ describe Hamster::List do
   describe ".[]" do
 
     before do
-      @list = Hamster::List["A", "B", "C"]
+      @list = Hamster::list("A", "B", "C")
     end
 
     it "is equivalent to repeatedly using #cons" do

@@ -15,7 +15,7 @@ describe Hamster::List do
     describe "with values" do
 
       before do
-        @list = Hamster::List["A", "B", "C"]
+        @list = Hamster::list("A", "B", "C")
         @result = @list.reduce(0) { |memo, item| memo + 1 }
       end
 
