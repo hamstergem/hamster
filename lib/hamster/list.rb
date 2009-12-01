@@ -33,6 +33,10 @@ module Hamster
         Cons.new(item, self)
       end
 
+      def each
+        self
+      end
+
     end
 
     class Cons
@@ -64,11 +68,8 @@ module Hamster
       end
 
       def each
-        block_given? or return enum_for(__method__)
-        unless empty?
-          yield(@head)
-          @tail.each { |item| yield(item) }
-        end
+        yield(@head)
+        @tail.each { |item| yield(item) }
         self
       end
 
