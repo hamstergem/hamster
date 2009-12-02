@@ -41,6 +41,10 @@ module Hamster
         self
       end
 
+      def reduce(memo)
+        memo
+      end
+
       def dup
         self
       end
@@ -82,6 +86,14 @@ module Hamster
         self
       end
 
+      def map
+        @tail.map { |item| yield(item) }.cons(yield(@head))
+      end
+
+      def reduce(memo)
+        @tail.reduce(yield(memo, @head)) { |memo, item| yield(memo, item) }
+      end
+
       def eql?(other)
         return true if other.equal?(self)
         return false unless other.is_a?(self.class)
@@ -94,18 +106,6 @@ module Hamster
         self
       end
       alias_method :clone, :dup
-
-      def map
-        @tail.map { |item| yield(item) }.cons(yield(@head))
-      end
-
-      def reduce(memo)
-        if empty?
-          memo
-        else
-          @tail.reduce(yield(memo, @head)) { |memo, item| yield(memo, item) }
-        end
-      end
 
       private
 
