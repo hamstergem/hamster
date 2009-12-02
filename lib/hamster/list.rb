@@ -78,6 +78,10 @@ module Hamster
       end
       alias_method :select, :filter
 
+      def reject
+        self
+      end
+
       def dup
         self
       end
@@ -131,13 +135,13 @@ module Hamster
 
       def filter(&block)
         filtered = @tail.filter(&block)
-        if yield(@head)
-          filtered.cons(@head)
-        else
-          filtered
-        end
+        yield(@head) ? filtered.cons(@head) : filtered
       end
       alias_method :select, :filter
+
+      def reject(&block)
+        filter { |item| !yield(item) }
+      end
 
       def eql?(other)
         return true if other.equal?(self)
