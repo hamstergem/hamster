@@ -1,6 +1,6 @@
 * Create a lazy list that takes a block (Sequence?)
 * Make List enumerable methods lazy based on the lazy list
-* Add List #none?, #any? #all? #one?, #reject, #filter, #take, #count, #drop, #take_while, #drop_while, #partition
+* Add List #none?, #any? #all? #one?, #reject, #take, #count, #drop, #take_while, #drop_while, #partition
 * Support creating lists from an array
 * Alias Hash#size as #length
 * Implement Set#union aliased as #| and #+

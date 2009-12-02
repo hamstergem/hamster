@@ -73,6 +73,11 @@ module Hamster
         memo
       end
 
+      def filter
+        self
+      end
+      alias_method :select, :filter
+
       def dup
         self
       end
@@ -110,19 +115,29 @@ module Hamster
         self.class.new(item, self)
       end
 
-      def each
+      def each(&block)
         yield(@head)
-        @tail.each { |item| yield(item) }
+        @tail.each(&block)
         self
       end
 
-      def map
-        @tail.map { |item| yield(item) }.cons(yield(@head))
+      def map(&block)
+        @tail.map(&block).cons(yield(@head))
       end
 
-      def reduce(memo)
-        @tail.reduce(yield(memo, @head)) { |memo, item| yield(memo, item) }
+      def reduce(memo, &block)
+        @tail.reduce(yield(memo, @head), &block)
       end
+
+      def filter(&block)
+        filtered = @tail.filter(&block)
+        if yield(@head)
+          filtered.cons(@head)
+        else
+          filtered
+        end
+      end
+      alias_method :select, :filter
 
       def eql?(other)
         return true if other.equal?(self)
