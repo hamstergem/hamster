@@ -13,6 +13,7 @@ module Hamster
     def size
       @trie.size
     end
+    alias_method :length, :size
 
     def empty?
       @trie.empty?
