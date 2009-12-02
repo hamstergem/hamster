@@ -1,6 +1,4 @@
-* Create a lazy list that takes a block (Sequence?)
-* Make List enumerable methods lazy based on the lazy list
-* Add List #none?, #any? #all? #one?, #take, #count, #drop, #take_while, #drop_while, #partition
+* Add List #none?, #any? #all? #one?, #take, #count, #drop, #drop_while, #partition
 * Support creating lists from an array
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
@@ -13,3 +11,5 @@
 * Cleanup Stack specs
 * Work out what we can extract into common "Enumerable-like" code.
 * Support an infinite list. Eg Hamster.list { a_block }
+* Create a lazy list that takes a block (Sequence?)
+* Make List enumerable methods lazy based on the lazy list

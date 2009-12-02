@@ -82,6 +82,10 @@ module Hamster
         self
       end
 
+      def take_while
+        self
+      end
+
       def dup
         self
       end
@@ -141,6 +145,10 @@ module Hamster
 
       def reject(&block)
         filter { |item| !yield(item) }
+      end
+
+      def take_while(&block)
+        yield(@head) ? @tail.take_while(&block).cons(@head) : Empty.instance
       end
 
       def eql?(other)
