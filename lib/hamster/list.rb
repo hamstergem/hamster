@@ -127,7 +127,6 @@ module Hamster
       def eql?(other)
         return true if other.equal?(self)
         return false unless other.is_a?(self.class)
-        return true if other.empty? && empty?
         other.head == head && other.tail.eql?(tail)
       end
       alias_method :==, :eql?
