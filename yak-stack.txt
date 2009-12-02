@@ -1,3 +1,4 @@
+* Support creating lists from an array
 * Alias Hash#size as #length
 * Cleanup List specs
 * Implement Set#union aliased as #| and #+

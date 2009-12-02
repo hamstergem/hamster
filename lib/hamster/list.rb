@@ -37,6 +37,10 @@ module Hamster
         self
       end
 
+      def map
+        self
+      end
+
       def dup
         self
       end
@@ -92,11 +96,7 @@ module Hamster
       alias_method :clone, :dup
 
       def map
-        if empty?
-          self
-        else
-          @tail.map { |item| yield(item) }.cons(yield(@head))
-        end
+        @tail.map { |item| yield(item) }.cons(yield(@head))
       end
 
       def reduce(memo)
