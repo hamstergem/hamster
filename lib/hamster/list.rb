@@ -8,9 +8,37 @@ module Hamster
 
   module List
 
+    module Cadr
+
+      private
+
+      def method_missing(name, *args, &block)
+        if name.to_s =~ /^c([ad]+)r$/
+          accessor($1)
+        else
+          super
+        end
+      end
+
+      # Perform compositions of <tt>car</tt> and <tt>cdr</tt> operations. Their names consist of a 'c', followed by at
+      # least one 'a' or 'd', and finally an 'r'. The series of 'a's and 'd's in each function's name is chosen to
+      # identify the series of car and cdr operations that is performed by the function. The order in which the 'a's and
+      # 'd's appear is the inverse of the order in which the corresponding operations are performed.
+      def accessor(sequence)
+        sequence.split(//).reverse!.reduce(self) do |memo, char|
+          case char
+          when "a" then memo.head
+          when "d" then memo.tail
+          end
+        end
+      end
+
+    end
+
     class Empty
 
       include Singleton
+      include Cadr
 
       def empty?
         true
@@ -53,6 +81,8 @@ module Hamster
     end
 
     class Cons
+
+      include Cadr
 
       def initialize(head, tail)
         @head = head
@@ -106,29 +136,6 @@ module Hamster
         self
       end
       alias_method :clone, :dup
-
-      private
-
-      def method_missing(name, *args, &block)
-        if name.to_s =~ /^c([ad]+)r$/
-          accessor($1)
-        else
-          super
-        end
-      end
-
-      # Perform compositions of <tt>car</tt> and <tt>cdr</tt> operations. Their names consist of a 'c', followed by at
-      # least one 'a' or 'd', and finally an 'r'. The series of 'a's and 'd's in each function's name is chosen to
-      # identify the series of car and cdr operations that is performed by the function. The order in which the 'a's and
-      # 'd's appear is the inverse of the order in which the corresponding operations are performed.
-      def accessor(sequence)
-        sequence.split(//).reverse!.inject(self) do |memo, char|
-          case char
-          when "a" then memo.head
-          when "d" then memo.tail
-          end
-        end
-      end
 
     end
 
