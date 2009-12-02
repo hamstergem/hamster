@@ -86,6 +86,10 @@ module Hamster
         self
       end
 
+      def take(number)
+        self
+      end
+
       def dup
         self
       end
@@ -149,6 +153,10 @@ module Hamster
 
       def take_while(&block)
         yield(@head) ? @tail.take_while(&block).cons(@head) : Empty.instance
+      end
+
+      def take(number)
+        number == 0 ? Empty.instance : @tail.take(number - 1).cons(@head)
       end
 
       def eql?(other)

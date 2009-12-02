@@ -1,4 +1,4 @@
-* Add List #none?, #any? #all? #one?, #take, #count, #drop, #drop_while, #partition
+* Add List #none?, #any? #all? #one?, #count, #drop, #drop_while, #partition
 * Support creating lists from an array
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
