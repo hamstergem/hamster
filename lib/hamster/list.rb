@@ -40,15 +40,6 @@ module Hamster
       include Singleton
       include Cadr
 
-      def empty?
-        true
-      end
-
-      def size
-        0
-      end
-      alias_method :length, :size
-
       def head
         nil
       end
@@ -60,6 +51,15 @@ module Hamster
       def cons(item)
         Cons.new(item, self)
       end
+
+      def empty?
+        true
+      end
+
+      def size
+        0
+      end
+      alias_method :length, :size
 
       def each
         block_given? or return self
@@ -88,6 +88,10 @@ module Hamster
         self
       end
 
+      def drop_while
+        self
+      end
+
       def take(number)
         self
       end
@@ -108,15 +112,6 @@ module Hamster
         @tail = tail
       end
 
-      def empty?
-        false
-      end
-
-      def size
-        @tail.size + 1
-      end
-      alias_method :length, :size
-
       def head
         @head
       end
@@ -129,28 +124,37 @@ module Hamster
         self.class.new(item, self)
       end
 
+      def empty?
+        false
+      end
+
+      def size
+        tail.size + 1
+      end
+      alias_method :length, :size
+
       def each(&block)
         block_given? or return self
-        yield(@head)
-        @tail.each(&block)
+        yield(head)
+        tail.each(&block)
         nil
       end
 
       def map(&block)
         block_given? or return self
-        @tail.map(&block).cons(yield(@head))
+        tail.map(&block).cons(yield(head))
       end
 
       def reduce(memo, &block)
         block_given? or return memo
-        @tail.reduce(yield(memo, @head), &block)
+        tail.reduce(yield(memo, head), &block)
       end
       alias_method :inject, :reduce
 
       def filter(&block)
         block_given? or return self
-        filtered = @tail.filter(&block)
-        yield(@head) ? filtered.cons(@head) : filtered
+        filtered = tail.filter(&block)
+        yield(head) ? filtered.cons(head) : filtered
       end
       alias_method :select, :filter
 
@@ -161,11 +165,16 @@ module Hamster
 
       def take_while(&block)
         block_given? or return self
-        yield(@head) ? @tail.take_while(&block).cons(@head) : Empty.instance
+        yield(head) ? tail.take_while(&block).cons(head) : Empty.instance
+      end
+
+      def drop_while(&block)
+        block_given? or return self
+        yield(head) ? tail.drop_while(&block) : self
       end
 
       def take(number)
-        number == 0 ? Empty.instance : @tail.take(number - 1).cons(@head)
+        number == 0 ? Empty.instance : tail.take(number - 1).cons(head)
       end
 
       def eql?(other)
