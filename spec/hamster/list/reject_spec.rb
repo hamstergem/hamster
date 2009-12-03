@@ -16,8 +16,20 @@ describe Hamster::List do
 
         list = Hamster.list(*values)
 
-        it "returns #{result}" do
-          list.reject { |item| item == item.downcase }.should == Hamster.list(*result)
+        describe "with a block" do
+
+          it "returns #{result}" do
+            list.reject { |item| item == item.downcase }.should == Hamster.list(*result)
+          end
+
+        end
+
+        describe "without a block" do
+
+          it "returns self" do
+            list.reject.should == list
+          end
+
         end
 
       end

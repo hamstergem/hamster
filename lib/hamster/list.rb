@@ -73,6 +73,7 @@ module Hamster
       def reduce(memo)
         memo
       end
+      alias_method :inject, :reduce
 
       def filter
         self
@@ -136,24 +137,30 @@ module Hamster
       end
 
       def map(&block)
+        block_given? or return self
         @tail.map(&block).cons(yield(@head))
       end
 
       def reduce(memo, &block)
+        block_given? or return memo
         @tail.reduce(yield(memo, @head), &block)
       end
+      alias_method :inject, :reduce
 
       def filter(&block)
+        block_given? or return self
         filtered = @tail.filter(&block)
         yield(@head) ? filtered.cons(@head) : filtered
       end
       alias_method :select, :filter
 
       def reject(&block)
+        block_given? or return self
         filter { |item| !yield(item) }
       end
 
       def take_while(&block)
+        block_given? or return self
         yield(@head) ? @tail.take_while(&block).cons(@head) : Empty.instance
       end
 
