@@ -100,6 +100,11 @@ module Hamster
         self
       end
 
+      def include?(item)
+        false
+      end
+      alias_method :member?, :include?
+
       def dup
         self
       end
@@ -184,6 +189,11 @@ module Hamster
       def drop(number)
         number == 0 ? self : tail.drop(number - 1)
       end
+
+      def include?(item)
+        item == head || tail.include?(item)
+      end
+      alias_method :member?, :include?
 
       def eql?(other)
         return true if other.equal?(self)
