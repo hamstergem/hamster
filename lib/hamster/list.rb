@@ -62,7 +62,8 @@ module Hamster
       end
 
       def each
-        self
+        block_given? or return self
+        nil
       end
 
       def map
@@ -128,9 +129,10 @@ module Hamster
       end
 
       def each(&block)
+        block_given? or return self
         yield(@head)
         @tail.each(&block)
-        self
+        nil
       end
 
       def map(&block)

@@ -14,14 +14,26 @@ describe Hamster::List do
 
         list = Hamster.list(*values)
 
-        it "iterates over the items in order" do
-          items = []
-          list.each { |value| items << value }
-          items.should == values
+        describe "with a block" do
+
+          it "iterates over the items in order" do
+            items = []
+            list.each { |value| items << value }
+            items.should == values
+          end
+
+          it "returns nil" do
+            list.each {}.should be_nil
+          end
+
         end
 
-        it "returns self" do
-          list.each {}.should == list
+        describe "without a block" do
+
+          it "returns self" do
+            list.each.should == list
+          end
+
         end
 
       end
