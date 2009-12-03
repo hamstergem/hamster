@@ -1,5 +1,5 @@
 * Remove recursion from lists
-* Add List #none?, #any? (#exists?, #exist?), #all? #one?, #count, #drop, #partition, #find (#detect)
+* Add List #none?, #any? (#exists?, #exist?), #all? #one?, #count, #partition, #find (#detect)
 * Support creating lists from an array
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&

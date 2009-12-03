@@ -96,6 +96,10 @@ module Hamster
         self
       end
 
+      def drop(number)
+        self
+      end
+
       def dup
         self
       end
@@ -175,6 +179,10 @@ module Hamster
 
       def take(number)
         number == 0 ? Empty.instance : tail.take(number - 1).cons(head)
+      end
+
+      def drop(number)
+        number == 0 ? self : tail.drop(number - 1)
       end
 
       def eql?(other)
