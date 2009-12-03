@@ -1,3 +1,4 @@
+* Remove recursion from lists
 * Add List #none?, #any? #all? #one?, #count, #drop, #drop_while, #partition
 * Support creating lists from an array
 * Implement Set#union aliased as #| and #+
