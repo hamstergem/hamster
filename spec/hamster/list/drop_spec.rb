@@ -7,6 +7,7 @@ describe Hamster::List do
     [
       [[], 10, []],
       [["A"], 10, []],
+      [["A"], -1, ["A"]],
       [["A", "B", "C"], 0, ["A", "B", "C"]],
       [["A", "B", "C"], 2, ["C"]],
     ].each do |values, number, result|

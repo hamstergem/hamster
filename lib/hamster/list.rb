@@ -71,11 +71,19 @@ module Hamster
     end
 
     def take(number)
-      number == 0 ? EmptyList : tail.take(number - 1).cons(head)
+      if number > 0
+        Stream.new(head) { tail.take(number - 1) }
+      else
+        EmptyList
+      end
     end
 
     def drop(number)
-      number == 0 ? self : tail.drop(number - 1)
+      if number > 0
+        tail.drop(number - 1)
+      else
+        self
+      end
     end
 
     def include?(item)
