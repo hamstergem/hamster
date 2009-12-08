@@ -1,4 +1,3 @@
-require 'hamster/trie'
 require 'hamster/list'
 require 'hamster/stack'
 require 'hamster/set'

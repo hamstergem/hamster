@@ -1,3 +1,5 @@
+require 'hamster/list'
+
 module Hamster
 
   def self.stack

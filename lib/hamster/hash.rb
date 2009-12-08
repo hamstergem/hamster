@@ -1,3 +1,5 @@
+require 'hamster/trie'
+
 module Hamster
 
   def self.hash(pairs = {})
