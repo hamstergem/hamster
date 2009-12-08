@@ -4,6 +4,14 @@ module Hamster
     items.reverse.reduce(EmptyList) { |list, item| list.cons(item) }
   end
 
+  def self.range(from, to)
+    if from > to
+      EmptyList
+    else
+      Stream.new(from) { range(from.succ, to) }
+    end
+  end
+
   module List
 
     def empty?
@@ -67,7 +75,11 @@ module Hamster
 
     def drop_while(&block)
       block_given? or return self
-      yield(head) ? tail.drop_while(&block) : self
+      if yield(head)
+        tail.drop_while(&block)
+      else
+        self
+      end
     end
 
     def take(number)

@@ -31,9 +31,21 @@ describe Hamster do
       end
 
       it "is the same as repeatedly using #cons" do
-        @list.should eql(Hamster.list.cons("C").cons("B").cons("A"))
+        @list.should == Hamster.list.cons("C").cons("B").cons("A")
       end
 
+    end
+
+  end
+
+  describe ".range" do
+
+    before do
+      @range = Hamster.range("A", "D")
+    end
+
+    it "is equivalent to a list with explicit values" do
+      @range.should == Hamster.list("A", "B", "C", "D")
     end
 
   end

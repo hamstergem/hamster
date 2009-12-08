@@ -89,4 +89,21 @@ The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the orig
 
 Well, I could show you one but I'd have to re-write--or at least wrap--most <tt>Hash</tt> methods to make it generic, or at least write some application-specific code that synchronised using a <tt>Mutex</tt> and ... well ... it's hard, I always make mistakes, I always end up with weird edge cases and race conditions so, I'll leave that as an exercise for you :)
 
-== And that, my friends, is why you might want to use one :)
+And that, my friends, is why you might want to use one :)
+
+== So, you mentioned Sets, Lists, and Stacks?
+
+Indeed I did.
+
+=== Lists
+
+list = Hamster.list(1, 2, 3)
+
+list.head    # => 1
+list.tail    # => Hamster.list(2, 3)
+
+=== Stacks
+
+=== Sets
+
+=== Hash
