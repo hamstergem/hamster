@@ -49,7 +49,11 @@ module Hamster
 
     def reject(&block)
       block_given? or return self
-      filter { |item| !yield(item) }
+      if yield(head)
+        tail.reject(&block)
+      else
+        Stream.new(head) { tail.reject(&block) }
+      end
     end
 
     def take_while(&block)

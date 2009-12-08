@@ -22,6 +22,12 @@ describe Hamster::List do
             list.reject { |item| item == item.downcase }.should == Hamster.list(*result)
           end
 
+          it "is lazy" do
+            count = 0
+            list.reject { |item| count += 1; false }
+            count.should <= 1
+          end
+
         end
 
         describe "without a block" do

@@ -26,7 +26,7 @@ describe Hamster::List do
 
             it "is lazy" do
               count = 0
-              list.send(method) { |item| count += 1 }
+              list.send(method) { |item| count += 1; true }
               count.should <= 1
             end
 
