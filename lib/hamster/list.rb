@@ -58,7 +58,11 @@ module Hamster
 
     def take_while(&block)
       block_given? or return self
-      yield(head) ? tail.take_while(&block).cons(head) : EmptyList
+      if yield(head)
+        Stream.new(head) { tail.take_while(&block) }
+      else
+        EmptyList
+      end
     end
 
     def drop_while(&block)

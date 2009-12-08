@@ -20,6 +20,12 @@ describe Hamster::List do
             list.take_while { |item| item < "C" }.should == Hamster.list(*result)
           end
 
+          it "is lazy" do
+            count = 0
+            list.take_while { |item| count += 1; true }
+            count.should <= 1
+          end
+
         end
 
         describe "without a block" do
