@@ -28,7 +28,7 @@ module Hamster
 
     def map(&block)
       block_given? or return self
-      tail.map(&block).cons(yield(head))
+      Stream.new(yield(head)) { tail.map(&block) }
     end
 
     def reduce(memo, &block)
@@ -118,6 +118,23 @@ module Hamster
     def initialize(head, tail)
       @head = head
       @tail = tail
+    end
+
+  end
+
+  class Stream
+
+    include List
+
+    attr_reader :head
+
+    def initialize(head, &tail)
+      @head = head
+      @tail = tail
+    end
+
+    def tail
+      @tail.call
     end
 
   end
