@@ -39,8 +39,11 @@ module Hamster
 
     def filter(&block)
       block_given? or return self
-      filtered = tail.filter(&block)
-      yield(head) ? filtered.cons(head) : filtered
+      if yield(head)
+        Stream.new(head) { tail.filter(&block) }
+      else
+        tail.filter(&block)
+      end
     end
     alias_method :select, :filter
 

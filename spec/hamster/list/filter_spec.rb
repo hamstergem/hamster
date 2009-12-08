@@ -24,6 +24,12 @@ describe Hamster::List do
               list.send(method) { |item| item == item.upcase }.should == Hamster.list(*result)
             end
 
+            it "is lazy" do
+              count = 0
+              list.send(method) { |item| count += 1 }
+              count.should <= 1
+            end
+
           end
 
           describe "without a block" do
