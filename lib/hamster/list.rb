@@ -124,6 +124,10 @@ module Hamster
       reduce([]) { |ary, item| ary << item }
     end
 
+    def inspect
+      to_a.inspect
+    end
+
     private
 
     def method_missing(name, *args, &block)
