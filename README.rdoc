@@ -102,6 +102,13 @@ list = Hamster.list(1, 2, 3)
 list.head    # => 1
 list.tail    # => Hamster.list(2, 3)
 
+def prime?(n)
+  2.upto(Math.sqrt(n).round) { |i| return false  if n % i == 0 }
+  true
+end
+
+Hamster.interval(10000, 1000000).filter { |i| prime?(i) }.take(3)
+
 === Stacks
 
 === Sets
