@@ -38,14 +38,18 @@ describe Hamster do
 
   end
 
-  describe ".range" do
+  [:interval, :range].each do |method|
 
-    before do
-      @range = Hamster.range("A", "D")
-    end
+    describe ".#{method}" do
 
-    it "is equivalent to a list with explicit values" do
-      @range.should == Hamster.list("A", "B", "C", "D")
+      before do
+        @interval = Hamster.send(method, "A", "D")
+      end
+
+      it "is equivalent to a list with explicit values" do
+        @interval.should == Hamster.list("A", "B", "C", "D")
+      end
+
     end
 
   end

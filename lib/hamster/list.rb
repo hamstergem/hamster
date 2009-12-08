@@ -1,15 +1,20 @@
 module Hamster
 
-  def self.list(*items)
-    items.reverse.reduce(EmptyList) { |list, item| list.cons(item) }
-  end
+  class << self
 
-  def self.range(from, to)
-    if from > to
-      EmptyList
-    else
-      Stream.new(from) { range(from.succ, to) }
+    def list(*items)
+      items.reverse.reduce(EmptyList) { |list, item| list.cons(item) }
     end
+
+    def interval(from, to)
+      if from > to
+        EmptyList
+      else
+        Stream.new(from) { interval(from.succ, to) }
+      end
+    end
+    alias_method :range, :interval
+
   end
 
   module List
