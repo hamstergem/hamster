@@ -1,9 +1,7 @@
-require 'singleton'
-
 module Hamster
 
   def self.list(*items)
-    items.reverse.reduce(List::Empty.instance) { |list, item| list.cons(item) }
+    items.reverse.reduce(List::Empty) { |list, item| list.cons(item) }
   end
 
   module List
@@ -35,80 +33,90 @@ module Hamster
 
     end
 
-    class Empty
+    module Empty
 
-      include Singleton
-      include Cadr
+      class << self
 
-      def head
-        nil
+        include Cadr
+
+        def head
+          nil
+        end
+
+        def tail
+          self
+        end
+
+        def cons(item)
+          Cons.new(item, self)
+        end
+
+        def empty?
+          true
+        end
+
+        def size
+          0
+        end
+        alias_method :length, :size
+
+        def each
+          block_given? or return self
+          nil
+        end
+
+        def map
+          self
+        end
+
+        def reduce(memo)
+          memo
+        end
+        alias_method :inject, :reduce
+
+        def filter
+          self
+        end
+        alias_method :select, :filter
+
+        def reject
+          self
+        end
+
+        def take_while
+          self
+        end
+
+        def drop_while
+          self
+        end
+
+        def take(number)
+          self
+        end
+
+        def drop(number)
+          self
+        end
+
+        def include?(item)
+          false
+        end
+        alias_method :member?, :include?
+
+        def eql?(other)
+          return true if other.equal?(self)
+          # return false unless other.is_a?(self.class)
+          other.empty?
+        end
+        alias_method :==, :eql?
+
+        def dup
+          self
+        end
+        alias_method :clone, :dup
+
       end
-
-      def tail
-        self
-      end
-
-      def cons(item)
-        Cons.new(item, self)
-      end
-
-      def empty?
-        true
-      end
-
-      def size
-        0
-      end
-      alias_method :length, :size
-
-      def each
-        block_given? or return self
-        nil
-      end
-
-      def map
-        self
-      end
-
-      def reduce(memo)
-        memo
-      end
-      alias_method :inject, :reduce
-
-      def filter
-        self
-      end
-      alias_method :select, :filter
-
-      def reject
-        self
-      end
-
-      def take_while
-        self
-      end
-
-      def drop_while
-        self
-      end
-
-      def take(number)
-        self
-      end
-
-      def drop(number)
-        self
-      end
-
-      def include?(item)
-        false
-      end
-      alias_method :member?, :include?
-
-      def dup
-        self
-      end
-      alias_method :clone, :dup
 
     end
 
@@ -174,7 +182,7 @@ module Hamster
 
       def take_while(&block)
         block_given? or return self
-        yield(head) ? tail.take_while(&block).cons(head) : Empty.instance
+        yield(head) ? tail.take_while(&block).cons(head) : Empty
       end
 
       def drop_while(&block)
@@ -183,7 +191,7 @@ module Hamster
       end
 
       def take(number)
-        number == 0 ? Empty.instance : tail.take(number - 1).cons(head)
+        number == 0 ? Empty : tail.take(number - 1).cons(head)
       end
 
       def drop(number)
