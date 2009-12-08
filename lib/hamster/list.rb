@@ -120,6 +120,10 @@ module Hamster
     end
     alias_method :clone, :dup
 
+    def to_a
+      reduce([]) { |ary, item| ary << item }
+    end
+
     private
 
     def method_missing(name, *args, &block)
