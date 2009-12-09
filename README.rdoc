@@ -128,6 +128,12 @@ Compare that to the conventional equivalent which needs to calculate all possibl
 
   (10000..1000000).select { |i| prime?(i) }[1, 3]   # => 10s
 
+Besides <tt>Hamster.list</tt> there is <tt>Hamster.interval(from, to)</tt> and <tt>Hamster.stream { a_block }</tt>.
+
+<tt>.interval</tt> (aliased as <tt>.range</tt>) creates a lazy list equivalent to a list containing all the values between <tt>from</tt> and <tt>to</tt> without actually creating a list that big.
+
+<tt>.stream</tt> allows you to creates infinite lists. Each time a new value is required, the supplied block is called.
+
 === Stacks
 
 === Sets
