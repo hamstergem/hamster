@@ -1,4 +1,4 @@
-class Enumerable
+module Enumerable
 
   alias_method :reduce, :inject unless defined?(:reduce)
 
