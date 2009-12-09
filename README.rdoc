@@ -111,7 +111,7 @@ To add to a list you use <tt>#cons</tt>:
   original = Hamster.list(1, 2, 3)
   copy = original.cons(0)           # => Hamster.list(0, 1, 2, 3)
 
-Notice how modifying a list actually returns a new list. That's because Hamster lists immutable. Thankfully, just like Hamster sets and hashes, they're also very efficient at making copies!
+Notice how modifying a list actually returns a new list. That's because Hamster lists are immutable. Thankfully, just like Hamster <tt>Set</tt> and <tt>Hash</tt>, they're also very efficient at making copies!
 
 Lists are, where possible, lazy. That is, they try to defer processing items until absolutely necessary. For example, given a crude function to detect prime numbers:
 
@@ -131,3 +131,11 @@ Compare that to the conventional equivalent which needs to calculate all possibl
 === Stacks
 
 === Sets
+
+== Disclaimer
+
+Hamster started out as a spike to prove a point and has since morphed into something I actually use. My primary concern has been to round out the functionality with good test coverage and clean, readable code.
+
+Performance is pretty good--especially with lazy lists--but there are some things which need to be converted from recursive to iterative due to a lack of Tail-Call-Optimisation in Ruby. It's on the list ;-)
+
+Documentation is sparse but I've tried as best I can to write specs that reads as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
