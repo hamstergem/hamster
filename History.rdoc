@@ -1,3 +1,9 @@
+=== 0.1.12 / 2009-12-10
+
+* List methods are now lazy where feasible
+
+* Now works under Ruby >= 1.8.6
+
 === 0.1.8 / 2009-11-29
 
 * Add convenience constructors: List[], Set[], and Hash[]
