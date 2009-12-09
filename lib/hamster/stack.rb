@@ -3,12 +3,12 @@ require 'hamster/list'
 module Hamster
 
   def self.stack
-    Stack.new
+    EmptyStack
   end
 
   class Stack
 
-    def initialize(list = Hamster.list)
+    def initialize(list)
       @list = list
     end
 
@@ -19,6 +19,7 @@ module Hamster
     def size
       @list.size
     end
+    alias_method :length, :size
 
     def top
       @list.head
@@ -30,15 +31,17 @@ module Hamster
 
     def pop
       list = @list.tail
-      if !list.equal?(@list)
-        self.class.new(list)
+      if list.empty?
+        EmptyStack
       else
-        self
+        self.class.new(list)
       end
     end
 
     def eql?(other)
-      other.is_a?(self.class) && @list.eql?(other.instance_eval{@list})
+      return true if other.equal?(self)
+      return false unless other.class.equal?(self.class)
+      @list.eql?(other.instance_eval{@list})
     end
     alias_method :==, :eql?
 
@@ -48,5 +51,7 @@ module Hamster
     alias_method :clone, :dup
 
   end
+
+  EmptyStack = Stack.new(Hamster.list)
 
 end

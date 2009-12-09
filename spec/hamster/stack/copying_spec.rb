@@ -6,18 +6,14 @@ describe Hamster::Stack do
     @stack = Hamster.stack.push("A").push("B").push("C")
   end
 
-  describe "#dup" do
+  [:dup, :clone].each do |method|
 
-    it "returns self" do
-      @stack.dup.should equal(@stack)
-    end
+    describe "##{method}" do
 
-  end
+      it "returns self" do
+        @stack.send(method).should equal(@stack)
+      end
 
-  describe "#clone" do
-
-    it "returns self" do
-      @stack.clone.should equal(@stack)
     end
 
   end
