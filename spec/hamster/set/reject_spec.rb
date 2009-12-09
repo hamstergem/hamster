@@ -41,11 +41,11 @@ describe Hamster::Set do
       describe "with no block" do
 
         before do
-          @enumerator = @original.reject
+          @result = @original.reject
         end
 
-        it "returns an enumerator over the values" do
-          Hamster.set(*@enumerator.to_a).should == Hamster.set("A", "B", "C")
+        it "returns self" do
+          @result.should equal(@original)
         end
 
       end

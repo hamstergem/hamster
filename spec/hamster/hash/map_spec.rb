@@ -44,15 +44,11 @@ describe Hamster::Hash do
         describe "with no block" do
 
           before do
-            @enumerator = @original.send(method)
+            @result = @original.send(method)
           end
 
-          it "preserves the original values" do
-            @original.should == Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see")
-          end
-
-          it "returns an enumerator over the key value pairs" do
-            Hamster.hash(@enumerator.to_a).should == @original
+          it "returns self" do
+            @result.should equal(@original)
           end
 
         end

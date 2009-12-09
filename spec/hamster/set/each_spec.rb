@@ -23,10 +23,10 @@ describe Hamster::Set do
 
     end
 
-    describe "with no block (external iteration)" do
+    describe "with no block" do
 
-      it "returns an enumerator over all key value pairs" do
-        Set[*@set.each.to_a.flatten].should == Set["A", "B", "C"]
+      it "returns self" do
+        @set.each.should equal(@set)
       end
 
     end

@@ -44,15 +44,11 @@ describe Hamster::Set do
         describe "with no block" do
 
           before do
-            @enumerator = @original.send(method)
+            @result = @original.send(method)
           end
 
-          it "preserves the original values" do
-            @original.should == Hamster.set("A", "B", "C")
-          end
-
-          it "returns an enumerator over the values" do
-            Hamster.set(*@enumerator.to_a).should == @original
+          it "returns self" do
+            @result.should equal(@original)
           end
 
         end

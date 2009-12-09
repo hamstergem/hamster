@@ -22,10 +22,10 @@ describe Hamster::Hash do
 
     end
 
-    describe "with no block (external iteration)" do
+    describe "with no block" do
 
-      it "returns an enumerator over all key/value pairs" do
-        Hash[*@hash.each.to_a.flatten].should == {"A" => "aye", "B" => "bee", "C" => "see"}
+      it "returns self" do
+        @hash.each.should equal(@hash)
       end
 
     end

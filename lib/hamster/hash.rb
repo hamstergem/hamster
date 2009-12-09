@@ -51,13 +51,13 @@ module Hamster
     end
 
     def each
-      block_given? or return enum_for(__method__)
+      block_given? or return self
       @trie.each { |entry| yield(entry.key, entry.value) }
       self
     end
 
     def map
-      block_given? or return enum_for(:each)
+      block_given? or return self
       if empty?
         self
       else
@@ -73,7 +73,7 @@ module Hamster
     alias_method :inject, :reduce
 
     def filter
-      block_given? or return enum_for(__method__)
+      block_given? or return self
       trie = @trie.filter { |entry| yield(entry.key, entry.value) }
       if !trie.equal?(@trie)
         self.class.new(trie)
@@ -84,7 +84,7 @@ module Hamster
     alias_method :select, :filter
 
     def reject
-      block_given? or return enum_for(__method__)
+      block_given? or return self
       select { |key, value| !yield(key, value) }
     end
 
