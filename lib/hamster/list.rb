@@ -6,6 +6,11 @@ module Hamster
       items.reverse.reduce(EmptyList) { |list, item| list.cons(item) }
     end
 
+    def stream(&block)
+      block_given? or return EmptyList
+      Stream.new(yield) { stream(&block) }
+    end
+
     def interval(from, to)
       if from > to
         EmptyList

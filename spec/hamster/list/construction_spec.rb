@@ -38,6 +38,35 @@ describe Hamster do
 
   end
 
+  describe ".stream" do
+
+    describe "with no block" do
+
+      before do
+        @stream = Hamster.stream
+      end
+
+      it "returns an empty list" do
+        @stream.should == Hamster.list
+      end
+
+    end
+
+    describe "with a block" do
+
+      before do
+        count = 0
+        @stream = Hamster.stream { count += 1 }
+      end
+
+      it "repeatedly calls the block" do
+        @stream.take(5).should == Hamster.list(1, 2, 3, 4, 5)
+      end
+
+    end
+
+  end
+
   [:interval, :range].each do |method|
 
     describe ".#{method}" do
