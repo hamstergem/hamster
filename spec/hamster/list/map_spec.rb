@@ -2,36 +2,40 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::List do
 
-  describe "#map" do
+  [:map, :collect].each do |method|
 
-    [
-      [[], []],
-      [["A"], ["a"]],
-      [["A", "B", "C"], ["a", "b", "c"]],
-    ].each do |values, result|
+    describe "##{method}" do
 
-      describe "on #{values.inspect}" do
+      [
+        [[], []],
+        [["A"], ["a"]],
+        [["A", "B", "C"], ["a", "b", "c"]],
+      ].each do |values, result|
 
-        list = Hamster.list(*values)
+        describe "on #{values.inspect}" do
 
-        describe "with a block" do
+          list = Hamster.list(*values)
 
-          it "returns #{result}" do
-            list.map { |item| item.downcase }.should == Hamster.list(*result)
+          describe "with a block" do
+
+            it "returns #{result}" do
+              list.send(method) { |item| item.downcase }.should == Hamster.list(*result)
+            end
+
+            it "is lazy" do
+              count = 0
+              list.send(method) { |item| count += 1 }
+              count.should <= 1
+            end
+
           end
 
-          it "is lazy" do
-            count = 0
-            list.map { |item| count += 1 }
-            count.should <= 1
-          end
+          describe "without a block" do
 
-        end
+            it "returns self" do
+              list.send(method).should == list
+            end
 
-        describe "without a block" do
-
-          it "returns self" do
-            list.map.should == list
           end
 
         end

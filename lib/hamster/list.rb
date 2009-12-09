@@ -48,6 +48,7 @@ module Hamster
       block_given? or return self
       Stream.new(yield(head)) { tail.map(&block) }
     end
+    alias_method :collect, :map
 
     def reduce(memo, &block)
       block_given? or return memo
@@ -219,6 +220,7 @@ module Hamster
       def map
         self
       end
+      alias_method :collect, :map
 
       def reduce(memo)
         memo
