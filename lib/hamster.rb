@@ -1,3 +1,4 @@
+require 'core_ext/array'
 require 'hamster/list'
 require 'hamster/stack'
 require 'hamster/set'
