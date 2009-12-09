@@ -96,6 +96,8 @@ module Hamster
       end
       false
     end
+    alias_method :exist?, :any?
+    alias_method :exists?, :any?
 
     def all?
       if block_given?
