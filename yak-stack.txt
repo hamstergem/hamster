@@ -11,6 +11,3 @@
 * Implement Hash#merge
 * Cleanup Stack specs
 * Work out what we can extract into common "Enumerable-like" code.
-* Support an infinite list. Eg Hamster.list { a_block }
-* Create a lazy list that takes a block (Sequence?)
-* Make List enumerable methods lazy based on the lazy list
