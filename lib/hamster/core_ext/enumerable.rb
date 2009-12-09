@@ -1,5 +1,7 @@
 module Enumerable
 
-  alias_method :reduce, :inject unless defined?(:reduce)
+  def reduce(memo = nil, &block)
+    inject(memo, &block)
+  end unless defined?(:reduce)
 
 end
