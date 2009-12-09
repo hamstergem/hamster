@@ -1,4 +1,3 @@
-require 'hamster/core_ext/enumerable'
 require 'hamster/list'
 require 'hamster/stack'
 require 'hamster/set'

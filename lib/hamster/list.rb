@@ -3,7 +3,7 @@ module Hamster
   class << self
 
     def list(*items)
-      items.reverse.reduce(EmptyList) { |list, item| list.cons(item) }
+      items.reverse.inject(EmptyList) { |list, item| list.cons(item) }
     end
 
     def stream(&block)

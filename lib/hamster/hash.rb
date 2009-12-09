@@ -3,7 +3,7 @@ require 'hamster/trie'
 module Hamster
 
   def self.hash(pairs = {})
-    pairs.reduce(Hash.new) { |hash, pair| hash.put(pair.first, pair.last) }
+    pairs.inject(Hash.new) { |hash, pair| hash.put(pair.first, pair.last) }
   end
 
   class Hash
