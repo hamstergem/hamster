@@ -41,6 +41,8 @@ The same goes for <tt>#remove</tt>:
 
 As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of heap space in the process.
 
+Moreover, because they're immutable, you can pass them around between objects, methods, and functions and never worry about data corruption; no more defensive calls to <tt>collection.dup</tt>!
+
 == OK, that sounds mildly interesting. What's the downside--there's always a downside?
 
 There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of <tt>Hash</tt>. For example:
@@ -89,7 +91,7 @@ The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the orig
 
 Well, I could show you one but I'd have to re-write--or at least wrap--most <tt>Hash</tt> methods to make it generic, or at least write some application-specific code that synchronised using a <tt>Mutex</tt> and ... well ... it's hard, I always make mistakes, I always end up with weird edge cases and race conditions so, I'll leave that as an exercise for you :)
 
-And that, my friends, is why you might want to use one :)
+And don't forget that even if threading isn't a concern for you, the safety provided by immutability is worth it.
 
 == So, you mentioned Sets, Lists, and Stacks?
 
@@ -97,20 +99,35 @@ Indeed I did.
 
 === Lists
 
-list = Hamster.list(1, 2, 3)
+Lists have a head--the value of the item at the head of the list--and a tail--containing the remaining items. For example:
 
-list.head    # => 1
-list.tail    # => Hamster.list(2, 3)
+  list = Hamster.list(1, 2, 3)
 
-def prime?(n)
-  2.upto(Math.sqrt(n).round) { |i| return false  if n % i == 0 }
-  true
-end
+  list.head    # => 1
+  list.tail    # => Hamster.list(2, 3)
 
-Hamster.interval(10000, 1000000).filter { |i| prime?(i) }.take(3)
+To add to a list you use <tt>#cons</tt>:
+
+  original = Hamster.list(1, 2, 3)
+  copy = original.cons(0)           # => Hamster.list(0, 1, 2, 3)
+
+Notice how modifying a list actually returns a new list. That's because Hamster lists immutable. Thankfully, just like Hamster sets and hashes, they're also very efficient at making copies!
+
+Lists are, where possible, lazy. That is, they try to defer processing items until absolutely necessary. For example, given a crude function to detect prime numbers:
+
+  def prime?(n)
+    2.upto(Math.sqrt(n).round) { |i| return false  if n % i == 0 }
+    true
+  end
+
+The following code will only call <tt>#prime?</tt> as many times as necessary to generate the first 3 prime numbers between 10000 and 1000000:
+
+  Hamster.interval(10000, 1000000).filter { |i| prime?(i) }.take(3)    # => 0.0009s
+
+Compare that to the conventional equivalent which needs to calculate all possible values in the range before taking the first 3:
+
+  (10000..1000000).select { |i| prime?(i) }[1, 3]   # => 10s
 
 === Stacks
 
 === Sets
-
-=== Hash
