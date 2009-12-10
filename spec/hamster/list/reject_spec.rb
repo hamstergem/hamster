@@ -7,7 +7,7 @@ describe Hamster::List do
     describe "on a really big list" do
 
       before do
-        @list = Hamster.interval(0, 100000)
+        @list = Hamster.interval(0, 10000)
       end
 
       it "doesn't run out of stack space" do
