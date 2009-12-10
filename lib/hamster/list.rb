@@ -123,6 +123,17 @@ module Hamster
     end
     alias_method :member?, :include?
 
+    def any?
+      if block_given?
+        each { |item| return true if yield(item) }
+      else
+        each { |item| return true if item }
+      end
+      false
+    end
+    alias_method :exist?, :any?
+    alias_method :exists?, :any?
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
