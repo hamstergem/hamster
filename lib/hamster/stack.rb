@@ -28,15 +28,17 @@ module Hamster
     def push(item)
       self.class.new(@list.cons(item))
     end
+    alias_method :<<, :push
 
     def pop
       list = @list.tail
-      if list.empty?
-        EmptyStack
-      else
+      # if list.empty?
+      #   EmptyStack
+      # else
         self.class.new(list)
-      end
+      # end
     end
+    alias_method :>>, :pop
 
     def eql?(other)
       return true if other.equal?(self)
@@ -49,6 +51,10 @@ module Hamster
       self
     end
     alias_method :clone, :dup
+
+    def inspect
+      @list.inspect
+    end
 
   end
 

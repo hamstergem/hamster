@@ -8,14 +8,14 @@ describe Hamster::List do
       [[], []],
       [["A"], []],
       [["A", "B", "C"], ["B", "C"]],
-    ].each do |values, result|
+    ].each do |values, expected|
 
       describe "on #{values.inspect}" do
 
         list = Hamster.list(*values)
 
-        it "returns #{result}" do
-          list.tail.should == Hamster.list(*result)
+        it "returns #{expected}" do
+          list.tail.should == Hamster.list(*expected)
         end
 
       end

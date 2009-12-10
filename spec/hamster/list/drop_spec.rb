@@ -10,14 +10,14 @@ describe Hamster::List do
       [["A"], -1, ["A"]],
       [["A", "B", "C"], 0, ["A", "B", "C"]],
       [["A", "B", "C"], 2, ["C"]],
-    ].each do |values, number, result|
+    ].each do |values, number, expected|
 
       describe "#{number} from #{values.inspect}" do
 
         list = Hamster.list(*values)
 
-        it "returns #{result}" do
-          list.drop(number).should == Hamster.list(*result)
+        it "returns #{expected}" do
+          list.drop(number).should == Hamster.list(*expected)
         end
 
       end

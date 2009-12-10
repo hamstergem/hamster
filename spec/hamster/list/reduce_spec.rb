@@ -10,7 +10,7 @@ describe Hamster::List do
         [[], "@"],
         [["A"], "@a"],
         [["A", "B", "C"], "@abc"],
-      ].each do |values, result|
+      ].each do |values, expected|
 
         describe "on #{values.inspect}" do
 
@@ -18,8 +18,8 @@ describe Hamster::List do
 
           describe "with a block" do
 
-            it "returns #{result.inspect}" do
-              list.send(method, "@") { |memo, item| memo << item.downcase }.should == result
+            it "returns #{expected.inspect}" do
+              list.send(method, "@") { |memo, item| memo << item.downcase }.should == expected
             end
 
           end

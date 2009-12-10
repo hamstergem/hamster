@@ -16,14 +16,14 @@ describe Hamster::List do
         [["A", "B", nil], "B", true],
         [["A", "B", nil], nil, true],
         [["A", "B", nil], "C", false],
-      ].each do |values, item, result|
+      ].each do |values, item, expected|
 
         describe "on #{values.inspect}" do
 
           list = Hamster.list(*values)
 
-          it "returns #{result}" do
-            list.send(method, item).should == result
+          it "returns #{expected}" do
+            list.send(method, item).should == expected
           end
 
         end

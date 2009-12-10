@@ -8,14 +8,14 @@ describe Hamster::Stack do
       [[], true],
       [["A"], false],
       [["A", "B", "C"], false],
-    ].each do |values, result|
+    ].each do |values, expected|
 
       describe "on #{values.inspect}" do
 
         stack = Hamster.stack(*values)
 
-        it "returns #{result}" do
-          stack.empty?.should == result
+        it "returns #{expected}" do
+          stack.empty?.should == expected
         end
 
       end

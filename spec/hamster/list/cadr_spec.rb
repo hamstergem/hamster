@@ -18,14 +18,14 @@ describe Hamster::List do
       [["A", "B", "C"], :cddr, Hamster.list("C")],
       [["A", "B", "C"], :cdddr, Hamster.list],
       [["A", "B", "C"], :cddddr, Hamster.list],
-    ].each do |values, method, result|
+    ].each do |values, method, expected|
 
       describe "on #{values.inspect}" do
 
         list = Hamster.list(*values)
 
-        it "returns #{result}" do
-          list.send(method).should == result
+        it "returns #{expected}" do
+          list.send(method).should == expected
         end
 
       end

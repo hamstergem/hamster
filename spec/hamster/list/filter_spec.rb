@@ -12,7 +12,7 @@ describe Hamster::List do
         [["A", "B", "C"], ["A", "B", "C"]],
         [["A", "b", "C"], ["A", "C"]],
         [["a", "b", "c"], []],
-      ].each do |values, result|
+      ].each do |values, expected|
 
         describe "on #{values.inspect}" do
 
@@ -20,8 +20,8 @@ describe Hamster::List do
 
           describe "with a block" do
 
-            it "returns #{result}" do
-              list.send(method) { |item| item == item.upcase }.should == Hamster.list(*result)
+            it "returns #{expected}" do
+              list.send(method) { |item| item == item.upcase }.should == Hamster.list(*expected)
             end
 
             it "is lazy" do

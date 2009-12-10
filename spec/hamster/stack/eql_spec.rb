@@ -16,15 +16,15 @@ describe Hamster::Stack do
         [["A"], ["A", "B"], false],
         [["A", "B", "C"], ["A", "B", "C"], true],
         [["C", "A", "B"], ["A", "B", "C"], false],
-      ].each do |a, b, result|
+      ].each do |a, b, expected|
 
         describe "on #{a.inspect} and #{b.inspect}" do
 
           a = Hamster.stack(*a)
           b = Hamster.stack(*b)
 
-          it "returns #{result}" do
-            a.send(method, b).should == result
+          it "returns #{expected}" do
+            a.send(method, b).should == expected
           end
 
         end

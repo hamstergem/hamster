@@ -1,21 +1,21 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Hamster::List do
+describe Hamster::Stack do
 
   describe "#inspect" do
 
     [
-      [],
-      ["A"],
-      ["A", "B", "C"],
-    ].each do |values|
+      [[], "[]"],
+      [["A"], "[\"A\"]"],
+      [["A", "B", "C"], "[\"C\", \"B\", \"A\"]"]
+    ].each do |values, expected|
 
       describe "on #{values.inspect}" do
 
-        list = Hamster.list(*values)
+        stack = Hamster.stack(*values)
 
-        it "returns #{values.inspect}" do
-          list.inspect.should == values.inspect
+        it "returns #{expected}" do
+          stack.inspect.should == expected
         end
 
       end

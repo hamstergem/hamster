@@ -8,7 +8,7 @@ describe Hamster::List do
       [[], []],
       [["A"], []],
       [["A", "B", "C"], ["C"]],
-    ].each do |values, result|
+    ].each do |values, expected|
 
       describe "on #{values.inspect}" do
 
@@ -16,8 +16,8 @@ describe Hamster::List do
 
         describe "with a block" do
 
-          it "returns #{result}" do
-            list.drop_while { |item| item < "C" }.should == Hamster.list(*result)
+          it "returns #{expected}" do
+            list.drop_while { |item| item < "C" }.should == Hamster.list(*expected)
           end
 
         end
