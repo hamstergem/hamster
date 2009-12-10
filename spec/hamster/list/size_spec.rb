@@ -6,6 +6,18 @@ describe Hamster::List do
 
     describe "##{method}" do
 
+      describe "on a really big list" do
+
+        before do
+          @list = Hamster.interval(0, 100000)
+        end
+
+        it "doesn't run out of stack space" do
+          @list.size
+        end
+
+      end
+
       [
         [[], 0],
         [["A"], 1],

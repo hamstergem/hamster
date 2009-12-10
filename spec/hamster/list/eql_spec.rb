@@ -4,6 +4,22 @@ describe Hamster::List do
 
   [:eql?, :==].each do |method|
 
+    describe "on a really big list" do
+
+      before do
+        @a = Hamster.interval(0, 100000)
+        @b = Hamster.interval(0, 100000)
+      end
+
+      it "doesn't run out of stack space" do
+        pending do
+          @a.eql?(@b)
+        end
+      end
+
+    end
+
+
     describe "##{method}" do
 
       [

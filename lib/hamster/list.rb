@@ -29,7 +29,7 @@ module Hamster
     end
 
     def size
-      tail.size + 1
+      reduce(0) { |memo, item| memo + 1 }
     end
     alias_method :length, :size
 
@@ -98,7 +98,6 @@ module Hamster
 
     def drop_while
       block_given? or return self
-
       list = self
       while !list.empty? && yield(list.head)
         list = list.tail
@@ -225,11 +224,6 @@ module Hamster
       def empty?
         true
       end
-
-      def size
-        0
-      end
-      alias_method :length, :size
 
       def map
         self

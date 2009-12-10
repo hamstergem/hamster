@@ -4,6 +4,18 @@ describe Hamster::List do
 
   describe "#take_while" do
 
+    describe "on a really big list" do
+
+      before do
+        @list = Hamster.interval(0, 100000)
+      end
+
+      it "doesn't run out of stack space" do
+        @list.take_while { true }
+      end
+
+    end
+
     [
       [[], []],
       [["A"], ["A"]],

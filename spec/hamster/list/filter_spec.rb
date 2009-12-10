@@ -4,7 +4,21 @@ describe Hamster::List do
 
   [:filter, :select].each do |method|
 
-    describe "#filter" do
+    describe "##{method}" do
+
+      describe "on a really big list" do
+
+        before do
+          @list = Hamster.interval(0, 100000)
+        end
+
+        it "doesn't run out of stack space" do
+          pending do
+            @list.filter { false }
+          end
+        end
+
+      end
 
       [
         [[], []],
