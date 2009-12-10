@@ -2,26 +2,35 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::Stack do
 
-  describe "#eql?" do
+  [:eql?, :==].each do |method|
 
-    before do
-      @stack = Hamster.stack.push("A").push("B").push("C")
-    end
+    describe "##{method}" do
 
-    it "is true for the same instance" do
-      @stack.should eql(@stack)
-    end
+      [
+        [[], [], true],
+        [["A"], [], false],
+        [[], ["A"], false],
+        [["A"], ["A"], true],
+        [["A"], ["B"], false],
+        [["A", "B"], ["A"], false],
+        [["A"], ["A", "B"], false],
+        [["A", "B", "C"], ["A", "B", "C"], true],
+        [["C", "A", "B"], ["A", "B", "C"], false],
+      ].each do |a, b, result|
 
-    it "is true for two instances with the same sequence of values" do
-      @stack.should eql(Hamster.stack.push("A").push("B").push("C"))
-    end
+        describe "on #{a.inspect} and #{b.inspect}" do
 
-    it "is false for two instances with the difference sequence of values" do
-      @stack.should_not eql(Hamster.stack.push("A").push("C").push("B"))
-    end
+          a = Hamster.stack(*a)
+          b = Hamster.stack(*b)
 
-    it "is false for two instances with the similar but differently sized sequence of values" do
-      @stack.should_not eql(Hamster.stack.push("A").push("B"))
+          it "returns #{result}" do
+            a.send(method, b).should == result
+          end
+
+        end
+
+      end
+
     end
 
   end

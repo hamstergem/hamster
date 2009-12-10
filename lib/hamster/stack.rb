@@ -2,8 +2,8 @@ require 'hamster/list'
 
 module Hamster
 
-  def self.stack
-    EmptyStack
+  def self.stack(*items)
+    items.inject(EmptyStack) { |stack, item| stack.push(item) }
   end
 
   class Stack

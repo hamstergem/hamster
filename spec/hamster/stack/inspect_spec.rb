@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe Hamster::Stack do
+describe Hamster::List do
 
-  [:dup, :clone].each do |method|
+  describe "#inspect" do
 
     [
       [],
@@ -12,10 +12,10 @@ describe Hamster::Stack do
 
       describe "on #{values.inspect}" do
 
-        stack = Hamster.stack(*values)
+        list = Hamster.list(*values)
 
-        it "returns self" do
-          stack.send(method).should equal(stack)
+        it "returns #{values.inspect}" do
+          list.inspect.should == values.inspect
         end
 
       end

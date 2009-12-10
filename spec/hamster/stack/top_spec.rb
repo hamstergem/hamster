@@ -2,20 +2,20 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::Stack do
 
-  [:dup, :clone].each do |method|
+  describe "#top" do
 
     [
-      [],
-      ["A"],
-      ["A", "B", "C"],
-    ].each do |values|
+      [[], nil],
+      [["A"], "A"],
+      [["A", "B", "C"], "C"],
+    ].each do |values, result|
 
       describe "on #{values.inspect}" do
 
         stack = Hamster.stack(*values)
 
-        it "returns self" do
-          stack.send(method).should equal(stack)
+        it "returns #{result}" do
+          stack.top.should == result
         end
 
       end

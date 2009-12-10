@@ -4,12 +4,22 @@ describe Hamster::Stack do
 
   describe "#empty?" do
 
-    it "initially returns true" do
-      Hamster.stack.should be_empty
-    end
+    [
+      [[], true],
+      [["A"], false],
+      [["A", "B", "C"], false],
+    ].each do |values, result|
 
-    it "returns false once items have been added" do
-      Hamster.stack.push("A").should_not be_empty
+      describe "on #{values.inspect}" do
+
+        stack = Hamster.stack(*values)
+
+        it "returns #{result}" do
+          stack.empty?.should == result
+        end
+
+      end
+
     end
 
   end
