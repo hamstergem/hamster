@@ -40,13 +40,11 @@ module Hamster
 
     def each
       block_given? or return self
-
       list = self
       while !list.empty?
         yield(list.head)
         list = list.tail
       end
-
       nil
     end
 
@@ -57,32 +55,19 @@ module Hamster
     alias_method :collect, :map
 
     def reduce(memo)
-      block_given? or return memo
-
-      list = self
-      while !list.empty?
-        memo = yield(memo, list.head)
-        list = list.tail
-      end
+      each { |item| memo = yield(memo, item)  } if block_given?
       memo
     end
     alias_method :inject, :reduce
 
     def filter(&block)
       block_given? or return self
-
-      list = self
-      while !yield(list.head)
-        list = list.tail
-        return list if list.empty?
-      end
-      Stream.new(list.head) { list.tail.filter(&block) }
+      reject { |item| !yield(item) }
     end
     alias_method :select, :filter
 
     def reject(&block)
       block_given? or return self
-
       list = self
       while yield(list.head)
         list = list.tail
@@ -126,12 +111,8 @@ module Hamster
       list
     end
 
-    def include?(item)
-      list = self
-      while !list.empty?
-        return true if item == list.head
-        list = list.tail
-      end
+    def include?(object)
+      each { |item| return true if object == item }
       false
     end
     alias_method :member?, :include?
