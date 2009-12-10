@@ -51,9 +51,16 @@ module Hamster
     end
     alias_method :collect, :map
 
-    def reduce(memo, &block)
+    def reduce(memo)
       block_given? or return memo
-      tail.reduce(yield(memo, head), &block)
+
+      list = self
+      until list.empty?
+        memo = yield(memo, list.head)
+        list = list.tail
+      end
+
+      memo
     end
     alias_method :inject, :reduce
 
@@ -222,11 +229,6 @@ module Hamster
         self
       end
       alias_method :collect, :map
-
-      def reduce(memo)
-        memo
-      end
-      alias_method :inject, :reduce
 
       def filter
         self

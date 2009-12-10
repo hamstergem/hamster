@@ -6,6 +6,18 @@ describe Hamster::List do
 
     describe "##{method}" do
 
+      describe "on a really big list" do
+
+        before do
+          @list = Hamster.interval(0, 100000)
+        end
+
+        it "doesn't run out of stack space" do
+          @list.reduce(self) { |memo, item| memo }
+        end
+
+      end
+
       [
         [[], "@"],
         [["A"], "@a"],
@@ -14,12 +26,14 @@ describe Hamster::List do
 
         describe "on #{values.inspect}" do
 
-          list = Hamster.list(*values)
+          before do
+            @list = Hamster.list(*values)
+          end
 
           describe "with a block" do
 
             it "returns #{expected.inspect}" do
-              list.send(method, "@") { |memo, item| memo << item.downcase }.should == expected
+              @list.send(method, "@") { |memo, item| memo << item.downcase }.should == expected
             end
 
           end
@@ -27,7 +41,7 @@ describe Hamster::List do
           describe "without a block" do
 
             it "returns the memo" do
-              list.send(method, "@").should == "@"
+              @list.send(method, "@").should == "@"
             end
 
           end
