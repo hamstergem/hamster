@@ -55,7 +55,7 @@ module Hamster
       block_given? or return memo
 
       list = self
-      until list.empty?
+      while !list.empty?
         memo = yield(memo, list.head)
         list = list.tail
       end
@@ -109,16 +109,17 @@ module Hamster
     end
 
     def drop(number)
-      if number > 0
-        tail.drop(number - 1)
-      else
-        self
+      list = self
+      while number > 0 && !list.empty?
+        number -= 1
+        list = list.tail
       end
+      list
     end
 
     def include?(item)
       list = self
-      until list.empty?
+      while !list.empty?
         return true if item == list.head
         list = list.tail
       end
@@ -254,15 +255,6 @@ module Hamster
       def take(number)
         self
       end
-
-      def drop(number)
-        self
-      end
-
-      def include?(item)
-        false
-      end
-      alias_method :member?, :include?
 
     end
 
