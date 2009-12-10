@@ -14,10 +14,12 @@ describe Hamster::List do
 
       describe "#{number} from #{values.inspect}" do
 
-        list = Hamster.list(*values)
+        before do
+          @list = Hamster.list(*values)
+        end
 
         it "returns #{expected}" do
-          list.take(number).should == Hamster.list(*expected)
+          @list.take(number).should == Hamster.list(*expected)
         end
 
       end

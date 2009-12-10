@@ -20,11 +20,13 @@ describe Hamster::List do
 
         describe "on #{a.inspect} and #{b.inspect}" do
 
-          a = Hamster.list(*a)
-          b = Hamster.list(*b)
+          before do
+            @a = Hamster.list(*a)
+            @b = Hamster.list(*b)
+          end
 
           it "returns #{expected}" do
-            a.send(method, b).should == expected
+            @a.send(method, @b).should == expected
           end
 
         end

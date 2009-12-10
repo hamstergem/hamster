@@ -15,15 +15,17 @@ describe Hamster::List do
 
         describe "on #{values.inspect} with #{new_value.inspect}" do
 
-          original = Hamster.list(*values)
-          result = original.send(method, new_value)
+          before do
+            @original = Hamster.list(*values)
+            @result = @original.send(method, new_value)
+          end
 
           it "preserves the original" do
-            original.should == Hamster.list(*values)
+            @original.should == Hamster.list(*values)
           end
 
           it "returns #{expected.inspect}" do
-            result.should == Hamster.list(*expected)
+            @result.should == Hamster.list(*expected)
           end
 
         end

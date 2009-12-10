@@ -15,15 +15,17 @@ describe Hamster::Stack do
 
         describe "on #{values.inspect} with #{new_value.inspect}" do
 
-          original = Hamster.stack(*values)
-          result = original.send(method, new_value)
+          before do
+            @original = Hamster.stack(*values)
+            @result = @original.send(method, new_value)
+          end
 
           it "preserves the original" do
-            original.should == Hamster.stack(*values)
+            @original.should == Hamster.stack(*values)
           end
 
           it "returns #{expected.inspect}" do
-            result.should == Hamster.stack(*expected)
+            @result.should == Hamster.stack(*expected)
           end
 
         end

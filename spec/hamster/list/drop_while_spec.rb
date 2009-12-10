@@ -12,12 +12,14 @@ describe Hamster::List do
 
       describe "on #{values.inspect}" do
 
-        list = Hamster.list(*values)
+        before do
+          @list = Hamster.list(*values)
+        end
 
         describe "with a block" do
 
           it "returns #{expected}" do
-            list.drop_while { |item| item < "C" }.should == Hamster.list(*expected)
+            @list.drop_while { |item| item < "C" }.should == Hamster.list(*expected)
           end
 
         end
@@ -25,7 +27,7 @@ describe Hamster::List do
         describe "without a block" do
 
           it "returns self" do
-            list.drop_while.should == list
+            @list.drop_while.should equal(@list)
           end
 
         end

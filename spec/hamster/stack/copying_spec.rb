@@ -12,10 +12,12 @@ describe Hamster::Stack do
 
       describe "on #{values.inspect}" do
 
-        stack = Hamster.stack(*values)
+        before do
+          @stack = Hamster.stack(*values)
+        end
 
         it "returns self" do
-          stack.send(method).should equal(stack)
+          @stack.send(method).should equal(@stack)
         end
 
       end

@@ -11,15 +11,17 @@ describe Hamster::Stack do
 
       describe "on #{values.inspect}" do
 
-        original = Hamster.stack(*values)
-        result = original.pop
+        before do
+          @original = Hamster.stack(*values)
+          @result = @original.pop
+        end
 
         it "preserves the original" do
-          original.should == Hamster.stack(*values)
+          @original.should == Hamster.stack(*values)
         end
 
         it "returns #{expected.inspect}" do
-          result.should == Hamster.stack(*expected)
+          @result.should == Hamster.stack(*expected)
         end
 
       end
@@ -33,15 +35,17 @@ describe Hamster::Stack do
 
       describe "on #{values.inspect}" do
 
-        original = Hamster.stack(*values)
-        result = original.pop
+        before do
+          @original = Hamster.stack(*values)
+          @result = @original.pop
+        end
 
         it "preserves the original" do
-          original.should == Hamster.stack(*values)
+          @original.should == Hamster.stack(*values)
         end
 
         it "returns the empty stack" do
-          result.should equal(Hamster.stack)
+          @result.should equal(Hamster.stack)
         end
 
       end

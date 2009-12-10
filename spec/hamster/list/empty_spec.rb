@@ -12,10 +12,12 @@ describe Hamster::List do
 
       describe "on #{values.inspect}" do
 
-        list = Hamster.list(*values)
+        before do
+          @list = Hamster.list(*values)
+        end
 
         it "returns #{expected}" do
-          list.empty?.should == expected
+          @list.empty?.should == expected
         end
 
       end

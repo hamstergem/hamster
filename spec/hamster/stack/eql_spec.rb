@@ -20,11 +20,13 @@ describe Hamster::Stack do
 
         describe "on #{a.inspect} and #{b.inspect}" do
 
-          a = Hamster.stack(*a)
-          b = Hamster.stack(*b)
+          before do
+            @a = Hamster.stack(*a)
+            @b = Hamster.stack(*b)
+          end
 
           it "returns #{expected}" do
-            a.send(method, b).should == expected
+            @a.send(method, @b).should == expected
           end
 
         end

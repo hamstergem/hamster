@@ -135,7 +135,7 @@ module Hamster
     alias_method :clone, :dup
 
     def to_a
-      reduce([]) { |ary, item| ary << item }
+      reduce([]) { |a, item| a << item }
     end
 
     def inspect
