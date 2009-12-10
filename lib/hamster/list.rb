@@ -159,9 +159,15 @@ module Hamster
     alias_method :detect, :find
 
     def eql?(other)
-      return true if other.equal?(self)
-      return false unless other.is_a?(List)
-      other.head == head && other.tail.eql?(tail)
+      list = self
+      while !list.empty? && !other.empty?
+        return true if other.equal?(list)
+        return false unless other.is_a?(List)
+        return false unless other.head.eql?(list.head)
+        list = list.tail
+        other = other.tail
+      end
+      other.equal?(list)
     end
     alias_method :==, :eql?
 
@@ -273,6 +279,11 @@ module Hamster
       def take(number)
         self
       end
+
+      def eql?(other)
+        other.equal?(self)
+      end
+      alias_method :==, :eql?
 
     end
 

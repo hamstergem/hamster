@@ -12,9 +12,7 @@ describe Hamster::List do
       end
 
       it "doesn't run out of stack space" do
-        pending do
-          @a.eql?(@b)
-        end
+        @a.eql?(@b)
       end
 
     end
@@ -24,6 +22,7 @@ describe Hamster::List do
 
       [
         [[], [], true],
+        [[], [nil], false],
         [["A"], [], false],
         [[], ["A"], false],
         [["A"], ["A"], true],
