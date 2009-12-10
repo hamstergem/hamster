@@ -36,6 +36,7 @@ module Hamster
     def cons(item)
       Sequence.new(item, self)
     end
+    alias_method :>>, :cons
 
     def each(&block)
       block_given? or return self
