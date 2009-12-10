@@ -59,7 +59,6 @@ module Hamster
         memo = yield(memo, list.head)
         list = list.tail
       end
-
       memo
     end
     alias_method :inject, :reduce
@@ -118,7 +117,12 @@ module Hamster
     end
 
     def include?(item)
-      item == head || tail.include?(item)
+      list = self
+      until list.empty?
+        return true if item == list.head
+        list = list.tail
+      end
+      false
     end
     alias_method :member?, :include?
 
