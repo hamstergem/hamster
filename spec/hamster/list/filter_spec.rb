@@ -13,9 +13,7 @@ describe Hamster::List do
         end
 
         it "doesn't run out of stack space" do
-          pending do
-            @list.filter { false }
-          end
+          @list.filter { false }
         end
 
       end

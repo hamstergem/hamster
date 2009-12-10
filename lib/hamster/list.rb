@@ -70,11 +70,13 @@ module Hamster
 
     def filter(&block)
       block_given? or return self
-      if yield(head)
-        Stream.new(head) { tail.filter(&block) }
-      else
-        tail.filter(&block)
+
+      list = self
+      while !yield(list.head)
+        list = list.tail
+        return list if list.empty?
       end
+      Stream.new(list.head) { list.tail.filter(&block) }
     end
     alias_method :select, :filter
 
@@ -86,14 +88,7 @@ module Hamster
         list = list.tail
         return list if list.empty?
       end
-
       Stream.new(list.head) { list.tail.reject(&block) }
-
-      # if yield(head)
-      #   tail.reject(&block)
-      # else
-      #   Stream.new(head) { tail.reject(&block) }
-      # end
     end
 
     def take_while(&block)
