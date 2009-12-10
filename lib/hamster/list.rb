@@ -93,11 +93,12 @@ module Hamster
 
     def drop_while(&block)
       block_given? or return self
-      if yield(head)
-        tail.drop_while(&block)
-      else
-        self
+
+      list = self
+      while !list.empty? && yield(list.head)
+        list = list.tail
       end
+      list
     end
 
     def take(number)
@@ -110,7 +111,7 @@ module Hamster
 
     def drop(number)
       list = self
-      while number > 0 && !list.empty?
+      while !list.empty? && number > 0
         number -= 1
         list = list.tail
       end
@@ -245,10 +246,6 @@ module Hamster
       end
 
       def take_while
-        self
-      end
-
-      def drop_while
         self
       end
 
