@@ -8,18 +8,30 @@ describe Hamster::Set do
 
       [
         [[], [], true],
+        [[], [nil], false],
         [["A"], [], false],
-        [[], ["A"], false],
         [["A"], ["A"], true],
         [["A"], ["B"], false],
         [["A", "B"], ["A"], false],
-        [["A"], ["A", "B"], false],
         [["A", "B", "C"], ["A", "B", "C"], true],
         [["C", "A", "B"], ["A", "B", "C"], true],
-      ].each do |a, b, result|
+      ].each do |a, b, expected|
 
-        it "returns #{result} for #{a.inspect} and #{b.inspect}" do
-          Hamster.set(*a).send(method, Hamster.set(*b)).should == result
+        describe "returns #{expected}" do
+
+          before do
+            @a = Hamster.set(*a)
+            @b = Hamster.set(*b)
+          end
+
+          it "for #{a.inspect} and #{b.inspect}" do
+            @a.send(method, @b).should == expected
+          end
+
+          it "for #{b.inspect} and #{a.inspect}" do
+            @b.send(method, @a).should == expected
+          end
+
         end
 
       end
