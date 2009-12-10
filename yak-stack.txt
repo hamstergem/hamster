@@ -10,6 +10,5 @@
 * Implement Set#superset?
 * Implement Set#^ as equivalent to ((set | enum) - (set & enum))
 * Implement Hash#merge
-* Cleanup Stack specs
 * Work out what we can extract into common "Enumerable-like" code.
 * Replace uses of Enumerable#inject with #reduce once RunCodeRun supports 1.8.7

@@ -1,3 +1,7 @@
+=== 0.1.13 / 2009-12-10
+
+* Stack now fully functional
+
 === 0.1.12 / 2009-12-10
 
 * List methods are now lazy where feasible
