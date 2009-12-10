@@ -29,7 +29,7 @@ describe Hamster::Hash do
       describe "with a block" do
 
         it "returns true if the block always returns true" do
-          @hash.all? { |item| true }.should be_true
+          @hash.all? { |key, value| true }.should be_true
         end
 
         it "returns false if the block ever returns false" do
