@@ -38,10 +38,15 @@ module Hamster
     end
     alias_method :>>, :cons
 
-    def each(&block)
+    def each
       block_given? or return self
-      yield(head)
-      tail.each(&block)
+
+      list = self
+      while !list.empty?
+        yield(list.head)
+        list = list.tail
+      end
+
       nil
     end
 
@@ -91,7 +96,7 @@ module Hamster
       end
     end
 
-    def drop_while(&block)
+    def drop_while
       block_given? or return self
 
       list = self
@@ -225,11 +230,6 @@ module Hamster
         0
       end
       alias_method :length, :size
-
-      def each
-        block_given? or return self
-        nil
-      end
 
       def map
         self
