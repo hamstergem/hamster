@@ -62,9 +62,15 @@ module Hamster
 
     def filter(&block)
       block_given? or return self
-      reject { |item| !yield(item) }
+      list = self
+      while !yield(list.head)
+        list = list.tail
+        return list if list.empty?
+      end
+      Stream.new(list.head) { list.tail.filter(&block) }
     end
     alias_method :select, :filter
+    alias_method :find_all, :filter
 
     def reject(&block)
       block_given? or return self
@@ -215,10 +221,11 @@ module Hamster
       end
       alias_method :collect, :map
 
-      def filter
+      def filter(&block)
         self
       end
       alias_method :select, :filter
+      alias_method :find_all, :filter
 
       def reject
         self
