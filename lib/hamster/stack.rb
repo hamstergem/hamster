@@ -32,13 +32,12 @@ module Hamster
 
     def pop
       list = @list.tail
-      # if list.empty?
-      #   EmptyStack
-      # else
+      if list.empty?
+        EmptyStack
+      else
         self.class.new(list)
-      # end
+      end
     end
-    alias_method :>>, :pop
 
     def eql?(other)
       return true if other.equal?(self)
