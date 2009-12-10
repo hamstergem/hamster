@@ -152,6 +152,12 @@ module Hamster
       true
     end
 
+    def find
+      block_given? or return nil
+      each { |item| return item if yield(item) }
+    end
+    alias_method :detect, :find
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)

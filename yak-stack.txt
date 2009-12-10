@@ -1,5 +1,5 @@
 * Remove recursion from lists
-* Add List #one?, #count, #partition, #find (#detect), #partition, #sort
+* Add List #one?, #count, #partition, #partition, #sort
 * Add Set #find (#detect), #count, #partition, #one?
 * Support creating lists from an array
 * Implement Set#union aliased as #| and #+
