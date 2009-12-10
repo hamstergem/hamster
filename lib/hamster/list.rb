@@ -134,6 +134,24 @@ module Hamster
     alias_method :exist?, :any?
     alias_method :exists?, :any?
 
+    def all?
+      if block_given?
+        each { |item| return false unless yield(item) }
+      else
+        each { |item| return false unless item }
+      end
+      true
+    end
+
+    def none?
+      if block_given?
+        each { |item| return false if yield(item) }
+      else
+        each { |item| return false if item }
+      end
+      true
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
