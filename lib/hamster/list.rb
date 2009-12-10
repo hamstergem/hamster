@@ -80,11 +80,20 @@ module Hamster
 
     def reject(&block)
       block_given? or return self
-      if yield(head)
-        tail.reject(&block)
-      else
-        Stream.new(head) { tail.reject(&block) }
+
+      list = self
+      while yield(list.head)
+        list = list.tail
+        return list if list.empty?
       end
+
+      Stream.new(list.head) { list.tail.reject(&block) }
+
+      # if yield(head)
+      #   tail.reject(&block)
+      # else
+      #   Stream.new(head) { tail.reject(&block) }
+      # end
     end
 
     def take_while(&block)
