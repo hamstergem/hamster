@@ -161,6 +161,9 @@ module Hamster
     alias_method :detect, :find
 
     def eql?(other)
+      return true if other.equal?(self)
+      return false unless other.is_a?(List)
+
       list = self
       while !list.empty? && !other.empty?
         return true if other.equal?(list)
@@ -181,6 +184,7 @@ module Hamster
     def to_a
       reduce([]) { |a, item| a << item }
     end
+    alias_method :to_ary, :to_a
 
     def inspect
       to_a.inspect

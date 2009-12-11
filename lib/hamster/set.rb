@@ -124,6 +124,10 @@ module Hamster
     end
     alias_method :clone, :dup
 
+    def to_a
+      reduce([]) { |a, item| a << item }
+    end
+
   end
 
 end
