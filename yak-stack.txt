@@ -1,4 +1,3 @@
-* Remove recursion from lists
 * Add List #one?, #count, #partition, #partition, #sort, #sort_by, #last, #max(imum), #min(imum), #cycle, #reverse, #nub
 * Add Set #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle
 * Support creating lists from an array
