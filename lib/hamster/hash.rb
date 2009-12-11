@@ -88,6 +88,7 @@ module Hamster
       block_given? or return self
       select { |key, value| !yield(key, value) }
     end
+    alias_method :delete_if, :reject
 
     def any?
       if block_given?

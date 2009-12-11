@@ -82,6 +82,7 @@ module Hamster
       end
       Stream.new(list.head) { list.tail.reject(&block) }
     end
+    alias_method :delete_if, :reject
 
     def take_while(&block)
       block_given? or return self
@@ -272,6 +273,7 @@ module Hamster
       def reject
         self
       end
+      alias_method :delete_if, :reject
 
       def take_while
         self
