@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::Hash do
 
-  [:filter, :select].each do |method|
+  [:filter, :select, :find_all].each do |method|
 
     describe "##{method}" do
 

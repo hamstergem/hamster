@@ -83,6 +83,7 @@ module Hamster
       end
     end
     alias_method :select, :filter
+    alias_method :find_all, :filter
 
     def reject
       block_given? or return self
