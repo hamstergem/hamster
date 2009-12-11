@@ -263,7 +263,7 @@ module Hamster
       end
       alias_method :collect, :map
 
-      def filter(&block)
+      def filter
         self
       end
       alias_method :select, :filter
@@ -280,11 +280,6 @@ module Hamster
       def take(number)
         self
       end
-
-      def eql?(other)
-        other.equal?(self)
-      end
-      alias_method :==, :eql?
 
     end
 
