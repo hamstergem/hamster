@@ -6,6 +6,22 @@ describe Hamster::Stack do
 
     describe "##{method}" do
 
+      describe "returns false when comparing with" do
+
+        before do
+          @stack = Hamster.stack("A", "B", "C")
+        end
+
+        it "a list" do
+          @stack.send(method, Hamster.list("C", "B", "A")).should be_false
+        end
+
+        it "an aribtrary object" do
+          @stack.send(method, Object.new).should be_false
+        end
+
+      end
+
       [
         [[], [], true],
         [["A"], [], false],
