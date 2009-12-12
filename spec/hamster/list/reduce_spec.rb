@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Hamster::List do
 
-  [:reduce, :inject].each do |method|
+  [:reduce, :inject, :fold].each do |method|
 
     describe "##{method}" do
 
