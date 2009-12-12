@@ -65,7 +65,6 @@ module Hamster
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
     end
     alias_method :inject, :reduce
-    alias_method :fold, :reduce
 
     def filter
       block_given? or return self

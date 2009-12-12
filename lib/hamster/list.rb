@@ -59,7 +59,6 @@ module Hamster
       memo
     end
     alias_method :inject, :reduce
-    alias_method :fold, :reduce
 
     def filter(&block)
       block_given? or return self
