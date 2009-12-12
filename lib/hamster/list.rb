@@ -9,7 +9,7 @@ module Hamster
     end
 
     def stream(&block)
-      block_given? or return EmptyList
+      return EmptyList unless block_given?
       Stream.new(yield) { stream(&block) }
     end
 
@@ -41,7 +41,7 @@ module Hamster
     alias_method :>>, :cons
 
     def each
-      block_given? or return self
+      return self unless block_given?
       list = self
       while !list.empty?
         yield(list.head)
@@ -51,14 +51,14 @@ module Hamster
     end
 
     def map(&block)
-      block_given? or return self
+      return self unless block_given?
       Stream.new(yield(head)) { tail.map(&block) }
     end
     alias_method :collect, :map
 
     def reduce(memo = Undefined, &block)
       return tail.reduce(head, &block) if memo.equal?(Undefined)
-      block_given? or return memo
+      return memo unless block_given?
       each { |item| memo = yield(memo, item)  }
       memo
     end
@@ -66,7 +66,7 @@ module Hamster
     alias_method :fold, :reduce
 
     def filter(&block)
-      block_given? or return self
+      return self unless block_given?
       list = self
       while !yield(list.head)
         list = list.tail
@@ -78,7 +78,7 @@ module Hamster
     alias_method :find_all, :filter
 
     def reject(&block)
-      block_given? or return self
+      return self unless block_given?
       list = self
       while yield(list.head)
         list = list.tail
@@ -89,7 +89,7 @@ module Hamster
     alias_method :delete_if, :reject
 
     def take_while(&block)
-      block_given? or return self
+      return self unless block_given?
       if yield(head)
         Stream.new(head) { tail.take_while(&block) }
       else
@@ -98,7 +98,7 @@ module Hamster
     end
 
     def drop_while
-      block_given? or return self
+      return self unless block_given?
       list = self
       while !list.empty? && yield(list.head)
         list = list.tail
@@ -159,7 +159,7 @@ module Hamster
     end
 
     def find
-      block_given? or return nil
+      return nil unless block_given?
       each { |item| return item if yield(item) }
     end
     alias_method :detect, :find

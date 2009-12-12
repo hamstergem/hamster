@@ -51,13 +51,13 @@ module Hamster
     end
 
     def each
-      block_given? or return self
+      return self unless block_given?
       @trie.each { |entry| yield(entry.key, entry.value) }
       self
     end
 
     def map
-      block_given? or return self
+      return self unless block_given?
       if empty?
         self
       else
@@ -67,14 +67,14 @@ module Hamster
     alias_method :collect, :map
 
     def reduce(memo)
-      block_given? or return memo
+      return memo unless block_given?
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key, entry.value) }
     end
     alias_method :inject, :reduce
     alias_method :fold, :reduce
 
     def filter
-      block_given? or return self
+      return self unless block_given?
       trie = @trie.filter { |entry| yield(entry.key, entry.value) }
       if !trie.equal?(@trie)
         self.class.new(trie)
@@ -86,7 +86,7 @@ module Hamster
     alias_method :find_all, :filter
 
     def reject
-      block_given? or return self
+      return self unless block_given?
       select { |key, value| !yield(key, value) }
     end
     alias_method :delete_if, :reject
