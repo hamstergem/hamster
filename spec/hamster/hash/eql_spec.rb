@@ -6,6 +6,22 @@ describe Hamster::Hash do
 
     describe "##{method}" do
 
+      describe "returns false when comparing with" do
+
+        before do
+          @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+        end
+
+        it "a standard hash" do
+          @hash.send(method, "A" => "aye", "B" => "bee", "C" => "see").should be_false
+        end
+
+        it "an aribtrary object" do
+          @hash.send(method, Object.new).should be_false
+        end
+
+      end
+
       [
         [{}, {}, true],
         [{"A" => "aye"}, {}, false],

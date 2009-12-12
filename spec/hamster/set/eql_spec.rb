@@ -1,10 +1,28 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+require 'set'
+
 describe Hamster::Set do
 
   [:eql?, :==].each do |method|
 
     describe "##{method}" do
+
+      describe "returns false when comparing with" do
+
+        before do
+          @set = Hamster.set("A", "B", "C")
+        end
+
+        it "a standard set" do
+          @set.send(method, Set["A", "B", "C"]).should be_false
+        end
+
+        it "an aribtrary object" do
+          @set.send(method, Object.new).should be_false
+        end
+
+      end
 
       [
         [[], [], true],

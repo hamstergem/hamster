@@ -4,20 +4,36 @@ describe Hamster::List do
 
   [:eql?, :==].each do |method|
 
-    describe "on a really big list" do
-
-      before do
-        @a = Hamster.interval(0, 10000)
-        @b = Hamster.interval(0, 10000)
-      end
-
-      it "doesn't run out of stack space" do
-        @a.eql?(@b)
-      end
-
-    end
-
     describe "##{method}" do
+
+      describe "on a really big list" do
+
+        before do
+          @a = Hamster.interval(0, 10000)
+          @b = Hamster.interval(0, 10000)
+        end
+
+        it "doesn't run out of stack space" do
+          @a.send(method, @b)
+        end
+
+      end
+
+      describe "returns false when comparing with" do
+
+        before do
+          @list = Hamster.list("A", "B", "C")
+        end
+
+        it "an array" do
+          @list.send(method, ["A", "B", "C"]).should be_false
+        end
+
+        it "an aribtrary object" do
+          @list.send(method, Object.new).should be_false
+        end
+
+      end
 
       [
         [[], [], true],
@@ -37,11 +53,11 @@ describe Hamster::List do
             @b = Hamster.list(*b)
           end
 
-          it "for #{a.inspect} and #{b.inspect}" do
+          it "for lists #{a.inspect} and #{b.inspect}" do
             @a.send(method, @b).should == expected
           end
 
-          it "for #{b.inspect} and #{a.inspect}" do
+          it "for lists #{b.inspect} and #{a.inspect}" do
             @b.send(method, @a).should == expected
           end
 
