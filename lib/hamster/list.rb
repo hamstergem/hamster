@@ -1,5 +1,7 @@
 module Hamster
 
+  Undefined = Object.new
+
   class << self
 
     def list(*items)
@@ -54,8 +56,10 @@ module Hamster
     end
     alias_method :collect, :map
 
-    def reduce(memo)
-      each { |item| memo = yield(memo, item)  } if block_given?
+    def reduce(memo = Undefined, &block)
+      return tail.reduce(head, &block) if memo.equal?(Undefined)
+      block_given? or return memo
+      each { |item| memo = yield(memo, item)  }
       memo
     end
     alias_method :inject, :reduce
