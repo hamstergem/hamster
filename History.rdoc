@@ -1,3 +1,17 @@
+=== 0.1.14 / 2009-12-14
+
+* List#reduce supports optional initial value.
+
+* Implemented List#to_ary for implicit conversion to arrays and call parameters.
+
+* Implemented Set#to_a.
+
+* Alias #filter as #find_all.
+
+* Alias #reject as #delete_if.
+
+* Alias #reduce as #fold.
+
 === 0.1.13 / 2009-12-10
 
 * Stack now fully functional
