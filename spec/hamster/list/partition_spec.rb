@@ -25,7 +25,7 @@ describe Hamster::List do
       describe "with a block" do
 
         before do
-          result = @original.partition(&:odd?)
+          result = @original.partition { |item| item.odd? }
           @matching = result.head
           @remainder = result.tail.head
         end
@@ -73,7 +73,7 @@ describe Hamster::List do
 
         before do
           @original = Hamster.list(*values)
-          @partitions = @original.partition(&:odd?)
+          @partitions = @original.partition { |item| item.odd? }
         end
 
         it "preserves the original" do
