@@ -31,15 +31,11 @@ describe Hamster::List do
         end
 
         it "correctly identifies the matches" do
-          pending {
-            @matching.should == Hamster.list(1, 3, 5, 7, 9)
-          }
+          @matching.should == Hamster.list(1, 3, 5, 7, 9)
         end
 
         it "correctly identifies the remainder" do
-          pending {
-            @remainder.should == Hamster.list(0, 2, 4, 6, 8, 10)
-          }
+          @remainder.should == Hamster.list(0, 2, 4, 6, 8, 10)
         end
 
       end
@@ -74,6 +70,8 @@ describe Hamster::List do
         before do
           @original = Hamster.list(*values)
           @partitions = @original.partition { |item| item.odd? }
+          @matches = @partitions.car
+          @remainder = @partitions.cadr
         end
 
         it "preserves the original" do
@@ -85,15 +83,11 @@ describe Hamster::List do
         end
 
         it "correctly identifies the matches" do
-          pending {
-            @matches.should == Hamster.list(*expected_matches)
-          }
+          @matches.should == Hamster.list(*expected_matches)
         end
 
         it "correctly identifies the remainder" do
-          pending {
-            @remainder.should == Hamster.list(*expected_remainder)
-          }
+          @remainder.should == Hamster.list(*expected_remainder)
         end
 
       end

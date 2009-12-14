@@ -164,9 +164,9 @@ module Hamster
     end
     alias_method :detect, :find
 
-    def partition
+    def partition(&block)
       return self unless block_given?
-      Hamster.list(nil, nil)
+      EmptyList.cons(reject(&block)).cons(filter(&block))
     end
 
     def append(other)
