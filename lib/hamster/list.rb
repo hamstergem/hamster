@@ -169,6 +169,12 @@ module Hamster
       Hamster.list(nil, nil)
     end
 
+    def append(other)
+    end
+    alias_method :concat, :append
+    alias_method :cat, :append
+    alias_method :+, :append
+
     def eql?(other)
       return false unless other.is_a?(List)
 
