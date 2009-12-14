@@ -26,8 +26,8 @@ describe Hamster::List do
 
         before do
           result = @original.partition { |item| item.odd? }
-          @matching = result.head
-          @remainder = result.tail.head
+          @matching = result.car
+          @remainder = result.cadr
         end
 
         it "correctly identifies the matches" do
