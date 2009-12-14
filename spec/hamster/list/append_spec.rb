@@ -43,13 +43,17 @@ describe Hamster::List do
           end
 
           it "returns #{expected.inspect}" do
-            pending {
-              @result.should == Hamster.list(*expected)
-            }
+            @result.should == Hamster.list(*expected)
           end
 
         end
 
+      end
+
+      it "is lazy" do
+        count = 0
+        Hamster.stream { |item| count += 1 }.append(Hamster.list("A"))
+        count.should <= 1
       end
 
     end

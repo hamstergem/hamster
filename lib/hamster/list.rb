@@ -170,6 +170,7 @@ module Hamster
     end
 
     def append(other)
+      Stream.new(head) { tail.append(other) }
     end
     alias_method :concat, :append
     alias_method :cat, :append
@@ -304,6 +305,13 @@ module Hamster
       def take(number)
         self
       end
+
+      def append(other)
+        other
+      end
+      alias_method :concat, :append
+      alias_method :cat, :append
+      alias_method :+, :append
 
     end
 
