@@ -175,6 +175,10 @@ module Hamster
     alias_method :cat, :append
     alias_method :+, :append
 
+    def reverse
+      reduce(EmptyList) { |list, item| list.cons(item) }
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 
