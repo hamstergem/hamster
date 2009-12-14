@@ -164,6 +164,11 @@ module Hamster
     end
     alias_method :detect, :find
 
+    def partition
+      return self unless block_given?
+      Hamster.list(nil, nil)
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 
