@@ -127,6 +127,8 @@ Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
 <tt>Hamster.stream { ... }</tt> allows you to creates infinite lists. Each time a new value is required, the supplied block is called.
 
+And finally, if you <tt>require 'hamster'</tt> you also get <tt>Enumerable#to_list<tt>.
+
 === Stacks
 
 == Disclaimer
