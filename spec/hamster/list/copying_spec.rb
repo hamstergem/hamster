@@ -1,5 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+require 'hamster/list'
+
 describe Hamster::List do
 
   [:dup, :clone].each do |method|

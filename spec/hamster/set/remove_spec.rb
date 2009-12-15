@@ -1,5 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+require 'hamster/set'
+
 describe Hamster::Set do
 
   describe "#remove" do

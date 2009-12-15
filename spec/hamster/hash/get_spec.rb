@@ -1,5 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+require 'hamster/hash'
+
 describe Hamster::Hash do
 
   [:get, :[]].each do |method|
