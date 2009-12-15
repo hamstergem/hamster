@@ -129,7 +129,7 @@ Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
 You also get <tt>Enumerable#to_list</tt> so you can slowly transition from built-in collection classes to Hamster.
 
-And finally, you also <tt>IO#to_list</tt> allowing you to lazily processes huge files. For example, imagine the following code to process a 10MB file:
+And finally, you get <tt>IO#to_list</tt> allowing you to lazily processes huge files. For example, imagine the following code to process a 10MB file:
 
   File.open("my_10_mb_file.txt") do |io|
     lines = []
@@ -145,10 +145,10 @@ How many times/how long did you read the code before it became apparent what the
     io.map(&:chomp).map(&:downcase).map(&:reverse)[0, 10]
   end
 
-Unfortunately, though the second example reads nicely, it takes around 3 seconds to run--compared with 0.033 seconds for the first--even though we're only interested in the first 10 lines! However, using a little <tt>#to_list</tt> magic, we can get the running time down to 0.033 seconds!
+Unfortunately, though the second example reads nicely, it takes around 3 seconds to run (compared with 0.033 seconds for the first) even though we're only interested in the first 10 lines! However, using a little <tt>#to_list</tt> magic, we can get the running time down to 0.033 seconds!
 
   File.open("my_10_mb_file.txt") do |io|
-    puts io.to_list.map(&:chomp).map(&:downcase).map(&:reverse).take(10)
+    io.to_list.map(&:chomp).map(&:downcase).map(&:reverse).take(10)
   end
 
 How is this even possible? It's possible because <tt>IO#to_list</tt> creates a lazy list whereby each line is only ever read and processed as needed, in effect converting it to the first example without all the syntactic, imperative, noise.
