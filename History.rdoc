@@ -1,3 +1,9 @@
+=== 0.1.15 / 2009-12-15
+
+* Implemented IO#to_list.
+
+* Implemented Enumerable#to_list.
+
 === 0.1.14 / 2009-12-14
 
 * List#reduce supports optional initial value.
