@@ -97,6 +97,9 @@ And don't forget that even if threading isn't a concern for you, the safety prov
 
 Indeed I did.
 
+=== Sets
+
+
 === Lists
 
 Lists have a head--the value of the item at the head of the list--and a tail--containing the remaining items. For example:
@@ -126,17 +129,15 @@ The following code will only call <tt>prime?</tt> as many times as necessary to 
 
 Compare that to the conventional equivalent which needs to calculate all possible values in the range before taking the first 3:
 
-  (10000..1000000).select { |i| prime?(i) }[1, 3]   # => 10s
+  (10000..1000000).select { |i| prime?(i) }[0, 3]   # => 10s
 
-Besides <tt>Hamster.list</tt> there is <tt>Hamster.interval(from, to)</tt> and <tt>Hamster.stream { a_block }</tt>.
+Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
-<tt>.interval</tt> (aliased as <tt>.range</tt>) creates a lazy list equivalent to a list containing all the values between <tt>from</tt> and <tt>to</tt> without actually creating a list that big.
+<tt>Hamster.interval(from, to)</tt> (aliased as <tt>.range</tt>) creates a lazy list equivalent to a list containing all the values between <tt>from</tt> and <tt>to</tt> without actually creating a list that big.
 
-<tt>.stream</tt> allows you to creates infinite lists. Each time a new value is required, the supplied block is called.
+<tt>Hamster.stream { ... }</tt> allows you to creates infinite lists. Each time a new value is required, the supplied block is called.
 
 === Stacks
-
-=== Sets
 
 == Disclaimer
 
