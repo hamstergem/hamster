@@ -6,8 +6,6 @@ Hamster started out as an implementation of Hash Array Mapped Hashes (HAMT) for 
 
 Persistent data structures have a really neat property: very efficient copy-on-write operations. That allows you to create immutable data-structures that only need copying when something changes. For example:
 
-  require 'hamster'
-
   hash = Hamster.hash
 
   hash.put("Name", "Simon")
@@ -18,8 +16,6 @@ Persistent data structures have a really neat property: very efficient copy-on-w
 
 Whoops! Remember, each call to <tt>#put</tt> creates an efficient copy containing the modifications, leaving the original unmodified. So, unlike Ruby's built-in <tt>Hash</tt> all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
 
-  require 'hamster'
-
   original = Hamster.hash
   copy = original.put("Name", "Simon")
 
@@ -27,8 +23,6 @@ Whoops! Remember, each call to <tt>#put</tt> creates an efficient copy containin
   copy.get("Name")                 # => "Simon"
 
 The same goes for <tt>#remove</tt>:
-
-  require 'hamster'
 
   original = Hamster.hash
   original = original.put("Name", "Simon")
@@ -47,8 +41,6 @@ Moreover, because they're immutable, you can pass them around between objects, m
 
 There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of <tt>Hash</tt>. For example:
 
-  require 'hamster'
-
   hash = Hamster.hash
   (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
   (1..10000).each { |i| hash.get(i) }  # => 0.008s
@@ -66,8 +58,6 @@ Well, yes and no. The previous comparison wasn't really fair. Sure, if all you w
 == Do you have a better example?
 
 A more realistic comparison might look like:
-
-  require 'hamster'
 
   hash = Hamster.hash
   (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
