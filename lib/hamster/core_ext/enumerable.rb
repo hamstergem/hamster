@@ -7,7 +7,7 @@ module Hamster
     module Enumerable
 
       def to_list
-        Hamster.list(self)
+        Hamster.list(*self)
       end
 
     end

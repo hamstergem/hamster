@@ -13,7 +13,6 @@ module Hamster
         else
           EmptyList
         end
-
       end
 
     end

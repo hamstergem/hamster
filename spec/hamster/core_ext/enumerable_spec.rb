@@ -26,7 +26,7 @@ describe Enumerable do
     end
 
     it "returns an equivalent list" do
-      @list == Hamster.list("A", "B", "C")
+      @list.should == Hamster.list("A", "B", "C")
     end
 
   end
