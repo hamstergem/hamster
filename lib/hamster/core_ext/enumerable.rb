@@ -7,7 +7,13 @@ module Hamster
     module Enumerable
 
       def to_list
-        Hamster.list(*self)
+        enum = each
+        if line
+          Stream.new(line) { to_list }
+        else
+          EmptyList
+        end
+
       end
 
     end

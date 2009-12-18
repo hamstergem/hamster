@@ -21,8 +21,10 @@ describe Enumerable do
   describe "#to_list" do
 
     before do
-      enumerable = TestEnumerable.new("A", "B", "C")
-      @list = enumerable.to_list
+      pending {
+        enumerable = TestEnumerable.new("A", "B", "C")
+        @list = enumerable.to_list
+      }
     end
 
     it "returns an equivalent list" do
