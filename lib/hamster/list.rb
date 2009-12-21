@@ -1,3 +1,5 @@
+require 'monitor'
+
 module Hamster
 
   Undefined = Object.new
@@ -256,10 +258,16 @@ module Hamster
     def initialize(head, &tail)
       @head = head
       @tail = tail
+      @mutex = Mutex.new
     end
 
     def tail
-      @tail.call
+      @mutex.synchronize do
+        unless defined?(@value)
+          @value = @tail.call
+        end
+      end
+      @value
     end
 
   end
