@@ -43,10 +43,10 @@ module Hamster
 
     def remove(key)
       trie = @trie.remove(key)
-      if !trie.equal?(@trie)
-        self.class.new(trie)
-      else
+      if trie.equal?(@trie)
         self
+      else
+        self.class.new(trie)
       end
     end
 
@@ -76,10 +76,10 @@ module Hamster
     def filter
       return self unless block_given?
       trie = @trie.filter { |entry| yield(entry.key, entry.value) }
-      if !trie.equal?(@trie)
-        self.class.new(trie)
-      else
+      if trie.equal?(@trie)
         self
+      else
+        self.class.new(trie)
       end
     end
     alias_method :select, :filter
