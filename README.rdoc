@@ -73,9 +73,9 @@ versus
 
   (1..10000).each { |i| hash[i] }  # => 0.001s
 
-Impressive huh? What's even better is--or worse depending on your perspective--is that after all that, the native <tt>Hash</tt> version still isn't thread-safe and still requires some synchronisation around it slowing it down even further!
+Impressive huh? What's even better is--or worse depending on your perspective--is that after all that, the native <tt>Hash</tt> version still isn't thread-safe and still requires some synchronisation around it slowing it down even further--about 10x slower!
 
-The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster!
+The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster--30 if you want to compare it to the synchronised version!
 
 == Sure, but as you say, you still need synchronisation so why bother with the copying?
 
@@ -142,7 +142,7 @@ And finally, you get <tt>IO#to_list</tt> allowing you to lazily processes huge f
 How many times/how long did you read the code before it became apparent what the code actually did? Now compare that to the following:
 
   File.open("my_100_mb_file.txt") do |io|
-    io.map(&:chomp).map(&:downcase).map(&:reverse)[0, 10]
+    io.map(&:chomp).map(&:downcase).map(&:reverse).take(10)
   end
 
 Unfortunately, though the second example reads nicely, it takes around 13 seconds to run (compared with 0.033 seconds for the first) even though we're only interested in the first 10 lines! However, using a little <tt>#to_list</tt> magic, we can get the running time back down to 0.033 seconds!
