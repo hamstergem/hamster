@@ -1,6 +1,6 @@
 = Hamster
 
-Hamster started out as an implementation of Hash Array Mapped Hashes (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
+Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
 
 == Huh?
 
@@ -73,9 +73,9 @@ versus
 
   (1..10000).each { |i| hash[i] }  # => 0.001s
 
-Impressive huh? What's even better is--or worse depending on your perspective--is that after all that, the native <tt>Hash</tt> version still isn't thread-safe and still requires some synchronisation around it slowing it down even further--about 10x slower!
+Impressive huh? What's even better is--or worse depending on your perspective--is that after all that, the native <tt>Hash</tt> version still isn't thread-safe and still requires some synchronisation around it slowing it down even further.
 
-The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster--30 if you want to compare it to the synchronised version!
+The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster.
 
 == Sure, but as you say, you still need synchronisation so why bother with the copying?
 
