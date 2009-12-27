@@ -15,7 +15,7 @@ describe Hamster::List do
         end
 
         it "doesn't run out of stack space" do
-          @list.reduce(nil) { }
+          @list.reduce { }
         end
 
       end
