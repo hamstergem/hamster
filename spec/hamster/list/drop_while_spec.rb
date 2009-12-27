@@ -32,7 +32,7 @@ describe Hamster::List do
 
         describe "with a block" do
 
-          it "returns #{expected}" do
+          it "returns #{expected.inspect}" do
             @list.drop_while { |item| item < "C" }.should == Hamster.list(*expected)
           end
 

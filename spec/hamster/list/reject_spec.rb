@@ -36,7 +36,7 @@ describe Hamster::List do
 
           describe "with a block" do
 
-            it "returns #{expected}" do
+            it "returns #{expected.inspect}" do
               @list.send(method) { |item| item == item.downcase }.should == Hamster.list(*expected)
             end
 

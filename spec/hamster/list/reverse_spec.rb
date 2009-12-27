@@ -30,7 +30,7 @@ describe Hamster::List do
           @list = Hamster.list(*values)
         end
 
-        it "returns #{expected}" do
+        it "returns #{expected.inspect}" do
           @list.reverse { |item| item.downcase }.should == Hamster.list(*expected)
         end
 

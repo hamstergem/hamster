@@ -38,7 +38,7 @@ describe Hamster::List do
             @list = Hamster.list(*values)
           end
 
-          it "returns #{expected}" do
+          it "returns #{expected.inspect}" do
             @list.send(method, item).should == expected
           end
 
