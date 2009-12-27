@@ -61,7 +61,7 @@ describe Hamster::List do
 
       it "is lazy" do
         count = 0
-        Hamster.stream { |item| count += 1 }.append(Hamster.list("A"))
+        Hamster.stream { count += 1 }.append(Hamster.list("A"))
         count.should <= 1
       end
 
