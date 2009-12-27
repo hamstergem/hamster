@@ -289,8 +289,8 @@ module Hamster
       end
       alias_method :collect, :map
 
-      def reduce(memo = Undefined)
-        memo unless memo.equal?(Undefined)
+      def reduce(memo = nil)
+        memo
       end
       alias_method :inject, :reduce
       alias_method :fold, :reduce
