@@ -33,7 +33,7 @@ module Hamster
     end
 
     def size
-      reduce(0) { |memo, item| memo + 1 }
+      reduce(0) { |memo, item| memo.succ }
     end
     alias_method :length, :size
 
