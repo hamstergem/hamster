@@ -48,7 +48,7 @@ describe Hamster::List do
         [["C", "A", "B"], ["A", "B", "C"], false],
       ].each do |a, b, expected|
 
-        describe "returns #{expected}" do
+        describe "returns #{expected.inspect}" do
 
           before do
             @a = Hamster.list(*a)

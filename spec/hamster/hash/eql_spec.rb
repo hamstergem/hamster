@@ -36,7 +36,7 @@ describe Hamster::Hash do
         [{"C" => "see", "A" => "aye", "B" => "bee"}, {"A" => "aye", "B" => "bee", "C" => "see"}, true],
       ].each do |a, b, expected|
 
-        describe "returns #{expected}" do
+        describe "returns #{expected.inspect}" do
 
           before do
             @a = Hamster.hash(a)

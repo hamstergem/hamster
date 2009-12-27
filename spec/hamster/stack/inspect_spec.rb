@@ -18,7 +18,7 @@ describe Hamster::Stack do
           @stack = Hamster.stack(*values)
         end
 
-        it "returns #{expected}" do
+        it "returns #{expected.inspect}" do
           @stack.inspect.should == expected
         end
 

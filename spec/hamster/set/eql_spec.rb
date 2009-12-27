@@ -36,7 +36,7 @@ describe Hamster::Set do
         [["C", "A", "B"], ["A", "B", "C"], true],
       ].each do |a, b, expected|
 
-        describe "returns #{expected}" do
+        describe "returns #{expected.inspect}" do
 
           before do
             @a = Hamster.set(*a)

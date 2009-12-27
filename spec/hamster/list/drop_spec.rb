@@ -32,7 +32,7 @@ describe Hamster::List do
           @list = Hamster.list(*values)
         end
 
-        it "returns #{expected}" do
+        it "returns #{expected.inspect}" do
           @list.drop(number).should == Hamster.list(*expected)
         end
 
