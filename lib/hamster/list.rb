@@ -42,13 +42,10 @@ module Hamster
     end
     alias_method :>>, :cons
 
-    def each
+    def each(&block)
       return self unless block_given?
-      list = self
-      while !list.empty?
-        yield(list.head)
-        list = list.tail
-      end
+      yield(head)
+      tail.each(&block)
       nil
     end
 
@@ -61,32 +58,29 @@ module Hamster
     def reduce(memo = Undefined, &block)
       return tail.reduce(head, &block) if memo.equal?(Undefined)
       return memo unless block_given?
-      each { |item| memo = yield(memo, item)  }
-      memo
+      tail.reduce(yield(memo, head), &block)
     end
     alias_method :inject, :reduce
     alias_method :fold, :reduce
 
     def filter(&block)
       return self unless block_given?
-      list = self
-      while !yield(list.head)
-        list = list.tail
-        return list if list.empty?
+      if yield(head)
+        Stream.new(head) { tail.filter(&block) }
+      else
+        tail.filter(&block)
       end
-      Stream.new(list.head) { list.tail.filter(&block) }
     end
     alias_method :select, :filter
     alias_method :find_all, :filter
 
     def reject(&block)
       return self unless block_given?
-      list = self
-      while yield(list.head)
-        list = list.tail
-        return list if list.empty?
+      if yield(head)
+        tail.reject(&block)
+      else
+        Stream.new(head) { tail.reject(&block) }
       end
-      Stream.new(list.head) { list.tail.reject(&block) }
     end
     alias_method :delete_if, :reject
 
@@ -99,13 +93,13 @@ module Hamster
       end
     end
 
-    def drop_while
+    def drop_while(&block)
       return self unless block_given?
-      list = self
-      while !list.empty? && yield(list.head)
-        list = list.tail
+      if yield(head)
+        tail.drop_while(&block)
+      else
+        self
       end
-      list
     end
 
     def take(number)
@@ -117,17 +111,15 @@ module Hamster
     end
 
     def drop(number)
-      list = self
-      while !list.empty? && number > 0
-        number -= 1
-        list = list.tail
+      if number > 0
+        tail.drop(number - 1)
+      else
+        self
       end
-      list
     end
 
     def include?(object)
-      each { |item| return true if object == item }
-      false
+      object == head || tail.include?(object)
     end
     alias_method :member?, :include?
 
@@ -183,17 +175,10 @@ module Hamster
     end
 
     def eql?(other)
+      return true if other.equal?(self)
       return false unless other.is_a?(List)
-
-      list = self
-      while !list.empty? && !other.empty?
-        return true if other.equal?(list)
-        return false unless other.is_a?(List)
-        return false unless other.head.eql?(list.head)
-        list = list.tail
-        other = other.tail
-      end
-      other.equal?(list)
+      return false if other.empty?
+      other.head.eql?(head) && other.tail.eql?(tail)
     end
     alias_method :==, :eql?
 
@@ -290,10 +275,25 @@ module Hamster
         true
       end
 
+      def size
+        0
+      end
+
+      def each
+        return self unless block_given?
+        nil
+      end
+
       def map
         self
       end
       alias_method :collect, :map
+
+      def reduce(memo = Undefined)
+        memo unless memo.equal?(Undefined)
+      end
+      alias_method :inject, :reduce
+      alias_method :fold, :reduce
 
       def filter
         self
@@ -310,9 +310,22 @@ module Hamster
         self
       end
 
+      def drop_while
+        self
+      end
+
       def take(number)
         self
       end
+
+      def drop(number)
+        self
+      end
+
+      def include?(object)
+        false
+      end
+      alias_method :member?, :include?
 
       def append(other)
         other
@@ -320,6 +333,11 @@ module Hamster
       alias_method :concat, :append
       alias_method :cat, :append
       alias_method :+, :append
+
+      def eql?(other)
+        other.equal?(self)
+      end
+      alias_method :==, :eql?
 
     end
 
