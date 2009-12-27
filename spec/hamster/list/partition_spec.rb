@@ -6,14 +6,22 @@ describe Hamster::List do
 
   describe "#partition" do
 
-    describe "on a really big list" do
+    describe "doesn't run out of stack space on a really big" do
 
       before do
-        @list = Hamster.interval(0, 10000)
+        @interval = Hamster.interval(0, 10000)
       end
 
-      it "doesn't run out of stack space" do
-        @list.partition {}
+      it "interval" do
+        @list = @interval
+      end
+
+      it "list" do
+        @list = @interval.reduce(Hamster.list) { |list, i| list.cons(i) }
+      end
+
+      after do
+        @list.partition { |item| item % 2 == 0 }
       end
 
     end

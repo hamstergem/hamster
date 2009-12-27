@@ -8,14 +8,24 @@ describe Hamster::List do
 
     describe "##{method}" do
 
-      describe "on a really big list" do
+      describe "doesn't run out of stack space on a really big" do
 
         before do
-          @a = Hamster.interval(0, 10000)
-          @b = Hamster.interval(0, 10000)
+          @interval_a = Hamster.interval(0, 10000)
+          @interval_b = Hamster.interval(0, 10000)
         end
 
-        it "doesn't run out of stack space" do
+        it "interval" do
+          @a = @interval_a
+          @b = @interval_b
+        end
+
+        it "list" do
+          @a = @interval_a.reduce(Hamster.list) { |list, i| list.cons(i) }
+          @b = @interval_b.reduce(Hamster.list) { |list, i| list.cons(i) }
+        end
+
+        after do
           @a.send(method, @b)
         end
 
