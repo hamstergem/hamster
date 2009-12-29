@@ -4,42 +4,46 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  describe "#to_a" do
+  [:to_a, :entries].each do |method|
 
-    describe "doesn't run out of stack space on a really big" do
+    describe "##{method}" do
 
-      before do
-        @interval = Hamster.interval(0, 10000)
-      end
-
-      it "stream" do
-        @list = @interval
-      end
-
-      it "list" do
-        @list = @interval.reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @list.to_a
-      end
-
-    end
-
-    [
-      [],
-      ["A"],
-      ["A", "B", "C"],
-    ].each do |values|
-
-      describe "on #{values.inspect}" do
+      describe "doesn't run out of stack space on a really big" do
 
         before do
-          @list = Hamster.list(*values)
+          @interval = Hamster.interval(0, 10000)
         end
 
-        it "returns #{values.inspect}" do
-          @list.to_a.should == values
+        it "stream" do
+          @list = @interval
+        end
+
+        it "list" do
+          @list = @interval.reduce(Hamster.list) { |list, i| list.cons(i) }
+        end
+
+        after do
+          @list.send(method)
+        end
+
+      end
+
+      [
+        [],
+        ["A"],
+        ["A", "B", "C"],
+      ].each do |values|
+
+        describe "on #{values.inspect}" do
+
+          before do
+            @list = Hamster.list(*values)
+          end
+
+          it "returns #{values.inspect}" do
+            @list.send(method).should == values
+          end
+
         end
 
       end
