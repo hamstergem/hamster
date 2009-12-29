@@ -1,3 +1,19 @@
+=== 0.1.16 / 2009-12-30
+
+* Ensure streams cache results.
+
+* Ensure lists don't blow the stack.
+
+* List#entries is now an alias for List#to_a.
+
+* Implement List#to_list.
+
+* Implement List#one?.
+
+* Set#to_a is now aliased as #entries.
+
+* Implement List#minimum (aliased as #min) and List#maximum (aliased as #max).
+
 === 0.1.15 / 2009-12-15
 
 * Implemented IO#to_list.
