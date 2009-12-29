@@ -115,53 +115,42 @@ module Hamster
     end
     alias_method :member?, :include?
 
-    def any?
+    def any?(&block)
       if block_given?
-        each { |item| return true if yield(item) }
+        return true if yield(head)
       else
-        each { |item| return true if item }
+        return true if head
       end
-      false
+      tail.any?(&block)
     end
     alias_method :exist?, :any?
     alias_method :exists?, :any?
 
-    def all?
+    def all?(&block)
       if block_given?
-        each { |item| return false unless yield(item) }
+        return false unless yield(head)
       else
-        each { |item| return false unless item }
+        return false unless head
       end
-      true
+      tail.all?(&block)
     end
 
-    def none?
+    def none?(&block)
       if block_given?
-        each { |item| return false if yield(item) }
+        return false if yield(head)
       else
-        each { |item| return false if item }
+        return false if head
       end
-      true
+      tail.none?(&block)
     end
 
-    def one?
-      found_one = false
+    def one?(&block)
       if block_given?
-        each do |item|
-          if yield(item)
-            return false if found_one
-            found_one = true
-          end
-        end
+        return none?(&block) if yield(head)
       else
-        each do |item|
-          if item
-            return false if found_one
-            found_one = true
-          end
-        end
+        return none?(&block) if head
       end
-      found_one
+      tail.one?(&block)
     end
 
     def find(&block)
@@ -346,6 +335,24 @@ module Hamster
         false
       end
       alias_method :member?, :include?
+
+      def any?
+        false
+      end
+      alias_method :exist?, :any?
+      alias_method :exists?, :any?
+
+      def all?
+        true
+      end
+
+      def none?
+        true
+      end
+
+      def one?
+        false
+      end
 
       def find(&block)
         nil
