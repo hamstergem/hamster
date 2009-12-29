@@ -189,6 +189,10 @@ module Hamster
     alias_method :to_ary, :to_a
     alias_method :entries, :to_a
 
+    def to_list
+      self
+    end
+
     def inspect
       to_a.inspect
     end
