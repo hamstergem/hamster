@@ -164,9 +164,13 @@ module Hamster
       found_one
     end
 
-    def find
+    def find(&block)
       return nil unless block_given?
-      each { |item| return item if yield(item) }
+      if yield(head)
+        head
+      else
+        tail.find(&block)
+      end
     end
     alias_method :detect, :find
 
@@ -342,6 +346,11 @@ module Hamster
         false
       end
       alias_method :member?, :include?
+
+      def find(&block)
+        nil
+      end
+      alias_method :detect, :find
 
       def append(other)
         other
