@@ -156,6 +156,26 @@ module Hamster
       true
     end
 
+    def one?
+      found_one = false
+      if block_given?
+        each do |item|
+          if yield(item)
+            return false if found_one
+            found_one = true
+          end
+        end
+      else
+        each do |item|
+          if item
+            return false if found_one
+            found_one = true
+          end
+        end
+      end
+      found_one
+    end
+
     def find
       return nil unless block_given?
       each { |item| return item if yield(item) }
