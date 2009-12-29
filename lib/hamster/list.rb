@@ -176,6 +176,18 @@ module Hamster
       reduce(EmptyList) { |list, item| list.cons(item) }
     end
 
+    def minimum(&block)
+      return minimum { |minimum, item| item <=> minimum } unless block_given?
+      reduce { |minimum, item| yield(minimum, item) < 0 ? item : minimum }
+    end
+    alias_method :min, :minimum
+
+    def maximum(&block)
+      return maximum { |maximum, item| item <=> maximum } unless block_given?
+      reduce { |maximum, item| yield(maximum, item) > 0 ? item : maximum }
+    end
+    alias_method :max, :maximum
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
