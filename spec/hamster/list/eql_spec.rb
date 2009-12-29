@@ -15,7 +15,7 @@ describe Hamster::List do
           @interval_b = Hamster.interval(0, 10000)
         end
 
-        it "interval" do
+        it "stream" do
           @a = @interval_a
           @b = @interval_b
         end

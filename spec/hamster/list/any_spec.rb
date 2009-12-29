@@ -14,7 +14,7 @@ describe Hamster::List do
           @interval = Hamster.interval(0, 10000)
         end
 
-        it "interval" do
+        it "stream" do
           @list = @interval
         end
 
