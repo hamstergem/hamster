@@ -202,6 +202,7 @@ module Hamster
       reduce([]) { |a, item| a << item }
     end
     alias_method :to_ary, :to_a
+    alias_method :entries, :to_a
 
     def inspect
       to_a.inspect
