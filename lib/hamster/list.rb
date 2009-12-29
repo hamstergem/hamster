@@ -43,7 +43,6 @@ module Hamster
       return self unless block_given?
       yield(head)
       tail.each(&block)
-      nil
     end
 
     def map(&block)
@@ -278,7 +277,6 @@ module Hamster
 
       def each
         return self unless block_given?
-        nil
       end
 
       def map
