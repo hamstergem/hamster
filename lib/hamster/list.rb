@@ -77,12 +77,7 @@ module Hamster
 
     def reject(&block)
       return self unless block_given?
-      list = self
-      while yield(list.head)
-        list = list.tail
-        return list if list.empty?
-      end
-      Stream.new(list.head) { list.tail.reject(&block) }
+      filter { |item| !yield(item) }
     end
     alias_method :delete_if, :reject
 

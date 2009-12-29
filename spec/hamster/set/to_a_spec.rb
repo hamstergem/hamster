@@ -4,22 +4,26 @@ require 'hamster/set'
 
 describe Hamster::Set do
 
-  describe "#to_a" do
+  [:to_a, :entries].each do |method|
 
-    [
-      [],
-      ["A"],
-      ["A", "B", "C"],
-    ].each do |values|
+    describe "##{method}" do
 
-      describe "on #{values.inspect}" do
+      [
+        [],
+        ["A"],
+        ["A", "B", "C"],
+      ].each do |values|
 
-        before do
-          @set = Hamster.set(*values)
-        end
+        describe "on #{values.inspect}" do
 
-        it "returns #{values.inspect}" do
-          @set.to_a.sort.should == values.sort
+          before do
+            @set = Hamster.set(*values)
+          end
+
+          it "returns #{values.inspect}" do
+            @set.send(method).sort.should == values.sort
+          end
+
         end
 
       end

@@ -81,7 +81,7 @@ module Hamster
 
     def reject
       return self unless block_given?
-      select { |item| !yield(item) }
+      filter { |item| !yield(item) }
     end
     alias_method :delete_if, :reject
 
@@ -127,6 +127,7 @@ module Hamster
     def to_a
       reduce([]) { |a, item| a << item }
     end
+    alias_method :entries, :to_a
 
   end
 
