@@ -16,11 +16,8 @@ module Hamster
     end
 
     def interval(from, to)
-      if from > to
-        EmptyList
-      else
-        Stream.new(from) { interval(from.succ, to) }
-      end
+      return EmptyList if from > to
+      Stream.new(from) { interval(from.succ, to) }
     end
     alias_method :range, :interval
 
