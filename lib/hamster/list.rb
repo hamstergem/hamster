@@ -46,7 +46,6 @@ module Hamster
         yield(list.head)
         list = list.tail
       end
-      nil
     end
 
     def map(&block)

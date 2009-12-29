@@ -47,7 +47,7 @@ describe Hamster::List do
           end
 
           it "returns nil" do
-            @list.each {}.should be_nil
+            @list.each { "flibble" }.should be_nil
           end
 
         end
