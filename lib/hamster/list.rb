@@ -155,11 +155,8 @@ module Hamster
 
     def find(&block)
       return nil unless block_given?
-      if yield(head)
-        head
-      else
-        tail.find(&block)
-      end
+      return head if yield(head)
+      tail.find(&block)
     end
     alias_method :detect, :find
 
