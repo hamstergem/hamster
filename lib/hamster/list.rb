@@ -72,11 +72,7 @@ module Hamster
 
     def reject(&block)
       return self unless block_given?
-      if yield(head)
-        tail.reject(&block)
-      else
-        Stream.new(head) { tail.reject(&block) }
-      end
+      filter { |item| !yield(item) }
     end
     alias_method :delete_if, :reject
 
