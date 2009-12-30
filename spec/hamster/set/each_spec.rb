@@ -5,30 +5,34 @@ require 'hamster/set'
 
 describe Hamster::Set do
 
-  describe "#each" do
+  [:each, :iterate].each do |method|
 
-    before do
-      @set = Hamster.set("A", "B", "C")
-    end
+    describe "##{method}" do
 
-    describe "with a block (internal iteration)" do
-
-      it "returns self" do
-        @set.each {}.should equal(@set)
+      before do
+        @set = Hamster.set("A", "B", "C")
       end
 
-      it "yields all values" do
-        actual_values = Set[]
-        @set.each { |value| actual_values << value }
-        actual_values.should == Set["A", "B", "C"]
+      describe "with a block (internal iteration)" do
+
+        it "returns self" do
+          @set.send(method) {}.should equal(@set)
+        end
+
+        it "yields all values" do
+          actual_values = Set[]
+          @set.send(method) { |value| actual_values << value }
+          actual_values.should == Set["A", "B", "C"]
+        end
+
       end
 
-    end
+      describe "with no block" do
 
-    describe "with no block" do
+        it "returns self" do
+          @set.send(method).should equal(@set)
+        end
 
-      it "returns self" do
-        @set.each.should equal(@set)
       end
 
     end

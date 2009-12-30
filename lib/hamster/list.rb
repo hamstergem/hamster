@@ -44,6 +44,7 @@ module Hamster
       yield(head)
       tail.each(&block)
     end
+    alias_method :iterate, :each
 
     def map(&block)
       return self unless block_given?
@@ -305,6 +306,7 @@ module Hamster
       def each
         return self unless block_given?
       end
+      alias_method :iterate, :each
 
       def map
         self
