@@ -188,6 +188,10 @@ module Hamster
     end
     alias_method :max, :maximum
 
+    def grep(pattern, &block)
+      filter { |item| pattern === item }.map(&block)
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
