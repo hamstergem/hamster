@@ -123,6 +123,8 @@ module Hamster
       self
     end
     alias_method :clone, :dup
+    alias_method :uniq, :dup
+    alias_method :nub, :dup
 
     def to_a
       reduce([]) { |a, item| a << item }
