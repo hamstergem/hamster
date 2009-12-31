@@ -115,6 +115,10 @@ module Hamster
       true
     end
 
+    def grep(pattern, &block)
+      filter { |item| pattern === item }.map(&block)
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
