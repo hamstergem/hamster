@@ -12,3 +12,5 @@
 * Work out what we can extract into common "Enumerable-like" code.
 * Independently test list methods on intervals.
 * Make Set and Hash lazy
+* Use (0..10000).reduce ... in stack depth tests rather than Hamster.interval.reduce so the reduce doesn't mask the method being tested.
+* Test laziness of List methods that don't take a block.

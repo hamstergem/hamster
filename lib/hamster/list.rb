@@ -193,6 +193,10 @@ module Hamster
       filter { |item| pattern === item }.map(&block)
     end
 
+    def zip(other)
+      Stream.new(EmptyList.cons(other.head).cons(head)) { tail.zip(other.tail) }
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
@@ -380,6 +384,11 @@ module Hamster
       alias_method :concat, :append
       alias_method :cat, :append
       alias_method :+, :append
+
+      def zip(other)
+        return super unless other.empty?
+        self
+      end
 
       def eql?(other)
         other.equal?(self)
