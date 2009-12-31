@@ -147,9 +147,9 @@ module Hamster
 
     def one?(&block)
       if block_given?
-        return none?(&block) if yield(head)
+        return tail.none?(&block) if yield(head)
       else
-        return none?(&block) if head
+        return tail.none? if head
       end
       tail.one?(&block)
     end
