@@ -4,58 +4,54 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  [:each, :iterate].each do |method|
+  describe "#each" do
 
-    describe "##{method}" do
+    describe "doesn't run out of stack space on a really big" do
 
-      describe "doesn't run out of stack space on a really big" do
-
-        it "stream" do
-          @list = Hamster.interval(0, 10000)
-        end
-
-        it "list" do
-          @list = (0..10000).reduce(Hamster.list) { |list, i| list.cons(i) }
-        end
-
-        after do
-          @list.send(method) { }
-        end
-
+      it "stream" do
+        @list = Hamster.interval(0, 10000)
       end
 
-      [
-        [],
-        ["A"],
-        ["A", "B", "C"],
-      ].each do |values|
+      it "list" do
+        @list = (0..10000).reduce(Hamster.list) { |list, i| list.cons(i) }
+      end
 
-        describe "on #{values.inspect}" do
+      after do
+        @list.each { }
+      end
 
-          before do
-            @list = Hamster.list(*values)
+    end
+
+    [
+      [],
+      ["A"],
+      ["A", "B", "C"],
+    ].each do |values|
+
+      describe "on #{values.inspect}" do
+
+        before do
+          @list = Hamster.list(*values)
+        end
+
+        describe "with a block" do
+
+          it "iterates over the items in order" do
+            items = []
+            @list.each { |value| items << value }
+            items.should == values
           end
 
-          describe "with a block" do
-
-            it "iterates over the items in order" do
-              items = []
-              @list.send(method) { |value| items << value }
-              items.should == values
-            end
-
-            it "returns nil" do
-              @list.send(method) {}.should be_nil
-            end
-
+          it "returns nil" do
+            @list.each {}.should be_nil
           end
 
-          describe "without a block" do
+        end
 
-            it "returns self" do
-              @list.send(method).should equal(@list)
-            end
+        describe "without a block" do
 
+          it "returns self" do
+            @list.each.should equal(@list)
           end
 
         end

@@ -4,34 +4,30 @@ require 'hamster/hash'
 
 describe Hamster::Hash do
 
-  [:each, :iterate].each do |method|
+  describe "#each" do
 
-    describe "##{method}" do
+    before do
+      @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+    end
 
-      before do
-        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+    describe "with a block (internal iteration)" do
+
+      it "returns self" do
+        @hash.each {}.should equal(@hash)
       end
 
-      describe "with a block (internal iteration)" do
-
-        it "returns self" do
-          @hash.send(method) {}.should equal(@hash)
-        end
-
-        it "yields all key/value pairs" do
-          actual_pairs = {}
-          @hash.send(method) { |key, value| actual_pairs[key] = value }
-          actual_pairs.should == {"A" => "aye", "B" => "bee", "C" => "see"}
-        end
-
+      it "yields all key/value pairs" do
+        actual_pairs = {}
+        @hash.each { |key, value| actual_pairs[key] = value }
+        actual_pairs.should == {"A" => "aye", "B" => "bee", "C" => "see"}
       end
 
-      describe "with no block" do
+    end
 
-        it "returns self" do
-          @hash.send(method).should equal(@hash)
-        end
+    describe "with no block" do
 
+      it "returns self" do
+        @hash.each.should equal(@hash)
       end
 
     end
