@@ -85,4 +85,16 @@ describe Hamster do
 
   end
 
+  describe ".repeat" do
+
+    before do
+      @stream = Hamster.repeat("A").take(5)
+    end
+
+    it "does something" do
+      @stream.should == Hamster.list("A", "A", "A", "A", "A")
+    end
+
+  end
+
 end

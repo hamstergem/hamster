@@ -127,6 +127,8 @@ Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
 <tt>Hamster.stream { ... }</tt> allows you to creates infinite lists. Each time a new value is required, the supplied block is called.
 
+<tt>Hamster.repeat(x)</tt> creates an infinite list with a specified value for every element.
+
 You also get <tt>Enumerable#to_list</tt> so you can slowly transition from built-in collection classes to Hamster.
 
 And finally, you get <tt>IO#to_list</tt> allowing you to lazily processes huge files. For example, imagine the following code to process a 100MB file:
