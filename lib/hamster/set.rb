@@ -50,7 +50,6 @@ module Hamster
       @trie.each { |entry| yield(entry.key) }
       self
     end
-    alias_method :iterate, :each
 
     def map
       return self unless block_given?

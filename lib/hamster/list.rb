@@ -55,7 +55,6 @@ module Hamster
         list = list.tail
       end
     end
-    alias_method :iterate, :each
 
     def map(&block)
       return self unless block_given?
