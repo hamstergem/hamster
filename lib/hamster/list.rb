@@ -152,24 +152,14 @@ module Hamster
       true
     end
 
-    def one?
-      found_one = false
-      if block_given?
-        each do |item|
-          if yield(item)
-            return false if found_one
-            found_one = true
-          end
-        end
-      else
-        each do |item|
-          if item
-            return false if found_one
-            found_one = true
-          end
-        end
+    def one?(&block)
+      return one? { |item| item } unless block_given?
+      list = self
+      while !list.empty?
+        return list.tail.none?(&block) if yield(list.head)
+        list = list.tail
       end
-      found_one
+      false
     end
 
     def find
