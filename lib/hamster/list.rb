@@ -117,40 +117,28 @@ module Hamster
     alias_method :member?, :include?
 
     def any?(&block)
-      if block_given?
-        return true if yield(head)
-      else
-        return true if head
-      end
+      return any? { |item| item } unless block_given?
+      return true if yield(head)
       tail.any?(&block)
     end
     alias_method :exist?, :any?
     alias_method :exists?, :any?
 
     def all?(&block)
-      if block_given?
-        return false unless yield(head)
-      else
-        return false unless head
-      end
+      return all? { |item| item } unless block_given?
+      return false unless yield(head)
       tail.all?(&block)
     end
 
     def none?(&block)
-      if block_given?
-        return false if yield(head)
-      else
-        return false if head
-      end
+      return none? { |item| item } unless block_given?
+      return false if yield(head)
       tail.none?(&block)
     end
 
     def one?(&block)
-      if block_given?
-        return tail.none?(&block) if yield(head)
-      else
-        return tail.none? if head
-      end
+      return one? { |item| item } unless block_given?
+      return tail.none?(&block) if yield(head)
       tail.one?(&block)
     end
 
