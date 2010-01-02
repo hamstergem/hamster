@@ -29,6 +29,10 @@ module Hamster
       Sequence.new(item).take(number)
     end
 
+    def iterate(item, &block)
+      Stream.new(item) { iterate(yield(item), &block) }
+    end
+
   end
 
   module List

@@ -131,6 +131,8 @@ Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
 <tt>Hamster.replicate(n, x)</tt> creates a list of size n with x the value for every element.
 
+<tt>Hamster.iterate(x) { ... }</tt> creates an infinite list where the first item is calculated by applying the block on the initial argument, the second item by applying the function on the previous result and so on.
+
 You also get <tt>Enumerable#to_list</tt> so you can slowly transition from built-in collection classes to Hamster.
 
 And finally, you get <tt>IO#to_list</tt> allowing you to lazily processes huge files. For example, imagine the following code to process a 100MB file:
