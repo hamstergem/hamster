@@ -1,4 +1,5 @@
 require 'hamster/trie'
+require 'hamster/list'
 
 module Hamster
 
@@ -135,6 +136,10 @@ module Hamster
       reduce([]) { |a, item| a << item }
     end
     alias_method :entries, :to_a
+
+    def to_list
+      reduce(Hamster.list) { |list, item| list.cons(item) }
+    end
 
   end
 
