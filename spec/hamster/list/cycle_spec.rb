@@ -6,6 +6,26 @@ describe Hamster do
 
   describe "#cycle" do
 
+    describe "doesn't run out of stack space on a really big" do
+
+      before do
+        @interval = Hamster.interval(0, 10000)
+      end
+
+      it "stream" do
+        @list = @interval
+      end
+
+      it "list" do
+        @list = @interval.reduce(Hamster.list) { |list, i| list.cons(i) }
+      end
+
+      after do
+        @list.cycle
+      end
+
+    end
+
     describe "with an empty list" do
 
       before do
