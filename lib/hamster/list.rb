@@ -25,6 +25,10 @@ module Hamster
       Sequence.new(item)
     end
 
+    def replicate(number, item)
+      Sequence.new(item).take(number)
+    end
+
   end
 
   module List
