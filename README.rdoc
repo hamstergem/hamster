@@ -168,3 +168,13 @@ Hamster started out as a spike to prove a point and has since morphed into somet
 Performance is pretty good--especially with lazy lists--but there are some things which unfortunately had to be converted from recursive to iterative due to a lack of Tail-Call-Optimisation in Ruby, making them a little less readable, and a little more memory hungry, than I would otherwise have preferred.
 
 Documentation is sparse but I've tried as best I can to write specs that read as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
+
+== Installation
+
+Hamster is distributed as a gem via gemcutter (http://gemcutter.org/gems/hamster) or as source via GitHub (http://github.com/harukizaemon/hamster).
+
+Installation via the gem is easy:
+
+  > gem install hamster
+
+I'll leave it up to you to install from source :)
