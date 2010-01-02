@@ -1,3 +1,33 @@
+=== 0.1.17 / 2010-01-02
+
+* Alias #empty? as #null?
+
+* Implement List#split_at.
+
+* Implement List.iterate.
+
+* Implement List#cycle.
+
+* Implement List.replicate.
+
+* Implement List.repeat.
+
+* Simplify List#take.
+
+* Simplify any?, all?, and none?
+
+* Re-write List#one? to be less complex.
+
+* Add Set#to_list.
+
+* Implement List#zip.
+
+* Implement Set#grep.
+
+* Implement Set#uniq (aliased as #nub).
+
+* Implement List#grep.
+
 === 0.1.16 / 2009-12-30
 
 * Ensure streams cache results.
