@@ -159,6 +159,4 @@ How is this even possible? It's possible because <tt>IO#to_list</tt> creates a l
 
 Hamster started out as a spike to prove a point and has since morphed into something I actually use. My primary concern has been to round out the functionality with good test coverage and clean, readable code.
 
-Performance is pretty good--especially with lazy lists--but there are some things which unfortunately had to be converted from recursive to iterative due to a lack of Tail-Call-Optimisation in Ruby, making them a little less readable, and a little more memory hungry, than I would otherwise have preferred.
-
 Documentation is sparse but I've tried as best I can to write specs that read as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
