@@ -207,6 +207,10 @@ module Hamster
       Stream.new(head) { tail.append(self.cycle) }
     end
 
+    def split_at(number)
+      EmptyList.cons(drop(number)).cons(take(number))
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 

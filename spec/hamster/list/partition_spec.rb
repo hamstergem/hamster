@@ -28,16 +28,16 @@ describe Hamster::List do
         count = 0
         counter = Hamster.stream { count += 1 }
         partitions = counter.partition { |item| item %2 != 0 }
-        @odds = partitions.car.take(5).to_a
-        @evens = partitions.cadr.take(5).to_a
+        @matches = partitions.car
+        @remainder = partitions.cadr
       end
 
       it "correctly identifies the matches" do
-        @odds.should == [1, 3, 5, 7, 9]
+        @matches.take(5).should == Hamster.list(1, 3, 5, 7, 9)
       end
 
       it "correctly identifies the remainder" do
-        @evens.should == [2, 4, 6, 8, 10]
+        @remainder.take(5).should == Hamster.list(2, 4, 6, 8, 10)
       end
 
     end
@@ -52,16 +52,16 @@ describe Hamster::List do
 
         before do
           result = @original.partition { |item| (item % 2) != 0 }
-          @matching = result.car.to_a
-          @remainder = result.cadr.to_a
+          @matching = result.car
+          @remainder = result.cadr
         end
 
         it "correctly identifies the matches" do
-          @matching.should == [1, 3, 5, 7, 9]
+          @matching.should == Hamster.list(1, 3, 5, 7, 9)
         end
 
         it "correctly identifies the remainder" do
-          @remainder.should == [0, 2, 4, 6, 8, 10]
+          @remainder.should == Hamster.list(0, 2, 4, 6, 8, 10)
         end
 
       end
