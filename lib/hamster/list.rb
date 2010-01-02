@@ -21,6 +21,10 @@ module Hamster
     end
     alias_method :range, :interval
 
+    def repeat(item)
+      Sequence.new(item)
+    end
+
   end
 
   module List
@@ -243,7 +247,7 @@ module Hamster
 
     attr_reader :head, :tail
 
-    def initialize(head, tail)
+    def initialize(head, tail = self)
       @head = head
       @tail = tail
     end

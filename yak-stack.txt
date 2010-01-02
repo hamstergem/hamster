@@ -1,4 +1,4 @@
-* Add List #count, #sort, #sort_by, #last, #cycle, #nub, #each_slice, #join, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index), #clear
+* Add List #count, #sort, #sort_by, #last, #cycle, #nub, #each_slice, #join, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index), #clear, .replicate = repeat(x).take(n)
 * Add Set #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #product, #sample, #clear
 * Add Hash #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
 * Implement Set#union aliased as #| and #+
