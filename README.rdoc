@@ -2,7 +2,7 @@
 
 Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
 
-== Huh?
+== What are persistent data structures?
 
 Persistent data structures have a really neat property: very efficient copy-on-write operations. That allows you to create immutable data-structures that only need copying when something changes. For example:
 
@@ -14,7 +14,7 @@ Persistent data structures have a really neat property: very efficient copy-on-w
 
 == Double Huh? That's not much use!
 
-Whoops! Remember, each call to <tt>#put</tt> creates an efficient copy containing the modifications, leaving the original unmodified. So, unlike Ruby's built-in <tt>Hash</tt> all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
+Whoops! Unlike Ruby's standard library, each call to <tt>Hamster::hash#put</tt> creates an efficient copy containing the modifications, leaving the original unmodified. Thus, all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
 
   original = Hamster.hash
   copy = original.put("Name", "Simon")
@@ -33,9 +33,9 @@ The same goes for <tt>#remove</tt>:
 
 == Oh, I get it. Cool. But I still don't understand why I should care?
 
-As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of heap space in the process.
+As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of memory in the process. Moreover, because they're immutable, you can pass them around between objects, methods, and functions and never worry about data corruption; no more defensive calls to <tt>collection.dup</tt>!
 
-Moreover, because they're immutable, you can pass them around between objects, methods, and functions and never worry about data corruption; no more defensive calls to <tt>collection.dup</tt>!
+For an interesting read on why immutability is a good thing, take a look at Matthias Felleisen's Function Objects presnetation (http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf).
 
 == OK, that sounds mildly interesting. What's the downside--there's always a downside?
 
@@ -159,6 +159,6 @@ How is this even possible? It's possible because <tt>IO#to_list</tt> creates a l
 
 Hamster started out as a spike to prove a point and has since morphed into something I actually use. My primary concern has been to round out the functionality with good test coverage and clean, readable code.
 
-Performance is pretty good--especially with lazy lists--but there are some things which unfortunately had to be converted from recursive to iterative due to a lack of Tail-Call-Optimisation in Ruby, making them a little less readable than I would otherwise have preferred.
+Performance is pretty good--especially with lazy lists--but there are some things which unfortunately had to be converted from recursive to iterative due to a lack of Tail-Call-Optimisation in Ruby, making them a little less readable, and a little more memory hungry, than I would otherwise have preferred.
 
-Documentation is sparse but I've tried as best I can to write specs that reads as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
+Documentation is sparse but I've tried as best I can to write specs that read as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
