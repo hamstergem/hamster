@@ -20,6 +20,7 @@ module Hamster
     def empty?
       @trie.empty?
     end
+    alias_method :null?, :empty?
 
     def has_key?(key)
       @trie.has_key?(key)

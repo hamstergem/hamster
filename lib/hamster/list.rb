@@ -40,6 +40,7 @@ module Hamster
     def empty?
       false
     end
+    alias_method :null?, :empty?
 
     def size
       reduce(0) { |memo, item| memo.succ }
@@ -323,6 +324,7 @@ module Hamster
       def empty?
         true
       end
+      alias_method :null?, :empty?
 
       def map
         self

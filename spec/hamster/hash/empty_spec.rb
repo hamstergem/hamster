@@ -4,16 +4,20 @@ require 'hamster/hash'
 
 describe Hamster::Hash do
 
-  describe "#empty?" do
+  [:empty?, :null?].each do |method|
 
-    [
-      [[], true],
-      [["A" => "aye"], false],
-      [["A" => "aye", "B" => "bee", "C" => "see"], false],
-    ].each do |pairs, result|
+    describe "##{method}" do
 
-      it "returns #{result} for #{pairs.inspect}" do
-        Hamster.hash(*pairs).empty?.should == result
+      [
+        [[], true],
+        [["A" => "aye"], false],
+        [["A" => "aye", "B" => "bee", "C" => "see"], false],
+      ].each do |pairs, result|
+
+        it "returns #{result} for #{pairs.inspect}" do
+          Hamster.hash(*pairs).send(method).should == result
+        end
+
       end
 
     end
