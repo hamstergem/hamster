@@ -193,6 +193,10 @@ module Hamster
       Stream.new(EmptyList.cons(other.head).cons(head)) { tail.zip(other.tail) }
     end
 
+    def cycle
+      Stream.new(head) { tail.append(self.cycle) }
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
@@ -383,6 +387,10 @@ module Hamster
 
       def zip(other)
         return super unless other.empty?
+        self
+      end
+
+      def cycle
         self
       end
 
