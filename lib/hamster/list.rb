@@ -101,11 +101,8 @@ module Hamster
     end
 
     def take(number)
-      if number > 0
-        Stream.new(head) { tail.take(number - 1) }
-      else
-        EmptyList
-      end
+      return EmptyList unless number > 0
+      Stream.new(head) { tail.take(number - 1) }
     end
 
     def drop(number)
