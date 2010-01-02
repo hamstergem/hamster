@@ -4,16 +4,28 @@ require 'hamster/set'
 
 describe Hamster::Set do
 
-  describe "#empty?" do
+  [:empty?, :null?].each do |method|
 
-    [
-      [[], true],
-      [["A"], false],
-      [["A", "B", "C"], false],
-    ].each do |values, result|
+    describe "##{method}" do
 
-      it "returns #{result} for #{values.inspect}" do
-        Hamster.set(*values).empty?.should == result
+      [
+        [[], true],
+        [["A"], false],
+        [["A", "B", "C"], false],
+      ].each do |values, expected|
+
+        describe "on #{values.inspect}" do
+
+          before do
+            @set = Hamster.set(*values)
+          end
+
+          it "returns #{expected.inspect}" do
+            @set.send(method).should == expected
+          end
+
+        end
+
       end
 
     end
