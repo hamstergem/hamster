@@ -45,11 +45,11 @@ describe Hamster do
     describe "with no block" do
 
       before do
-        @stream = Hamster.stream
+        @list = Hamster.stream
       end
 
       it "returns an empty list" do
-        @stream.should == Hamster.list
+        @list.should == Hamster.list
       end
 
     end
@@ -58,11 +58,11 @@ describe Hamster do
 
       before do
         count = 0
-        @stream = Hamster.stream { count += 1 }
+        @list = Hamster.stream { count += 1 }
       end
 
       it "repeatedly calls the block" do
-        @stream.take(5).should == Hamster.list(1, 2, 3, 4, 5)
+        @list.take(5).should == Hamster.list(1, 2, 3, 4, 5)
       end
 
     end
@@ -74,11 +74,11 @@ describe Hamster do
     describe ".#{method}" do
 
       before do
-        @interval = Hamster.send(method, "A", "D")
+        @list = Hamster.send(method, "A", "D")
       end
 
       it "is equivalent to a list with explicit values" do
-        @interval.should == Hamster.list("A", "B", "C", "D")
+        @list.should == Hamster.list("A", "B", "C", "D")
       end
 
     end
@@ -88,11 +88,11 @@ describe Hamster do
   describe ".repeat" do
 
     before do
-      @stream = Hamster.repeat("A").take(5)
+      @list = Hamster.repeat("A")
     end
 
-    it "does something" do
-      @stream.should == Hamster.list("A", "A", "A", "A", "A")
+    it "returns an infinite list with specified value for each element" do
+      @list.take(5).should == Hamster.list("A", "A", "A", "A", "A")
     end
 
   end
@@ -100,11 +100,23 @@ describe Hamster do
   describe ".replicate" do
 
     before do
-      @stream = Hamster.replicate(5, "A")
+      @list = Hamster.replicate(5, "A")
     end
 
-    it "does something" do
-      @stream.should == Hamster.list("A", "A", "A", "A", "A")
+    it "returns a list with the specified value repeated the specified number of times" do
+      @list.should == Hamster.list("A", "A", "A", "A", "A")
+    end
+
+  end
+
+  describe ".iterate" do
+
+    before do
+      @list = Hamster.iterate(1) { |item| item * 2 }
+    end
+
+    it "returns an infinite list where the first item is calculated by applying the block on the initial argument, the second item by applying the function on the previous result and so on" do
+      @list.take(10).should == Hamster.list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512)
     end
 
   end
