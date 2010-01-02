@@ -10,19 +10,14 @@ describe Hamster::List do
 
       describe "doesn't run out of stack space on a really big" do
 
-        before do
-          @interval_a = Hamster.interval(0, 10000)
-          @interval_b = Hamster.interval(0, 10000)
-        end
-
         it "stream" do
-          @a = @interval_a
-          @b = @interval_b
+          @a = Hamster.interval(0, 10000)
+          @b = Hamster.interval(0, 10000)
         end
 
         it "list" do
-          @a = @interval_a.reduce(Hamster.list) { |list, i| list.cons(i) }
-          @b = @interval_b.reduce(Hamster.list) { |list, i| list.cons(i) }
+          @a = (0..10000).reduce(Hamster.list) { |list, i| list.cons(i) }
+          @b = (0..10000).reduce(Hamster.list) { |list, i| list.cons(i) }
         end
 
         after do
