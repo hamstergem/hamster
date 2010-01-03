@@ -14,4 +14,5 @@ Gem::Specification.new do |s|
   s.homepage         = "http://github.com/harukizaemon/hamster"
   s.require_path     = "lib"
   s.files            = Dir["lib/**/*", "spec/**/*", "tasks/**/*", "Rakefile"] + s.extra_rdoc_files
+  s.add_development_dependency("rspec")
 end
