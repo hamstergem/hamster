@@ -4,7 +4,7 @@ require 'hamster/list'
 module Hamster
 
   def self.set(*items)
-    items.inject(Set.new) { |set, item| set.add(item) }
+    items.reduce(Set.new) { |set, item| set.add(item) }
   end
 
   class Set

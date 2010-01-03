@@ -7,7 +7,7 @@ module Hamster
   class << self
 
     def list(*items)
-      items.reverse.inject(EmptyList) { |list, item| list.cons(item) }
+      items.reverse.reduce(EmptyList) { |list, item| list.cons(item) }
     end
 
     def stream(&block)
@@ -261,7 +261,7 @@ module Hamster
     # identify the series of car and cdr operations that is performed by the function. The order in which the 'a's and
     # 'd's appear is the inverse of the order in which the corresponding operations are performed.
     def accessor(sequence)
-      sequence.split(//).reverse!.inject(self) do |memo, char|
+      sequence.split(//).reverse!.reduce(self) do |memo, char|
         case char
         when "a" then memo.head
         when "d" then memo.tail
