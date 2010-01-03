@@ -13,3 +13,5 @@
 * Independently test list methods on intervals.
 * Make Set and Hash lazy
 * Test laziness of List methods that don't take a block.
+* Generate spec docs
+* Add missing immutability tests
