@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name             = "hamster"
   s.version          = Hamster::VERSION
   s.platform         = Gem::Platform::RUBY
-  s.required_ruby_version = ">= 1.8.6"
+  s.required_ruby_version = ">= 1.8.7"
   s.has_rdoc         = true
   s.extra_rdoc_files = ["README.rdoc", "History.rdoc", "LICENSE"]
   s.summary          = "Persistent Data Structures for Ruby"

@@ -3,7 +3,7 @@ require 'hamster/list'
 module Hamster
 
   def self.stack(*items)
-    items.inject(EmptyStack) { |stack, item| stack.push(item) }
+    items.reduce(EmptyStack) { |stack, item| stack.push(item) }
   end
 
   class Stack
