@@ -1,3 +1,7 @@
+=== 0.1.18 / 2010-01-03
+
+* Added gem development dependency on RSpec.
+
 === 0.1.17 / 2010-01-02
 
 * Alias #empty? as #null?
