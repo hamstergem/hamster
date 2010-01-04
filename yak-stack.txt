@@ -19,3 +19,6 @@
 * Add missing immutability tests to Set
 * Add missing immutability tests to Hash
 * Add missing immutability tests to Stack
+* Re-write Trie test-first (it was only a spike)
+* Allow Trie to effeciently add multiple pairs in one go
+* Implement Vector (using a Trie and integer keys?)
