@@ -31,11 +31,16 @@ describe Hamster::List do
       describe "on #{values.inspect}" do
 
         before do
-          @list = Hamster.list(*values)
+          @original = Hamster.list(*values)
+          @result = @original.reverse { |item| item.downcase }
+        end
+
+        it "preserves the original" do
+          @original.should == Hamster.list(*values)
         end
 
         it "returns #{expected.inspect}" do
-          @list.reverse { |item| item.downcase }.should == Hamster.list(*expected)
+          @result.should == Hamster.list(*expected)
         end
 
       end

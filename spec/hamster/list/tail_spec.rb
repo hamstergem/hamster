@@ -15,11 +15,11 @@ describe Hamster::List do
       describe "on #{values.inspect}" do
 
         before do
-          @list = Hamster.list(*values)
+          @result = Hamster.list(*values).tail
         end
 
         it "returns #{expected.inspect}" do
-          @list.tail.should == Hamster.list(*expected)
+          @result.should == Hamster.list(*expected)
         end
 
       end

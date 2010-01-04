@@ -17,36 +17,23 @@ describe Hamster::List do
       end
 
       after do
-        @list.split_at(5000)
+        @list.split_at(10000)
       end
 
     end
 
-    describe "on an empty list" do
+    describe "on a stream" do
 
       before do
-        splits = Hamster.list.split_at(4)
-        @prefix = splits.car
-        @remainder = splits.cadr
+        count = 0
+        counter = Hamster.stream { count += 1 }
+        @result = counter.split_at(5)
+        @prefix = @result.car
+        @remainder = @result.cadr
       end
 
-      it "returns the empty list for the prefix" do
-        @prefix.should equal(Hamster.list)
-      end
-
-      it "returns the empty list for the remainder" do
-        @remainder.should equal(Hamster.list)
-      end
-
-    end
-
-    describe "on a non-empty list" do
-
-      before do
-        interval = Hamster.interval(1, 11)
-        splits = interval.split_at(5)
-        @prefix = splits.car
-        @remainder = splits.cadr
+      it "returns a list with two items" do
+        @result.size.should == 2
       end
 
       it "correctly identifies the prefix" do
@@ -54,7 +41,71 @@ describe Hamster::List do
       end
 
       it "correctly identifies the remainder" do
-        @remainder.should == Hamster.list(6, 7, 8, 9, 10, 11)
+        @remainder.take(5).should == Hamster.list(6, 7, 8, 9, 10)
+      end
+
+    end
+
+    describe "on an interval" do
+
+      before do
+        @original = Hamster.interval(1, 10)
+        @result = @original.split_at(5)
+        @prefix = @result.car
+        @remainder = @result.cadr
+      end
+
+      it "preserves the original" do
+        @original.should == Hamster.interval(1, 10)
+      end
+
+      it "returns a list with two items" do
+        @result.size.should == 2
+      end
+
+      it "correctly identifies the prefix" do
+        @prefix.should == Hamster.list(1, 2, 3, 4, 5)
+      end
+
+      it "correctly identifies the remainder" do
+        @remainder.should == Hamster.list(6, 7, 8, 9, 10)
+      end
+
+    end
+
+    [
+      [[], [], []],
+      [[1], [1], []],
+      [[1, 2], [1, 2], []],
+      [[1, 2, 3], [1, 2], [3]],
+      [[1, 2, 3, 4], [1, 2], [3, 4]],
+    ].each do |values, expected_prefix, expected_remainder|
+
+      describe "on #{values.inspect}" do
+
+        before do
+          @original = Hamster.list(*values)
+          @result = @original.split_at(2)
+          @prefix = @result.car
+          @remainder = @result.cadr
+        end
+
+        it "preserves the original" do
+          @original.should == Hamster.list(*values)
+        end
+
+        it "returns a list with two items" do
+          @result.size.should == 2
+        end
+
+        it "correctly identifies the matches" do
+          @prefix.should == Hamster.list(*expected_prefix)
+        end
+
+        it "correctly identifies the remainder" do
+          @remainder.should == Hamster.list(*expected_remainder)
+        end
+
       end
 
     end

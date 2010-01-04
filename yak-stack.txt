@@ -14,4 +14,8 @@
 * Make Set and Hash lazy
 * Test laziness of List methods that don't take a block.
 * Generate spec docs
-* Add missing immutability tests
+* Laziness tests can be simplified
+* Add more tests for each method on streams and intervals
+* Add missing immutability tests to Set
+* Add missing immutability tests to Hash
+* Add missing immutability tests to Stack

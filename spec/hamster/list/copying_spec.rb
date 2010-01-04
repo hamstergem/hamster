@@ -15,11 +15,12 @@ describe Hamster::List do
       describe "on #{values.inspect}" do
 
         before do
-          @list = Hamster.list(*values)
+          @original = Hamster.list(*values)
+          @result = @original.send(method)
         end
 
         it "returns self" do
-          @list.send(method).should equal(@list)
+          @result.should equal(@original)
         end
 
       end

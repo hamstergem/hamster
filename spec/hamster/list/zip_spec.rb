@@ -28,17 +28,18 @@ describe Hamster::List do
       [["A"], [], [Hamster.list("A", nil)]],
       [[], ["A"], [Hamster.list(nil, "A")]],
       [["A", "B", "C"], ["aye", "bee", "see"], [Hamster.list("A", "aye"), Hamster.list("B", "bee"), Hamster.list("C", "see")]],
-    ].each do |a, b, expected|
+    ].each do |left, right, expected|
 
-      describe "on #{a.inspect} and #{b.inspect}" do
+      describe "on #{left.inspect} and #{right.inspect}" do
 
         before do
-          @a = Hamster.list(*a)
-          @b = Hamster.list(*b)
+          @left = Hamster.list(*left)
+          @right = Hamster.list(*right)
+          @result = @left.zip(@right)
         end
 
         it "returns #{expected.inspect}" do
-          @a.zip(@b).should == Hamster.list(*expected)
+          @result.should == Hamster.list(*expected)
         end
 
       end

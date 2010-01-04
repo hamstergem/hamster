@@ -59,16 +59,21 @@ describe Hamster::List do
         describe "on #{values.inspect}" do
 
           before do
-            @list = Hamster.list(*values)
+            @original = Hamster.list(*values)
+            @result = @original.grep(String) { |item| item.downcase }
+          end
+
+          it "preserves the original" do
+            @original.should == Hamster.list(*values)
           end
 
           it "returns #{expected.inspect}" do
-            @list.grep(String) { |item| item.downcase }.should == Hamster.list(*expected)
+            @result.should == Hamster.list(*expected)
           end
 
           it "is lazy" do
             count = 0
-            @list.grep(Object) { |item| count += 1; item }
+            @original.grep(Object) { |item| count += 1; item }
             count.should <= 1
           end
 

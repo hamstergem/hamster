@@ -17,11 +17,11 @@ describe Hamster::List do
         describe "on #{values.inspect}" do
 
           before do
-            @list = Hamster.list(*values)
+            @result = Hamster.list(*values).send(method)
           end
 
           it "returns #{expected.inspect}" do
-            @list.send(method).should == expected
+            @result.should == expected
           end
 
         end
