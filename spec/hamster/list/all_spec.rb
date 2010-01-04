@@ -46,26 +46,58 @@ describe Hamster::List do
           @list = Hamster.list("A", "B", "C")
         end
 
-        it "returns true if the block always returns true" do
-          @list.all? { |item| true }.should be_true
+        describe "if the block always returns true" do
+
+          before do
+            @result = @list.all? { |item| true }
+          end
+
+          it "returns true" do
+            @result.should be_true
+          end
+
         end
 
-        it "returns false if the block ever returns false" do
-          @list.all? { |item| item == "D" }.should be_false
+        describe "if the block ever returns false" do
+
+          before do
+            @result = @list.all? { |item| item == "D" }
+          end
+
+          it "returns false" do
+            @result.should be_false
+          end
+
         end
 
       end
 
       describe "with no block" do
 
-        it "returns true if all values are truthy" do
-          Hamster.list(true, "A").all?.should be_true
+        describe "if all values are truthy" do
+
+          before do
+            @result = Hamster.list(true, "A").all?
+          end
+
+          it "returns true" do
+            @result.should be_true
+          end
+
         end
 
         [nil, false].each do |value|
 
-          it "returns false if any value is #{value.inspect}" do
-            Hamster.list(value, true, "A").all?.should be_false
+          describe "if any value is #{value.inspect}" do
+
+            before do
+              @result = Hamster.list(value, true, "A").all?
+            end
+
+            it "returns false" do
+              @result.should be_false
+            end
+
           end
 
         end
