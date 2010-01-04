@@ -27,9 +27,13 @@ describe Hamster::List do
       before do
         count = 0
         counter = Hamster.stream { count += 1 }
-        partitions = counter.partition { |item| item %2 != 0 }
-        @matches = partitions.car
-        @remainder = partitions.cadr
+        @result = counter.partition { |item| item %2 != 0 }
+        @matches = @result.car
+        @remainder = @result.cadr
+      end
+
+      it "returns a list with two items" do
+        @result.size.should == 2
       end
 
       it "correctly identifies the matches" do
@@ -51,9 +55,13 @@ describe Hamster::List do
       describe "with a block" do
 
         before do
-          result = @original.partition { |item| (item % 2) != 0 }
-          @matching = result.car
-          @remainder = result.cadr
+          @result = @original.partition { |item| (item % 2) != 0 }
+          @matching = @result.car
+          @remainder = @result.cadr
+        end
+
+        it "returns a list with two items" do
+          @result.size.should == 2
         end
 
         it "correctly identifies the matches" do
@@ -95,9 +103,9 @@ describe Hamster::List do
 
         before do
           @original = Hamster.list(*values)
-          @partitions = @original.partition { |item| (item % 2) != 0 }
-          @matches = @partitions.car
-          @remainder = @partitions.cadr
+          @result = @original.partition { |item| (item % 2) != 0 }
+          @matches = @result.car
+          @remainder = @result.cadr
         end
 
         it "preserves the original" do
@@ -105,7 +113,7 @@ describe Hamster::List do
         end
 
         it "returns a list with two items" do
-          @partitions.size.should == 2
+          @result.size.should == 2
         end
 
         it "correctly identifies the matches" do

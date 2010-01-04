@@ -31,18 +31,23 @@ describe Hamster::List do
       describe "on #{values.inspect}" do
 
         before do
-          @list = Hamster.list(*values)
+          @original = Hamster.list(*values)
+          @result = @original.take_while { |item| item < "C" }
         end
 
         describe "with a block" do
 
           it "returns #{expected.inspect}" do
-            @list.take_while { |item| item < "C" }.should == Hamster.list(*expected)
+            @result.should == Hamster.list(*expected)
+          end
+
+          it "preserves the original" do
+            @original.should == Hamster.list(*values)
           end
 
           it "is lazy" do
             count = 0
-            @list.take_while { |item| count += 1; true }
+            @original.take_while { |item| count += 1; true }
             count.should <= 1
           end
 
@@ -50,8 +55,12 @@ describe Hamster::List do
 
         describe "without a block" do
 
+          before do
+            @result = @original.take_while
+          end
+
           it "returns self" do
-            @list.take_while.should equal(@list)
+            @result.should equal(@original)
           end
 
         end

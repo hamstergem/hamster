@@ -31,21 +31,33 @@ describe Hamster::List do
       describe "on #{values.inspect}" do
 
         before do
-          @list = Hamster.list(*values)
+          @original = Hamster.list(*values)
         end
 
         describe "with a block" do
 
+          before do
+            @result = @original.drop_while { |item| item < "C" }
+          end
+
+          it "preserves the original" do
+            @original.should == Hamster.list(*values)
+          end
+
           it "returns #{expected.inspect}" do
-            @list.drop_while { |item| item < "C" }.should == Hamster.list(*expected)
+            @result.should == Hamster.list(*expected)
           end
 
         end
 
         describe "without a block" do
 
+          before do
+            @result = @original.drop_while
+          end
+
           it "returns self" do
-            @list.drop_while.should equal(@list)
+            @result.should equal(@original)
           end
 
         end

@@ -35,18 +35,26 @@ describe Hamster::List do
         describe "on #{values.inspect}" do
 
           before do
-            @list = Hamster.list(*values)
+            @original = Hamster.list(*values)
           end
 
           describe "with a block" do
 
+            before do
+              @result = @original.send(method) { |item| item == item.upcase }
+            end
+
+            it "preserves the original" do
+              @original.should == Hamster.list(*values)
+            end
+
             it "returns #{expected.inspect}" do
-              @list.send(method) { |item| item == item.upcase }.should == Hamster.list(*expected)
+              @result.should == Hamster.list(*expected)
             end
 
             it "is lazy" do
               count = 0
-              @list.send(method) { |item| count += 1; true }
+              @original.send(method) { |item| count += 1; true }
               count.should <= 1
             end
 
@@ -55,7 +63,7 @@ describe Hamster::List do
           describe "without a block" do
 
             it "returns self" do
-              @list.send(method).should equal(@list)
+              @original.send(method).should equal(@original)
             end
 
           end

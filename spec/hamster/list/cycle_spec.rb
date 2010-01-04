@@ -37,11 +37,16 @@ describe Hamster do
     describe "with a non-empty list" do
 
       before do
-        @list = Hamster.list("A", "B", "C").cycle
+        @original = Hamster.list("A", "B", "C")
+        @result = @original.cycle
+      end
+
+      it "preserves the original" do
+        @original.should == Hamster.list("A", "B", "C")
       end
 
       it "infinitely cycles through all values" do
-        @list.take(7).should == Hamster.list("A", "B", "C", "A", "B", "C", "A")
+        @result.take(7).should == Hamster.list("A", "B", "C", "A", "B", "C", "A")
       end
 
     end

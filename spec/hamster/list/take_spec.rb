@@ -33,11 +33,16 @@ describe Hamster::List do
       describe "#{number} from #{values.inspect}" do
 
         before do
-          @list = Hamster.list(*values)
+          @original = Hamster.list(*values)
+          @result = @original.take(number)
+        end
+
+        it "preserves the original" do
+          @original.should == Hamster.list(*values)
         end
 
         it "returns #{expected.inspect}" do
-          @list.take(number).should == Hamster.list(*expected)
+          @result.should == Hamster.list(*expected)
         end
 
       end

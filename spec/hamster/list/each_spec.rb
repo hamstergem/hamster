@@ -31,27 +31,34 @@ describe Hamster::List do
       describe "on #{values.inspect}" do
 
         before do
-          @list = Hamster.list(*values)
+          @original = Hamster.list(*values)
         end
 
         describe "with a block" do
 
+          before do
+            @items = []
+            @result = @original.each { |value| @items << value }
+          end
+
           it "iterates over the items in order" do
-            items = []
-            @list.each { |value| items << value }
-            items.should == values
+            @items.should == values
           end
 
           it "returns nil" do
-            @list.each {}.should be_nil
+            @result.should be_nil
           end
 
         end
 
         describe "without a block" do
 
+          before do
+            @result = @original.each
+          end
+
           it "returns self" do
-            @list.each.should equal(@list)
+            @result.should equal(@original)
           end
 
         end
