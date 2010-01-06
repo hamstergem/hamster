@@ -22,7 +22,7 @@ describe Hamster::List do
 
     end
 
-    describe "enables explicit conversion to" do
+    describe "enables implicit conversion to" do
 
       before do
         @list = Hamster.list("A", "B", "C")
