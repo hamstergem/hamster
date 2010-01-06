@@ -22,3 +22,4 @@
 * Re-write Trie test-first (it was only a spike)
 * Allow Trie to effeciently add multiple pairs in one go
 * Implement Vector (using a Trie and integer keys?)
+* Allow drop_while, etc. to be lazy using a stream (or something like that)
