@@ -4,6 +4,32 @@ require 'hamster/list'
 
 describe Hamster::List do
 
+  shared_examples_for "#span without a block" do
+
+    describe "without a block" do
+
+      before do
+        @result = @original.span
+        @prefix = @result.car
+        @remainder = @result.cadr
+      end
+
+      it "returns a list with two items" do
+        @result.size.should == 2
+      end
+
+      it "returns self as the prefix" do
+        @prefix.should equal(@original)
+      end
+
+      it "leaves the remainder empty" do
+        @remainder.should be_empty
+      end
+
+    end
+
+  end
+
   describe "#span" do
 
     describe "doesn't run out of stack space on a really big" do
@@ -18,32 +44,6 @@ describe Hamster::List do
 
       after do
         @list.span { |item| item < 5000 }
-      end
-
-    end
-
-    shared_examples_for "#span without a block" do
-
-      describe "without a block" do
-
-        before do
-          @result = @original.span
-          @prefix = @result.car
-          @remainder = @result.cadr
-        end
-
-        it "returns a list with two items" do
-          @result.size.should == 2
-        end
-
-        it "returns self as the prefix" do
-          @prefix.should equal(@original)
-        end
-
-        it "leaves the remainder empty" do
-          @remainder.should be_empty
-        end
-
       end
 
     end
