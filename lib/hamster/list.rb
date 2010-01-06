@@ -217,6 +217,11 @@ module Hamster
       EmptyList.cons(drop_while(&block)).cons(take_while(&block))
     end
 
+    def break(&block)
+      return EmptyList.cons(EmptyList).cons(self) unless block_given?
+      span { |item| !yield(item) }
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 

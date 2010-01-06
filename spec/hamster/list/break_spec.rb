@@ -4,7 +4,7 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  describe "#span" do
+  describe "#break" do
 
     describe "doesn't run out of stack space on a really big" do
 
@@ -17,17 +17,17 @@ describe Hamster::List do
       end
 
       after do
-        @list.span { |item| item < 5000 }
+        @list.break { |item| item < 5000 }
       end
 
     end
 
-    shared_examples_for "#span without a block" do
+    shared_examples_for "#break without a block" do
 
       describe "without a block" do
 
         before do
-          @result = @original.span
+          @result = @original.break
           @prefix = @result.car
           @remainder = @result.cadr
         end
@@ -58,7 +58,7 @@ describe Hamster::List do
       describe "with a block" do
 
         before do
-          @result = @original.span { |item| item <= 5 }
+          @result = @original.break { |item| item > 5 }
           @prefix = @result.car
           @remainder = @result.cadr
         end
@@ -77,7 +77,7 @@ describe Hamster::List do
 
       end
 
-      it_should_behave_like "#span without a block"
+      it_should_behave_like "#break without a block"
 
     end
 
@@ -90,7 +90,7 @@ describe Hamster::List do
       describe "with a block" do
 
         before do
-          @result = @original.span { |item| item <= 5 }
+          @result = @original.break { |item| item > 5 }
           @prefix = @result.car
           @remainder = @result.cadr
         end
@@ -109,7 +109,7 @@ describe Hamster::List do
 
       end
 
-      it_should_behave_like "#span without a block"
+      it_should_behave_like "#break without a block"
 
     end
 
@@ -133,7 +133,7 @@ describe Hamster::List do
         describe "with a block" do
 
           before do
-            @result = @original.span { |item| item <= 2 }
+            @result = @original.break { |item| item > 2 }
             @prefix = @result.car
             @remainder = @result.cadr
           end
@@ -156,7 +156,7 @@ describe Hamster::List do
 
         end
 
-        it_should_behave_like "#span without a block"
+        it_should_behave_like "#break without a block"
 
       end
 
