@@ -22,6 +22,32 @@ describe Hamster::List do
 
     end
 
+    shared_examples_for "without a block" do
+
+      describe "without a block" do
+
+        before do
+          @result = @original.span
+          @prefix = @result.car
+          @remainder = @result.cadr
+        end
+
+        it "returns a list with two items" do
+          @result.size.should == 2
+        end
+
+        it "returns self as the prefix" do
+          @prefix.should equal(@original)
+        end
+
+        it "leaves the remainder empty" do
+          @remainder.should be_empty
+        end
+
+      end
+
+    end
+
     describe "on a stream" do
 
       before do
@@ -51,27 +77,7 @@ describe Hamster::List do
 
       end
 
-      describe "without a block" do
-
-        before do
-          @result = @original.span
-          @prefix = @result.car
-          @remainder = @result.cadr
-        end
-
-        it "returns a list with two items" do
-          @result.size.should == 2
-        end
-
-        it "returns self as the prefix" do
-          @prefix.should equal(@original)
-        end
-
-        it "leaves the remainder empty" do
-          @remainder.should be_empty
-        end
-
-      end
+      it_should_behave_like "without a block"
 
     end
 
@@ -103,27 +109,7 @@ describe Hamster::List do
 
       end
 
-      describe "without a block" do
-
-        before do
-          @result = @original.span
-          @prefix = @result.car
-          @remainder = @result.cadr
-        end
-
-        it "returns a list with two items" do
-          @result.size.should == 2
-        end
-
-        it "returns self as the prefix" do
-          @prefix.should equal(@original)
-        end
-
-        it "leaves the remainder empty" do
-          @remainder.should be_empty
-        end
-
-      end
+      it_should_behave_like "without a block"
 
     end
 
@@ -170,27 +156,7 @@ describe Hamster::List do
 
         end
 
-        describe "without a block" do
-
-          before do
-            @result = @original.span
-            @prefix = @result.car
-            @remainder = @result.cadr
-          end
-
-          it "returns a list with two items" do
-            @result.size.should == 2
-          end
-
-          it "returns self as the prefix" do
-            @prefix.should equal(@original)
-          end
-
-          it "leaves the remainder empty" do
-            @remainder.should be_empty
-          end
-
-        end
+        it_should_behave_like "without a block"
 
       end
 
