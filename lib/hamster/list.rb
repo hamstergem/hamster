@@ -215,6 +215,10 @@ module Hamster
       span { |item| !yield(item) }
     end
 
+    def clear
+      EmptyList
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
