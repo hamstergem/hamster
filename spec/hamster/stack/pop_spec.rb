@@ -46,8 +46,8 @@ describe Hamster::Stack do
           @original.should == Hamster.stack(*values)
         end
 
-        it "returns the empty stack" do
-          @result.should equal(Hamster.stack)
+        it "returns an empty stack" do
+          @result.should be_empty
         end
 
       end
