@@ -22,6 +22,14 @@ describe Hamster::List do
 
     end
 
+    it "is lazy" do
+      count = 0
+      left = Hamster.stream { count += 1 }
+      right = Hamster.stream { count += 1 }
+      result = left.zip(right)
+      count.should <= 2
+    end
+
     [
       [[], [], []],
       [["A"], ["aye"], [Hamster.list("A", "aye")]],

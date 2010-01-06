@@ -22,6 +22,13 @@ describe Hamster do
 
     end
 
+    it "is lazy" do
+      count = 0
+      list = Hamster.stream { count += 1 }
+      list.cycle
+      count.should <= 1
+    end
+
     describe "with an empty list" do
 
       before do

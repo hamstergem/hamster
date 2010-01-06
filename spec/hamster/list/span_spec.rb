@@ -30,6 +30,16 @@ describe Hamster::List do
 
   end
 
+  shared_examples_for "#span is lazy" do
+
+    it "is lazy" do
+      count = 0
+      @original.span { |item| count += 1; true }
+      count.should <= 1
+    end
+
+  end
+
   describe "#span" do
 
     describe "doesn't run out of stack space on a really big" do
@@ -79,6 +89,8 @@ describe Hamster::List do
 
       it_should_behave_like "#span without a block"
 
+      it_should_behave_like "#span is lazy"
+
     end
 
     describe "on an interval" do
@@ -110,6 +122,8 @@ describe Hamster::List do
       end
 
       it_should_behave_like "#span without a block"
+
+      it_should_behave_like "#span is lazy"
 
     end
 
@@ -157,6 +171,8 @@ describe Hamster::List do
         end
 
         it_should_behave_like "#span without a block"
+
+        it_should_behave_like "#span is lazy"
 
       end
 

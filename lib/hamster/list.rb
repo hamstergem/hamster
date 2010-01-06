@@ -163,7 +163,7 @@ module Hamster
 
     def partition(&block)
       return self unless block_given?
-      EmptyList.cons(reject(&block)).cons(filter(&block))
+      Stream.new(filter(&block)) { EmptyList.cons(reject(&block)) }
     end
 
     def append(other)
@@ -202,12 +202,13 @@ module Hamster
     end
 
     def split_at(number)
+      # Stream.new(take(number)) { EmptyList.cons(drop(number)) }
       EmptyList.cons(drop(number)).cons(take(number))
     end
 
     def span(&block)
       return EmptyList.cons(EmptyList).cons(self) unless block_given?
-      EmptyList.cons(drop_while(&block)).cons(take_while(&block))
+      Stream.new(take_while(&block)) { EmptyList.cons(drop_while(&block)) }
     end
 
     def break(&block)

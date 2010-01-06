@@ -20,6 +20,16 @@ describe Hamster::List do
 
   end
 
+  shared_examples_for "#partition is lazy" do
+
+    it "is lazy" do
+      count = 0
+      @original.partition { |item| count += 1; true }
+      count.should <= 1
+    end
+
+  end
+
   describe "#partition" do
 
     describe "doesn't run out of stack space on a really big" do
@@ -69,6 +79,8 @@ describe Hamster::List do
 
       it_should_behave_like "#partition without a block"
 
+      it_should_behave_like "#partition is lazy"
+
     end
 
     describe "on an interval" do
@@ -100,6 +112,8 @@ describe Hamster::List do
       end
 
       it_should_behave_like "#partition without a block"
+
+      it_should_behave_like "#partition is lazy"
 
     end
 
@@ -147,6 +161,8 @@ describe Hamster::List do
         end
 
         it_should_behave_like "#partition without a block"
+
+        it_should_behave_like "#partition is lazy"
 
       end
 
