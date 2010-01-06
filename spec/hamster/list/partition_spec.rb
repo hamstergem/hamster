@@ -4,6 +4,22 @@ require 'hamster/list'
 
 describe Hamster::List do
 
+  shared_examples_for "#partition without a block" do
+
+    describe "without a block" do
+
+      before do
+        @result = @original.partition
+      end
+
+      it "returns self" do
+        @result.should equal(@original)
+      end
+
+    end
+
+  end
+
   describe "#partition" do
 
     describe "doesn't run out of stack space on a really big" do
@@ -51,17 +67,7 @@ describe Hamster::List do
 
       end
 
-      describe "without a block" do
-
-        before do
-          @result = @original.partition
-        end
-
-        it "returns self" do
-          @result.should equal(@original)
-        end
-
-      end
+      it_should_behave_like "#partition without a block"
 
     end
 
@@ -93,17 +99,7 @@ describe Hamster::List do
 
       end
 
-      describe "without a block" do
-
-        before do
-          @result = @original.partition
-        end
-
-        it "returns self" do
-          @result.should equal(@original)
-        end
-
-      end
+      it_should_behave_like "#partition without a block"
 
     end
 
@@ -150,17 +146,7 @@ describe Hamster::List do
 
         end
 
-        describe "without a block" do
-
-          before do
-            @result = @original.partition
-          end
-
-          it "returns self" do
-            @result.should equal(@original)
-          end
-
-        end
+        it_should_behave_like "#partition without a block"
 
       end
 
