@@ -291,6 +291,7 @@ module Hamster
     include List
 
     attr_reader :head, :tail
+    alias_method :first, :head
 
     def initialize(head, tail = self)
       @head = head
@@ -304,6 +305,7 @@ module Hamster
     include List
 
     attr_reader :head
+    alias_method :first, :head
 
     def initialize(head, &tail)
       @head = head
@@ -331,6 +333,7 @@ module Hamster
       def head
         nil
       end
+      alias_method :first, :head
 
       def tail
         self

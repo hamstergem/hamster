@@ -4,22 +4,26 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  describe "#head" do
+  [:head, :first].each do |method|
 
-    [
-      [[], nil],
-      [["A"], "A"],
-      [["A", "B", "C"], "A"],
-    ].each do |values, expected|
+    describe "##{method}" do
 
-      describe "on #{values.inspect}" do
+      [
+        [[], nil],
+        [["A"], "A"],
+        [["A", "B", "C"], "A"],
+      ].each do |values, expected|
 
-        before do
-          @list = Hamster.list(*values)
-        end
+        describe "on #{values.inspect}" do
 
-        it "returns #{expected.inspect}" do
-          @list.head.should == expected
+          before do
+            @list = Hamster.list(*values)
+          end
+
+          it "returns #{expected.inspect}" do
+            @list.send(method).should == expected
+          end
+
         end
 
       end
