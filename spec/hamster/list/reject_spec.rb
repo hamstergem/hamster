@@ -15,7 +15,7 @@ describe Hamster::List do
         end
 
         it "list" do
-          @list = (0..STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
+          @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
         end
 
         after do
