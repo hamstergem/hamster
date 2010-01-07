@@ -1,3 +1,13 @@
+=== 0.1.20 / 2010-01-07
+
+* Implement Stack#clear.
+
+* Implement List#clear and Stack#clear.
+
+* Implement List#break.
+
+* Implement List#span.
+
 === 0.1.19 / 2010-01-03
 
 * Bump minimum Ruby version to 1.8.7. I mean really, c'mon!
