@@ -130,22 +130,19 @@ module Hamster
 
     def any?(&block)
       return any? { |item| item } unless block_given?
-      return true if yield(head)
-      tail.any?(&block)
+      !! yield(head) || tail.any?(&block)
     end
     alias_method :exist?, :any?
     alias_method :exists?, :any?
 
     def all?(&block)
       return all? { |item| item } unless block_given?
-      return false unless yield(head)
-      tail.all?(&block)
+      !! yield(head) && tail.all?(&block)
     end
 
     def none?(&block)
       return none? { |item| item } unless block_given?
-      return false if yield(head)
-      tail.none?(&block)
+      !yield(head) && tail.none?(&block)
     end
 
     def one?(&block)
