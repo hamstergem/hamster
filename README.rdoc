@@ -1,4 +1,4 @@
-= Hamster
+= Hamster - Efficient, Immutable, Thread-Safe Collection classes for Ruby
 
 Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
 
