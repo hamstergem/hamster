@@ -33,11 +33,11 @@ describe Hamster::List do
         end
 
         it "an array" do
-          @list.send(method, ["A", "B", "C"]).should be_false
+          @list.send(method, ["A", "B", "C"]).should == false
         end
 
         it "an aribtrary object" do
-          @list.send(method, Object.new).should be_false
+          @list.send(method, Object.new).should == false
         end
 
       end

@@ -15,11 +15,11 @@ describe Hamster::Hash do
         end
 
         it "a standard hash" do
-          @hash.send(method, "A" => "aye", "B" => "bee", "C" => "see").should be_false
+          @hash.send(method, "A" => "aye", "B" => "bee", "C" => "see").should == false
         end
 
         it "an aribtrary object" do
-          @hash.send(method, Object.new).should be_false
+          @hash.send(method, Object.new).should == false
         end
 
       end

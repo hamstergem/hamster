@@ -15,13 +15,13 @@ describe Hamster::Hash do
       ["A", "B", "C", nil].each do |key|
 
         it "returns true for an existing key (#{key.inspect})" do
-          @hash.send(method, key).should be_true
+          @hash.send(method, key).should == true
         end
 
       end
 
       it "returns false for a non-existing key" do
-        @hash.send(method, "D").should be_false
+        @hash.send(method, "D").should == false
       end
 
     end

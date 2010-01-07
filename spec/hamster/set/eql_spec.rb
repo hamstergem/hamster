@@ -16,11 +16,11 @@ describe Hamster::Set do
         end
 
         it "a standard set" do
-          @set.send(method, Set["A", "B", "C"]).should be_false
+          @set.send(method, Set["A", "B", "C"]).should == false
         end
 
         it "an aribtrary object" do
-          @set.send(method, Object.new).should be_false
+          @set.send(method, Object.new).should == false
         end
 
       end

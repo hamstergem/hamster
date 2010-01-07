@@ -13,11 +13,11 @@ describe Hamster::Hash do
       end
 
       it "with a block returns true" do
-        @hash.none? {}.should be_true
+        @hash.none? {}.should == true
       end
 
       it "with no block returns true" do
-        @hash.none?.should be_true
+        @hash.none?.should == true
       end
 
     end
@@ -38,11 +38,11 @@ describe Hamster::Hash do
         ].each do |pair|
 
           it "returns false if the block ever returns true (#{pair.inspect})" do
-            @hash.none? { |key, value| key == pair.first && value == pair.last }.should be_false
+            @hash.none? { |key, value| key == pair.first && value == pair.last }.should == false
           end
 
           it "returns true if the block always returns false" do
-            @hash.none? { |key, value| key == "D" && value == "dee" }.should be_true
+            @hash.none? { |key, value| key == "D" && value == "dee" }.should == true
           end
 
         end
@@ -52,7 +52,7 @@ describe Hamster::Hash do
       describe "with no block" do
 
         it "returns false" do
-          @hash.none?.should be_false
+          @hash.none?.should == false
         end
 
       end

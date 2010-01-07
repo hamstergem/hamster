@@ -20,7 +20,7 @@ describe Hamster::Set do
         end
 
         it "returns a list" do
-          @list.is_a?(Hamster::List).should be_true
+          @list.is_a?(Hamster::List).should == true
         end
 
         describe "the returned list" do

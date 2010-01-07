@@ -13,11 +13,11 @@ describe Hamster::Hash do
       end
 
       it "with a block returns true" do
-        @hash.all? {}.should be_true
+        @hash.all? {}.should == true
       end
 
       it "with no block returns true" do
-        @hash.all?.should be_true
+        @hash.all?.should == true
       end
 
     end
@@ -31,11 +31,11 @@ describe Hamster::Hash do
       describe "with a block" do
 
         it "returns true if the block always returns true" do
-          @hash.all? { |key, value| true }.should be_true
+          @hash.all? { |key, value| true }.should == true
         end
 
         it "returns false if the block ever returns false" do
-          @hash.all? { |key, value| key == "D" || value == "dee" }.should be_false
+          @hash.all? { |key, value| key == "D" || value == "dee" }.should == false
         end
 
       end
@@ -43,7 +43,7 @@ describe Hamster::Hash do
       describe "with no block" do
 
         it "returns true" do
-          @hash.all?.should be_true
+          @hash.all?.should == true
         end
 
       end
