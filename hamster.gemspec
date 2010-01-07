@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 1.8.7"
   s.has_rdoc         = true
   s.extra_rdoc_files = ["README.rdoc", "History.rdoc", "LICENSE"]
-  s.summary          = "Persistent Data Structures for Ruby"
+  s.summary          = "Efficient, Immutable, Thread-Safe Collection classes for Ruby"
   s.description      = s.summary
   s.author           = "Simon Harris"
   s.email            = "haruki.zaemon@gmail.com"
