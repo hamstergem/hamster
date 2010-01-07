@@ -11,11 +11,11 @@ describe Hamster::List do
       describe "doesn't run out of stack space on a really big" do
 
         it "stream" do
-          @list = Hamster.interval(0, 10000)
+          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
         end
 
         it "list" do
-          @list = (0..10000).reduce(Hamster.list) { |list, i| list.cons(i) }
+          @list = (0..STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
         end
 
         after do
@@ -31,11 +31,11 @@ describe Hamster::List do
         end
 
         it "with a block returns false" do
-          @list.send(method) {}.should be_false
+          @list.send(method) {}.should == false
         end
 
         it "with no block returns false" do
-          @list.send(method).should be_false
+          @list.send(method).should == false
         end
 
       end
@@ -51,13 +51,13 @@ describe Hamster::List do
           ["A", "B", "C", nil].each do |value|
 
             it "returns true if the block ever returns true (#{value.inspect})" do
-              @list.send(method) { |item| item == value }.should be_true
+              @list.send(method) { |item| item == value }.should == true
             end
 
           end
 
           it "returns false if the block always returns false" do
-            @list.send(method) { |item| item == "D" }.should be_false
+            @list.send(method) { |item| item == "D" }.should == false
           end
 
         end
@@ -65,11 +65,11 @@ describe Hamster::List do
         describe "with no block" do
 
           it "returns true if any value is truthy" do
-            Hamster.list(nil, false, true, "A").send(method).should be_true
+            Hamster.list(nil, false, "A", true).send(method).should == true
           end
 
           it "returns false if all values are falsey" do
-            Hamster.list(nil, false).send(method).should be_false
+            Hamster.list(nil, false).send(method).should == false
           end
 
         end

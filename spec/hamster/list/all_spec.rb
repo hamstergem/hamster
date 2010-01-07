@@ -9,11 +9,11 @@ describe Hamster::List do
     describe "doesn't run out of stack space on a really big" do
 
       it "stream" do
-        @list = Hamster.interval(0, 10000)
+        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
       end
 
       it "list" do
-        @list = (0..10000).reduce(Hamster.list) { |list, i| list.cons(i) }
+        @list = (0..STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
       end
 
       after do
@@ -29,11 +29,11 @@ describe Hamster::List do
       end
 
       it "with a block returns true" do
-        @list.all? {}.should be_true
+        @list.all? {}.should == true
       end
 
       it "with no block returns true" do
-        @list.all?.should be_true
+        @list.all?.should == true
       end
 
     end
@@ -53,7 +53,7 @@ describe Hamster::List do
           end
 
           it "returns true" do
-            @result.should be_true
+            @result.should == true
           end
 
         end
@@ -65,7 +65,7 @@ describe Hamster::List do
           end
 
           it "returns false" do
-            @result.should be_false
+            @result.should == false
           end
 
         end
@@ -81,7 +81,7 @@ describe Hamster::List do
           end
 
           it "returns true" do
-            @result.should be_true
+            @result.should == true
           end
 
         end
@@ -95,7 +95,7 @@ describe Hamster::List do
             end
 
             it "returns false" do
-              @result.should be_false
+              @result.should == false
             end
 
           end
