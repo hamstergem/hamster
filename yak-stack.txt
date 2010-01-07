@@ -1,3 +1,4 @@
+* Find a way to get the recursion branch not to fail - eg by making the stack-overflow tests temporarily disabled/pending.
 * Add List #count, #sort, #sort_by, #last, #nub, #each_slice, #join, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index)
 * Add Set #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #product, #sample, #clear
 * Add Hash #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
@@ -20,6 +21,6 @@
 * Add missing immutability tests to Hash
 * Add missing immutability tests to Stack
 * Re-write Trie test-first (it was only a spike)
-* Allow Trie to effeciently add multiple pairs in one go
+* Allow Trie to efficiently add multiple pairs in one go
 * Implement Vector (using a Trie and integer keys?)
 * Allow drop_while, etc. to be lazy using a stream (or something like that)
