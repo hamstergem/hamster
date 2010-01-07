@@ -45,11 +45,11 @@ describe Hamster::List do
     describe "doesn't run out of stack space on a really big" do
 
       it "stream" do
-        @list = Hamster.interval(0, 10000)
+        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
       end
 
       it "list" do
-        @list = (0..10000).reduce(Hamster.list) { |list, i| list.cons(i) }
+        @list = (0..STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
       end
 
       after do
