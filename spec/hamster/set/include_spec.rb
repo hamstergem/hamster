@@ -15,13 +15,13 @@ describe Hamster::Set do
       ["A", "B", "C", nil].each do |value|
 
         it "returns true for an existing value (#{value.inspect})" do
-          @set.send(method, value).should be_true
+          @set.send(method, value).should == true
         end
 
       end
 
       it "returns false for a non-existing value" do
-        @set.send(method, "D").should be_false
+        @set.send(method, "D").should == false
       end
 
     end

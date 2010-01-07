@@ -13,11 +13,11 @@ describe Hamster::Set do
       end
 
       it "with a block returns true" do
-        @set.none? {}.should be_true
+        @set.none? {}.should == true
       end
 
       it "with no block returns true" do
-        @set.none?.should be_true
+        @set.none?.should == true
       end
 
     end
@@ -33,13 +33,13 @@ describe Hamster::Set do
         ["A", "B", "C", nil].each do |value|
 
           it "returns false if the block ever returns true (#{value.inspect})" do
-            @set.none? { |item| item == value }.should be_false
+            @set.none? { |item| item == value }.should == false
           end
 
         end
 
         it "returns true if the block always returns false" do
-          @set.none? { |item| item == "D" }.should be_true
+          @set.none? { |item| item == "D" }.should == true
         end
 
       end
@@ -47,11 +47,11 @@ describe Hamster::Set do
       describe "with no block" do
 
         it "returns false if any value is truthy" do
-          Hamster.set(nil, false, true, "A").none?.should be_false
+          Hamster.set(nil, false, true, "A").none?.should == false
         end
 
         it "returns true if all values are falsey" do
-          Hamster.set(nil, false).none?.should be_true
+          Hamster.set(nil, false).none?.should == true
         end
 
       end

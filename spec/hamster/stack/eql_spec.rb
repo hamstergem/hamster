@@ -15,11 +15,11 @@ describe Hamster::Stack do
         end
 
         it "a list" do
-          @stack.send(method, Hamster.list("C", "B", "A")).should be_false
+          @stack.send(method, Hamster.list("C", "B", "A")).should == false
         end
 
         it "an aribtrary object" do
-          @stack.send(method, Object.new).should be_false
+          @stack.send(method, Object.new).should == false
         end
 
       end

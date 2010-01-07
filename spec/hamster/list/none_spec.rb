@@ -29,11 +29,11 @@ describe Hamster::List do
       end
 
       it "with a block returns true" do
-        @list.none? {}.should be_true
+        @list.none? {}.should == true
       end
 
       it "with no block returns true" do
-        @list.none?.should be_true
+        @list.none?.should == true
       end
 
     end
@@ -49,13 +49,13 @@ describe Hamster::List do
         ["A", "B", "C", nil].each do |value|
 
           it "returns false if the block ever returns true (#{value.inspect})" do
-            @list.none? { |item| item == value }.should be_false
+            @list.none? { |item| item == value }.should == false
           end
 
         end
 
         it "returns true if the block always returns false" do
-          @list.none? { |item| item == "D" }.should be_true
+          @list.none? { |item| item == "D" }.should == true
         end
 
       end
@@ -63,11 +63,11 @@ describe Hamster::List do
       describe "with no block" do
 
         it "returns false if any value is truthy" do
-          Hamster.list(nil, false, true, "A").none?.should be_false
+          Hamster.list(nil, false, true, "A").none?.should == false
         end
 
         it "returns true if all values are falsey" do
-          Hamster.list(nil, false).none?.should be_true
+          Hamster.list(nil, false).none?.should == true
         end
 
       end

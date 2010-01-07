@@ -11,7 +11,7 @@
 #       end
 #
 #       it "no longer provides access to the removed key" do
-#         @hash.has_key?("A").should be_false
+#         @hash.has_key?("A").should == false
 #       end
 #
 #     end
@@ -47,7 +47,7 @@
 #         end
 #
 #         it "doesn't have the removed key" do
-#           @copy.has_key?("A").should be_false
+#           @copy.has_key?("A").should == false
 #         end
 #
 #         it "has a size one less than the original" do
@@ -102,7 +102,7 @@
 #
 #       it "no longer provides access to the removed key" do
 #         copy = @original.remove(@b)
-#         copy.has_key?(@b).should be_false
+#         copy.has_key?(@b).should == false
 #       end
 #
 #       it "provides access to the remaining keys" do

@@ -15,11 +15,11 @@ describe Hamster::Hash do
         end
 
         it "with a block returns false" do
-          @hash.send(method) {}.should be_false
+          @hash.send(method) {}.should == false
         end
 
         it "with no block returns false" do
-          @hash.send(method).should be_false
+          @hash.send(method).should == false
         end
 
       end
@@ -40,11 +40,11 @@ describe Hamster::Hash do
           ].each do |pair|
 
             it "returns true if the block ever returns true (#{pair.inspect})" do
-              @hash.send(method) { |key, value| key == pair.first && value == pair.last }.should be_true
+              @hash.send(method) { |key, value| key == pair.first && value == pair.last }.should == true
             end
 
             it "returns false if the block always returns false" do
-              @hash.send(method) { |key, value| key == "D" && value == "dee" }.should be_false
+              @hash.send(method) { |key, value| key == "D" && value == "dee" }.should == false
             end
 
           end
@@ -54,7 +54,7 @@ describe Hamster::Hash do
         describe "with no block" do
 
           it "returns true" do
-            @hash.send(method).should be_true
+            @hash.send(method).should == true
           end
 
         end

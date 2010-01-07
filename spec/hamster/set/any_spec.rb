@@ -15,11 +15,11 @@ describe Hamster::Set do
         end
 
         it "with a block returns false" do
-          @set.send(method) {}.should be_false
+          @set.send(method) {}.should == false
         end
 
         it "with no block returns false" do
-          @set.send(method).should be_false
+          @set.send(method).should == false
         end
 
       end
@@ -35,13 +35,13 @@ describe Hamster::Set do
           ["A", "B", "C", nil].each do |value|
 
             it "returns true if the block ever returns true (#{value.inspect})" do
-              @set.send(method) { |item| item == value }.should be_true
+              @set.send(method) { |item| item == value }.should == true
             end
 
           end
 
           it "returns false if the block always returns false" do
-            @set.send(method) { |item| item == "D" }.should be_false
+            @set.send(method) { |item| item == "D" }.should == false
           end
 
         end
@@ -49,11 +49,11 @@ describe Hamster::Set do
         describe "with no block" do
 
           it "returns true if any value is truthy" do
-            Hamster.set(nil, false, true, "A").send(method).should be_true
+            Hamster.set(nil, false, true, "A").send(method).should == true
           end
 
           it "returns false if all values are falsey" do
-            Hamster.set(nil, false).send(method).should be_false
+            Hamster.set(nil, false).send(method).should == false
           end
 
         end
