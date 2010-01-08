@@ -216,8 +216,8 @@ module Hamster
       EmptyList
     end
 
-    def sort
-      sort_by { |item| item }
+    def sort(&block)
+      Hamster.list(*to_a.sort(&block))
     end
 
     def sort_by(&block)
