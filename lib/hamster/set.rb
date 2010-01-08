@@ -120,6 +120,12 @@ module Hamster
       filter { |item| pattern === item }.map(&block)
     end
 
+    def head
+      each { |item| return item }
+      nil
+    end
+    alias_method :first, :head
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
