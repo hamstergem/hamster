@@ -1,4 +1,3 @@
-* Implement Set#head (#first).
 * Make List#sort/#sorty_by efficient :)
 * Add List #count, #sort, #sort_by, #last, #nub, #each_slice, #join, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index)
 * Add Set #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #product, #sample, #clear
