@@ -1,3 +1,4 @@
+* Make List#sort/#sorty_by efficient :)
 * Add List #count, #sort, #sort_by, #last, #nub, #each_slice, #join, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index)
 * Add Set #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #product, #sample, #clear
 * Add Hash #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
@@ -23,3 +24,6 @@
 * Allow Trie to efficiently add multiple pairs in one go
 * Implement Vector (using a Trie and integer keys?)
 * Allow drop_while, etc. to be lazy using a stream (or something like that)
+* Factor out the large list stack test stuff.
+* Some of the stack-depth tests are not failing (when the might otherwise) due to the laziness of the implementation. d'oh!
+* Consider creating a stream that takes another list element rather than needing to have the head? the only problem with this is it won't allow the original to be garbage collected. Hmmm
