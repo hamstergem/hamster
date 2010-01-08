@@ -26,7 +26,7 @@ module Hamster
     end
 
     def replicate(number, item)
-      Sequence.new(item).take(number)
+      repeat(item).take(number)
     end
 
     def iterate(item, &block)
