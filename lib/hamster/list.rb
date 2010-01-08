@@ -2,8 +2,6 @@ require 'monitor'
 
 module Hamster
 
-  Undefined = Object.new
-
   class << self
 
     def list(*items)
@@ -36,6 +34,8 @@ module Hamster
   end
 
   module List
+
+    Undefined = Object.new
 
     def empty?
       false
