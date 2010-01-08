@@ -126,8 +126,8 @@ module Hamster
     end
     alias_method :first, :head
 
-    def sort
-      to_list.sort
+    def sort(&block)
+      to_list.sort(&block)
     end
 
     def sort_by(&block)
