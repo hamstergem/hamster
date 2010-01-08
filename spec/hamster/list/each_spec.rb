@@ -45,8 +45,8 @@ describe Hamster::List do
             @items.should == values
           end
 
-          it "returns nil" do
-            @result.should be_nil
+          it "returns self" do
+            @result.should equal(@original)
           end
 
         end

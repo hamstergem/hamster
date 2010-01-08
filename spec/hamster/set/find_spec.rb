@@ -1,28 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-require 'hamster/list'
+require 'hamster/set'
 
-describe Hamster::List do
+describe Hamster::Set do
 
   [:find, :detect].each do |method|
 
     describe "##{method}" do
-
-      describe "doesn't run out of stack space on a really big" do
-
-        it "stream" do
-          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        end
-
-        it "list" do
-          @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-        end
-
-        after do
-          @list.send(method) { false }
-        end
-
-      end
 
       [
         [[], "A", nil],
@@ -39,13 +23,13 @@ describe Hamster::List do
         describe "on #{values.inspect}" do
 
           before do
-            @list = Hamster.list(*values)
+            @set = Hamster.set(*values)
           end
 
           describe "with a block" do
 
             it "returns #{expected.inspect}" do
-              @list.send(method) { |x| x == item }.should == expected
+              @set.send(method) { |x| x == item }.should == expected
             end
 
           end
@@ -53,7 +37,7 @@ describe Hamster::List do
           describe "without a block" do
 
             it "returns nil" do
-              @list.send(method).should be_nil
+              @set.send(method).should be_nil
             end
 
           end
