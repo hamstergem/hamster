@@ -127,8 +127,7 @@ module Hamster
     end
 
     def head
-      each { |item| return item }
-      nil
+      find { true }
     end
     alias_method :first, :head
 
