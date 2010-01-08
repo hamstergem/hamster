@@ -22,7 +22,7 @@ module Hamster
     alias_method :range, :interval
 
     def repeat(item)
-      Sequence.new(item)
+      Stream.new(item) { repeat(item) }
     end
 
     def replicate(number, item)
@@ -170,7 +170,7 @@ module Hamster
 
     def partition(&block)
       return self unless block_given?
-      Stream.new(filter(&block)) { EmptyList.cons(reject(&block)) }
+      Stream.new(filter(&block)) { Sequence.new(reject(&block)) }
     end
 
     def append(other)
@@ -201,7 +201,7 @@ module Hamster
     end
 
     def zip(other)
-      Stream.new(EmptyList.cons(other.head).cons(head)) { tail.zip(other.tail) }
+      Stream.new(Sequence.new(other.head).cons(head)) { tail.zip(other.tail) }
     end
 
     def cycle
@@ -209,17 +209,16 @@ module Hamster
     end
 
     def split_at(number)
-      # Stream.new(take(number)) { EmptyList.cons(drop(number)) }
-      EmptyList.cons(drop(number)).cons(take(number))
+      Sequence.new(drop(number)).cons(take(number))
     end
 
     def span(&block)
-      return EmptyList.cons(EmptyList).cons(self) unless block_given?
-      Stream.new(take_while(&block)) { EmptyList.cons(drop_while(&block)) }
+      return Sequence.new(EmptyList).cons(self) unless block_given?
+      Stream.new(take_while(&block)) { Sequence.new(drop_while(&block)) }
     end
 
     def break(&block)
-      return EmptyList.cons(EmptyList).cons(self) unless block_given?
+      return Sequence.new(EmptyList).cons(self) unless block_given?
       span { |item| !yield(item) }
     end
 
@@ -297,7 +296,7 @@ module Hamster
     attr_reader :head, :tail
     alias_method :first, :head
 
-    def initialize(head, tail = self)
+    def initialize(head, tail = EmptyList)
       @head = head
       @tail = tail
     end
