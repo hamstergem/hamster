@@ -1,4 +1,4 @@
-=== 0.1.21 / yyyy-mm-dd
+=== 0.1.21 / 2010-01-08
 
 * Implement List#sort. (Very, VERY inefficient implementation!)
 
