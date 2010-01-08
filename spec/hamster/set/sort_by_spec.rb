@@ -1,26 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+require 'hamster/set'
 require 'hamster/list'
 
 describe Hamster::List do
 
   describe "#sort_by" do
-
-    describe "doesn't run out of stack space on a really big" do
-
-      it "stream" do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
-      it "list" do
-        @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @list.sort_by { |item| item }
-      end
-
-    end
 
     [
       [[], []],
@@ -31,7 +16,7 @@ describe Hamster::List do
       describe "on #{values.inspect}" do
 
         before do
-          @original = Hamster.list(*values)
+          @original = Hamster.set(*values)
         end
 
         describe "with a block" do
@@ -41,7 +26,7 @@ describe Hamster::List do
           end
 
           it "preserves the original" do
-            @original.should == Hamster.list(*values)
+            @original.should == Hamster.set(*values)
           end
 
           it "returns #{expected.inspect}" do
@@ -57,7 +42,7 @@ describe Hamster::List do
           end
 
           it "preserves the original" do
-            @original.should == Hamster.list(*values)
+            @original.should == Hamster.set(*values)
           end
 
           it "returns #{expected.sort.inspect}" do
