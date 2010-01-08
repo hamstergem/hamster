@@ -131,6 +131,7 @@ module Hamster
     alias_method :clone, :dup
     alias_method :uniq, :dup
     alias_method :nub, :dup
+    alias_method :to_set, :dup
 
     def to_a
       reduce([]) { |a, item| a << item }
@@ -139,6 +140,10 @@ module Hamster
 
     def to_list
       reduce(Hamster.list) { |list, item| list.cons(item) }
+    end
+
+    def inspect
+      "{#{to_a.inspect[1..-2]}}"
     end
 
   end
