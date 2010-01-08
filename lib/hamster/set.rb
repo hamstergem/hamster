@@ -27,6 +27,7 @@ module Hamster
       @trie.has_key?(item)
     end
     alias_method :member?, :include?
+    alias_method :contains?, :include?
 
     def add(item)
       if include?(item)

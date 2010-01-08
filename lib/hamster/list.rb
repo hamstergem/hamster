@@ -127,6 +127,7 @@ module Hamster
       object == head || tail.include?(object)
     end
     alias_method :member?, :include?
+    alias_method :contains?, :include?
 
     def any?(&block)
       return any? { |item| item } unless block_given?
@@ -389,6 +390,7 @@ module Hamster
         false
       end
       alias_method :member?, :include?
+      alias_method :contains?, :include?
 
       def any?
         false
