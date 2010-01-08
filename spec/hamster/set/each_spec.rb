@@ -13,8 +13,8 @@ describe Hamster::Set do
 
     describe "with a block (internal iteration)" do
 
-      it "returns self" do
-        @set.each {}.should equal(@set)
+      it "returns nil" do
+        @set.each {}.should be_nil
       end
 
       it "yields all values" do

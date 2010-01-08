@@ -31,6 +31,7 @@ module Hamster
       @children.each do |child|
         child.each { |entry| yield(entry) } if child
       end
+      nil
     end
 
     def reduce(memo)

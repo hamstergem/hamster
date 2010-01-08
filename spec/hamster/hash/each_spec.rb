@@ -12,8 +12,8 @@ describe Hamster::Hash do
 
     describe "with a block (internal iteration)" do
 
-      it "returns self" do
-        @hash.each {}.should equal(@hash)
+      it "returns nil" do
+        @hash.each {}.should be_nil
       end
 
       it "yields all key/value pairs" do

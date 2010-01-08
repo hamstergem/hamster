@@ -49,7 +49,6 @@ module Hamster
     def each
       return self unless block_given?
       @trie.each { |entry| yield(entry.key) }
-      self
     end
 
     def map
