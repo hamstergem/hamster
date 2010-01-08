@@ -225,6 +225,10 @@ module Hamster
       Hamster.list(*to_a.sort_by(&block))
     end
 
+    def join(sep = nil)
+      to_a.join(sep)
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
