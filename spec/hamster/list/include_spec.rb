@@ -4,7 +4,7 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  [:include?, :member?].each do |method|
+  [:include?, :member?, :contains?].each do |method|
 
     describe "##{method}" do
 
