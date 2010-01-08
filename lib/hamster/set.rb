@@ -126,6 +126,14 @@ module Hamster
     end
     alias_method :first, :head
 
+    def sort
+      to_list.sort
+    end
+
+    def sort_by(&block)
+      to_list.sort_by(&block)
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end

@@ -10,6 +10,10 @@
 
 * Implement Set#first (aliased as #head).
 
+* Implement Set#sort. (Very, VERY inefficient implementation!)
+
+* Implement Set#sort_by. (Very, VERY inefficient implementation!)
+
 === 0.1.20 / 2010-01-07
 
 * Implement Stack#clear.
