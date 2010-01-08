@@ -217,6 +217,10 @@ module Hamster
       EmptyList
     end
 
+    def sort
+      Hamster.list(*to_a.sort)
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
