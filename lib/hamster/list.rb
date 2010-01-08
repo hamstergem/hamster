@@ -213,6 +213,12 @@ module Hamster
       span { |item| !yield(item) }
     end
 
+    def count(&block)
+      return length unless block_given?
+      return 1 + tail.count(&block) if yield(head)
+      tail.count(&block)
+    end
+
     def clear
       EmptyList
     end
@@ -429,6 +435,10 @@ module Hamster
 
       def cycle
         self
+      end
+
+      def count(&block)
+        0
       end
 
       def eql?(other)
