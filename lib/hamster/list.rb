@@ -344,7 +344,7 @@ module Hamster
       end
 
       def each
-        return self unless block_given?
+        self
       end
 
       def map

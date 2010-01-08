@@ -116,6 +116,13 @@ module Hamster
       true
     end
 
+    def find
+      return nil unless block_given?
+      each { |item| return item if yield(item) }
+      nil
+    end
+    alias_method :detect, :find
+
     def grep(pattern, &block)
       filter { |item| pattern === item }.map(&block)
     end
