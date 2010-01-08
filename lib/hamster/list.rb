@@ -217,7 +217,12 @@ module Hamster
     end
 
     def sort
-      Hamster.list(*to_a.sort)
+      sort_by { |item| item }
+    end
+
+    def sort_by(&block)
+      return sort unless block_given?
+      Hamster.list(*to_a.sort_by(&block))
     end
 
     def eql?(other)
