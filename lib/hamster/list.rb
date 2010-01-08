@@ -59,7 +59,6 @@ module Hamster
         yield(list.head)
         list = list.tail
       end
-      self
     end
 
     def map(&block)
@@ -166,7 +165,6 @@ module Hamster
     def find
       return nil unless block_given?
       each { |item| return item if yield(item) }
-      nil
     end
     alias_method :detect, :find
 
