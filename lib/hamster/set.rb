@@ -152,6 +152,10 @@ module Hamster
       to_list.sort_by(&block)
     end
 
+    def join(sep = nil)
+      to_a.join(sep)
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
