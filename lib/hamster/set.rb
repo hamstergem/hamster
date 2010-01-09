@@ -123,6 +123,11 @@ module Hamster
     end
     alias_method :detect, :find
 
+    def partition(&block)
+      return self unless block_given?
+      Stream.new(filter(&block)) { Sequence.new(reject(&block)) }
+    end
+
     def grep(pattern, &block)
       filter { |item| pattern === item }.map(&block)
     end
