@@ -60,6 +60,10 @@ module Hamster
     end
     alias_method :entries, :to_a
 
+    def to_list
+      @list
+    end
+
     def inspect
       @list.inspect
     end
