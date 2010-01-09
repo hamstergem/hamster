@@ -232,8 +232,9 @@ module Hamster
       Hamster.list(*to_a.sort_by(&block))
     end
 
-    def join(sep = nil)
-      to_a.join(sep)
+    def join(sep = "")
+      sep = sep.to_s
+      tail.reduce(head.to_s) { |string, item| string << sep << item.to_s }
     end
 
     def eql?(other)
@@ -439,6 +440,10 @@ module Hamster
 
       def count(&block)
         0
+      end
+
+      def join(sep = "")
+        ""
       end
 
       def eql?(other)
