@@ -226,11 +226,7 @@ module Hamster
     def count(&block)
       return length unless block_given?
       count = 0
-      list = self
-      while !list.empty?
-        count += 1 if yield(list.head)
-        list = list.tail
-      end
+      each { |item| count += 1 if yield(item) }
       count
     end
 
