@@ -55,6 +55,11 @@ module Hamster
     end
     alias_method :clone, :dup
 
+    def to_a
+      @list.to_a
+    end
+    alias_method :entries, :to_a
+
     def inspect
       @list.inspect
     end
