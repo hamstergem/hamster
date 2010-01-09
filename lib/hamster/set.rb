@@ -127,6 +127,13 @@ module Hamster
       filter { |item| pattern === item }.map(&block)
     end
 
+    def count(&block)
+      return length unless block_given?
+      count = 0
+      each { |item| count += 1 if yield(item) }
+      count
+    end
+
     def head
       find { true }
     end
