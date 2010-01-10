@@ -238,6 +238,11 @@ module Hamster
       tail.reduce(head.to_s) { |string, item| string << sep << item.to_s }
     end
 
+    def intersperse(sep)
+      return self if tail.empty?
+      Stream.new(head) { Stream.new(sep) { tail.intersperse(sep) } }
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)

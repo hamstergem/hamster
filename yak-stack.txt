@@ -1,6 +1,6 @@
 * Make List#sort/#sort_by efficient :)
 * Make Set#sort/#sort_by efficient :)
-* Add List #each_slice, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index), #slice, #insert, #insert_by, #to_set, #and, #or, #sum, #permutation (aliased as #permutations?), #subsequences, #transpose, #intersperse, #union (aliased as #|).
+* Add List #each_slice, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index), #slice, #insert, #insert_by, #to_set, #and, #or, #sum, #permutation (aliased as #permutations?), #subsequences, #transpose, #union (aliased as #|).
 * Add Set #one?, #max(imum), #min(imum), #cycle, #product, #sample, #clear
 * Add Hash #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
 * Implement Set#union aliased as #| and #+
