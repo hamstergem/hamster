@@ -256,11 +256,12 @@ module Hamster
     end
 
     def uniq(items = Set.new)
-      if items.include?(head)
-        tail.uniq(items)
-      else
-        Stream.new(head) { tail.uniq(items.add(head)) }
+      list = self
+      while !list.empty? && items.include?(list.head)
+        list = list.tail
       end
+      return list if list.empty?
+      Stream.new(list.head) { list.tail.uniq(items.add(list.head)) }
     end
     alias_method :nub, :uniq
 
@@ -420,11 +421,6 @@ module Hamster
       def cycle
         self
       end
-
-      def uniq(items = nil)
-        self
-      end
-      alias_method :nub, :uniq
 
     end
 

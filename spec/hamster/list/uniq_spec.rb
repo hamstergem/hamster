@@ -19,7 +19,7 @@ describe Hamster::List do
         end
 
         after do
-          @list.send(method)
+          @list.send(method).each {}
         end
 
       end
