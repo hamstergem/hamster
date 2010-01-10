@@ -246,11 +246,8 @@ module Hamster
     end
 
     def uniq(items = Set.new)
-      if items.include?(head)
-        tail.uniq(items)
-      else
-        Stream.new(head) { tail.uniq(items.add(head)) }
-      end
+      return tail.uniq(items) if items.include?(head)
+      Stream.new(head) { tail.uniq(items.add(head)) }
     end
     alias_method :nub, :uniq
 
