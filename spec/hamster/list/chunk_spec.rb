@@ -8,8 +8,8 @@ describe Hamster::List do
 
     [
       [[], []],
-      [["A"], [Hamster.list("A", nil)]],
-      [["A", "B", "C"], [Hamster.list("A", "B"), Hamster.list("C", nil)]],
+      [["A"], [Hamster.list("A")]],
+      [["A", "B", "C"], [Hamster.list("A", "B"), Hamster.list("C")]],
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
