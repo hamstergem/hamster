@@ -13,7 +13,7 @@ describe Hamster::Set do
         [
           [[], nil],
           [["A"], "A"],
-          [["A", "B", "C"], "C"],
+          [["Ichi", "Ni", "San"], "Ni"],
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
@@ -21,7 +21,7 @@ describe Hamster::Set do
             before do
               original = Hamster.set(*values)
               pending do
-                @result = original.send(method) { |minimum, item| minimum <=> item }
+                @result = original.send(method) { |maximum, item| item.length <=> maximum.length }
               end
             end
 
@@ -40,7 +40,7 @@ describe Hamster::Set do
         [
           [[], nil],
           [["A"], "A"],
-          [["A", "B", "C"], "A"],
+          [["Ichi", "Ni", "San"], "Ichi"],
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
