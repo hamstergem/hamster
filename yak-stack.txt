@@ -1,6 +1,6 @@
 * Make List#sort/#sort_by efficient :)
 * Make Set#sort/#sort_by efficient :)
-* Add List #last, #nub, #each_slice, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index), #init, #slice, #each_slice (#chunks or perhaps #slices ????), #insert, #insert_by, #to_set
+* Add List #last, #nub, #each_slice, #flatten, #nub (#uniq), #product, #fill, #sample, #index (#find_index), #init, #slice, #each_slice (#chunks or perhaps #slices ????), #insert, #insert_by, #to_set, #and, #or, #sum
 * Add Set #one?, #max(imum), #min(imum), #cycle, #product, #sample, #clear
 * Add Hash #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
 * Implement Set#union aliased as #| and #+
