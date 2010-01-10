@@ -9,15 +9,15 @@ describe Hamster::List do
     describe "doesn't run out of stack space on a really big" do
 
       it "stream" do
-        @a = @b = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
+        @left = @right = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
       end
 
       it "list" do
-        @a = @b = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
+        @left = @right = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
       end
 
       after do
-        @a.zip(@b)
+        @left.zip(@right)
       end
 
     end

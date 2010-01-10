@@ -265,6 +265,11 @@ module Hamster
     end
     alias_method :nub, :uniq
 
+    def union(other)
+      self.append(other).uniq
+    end
+    alias_method :|, :union
+
     def eql?(other)
       return false unless other.is_a?(List)
 
