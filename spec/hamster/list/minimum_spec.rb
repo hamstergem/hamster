@@ -29,17 +29,18 @@ describe Hamster::List do
         [
           [[], nil],
           [["A"], "A"],
-          [["A", "B", "C"], "C"],
+          [["Ichi", "Ni", "San"], "Ni"],
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
 
             before do
-              @list = Hamster.list(*values)
+              original = Hamster.list(*values)
+              @result = original.send(method) { |maximum, item| item.length <=> maximum.length }
             end
 
             it "returns #{expected.inspect}" do
-              @list.send(method) { |minimum, item| minimum <=> item }.should == expected
+              @result.should == expected
             end
 
           end
@@ -53,17 +54,18 @@ describe Hamster::List do
         [
           [[], nil],
           [["A"], "A"],
-          [["A", "B", "C"], "A"],
+          [["Ichi", "Ni", "San"], "Ichi"],
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
 
             before do
-              @list = Hamster.list(*values)
+              original = Hamster.list(*values)
+              @result = original.send(method)
             end
 
             it "returns #{expected.inspect}" do
-              @list.send(method).should == expected
+              @result.should == expected
             end
 
           end
