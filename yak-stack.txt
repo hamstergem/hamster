@@ -1,7 +1,7 @@
 * Make List#sort/#sort_by efficient :)
 * Make Set#sort/#sort_by efficient :)
 * Add List #each_slice, #flatten, #product, #fill, #sample, #index (#find_index), #slice, #insert, #insert_by, #to_set, #and, #or, #sum, #permutation (aliased as #permutations?), #subsequences, #transpose.
-* Add Set #one?, #max(imum), #min(imum), #cycle, #product, #sample, #clear
+* Add Set #one?, #cycle, #product, #sample, #clear
 * Add Hash #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
