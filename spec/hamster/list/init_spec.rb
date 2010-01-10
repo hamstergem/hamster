@@ -4,19 +4,21 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  describe "#tail" do
+  describe "#init" do
 
     [
       [[], []],
       [["A"], []],
-      [["A", "B", "C"], ["B", "C"]],
+      [["A", "B", "C"], ["A", "B"]],
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
 
         before do
           @original = Hamster.list(*values)
-          @result = @original.tail
+          pending do
+            @result = Hamster.list(*values).init
+          end
         end
 
         it "preserves the original" do
