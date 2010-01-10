@@ -1,5 +1,7 @@
 require 'monitor'
 
+require 'hamster/set'
+
 module Hamster
 
   class << self
@@ -243,6 +245,15 @@ module Hamster
       Stream.new(head) { Stream.new(sep) { tail.intersperse(sep) } }
     end
 
+    def uniq(items = Set.new)
+      if items.include?(head)
+        tail.uniq(items)
+      else
+        Stream.new(head) { tail.uniq(items.add(head)) }
+      end
+    end
+    alias_method :nub, :uniq
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
@@ -452,6 +463,11 @@ module Hamster
       def join(sep = "")
         ""
       end
+
+      def uniq(items = nil)
+        self
+      end
+      alias_method :nub, :uniq
 
       def eql?(other)
         other.equal?(self)
