@@ -1,3 +1,29 @@
+=== 0.1.22 / 2010-01-10
+
+* Implement List#union (aliased as #|).
+
+* Implement List#uniq (aliased as #nub).
+
+* Implement List#intersperse.
+
+* Alias #include? as #elem?
+
+* Implement Stack#to_list.
+
+* Implement Stack#to_a.
+
+* Implement Set#join.
+
+* Implement Set#count.
+
+* Implement List#count.
+
+* Alias #include? as #contains?
+
+* #each now returns nil if you specify a block.
+
+* Implement Set#find (aliased as #detect).
+
 === 0.1.21 / 2010-01-08
 
 * Implement List#sort. (Very, VERY inefficient implementation!)
