@@ -127,8 +127,7 @@ module Hamster
     end
 
     def include?(object)
-      each { |item| return true if object == item }
-      false
+      any? { |item| item == object }
     end
     alias_method :member?, :include?
     alias_method :contains?, :include?
