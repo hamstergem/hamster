@@ -1,3 +1,4 @@
+* Make List#size not O(n)!
 * Make List#sort/#sort_by efficient :)
 * Make Set#sort/#sort_by efficient :)
 * Add List #each_slice, #flatten, #product, #fill, #sample, #index (#find_index), #slice, #insert, #insert_by, #to_set, #and, #or, #sum, #permutation (aliased as #permutations?), #subsequences, #transpose.
