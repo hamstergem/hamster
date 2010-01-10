@@ -89,31 +89,22 @@ module Hamster
     alias_method :delete_if, :reject
 
     def any?
-      if block_given?
-        each { |item| return true if yield(item) }
-      else
-        each { |item| return true if item }
-      end
+      return any? { |item| item } unless block_given?
+      each { |item| return true if yield(item) }
       false
     end
     alias_method :exist?, :any?
     alias_method :exists?, :any?
 
     def all?
-      if block_given?
-        each { |item| return false unless yield(item) }
-      else
-        each { |item| return false unless item }
-      end
+      return all? { |item| item } unless block_given?
+      each { |item| return false unless yield(item) }
       true
     end
 
     def none?
-      if block_given?
-        each { |item| return false if yield(item) }
-      else
-        each { |item| return false if item }
-      end
+      return none? { |item| item } unless block_given?
+      each { |item| return false if yield(item) }
       true
     end
 
