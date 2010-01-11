@@ -10,9 +10,7 @@ module Hamster
 
     # Returns the number of key-value pairs in the trie.
     def size
-      count = 0
-      each { count += 1 }
-      count
+      reduce(0) { |memo, item| memo.succ }
     end
 
     # Returns <tt>true</tt> if the trie contains no key-value pairs.
