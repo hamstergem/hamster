@@ -36,6 +36,7 @@ describe Hamster::List do
         [[], [], []],
         [["A"], [], ["A"]],
         [["A", "B", "C"], [], ["A", "B", "C"]],
+        [["A", "A"], ["A"], ["A"]],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do
