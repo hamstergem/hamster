@@ -256,6 +256,11 @@ module Hamster
     end
     alias_method :|, :union
 
+    def init
+      return EmptyList if tail.empty?
+      Stream.new(head) { tail.init }
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
