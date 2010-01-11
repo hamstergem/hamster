@@ -392,7 +392,6 @@ module Hamster
       def each
         return self unless block_given?
       end
-      alias_method :foreach, :each
 
       def map
         self
@@ -401,8 +400,6 @@ module Hamster
       def reduce(memo = nil)
         memo
       end
-      alias_method :inject, :reduce
-      alias_method :fold, :reduce
 
       def filter
         self
@@ -431,15 +428,10 @@ module Hamster
       def include?(object)
         false
       end
-      alias_method :member?, :include?
-      alias_method :contains?, :include?
-      alias_method :elem?, :include?
 
       def any?
         false
       end
-      alias_method :exist?, :any?
-      alias_method :exists?, :any?
 
       def all?
         true
@@ -456,7 +448,6 @@ module Hamster
       def find(&block)
         nil
       end
-      alias_method :detect, :find
 
       def append(other)
         other
@@ -482,12 +473,10 @@ module Hamster
       def uniq(items = nil)
         self
       end
-      alias_method :nub, :uniq
 
       def eql?(other)
         other.equal?(self)
       end
-      alias_method :==, :eql?
 
     end
 
