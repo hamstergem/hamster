@@ -16,16 +16,14 @@ describe Hamster::List do
 
         before do
           @original = Hamster.list(*values)
-          pending do
-            @result = @original.init
-          end
+          @result = @original.init
         end
 
         it "preserves the original" do
           @original.should == Hamster.list(*values)
         end
 
-        it "returns #{expected.inspect}" do
+        it "returns the list without the last element: #{expected.inspect}" do
           @result.should == Hamster.list(*expected)
         end
 
