@@ -91,11 +91,12 @@ module Hamster
     alias_method :select, :filter
     alias_method :find_all, :filter
 
-    def reject(&block)
+    def remove(&block)
       return self unless block_given?
       filter { |item| !yield(item) }
     end
-    alias_method :delete_if, :reject
+    alias_method :reject, :remove
+    alias_method :delete_if, :remove
 
     def take_while(&block)
       return self unless block_given?
@@ -174,7 +175,7 @@ module Hamster
 
     def partition(&block)
       return self unless block_given?
-      Stream.new(filter(&block)) { Sequence.new(reject(&block)) }
+      Stream.new(filter(&block)) { Sequence.new(remove(&block)) }
     end
 
     def append(other)
@@ -412,10 +413,11 @@ module Hamster
       alias_method :select, :filter
       alias_method :find_all, :filter
 
-      def reject
+      def remove
         self
       end
-      alias_method :delete_if, :reject
+      alias_method :reject, :remove
+      alias_method :delete_if, :remove
 
       def take_while
         self
