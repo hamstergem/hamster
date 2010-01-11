@@ -1,3 +1,21 @@
+=== 0.1.23 / 2010-01-11
+
+* Implement List#product.
+
+* Implement List#sum.
+
+* Implement List#last.
+
+* Implement List#init.
+
+* Alias #reject as #remove.
+
+* Alias #each as #foreach.
+
+* Rename Hash#remove as Hash#delete.
+
+* Rename Set#remove as Set#delete.
+
 === 0.1.22 / 2010-01-10
 
 * Implement List#union (aliased as #|).
