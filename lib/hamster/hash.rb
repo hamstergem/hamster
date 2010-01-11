@@ -42,8 +42,8 @@ module Hamster
     end
     alias_method :[]=, :put
 
-    def remove(key)
-      trie = @trie.remove(key)
+    def delete(key)
+      trie = @trie.delete(key)
       if trie.equal?(@trie)
         self
       else
@@ -86,11 +86,12 @@ module Hamster
     alias_method :select, :filter
     alias_method :find_all, :filter
 
-    def reject
+    def remove
       return self unless block_given?
-      select { |key, value| !yield(key, value) }
+      filter { |key, value| !yield(key, value) }
     end
-    alias_method :delete_if, :reject
+    alias_method :reject, :remove
+    alias_method :delete_if, :remove
 
     def any?
       if block_given?

@@ -40,7 +40,7 @@ module Hamster
     end
 
     def filter
-      reduce(self) { |trie, entry| yield(entry) ? trie : trie.remove(entry.key) }
+      reduce(self) { |trie, entry| yield(entry) ? trie : trie.delete(entry.key) }
     end
 
     # Returns a copy of <tt>self</tt> with the given value associated with the key.
@@ -77,9 +77,9 @@ module Hamster
       end
     end
 
-    # Returns a copy of <tt>self</tt> with the given key (and associated value) removed. If not found, returns <tt>self</tt>.
-    def remove(key)
-      find_and_remove(key) || Trie.new(@significant_bits)
+    # Returns a copy of <tt>self</tt> with the given key (and associated value) deleted. If not found, returns <tt>self</tt>.
+    def delete(key)
+      find_and_delete(key) || Trie.new(@significant_bits)
     end
 
     def include?(key, value)
@@ -109,15 +109,15 @@ module Hamster
     # Returns a replacement instance after removing the specified key.
     # If not found, returns <tt>self</tt>.
     # If empty, returns <tt>nil</tt>.
-    def find_and_remove(key)
+    def find_and_delete(key)
       index = index_for(key)
       entry = @entries[index]
       if entry && entry.key.eql?(key)
-        return remove_at(index)
+        return delete_at(index)
       else
         child = @children[index]
         if child
-          copy = child.find_and_remove(key)
+          copy = child.find_and_delete(key)
           if !copy.equal?(child)
             children = @children.dup
             children[index] = copy
@@ -129,14 +129,14 @@ module Hamster
     end
 
     # Returns a replacement instance after removing the specified entry. If empty, returns <tt>nil</tt>
-    def remove_at(index = @entries.index { |e| e })
+    def delete_at(index = @entries.index { |e| e })
       yield(@entries[index]) if block_given?
       if size > 1
         entries = @entries.dup
         child = @children[index]
         if child
           children = @children.dup
-          children[index] = child.remove_at do |entry|
+          children[index] = child.delete_at do |entry|
             entries[index] = entry
           end
         else
