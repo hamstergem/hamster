@@ -81,14 +81,15 @@ The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the orig
 
 Well, I could show you one but I'd have to re-write--or at least wrap--most <tt>Hash</tt> methods to make it generic, or at least write some application-specific code that synchronised using a <tt>Mutex</tt> and ... well ... it's hard, I always make mistakes, I always end up with weird edge cases and race conditions so, I'll leave that as an exercise for you :)
 
-And don't forget that even if threading isn't a concern for you, the safety provided by immutability is worth it.
+And don't forget that even if threading isn't a concern for you, the safety provided by immutability is worth it, not to mention the lazy implementations.
+
+== But doesn't Ruby 1.9 now support lazy behaviour using Enumerators?
+
+Sure does but they're implemented using Fibers which can't be shared across threads. All Hamster types are inherently thread-safe and sharable.
 
 == So, you mentioned Sets, Lists, and Stacks?
 
 Indeed I did.
-
-=== Sets
-
 
 === Lists
 
@@ -160,6 +161,8 @@ Unfortunately, though the second example reads nicely, it takes around 13 second
 How is this even possible? It's possible because <tt>IO#to_list</tt> creates a lazy list whereby each line is only ever read and processed as needed, in effect converting it to the first example without all the syntactic, imperative, noise.
 
 === Stacks
+
+=== Sets
 
 == Disclaimer
 
