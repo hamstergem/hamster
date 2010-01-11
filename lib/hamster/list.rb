@@ -282,6 +282,14 @@ module Hamster
       list.head
     end
 
+    def product
+      reduce(1, &:*)
+    end
+
+    def sum
+      reduce(0, &:+)
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 
