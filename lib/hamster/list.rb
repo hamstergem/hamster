@@ -261,6 +261,11 @@ module Hamster
       Stream.new(head) { tail.init }
     end
 
+    def last
+      return head if tail.empty?
+      tail.last
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
