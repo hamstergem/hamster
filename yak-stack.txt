@@ -32,3 +32,4 @@
 * Is there a way we can have a stream based on a non-deterministic data source (eg IO/block) and not need to keep backward references?
 * Alias #all? as #forall?
 * Alias #uniq as #removeDuplicates
+* Implement a queue?
