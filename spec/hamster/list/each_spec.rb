@@ -4,61 +4,65 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  describe "#each" do
+  [:each, :foreach].each do |method|
 
-    describe "doesn't run out of stack space on a really big" do
+    describe "##{method}" do
 
-      it "stream" do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
+      describe "doesn't run out of stack space on a really big" do
 
-      it "list" do
-        @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @list.each { }
-      end
-
-    end
-
-    [
-      [],
-      ["A"],
-      ["A", "B", "C"],
-    ].each do |values|
-
-      describe "on #{values.inspect}" do
-
-        before do
-          @original = Hamster.list(*values)
+        it "stream" do
+          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
         end
 
-        describe "with a block" do
-
-          before do
-            @items = []
-            @result = @original.each { |value| @items << value }
-          end
-
-          it "iterates over the items in order" do
-            @items.should == values
-          end
-
-          it "returns nil" do
-            @result.should be_nil
-          end
-
+        it "list" do
+          @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
         end
 
-        describe "without a block" do
+        after do
+          @list.send(method) { }
+        end
+
+      end
+
+      [
+        [],
+        ["A"],
+        ["A", "B", "C"],
+      ].each do |values|
+
+        describe "on #{values.inspect}" do
 
           before do
-            @result = @original.each
+            @original = Hamster.list(*values)
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          describe "with a block" do
+
+            before do
+              @items = []
+              @result = @original.send(method) { |value| @items << value }
+            end
+
+            it "iterates over the items in order" do
+              @items.should == values
+            end
+
+            it "returns nil" do
+              @result.should be_nil
+            end
+
+          end
+
+          describe "without a block" do
+
+            before do
+              @result = @original.send(method)
+            end
+
+            it "returns self" do
+              @result.should equal(@original)
+            end
+
           end
 
         end
