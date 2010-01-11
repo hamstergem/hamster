@@ -8,7 +8,7 @@ describe Hamster::List do
 
     [
       [[], nil],
-      [["A"], ["A"]],
+      [["A"], "A"],
       [["A", "B", "C"], "C"],
     ].each do |values, expected|
 
@@ -16,13 +16,11 @@ describe Hamster::List do
 
         before do
           original = Hamster.list(*values)
-          pending do
-            @result = original.last
-          end
+          @result = original.last
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          @result.should == expected
         end
 
       end
