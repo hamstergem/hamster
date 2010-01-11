@@ -1,6 +1,6 @@
+require 'hamster/core_ext'
 require 'hamster/list'
 require 'hamster/stack'
 require 'hamster/set'
 require 'hamster/hash'
-require 'hamster/core_ext'
 require 'hamster/version'

@@ -1,3 +1,4 @@
+require 'hamster/core_ext/module'
 require 'hamster/list'
 
 module Hamster
@@ -19,7 +20,7 @@ module Hamster
     def size
       @list.size
     end
-    alias_method :length, :size
+    sobriquet :length, :size
 
     def top
       @list.head
@@ -28,7 +29,7 @@ module Hamster
     def push(item)
       self.class.new(@list.cons(item))
     end
-    alias_method :<<, :push
+    sobriquet :<<, :push
 
     def pop
       list = @list.tail
@@ -48,17 +49,17 @@ module Hamster
       return false unless other.class.equal?(self.class)
       @list.eql?(other.instance_eval{@list})
     end
-    alias_method :==, :eql?
+    sobriquet :==, :eql?
 
     def dup
       self
     end
-    alias_method :clone, :dup
+    sobriquet :clone, :dup
 
     def to_a
       @list.to_a
     end
-    alias_method :entries, :to_a
+    sobriquet :entries, :to_a
 
     def to_list
       @list

@@ -1,3 +1,5 @@
+require 'hamster/core_ext/module'
+
 module Hamster
 
   class Trie
@@ -94,7 +96,7 @@ module Hamster
       end
       true
     end
-    alias_method :==, :eql?
+    sobriquet :==, :eql?
 
     protected
 

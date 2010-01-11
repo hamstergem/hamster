@@ -1,3 +1,4 @@
+require 'hamster/core_ext/module'
 require 'hamster/trie'
 
 module Hamster
@@ -15,19 +16,19 @@ module Hamster
     def size
       @trie.size
     end
-    alias_method :length, :size
+    sobriquet :length, :size
 
     def empty?
       @trie.empty?
     end
-    alias_method :null?, :empty?
+    sobriquet :null?, :empty?
 
     def has_key?(key)
       @trie.has_key?(key)
     end
-    alias_method :key?, :has_key?
-    alias_method :include?, :has_key?
-    alias_method :member?, :has_key?
+    sobriquet :key?, :has_key?
+    sobriquet :include?, :has_key?
+    sobriquet :member?, :has_key?
 
     def get(key)
       entry = @trie.get(key)
@@ -35,12 +36,12 @@ module Hamster
         entry.value
       end
     end
-    alias_method :[], :get
+    sobriquet :[], :get
 
     def put(key, value)
       self.class.new(@trie.put(key, value))
     end
-    alias_method :[]=, :put
+    sobriquet :[]=, :put
 
     def delete(key)
       trie = @trie.delete(key)
@@ -55,7 +56,7 @@ module Hamster
       return self unless block_given?
       @trie.each { |entry| yield(entry.key, entry.value) }
     end
-    alias_method :foreach, :each
+    sobriquet :foreach, :each
 
     def map
       return self unless block_given?
@@ -65,14 +66,14 @@ module Hamster
         self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
       end
     end
-    alias_method :collect, :map
+    sobriquet :collect, :map
 
     def reduce(memo)
       return memo unless block_given?
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key, entry.value) }
     end
-    alias_method :inject, :reduce
-    alias_method :fold, :reduce
+    sobriquet :inject, :reduce
+    sobriquet :fold, :reduce
 
     def filter
       return self unless block_given?
@@ -83,15 +84,15 @@ module Hamster
         self.class.new(trie)
       end
     end
-    alias_method :select, :filter
-    alias_method :find_all, :filter
+    sobriquet :select, :filter
+    sobriquet :find_all, :filter
 
     def remove
       return self unless block_given?
       filter { |key, value| !yield(key, value) }
     end
-    alias_method :reject, :remove
-    alias_method :delete_if, :remove
+    sobriquet :reject, :remove
+    sobriquet :delete_if, :remove
 
     def any?
       if block_given?
@@ -101,8 +102,8 @@ module Hamster
       end
       false
     end
-    alias_method :exist?, :any?
-    alias_method :exists?, :any?
+    sobriquet :exist?, :any?
+    sobriquet :exists?, :any?
 
     def all?
       if block_given?
@@ -123,12 +124,12 @@ module Hamster
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
-    alias_method :==, :eql?
+    sobriquet :==, :eql?
 
     def dup
       self
     end
-    alias_method :clone, :dup
+    sobriquet :clone, :dup
 
   end
 
