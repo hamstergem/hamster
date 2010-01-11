@@ -276,8 +276,11 @@ module Hamster
     end
 
     def last
-      return head if tail.empty?
-      tail.last
+      list = self
+      while !list.tail.empty?
+        list = list.tail
+      end
+      list.head
     end
 
     def eql?(other)
