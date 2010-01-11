@@ -55,6 +55,7 @@ module Hamster
       return self unless block_given?
       @trie.each { |entry| yield(entry.key, entry.value) }
     end
+    alias_method :foreach, :each
 
     def map
       return self unless block_given?
