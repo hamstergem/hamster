@@ -1,4 +1,5 @@
-require 'hamster/core_ext/module'
+require 'forwardable'
+
 require 'hamster/trie'
 
 module Hamster
@@ -9,6 +10,8 @@ module Hamster
 
   class Hash
 
+    extend Forwardable
+
     def initialize(trie = Trie.new)
       @trie = trie
     end
@@ -16,19 +19,19 @@ module Hamster
     def size
       @trie.size
     end
-    sobriquet :length, :size
+    def_delegator :self, :size, :length
 
     def empty?
       @trie.empty?
     end
-    sobriquet :null?, :empty?
+    def_delegator :self, :empty?, :null?
 
     def has_key?(key)
       @trie.has_key?(key)
     end
-    sobriquet :key?, :has_key?
-    sobriquet :include?, :has_key?
-    sobriquet :member?, :has_key?
+    def_delegator :self, :has_key?, :key?
+    def_delegator :self, :has_key?, :include?
+    def_delegator :self, :has_key?, :member?
 
     def get(key)
       entry = @trie.get(key)
@@ -36,12 +39,12 @@ module Hamster
         entry.value
       end
     end
-    sobriquet :[], :get
+    def_delegator :self, :get, :[]
 
     def put(key, value)
       self.class.new(@trie.put(key, value))
     end
-    sobriquet :[]=, :put
+    def_delegator :self, :put, :[]=
 
     def delete(key)
       trie = @trie.delete(key)
@@ -56,7 +59,7 @@ module Hamster
       return self unless block_given?
       @trie.each { |entry| yield(entry.key, entry.value) }
     end
-    sobriquet :foreach, :each
+    def_delegator :self, :each, :foreach
 
     def map
       return self unless block_given?
@@ -66,14 +69,14 @@ module Hamster
         self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
       end
     end
-    sobriquet :collect, :map
+    def_delegator :self, :map, :collect
 
     def reduce(memo)
       return memo unless block_given?
       @trie.reduce(memo) { |memo, entry| yield(memo, entry.key, entry.value) }
     end
-    sobriquet :inject, :reduce
-    sobriquet :fold, :reduce
+    def_delegator :self, :reduce, :inject
+    def_delegator :self, :reduce, :fold
 
     def filter
       return self unless block_given?
@@ -84,15 +87,15 @@ module Hamster
         self.class.new(trie)
       end
     end
-    sobriquet :select, :filter
-    sobriquet :find_all, :filter
+    def_delegator :self, :filter, :select
+    def_delegator :self, :filter, :find_all
 
     def remove
       return self unless block_given?
       filter { |key, value| !yield(key, value) }
     end
-    sobriquet :reject, :remove
-    sobriquet :delete_if, :remove
+    def_delegator :self, :remove, :reject
+    def_delegator :self, :remove, :delete_if
 
     def any?
       if block_given?
@@ -102,8 +105,8 @@ module Hamster
       end
       false
     end
-    sobriquet :exist?, :any?
-    sobriquet :exists?, :any?
+    def_delegator :self, :any?, :exist?
+    def_delegator :self, :any?, :exists?
 
     def all?
       if block_given?
@@ -124,12 +127,12 @@ module Hamster
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
-    sobriquet :==, :eql?
+    def_delegator :self, :eql?, :==
 
     def dup
       self
     end
-    sobriquet :clone, :dup
+    def_delegator :self, :dup, :clone
 
   end
 

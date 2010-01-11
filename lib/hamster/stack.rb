@@ -1,4 +1,5 @@
-require 'hamster/core_ext/module'
+require 'forwardable'
+
 require 'hamster/list'
 
 module Hamster
@@ -8,6 +9,8 @@ module Hamster
   end
 
   class Stack
+
+    extend Forwardable
 
     def initialize(list)
       @list = list
@@ -20,7 +23,7 @@ module Hamster
     def size
       @list.size
     end
-    sobriquet :length, :size
+    def_delegator :self, :size, :length
 
     def top
       @list.head
@@ -29,7 +32,7 @@ module Hamster
     def push(item)
       self.class.new(@list.cons(item))
     end
-    sobriquet :<<, :push
+    def_delegator :self, :push, :<<
 
     def pop
       list = @list.tail
@@ -49,17 +52,17 @@ module Hamster
       return false unless other.class.equal?(self.class)
       @list.eql?(other.instance_eval{@list})
     end
-    sobriquet :==, :eql?
+    def_delegator :self, :eql?, :==
 
     def dup
       self
     end
-    sobriquet :clone, :dup
+    def_delegator :self, :dup, :clone
 
     def to_a
       @list.to_a
     end
-    sobriquet :entries, :to_a
+    def_delegator :self, :to_a, :entries
 
     def to_list
       @list

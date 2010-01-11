@@ -1,11 +1,13 @@
+require 'forwardable'
 require 'monitor'
 
-require 'hamster/core_ext/module'
 require 'hamster/set'
 
 module Hamster
 
   class << self
+
+    extend Forwardable
 
     def list(*items)
       items.reverse.reduce(EmptyList) { |list, item| list.cons(item) }
@@ -20,7 +22,7 @@ module Hamster
       return EmptyList if from > to
       Stream.new(from) { interval(from.succ, to) }
     end
-    sobriquet :range, :interval
+    def_delegator :self, :interval, :range
 
     def repeat(item)
       Stream.new(item) { repeat(item) }
@@ -38,6 +40,8 @@ module Hamster
 
   module List
 
+    extend Forwardable
+
     Undefined = Object.new
 
     def first
@@ -47,38 +51,38 @@ module Hamster
     def empty?
       false
     end
-    sobriquet :null?, :empty?
+    def_delegator :self, :empty?, :null?
 
     def size
       reduce(0) { |memo, item| memo.succ }
     end
-    sobriquet :length, :size
+    def_delegator :self, :size, :length
 
     def cons(item)
       Sequence.new(item, self)
     end
-    sobriquet :>>, :cons
+    def_delegator :self, :cons, :>>
 
     def each(&block)
       return self unless block_given?
       yield(head)
       tail.each(&block)
     end
-    sobriquet :foreach, :each
+    def_delegator :self, :each, :foreach
 
     def map(&block)
       return self unless block_given?
       Stream.new(yield(head)) { tail.map(&block) }
     end
-    sobriquet :collect, :map
+    def_delegator :self, :map, :collect
 
     def reduce(memo = Undefined, &block)
       return tail.reduce(head, &block) if memo.equal?(Undefined)
       return memo unless block_given?
       tail.reduce(yield(memo, head), &block)
     end
-    sobriquet :inject, :reduce
-    sobriquet :fold, :reduce
+    def_delegator :self, :reduce, :inject
+    def_delegator :self, :reduce, :fold
 
     def filter(&block)
       return self unless block_given?
@@ -88,15 +92,15 @@ module Hamster
         tail.filter(&block)
       end
     end
-    sobriquet :select, :filter
-    sobriquet :find_all, :filter
+    def_delegator :self, :filter, :select
+    def_delegator :self, :filter, :find_all
 
     def remove(&block)
       return self unless block_given?
       filter { |item| !yield(item) }
     end
-    sobriquet :reject, :remove
-    sobriquet :delete_if, :remove
+    def_delegator :self, :remove, :reject
+    def_delegator :self, :remove, :delete_if
 
     def take_while(&block)
       return self unless block_given?
@@ -135,16 +139,16 @@ module Hamster
     def include?(object)
       any? { |item| item == object }
     end
-    sobriquet :member?, :include?
-    sobriquet :contains?, :include?
-    sobriquet :elem?, :include?
+    def_delegator :self, :include?, :member?
+    def_delegator :self, :include?, :contains?
+    def_delegator :self, :include?, :elem?
 
     def any?(&block)
       return any? { |item| item } unless block_given?
       !! yield(head) || tail.any?(&block)
     end
-    sobriquet :exist?, :any?
-    sobriquet :exists?, :any?
+    def_delegator :self, :any?, :exist?
+    def_delegator :self, :any?, :exists?
 
     def all?(&block)
       return all? { |item| item } unless block_given?
@@ -167,7 +171,7 @@ module Hamster
       return head if yield(head)
       tail.find(&block)
     end
-    sobriquet :detect, :find
+    def_delegator :self, :find, :detect
 
     def partition(&block)
       return self unless block_given?
@@ -177,9 +181,9 @@ module Hamster
     def append(other)
       Stream.new(head) { tail.append(other) }
     end
-    sobriquet :concat, :append
-    sobriquet :cat, :append
-    sobriquet :+, :append
+    def_delegator :self, :append, :concat
+    def_delegator :self, :append, :cat
+    def_delegator :self, :append, :+
 
     def reverse
       reduce(EmptyList) { |list, item| list.cons(item) }
@@ -189,13 +193,13 @@ module Hamster
       return minimum { |minimum, item| item <=> minimum } unless block_given?
       reduce { |minimum, item| yield(minimum, item) < 0 ? item : minimum }
     end
-    sobriquet :min, :minimum
+    def_delegator :self, :minimum, :min
 
     def maximum(&block)
       return maximum { |maximum, item| item <=> maximum } unless block_given?
       reduce { |maximum, item| yield(maximum, item) > 0 ? item : maximum }
     end
-    sobriquet :max, :maximum
+    def_delegator :self, :maximum, :max
 
     def grep(pattern, &block)
       filter { |item| pattern === item }.map(&block)
@@ -254,12 +258,12 @@ module Hamster
       return tail.uniq(items) if items.include?(head)
       Stream.new(head) { tail.uniq(items.add(head)) }
     end
-    sobriquet :nub, :uniq
+    def_delegator :self, :uniq, :nub
 
     def union(other)
       self.append(other).uniq
     end
-    sobriquet :|, :union
+    def_delegator :self, :union, :|
 
     def init
       return EmptyList if tail.empty?
@@ -285,18 +289,18 @@ module Hamster
       return false if other.empty?
       other.head.eql?(head) && other.tail.eql?(tail)
     end
-    sobriquet :==, :eql?
+    def_delegator :self, :eql?, :==
 
     def dup
       self
     end
-    sobriquet :clone, :dup
+    def_delegator :self, :dup, :clone
 
     def to_a
       reduce([]) { |a, item| a << item }
     end
-    sobriquet :to_ary, :to_a
-    sobriquet :entries, :to_a
+    def_delegator :self, :to_a, :to_ary
+    def_delegator :self, :to_a, :entries
 
     def to_list
       self
