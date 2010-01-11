@@ -219,9 +219,7 @@ module Hamster
     end
 
     def count(&block)
-      return length unless block_given?
-      return 1 + tail.count(&block) if yield(head)
-      tail.count(&block)
+      filter(&block).size
     end
 
     def clear

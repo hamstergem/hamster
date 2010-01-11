@@ -127,10 +127,7 @@ module Hamster
     end
 
     def count(&block)
-      return length unless block_given?
-      count = 0
-      each { |item| count += 1 if yield(item) }
-      count
+      filter(&block).size
     end
 
     def head
