@@ -1,5 +1,6 @@
 require 'monitor'
 
+require 'hamster/core_ext/module'
 require 'hamster/set'
 
 module Hamster
@@ -19,7 +20,7 @@ module Hamster
       return EmptyList if from > to
       Stream.new(from) { interval(from.succ, to) }
     end
-    alias_method :range, :interval
+    sobriquet :range, :interval
 
     def repeat(item)
       Stream.new(item) { repeat(item) }
@@ -39,20 +40,24 @@ module Hamster
 
     Undefined = Object.new
 
+    def first
+      head
+    end
+
     def empty?
       false
     end
-    alias_method :null?, :empty?
+    sobriquet :null?, :empty?
 
     def size
       reduce(0) { |memo, item| memo.succ }
     end
-    alias_method :length, :size
+    sobriquet :length, :size
 
     def cons(item)
       Sequence.new(item, self)
     end
-    alias_method :>>, :cons
+    sobriquet :>>, :cons
 
     def each
       return self unless block_given?
@@ -62,13 +67,13 @@ module Hamster
         list = list.tail
       end
     end
-    alias_method :foreach, :each
+    sobriquet :foreach, :each
 
     def map(&block)
       return self unless block_given?
       Stream.new(yield(head)) { tail.map(&block) }
     end
-    alias_method :collect, :map
+    sobriquet :collect, :map
 
     def reduce(memo = Undefined, &block)
       return tail.reduce(head, &block) if memo.equal?(Undefined)
@@ -76,8 +81,8 @@ module Hamster
       each { |item| memo = yield(memo, item)  }
       memo
     end
-    alias_method :inject, :reduce
-    alias_method :fold, :reduce
+    sobriquet :inject, :reduce
+    sobriquet :fold, :reduce
 
     def filter(&block)
       return self unless block_given?
@@ -88,15 +93,15 @@ module Hamster
       end
       Stream.new(list.head) { list.tail.filter(&block) }
     end
-    alias_method :select, :filter
-    alias_method :find_all, :filter
+    sobriquet :select, :filter
+    sobriquet :find_all, :filter
 
     def remove(&block)
       return self unless block_given?
       filter { |item| !yield(item) }
     end
-    alias_method :reject, :remove
-    alias_method :delete_if, :remove
+    sobriquet :reject, :remove
+    sobriquet :delete_if, :remove
 
     def take_while(&block)
       return self unless block_given?
@@ -133,17 +138,17 @@ module Hamster
     def include?(object)
       any? { |item| item == object }
     end
-    alias_method :member?, :include?
-    alias_method :contains?, :include?
-    alias_method :elem?, :include?
+    sobriquet :member?, :include?
+    sobriquet :contains?, :include?
+    sobriquet :elem?, :include?
 
     def any?
       return any? { |item| item } unless block_given?
       each { |item| return true if yield(item) }
       false
     end
-    alias_method :exist?, :any?
-    alias_method :exists?, :any?
+    sobriquet :exist?, :any?
+    sobriquet :exists?, :any?
 
     def all?
       return all? { |item| item } unless block_given?
@@ -171,7 +176,7 @@ module Hamster
       return nil unless block_given?
       each { |item| return item if yield(item) }
     end
-    alias_method :detect, :find
+    sobriquet :detect, :find
 
     def partition(&block)
       return self unless block_given?
@@ -181,9 +186,9 @@ module Hamster
     def append(other)
       Stream.new(head) { tail.append(other) }
     end
-    alias_method :concat, :append
-    alias_method :cat, :append
-    alias_method :+, :append
+    sobriquet :concat, :append
+    sobriquet :cat, :append
+    sobriquet :+, :append
 
     def reverse
       reduce(EmptyList) { |list, item| list.cons(item) }
@@ -193,13 +198,13 @@ module Hamster
       return minimum { |minimum, item| item <=> minimum } unless block_given?
       reduce { |minimum, item| yield(minimum, item) < 0 ? item : minimum }
     end
-    alias_method :min, :minimum
+    sobriquet :min, :minimum
 
     def maximum(&block)
       return maximum { |maximum, item| item <=> maximum } unless block_given?
       reduce { |maximum, item| yield(maximum, item) > 0 ? item : maximum }
     end
-    alias_method :max, :maximum
+    sobriquet :max, :maximum
 
     def grep(pattern, &block)
       filter { |item| pattern === item }.map(&block)
@@ -262,12 +267,12 @@ module Hamster
       return list if list.empty?
       Stream.new(list.head) { list.tail.uniq(items.add(list.head)) }
     end
-    alias_method :nub, :uniq
+    sobriquet :nub, :uniq
 
     def union(other)
       self.append(other).uniq
     end
-    alias_method :|, :union
+    sobriquet :|, :union
 
     def init
       return EmptyList if tail.empty?
@@ -303,18 +308,18 @@ module Hamster
       end
       other.equal?(list)
     end
-    alias_method :==, :eql?
+    sobriquet :==, :eql?
 
     def dup
       self
     end
-    alias_method :clone, :dup
+    sobriquet :clone, :dup
 
     def to_a
       reduce([]) { |a, item| a << item }
     end
-    alias_method :to_ary, :to_a
-    alias_method :entries, :to_a
+    sobriquet :to_ary, :to_a
+    sobriquet :entries, :to_a
 
     def to_list
       self
@@ -354,7 +359,6 @@ module Hamster
     include List
 
     attr_reader :head, :tail
-    alias_method :first, :head
 
     def initialize(head, tail = EmptyList)
       @head = head
@@ -368,7 +372,6 @@ module Hamster
     include List
 
     attr_reader :head
-    alias_method :first, :head
 
     def initialize(head, &tail)
       @head = head
@@ -396,7 +399,6 @@ module Hamster
       def head
         nil
       end
-      alias_method :first, :head
 
       def tail
         self
@@ -405,24 +407,18 @@ module Hamster
       def empty?
         true
       end
-      alias_method :null?, :empty?
 
       def map
         self
       end
-      alias_method :collect, :map
 
       def filter
         self
       end
-      alias_method :select, :filter
-      alias_method :find_all, :filter
 
       def remove
         self
       end
-      alias_method :reject, :remove
-      alias_method :delete_if, :remove
 
       def take_while
         self
@@ -435,9 +431,6 @@ module Hamster
       def append(other)
         other
       end
-      alias_method :concat, :append
-      alias_method :cat, :append
-      alias_method :+, :append
 
       def zip(other)
         return super unless other.empty?
