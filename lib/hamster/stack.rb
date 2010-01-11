@@ -70,6 +70,6 @@ module Hamster
 
   end
 
-  EmptyStack = Stack.new(Hamster.list)
+  EmptyStack = Stack.new(EmptyList)
 
 end
