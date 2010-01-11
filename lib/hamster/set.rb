@@ -169,7 +169,7 @@ module Hamster
     alias_method :entries, :to_a
 
     def to_list
-      reduce(Hamster.list) { |list, item| list.cons(item) }
+      reduce(EmptyList) { |list, item| list.cons(item) }
     end
 
     def inspect
