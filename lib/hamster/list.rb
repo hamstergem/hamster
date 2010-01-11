@@ -266,6 +266,14 @@ module Hamster
       tail.last
     end
 
+    def product
+      reduce(1, &:*)
+    end
+
+    def sum
+      reduce(0, &:+)
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
