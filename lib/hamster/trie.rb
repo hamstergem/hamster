@@ -1,8 +1,10 @@
-require 'hamster/core_ext/module'
+require 'forwardable'
 
 module Hamster
 
   class Trie
+
+    extend Forwardable
 
     def initialize(significant_bits = 0, entries = [], children = [])
       @significant_bits = significant_bits
@@ -96,7 +98,7 @@ module Hamster
       end
       true
     end
-    sobriquet :==, :eql?
+    def_delegator :self, :eql?, :==
 
     protected
 
