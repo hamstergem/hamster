@@ -285,6 +285,10 @@ module Hamster
       reduce(0, &:+)
     end
 
+    def tails
+      Stream.new(self) { tail.tails }
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
@@ -478,6 +482,10 @@ module Hamster
 
       def uniq(items = nil)
         self
+      end
+
+      def tails
+        Sequence.new(self)
       end
 
       def eql?(other)
