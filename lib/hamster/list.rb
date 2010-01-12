@@ -310,8 +310,8 @@ module Hamster
     end
 
     def combinations(number)
-      return Sequence.new(EmptyList) if number == 0
-      tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number))
+      # return Sequence.new(EmptyList) if number == 0
+      # tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number))
     end
     def_delegator :self, :combinations, :combination
 
@@ -470,8 +470,8 @@ module Hamster
       end
 
       def combinations(number)
-        return Sequence.new(self) if number == 0
-        self
+        # return Sequence.new(self) if number == 0
+        # self
       end
 
     end
