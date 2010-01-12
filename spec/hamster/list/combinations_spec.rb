@@ -27,15 +27,17 @@ describe Hamster::List do
       end
 
       [
-        [1, [["A"], ["B"], ["C"], ["D"]]],
-        [2, [["A", "B"], ["A", "C"], ["A", "D"], ["B", "C"], ["B", "D"], ["C", "D"]]],
-        [3, [["A", "B", "C"], ["A", "B", "D"], ["A", "C", "D"], ["B", "C", "D"]]],
-        [4, [[["A", "B", "C", "D"]]]],
-        [0, [[]]],
-        [5, []],
-      ].each do |number, expected|
+        [["A", "B", "C", "D"], 1, [["A"], ["B"], ["C"], ["D"]]],
+        [["A", "B", "C", "D"], 2, [["A", "B"], ["A", "C"], ["A", "D"], ["B", "C"], ["B", "D"], ["C", "D"]]],
+        [["A", "B", "C", "D"], 3, [["A", "B", "C"], ["A", "B", "D"], ["A", "C", "D"], ["B", "C", "D"]]],
+        [["A", "B", "C", "D"], 4, [[["A", "B", "C", "D"]]]],
+        [["A", "B", "C", "D"], 0, [[]]],
+        [["A", "B", "C", "D"], 5, []],
+        [[], 0, [[]]],
+        [[], 1, []],
+      ].each do |values, number, expected|
 
-        values = ["A", "B", "C", "D"]
+        expected = expected.map { |x| Hamster.list(*x) }
 
         describe "on #{values.inspect} in groups of #{number}" do
 
