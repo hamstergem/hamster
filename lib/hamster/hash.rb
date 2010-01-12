@@ -128,6 +128,9 @@ module Hamster
       self
     end
     def_delegator :self, :dup, :clone
+    def_delegator :self, :dup, :uniq
+    def_delegator :self, :dup, :nub
+    def_delegator :self, :dup, :remove_duplicates
 
   end
 
