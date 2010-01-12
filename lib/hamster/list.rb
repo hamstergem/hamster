@@ -1,6 +1,7 @@
 require 'forwardable'
 require 'monitor'
 
+require 'hamster/thunk'
 require 'hamster/set'
 
 module Hamster
@@ -310,8 +311,8 @@ module Hamster
     end
 
     def combinations(number)
-      # return Sequence.new(EmptyList) if number == 0
-      # tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number))
+      return Sequence.new(EmptyList) if number == 0
+      tail.combinations(number - 1).map { |list| list.cons(head) }.append(Thunk.new { tail.combinations(number) })
     end
     def_delegator :self, :combinations, :combination
 
@@ -326,7 +327,8 @@ module Hamster
         list = list.tail
         other = other.tail
       end
-      other.equal?(list)
+
+      other.empty? && list.empty?
     end
     def_delegator :self, :eql?, :==
 
@@ -471,8 +473,8 @@ module Hamster
       end
 
       def combinations(number)
-        # return Sequence.new(self) if number == 0
-        # self
+        return Sequence.new(self) if number == 0
+        self
       end
 
     end

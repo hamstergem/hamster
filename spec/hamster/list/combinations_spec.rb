@@ -19,9 +19,7 @@ describe Hamster::List do
         end
 
         after do
-          pending do
-            @list.send(method, 1).take(1)
-          end
+          @list.send(method, 1).take(1)
         end
 
       end
@@ -51,9 +49,7 @@ describe Hamster::List do
           end
 
           it "returns #{expected.inspect}" do
-            pending do
-              @result.should == Hamster.list(*expected)
-            end
+            @result.should == Hamster.list(*expected)
           end
 
         end
