@@ -260,6 +260,7 @@ module Hamster
       Stream.new(head) { tail.uniq(items.add(head)) }
     end
     def_delegator :self, :uniq, :nub
+    def_delegator :self, :uniq, :remove_duplicates
 
     def union(other)
       self.append(other).uniq

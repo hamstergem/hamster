@@ -4,7 +4,7 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  [:uniq, :nub].each do |method|
+  [:uniq, :nub, :remove_duplicates].each do |method|
 
     describe "##{method}" do
 
