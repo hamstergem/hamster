@@ -139,6 +139,14 @@ module Hamster
     end
     def_delegator :self, :head, :first
 
+    def product
+      reduce(1, &:*)
+    end
+
+    def sum
+      reduce(0, &:+)
+    end
+
     def sort(&block)
       to_list.sort(&block)
     end
