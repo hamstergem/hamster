@@ -42,7 +42,7 @@ describe Hamster::Hash do
         describe "with no block" do
 
           before do
-            @result = @original.send(method,"ABC")
+            @result = @original.send(method, "ABC")
           end
 
           it "returns the memo" do
