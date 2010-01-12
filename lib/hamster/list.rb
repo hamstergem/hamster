@@ -290,7 +290,7 @@ module Hamster
     end
 
     def inits
-      Sequence.new(EmptyList).append(tail.inits.map { |list| list.cons(head) })
+      Stream.new(EmptyList) { tail.inits.map { |list| list.cons(head) } }
     end
 
     def combinations(number)
