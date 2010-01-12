@@ -8,7 +8,7 @@ describe Hamster::Set do
     @set = Hamster.set("A", "B", "C")
   end
 
-  [:uniq, :nub].each do |method|
+  [:uniq, :nub, :remove_duplicates].each do |method|
 
     describe "##{method}" do
 

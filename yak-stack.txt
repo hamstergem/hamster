@@ -30,5 +30,4 @@
 * Some of the stack-depth tests are not failing (when the might otherwise) due to the laziness of the implementation. d'oh!
 * Consider creating a stream that takes another list element rather than needing to have the head? the only problem with this is it won't allow the original to be garbage collected. Hmmm
 * Is there a way we can have a stream based on a non-deterministic data source (eg IO/block) and not need to keep backward references?
-* Alias #uniq as #removeDuplicates
 * Implement a queue?
