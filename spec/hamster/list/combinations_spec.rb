@@ -19,9 +19,7 @@ describe Hamster::List do
         end
 
         after do
-          pending do
-            @list.send(method, 1)
-          end
+          @list.send(method, 1).take(1)
         end
 
       end
@@ -30,7 +28,7 @@ describe Hamster::List do
         [["A", "B", "C", "D"], 1, [["A"], ["B"], ["C"], ["D"]]],
         [["A", "B", "C", "D"], 2, [["A", "B"], ["A", "C"], ["A", "D"], ["B", "C"], ["B", "D"], ["C", "D"]]],
         [["A", "B", "C", "D"], 3, [["A", "B", "C"], ["A", "B", "D"], ["A", "C", "D"], ["B", "C", "D"]]],
-        [["A", "B", "C", "D"], 4, [[["A", "B", "C", "D"]]]],
+        [["A", "B", "C", "D"], 4, [["A", "B", "C", "D"]]],
         [["A", "B", "C", "D"], 0, [[]]],
         [["A", "B", "C", "D"], 5, []],
         [[], 0, [[]]],
@@ -43,9 +41,9 @@ describe Hamster::List do
 
           before do
             @original = Hamster.list(*values)
-            pending do
+            # pending do
               @result = @original.send(method, number)
-            end
+            # end
           end
 
           it "preserves the original" do

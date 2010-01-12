@@ -309,6 +309,12 @@ module Hamster
       Sequence.new(EmptyList).append(tail.inits.map { |list| list.cons(head) })
     end
 
+    def combinations(number)
+      return Sequence.new(EmptyList) if number == 0
+      tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number))
+    end
+    def_delegator :self, :combinations, :combination
+
     def eql?(other)
       return false unless other.is_a?(List)
 
@@ -461,6 +467,11 @@ module Hamster
 
       def inits
         Sequence.new(self)
+      end
+
+      def combinations(number)
+        return Sequence.new(self) if number == 0
+        self
       end
 
     end
