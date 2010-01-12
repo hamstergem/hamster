@@ -289,6 +289,10 @@ module Hamster
       Stream.new(self) { tail.tails }
     end
 
+    def inits
+      Sequence.new(EmptyList).append(tail.inits.map { |list| list.cons(head) })
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless other.is_a?(List)
@@ -485,6 +489,10 @@ module Hamster
       end
 
       def tails
+        Sequence.new(self)
+      end
+
+      def inits
         Sequence.new(self)
       end
 
