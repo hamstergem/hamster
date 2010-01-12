@@ -9,6 +9,14 @@ module Hamster
       @mutex = Mutex.new
     end
 
+    def eql?(other)
+      __getobj__.eql?(other)
+    end
+
+    def is_a?(klass)
+      __getobj__.is_a?(klass)
+    end
+
     protected
 
     def __getobj__
