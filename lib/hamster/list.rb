@@ -370,19 +370,20 @@ module Hamster
 
     attr_reader :head
 
-    def initialize(head, &tail)
+    def initialize(head, &block)
       @head = head
-      @tail = tail
+      @block = block
       @mutex = Mutex.new
     end
 
     def tail
       @mutex.synchronize do
-        unless defined?(@value)
-          @value = @tail.call
+        unless defined?(@tail)
+          @tail = @block.call
+          @block = nil
         end
       end
-      @value
+      @tail
     end
 
   end
