@@ -301,6 +301,10 @@ module Hamster
       reduce(0, &:+)
     end
 
+    def tails
+      Stream.new(self) { tail.tails }
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 
@@ -445,6 +449,10 @@ module Hamster
 
       def cycle
         self
+      end
+
+      def tails
+        Sequence.new(self)
       end
 
     end
