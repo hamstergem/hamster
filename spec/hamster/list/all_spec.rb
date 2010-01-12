@@ -4,98 +4,102 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  describe "#all?" do
+  [:all?, :forall?].each do |method|
 
-    describe "doesn't run out of stack space on a really big" do
+    describe "##{method}" do
 
-      it "stream" do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
+      describe "doesn't run out of stack space on a really big" do
+
+        it "stream" do
+          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
+        end
+
+        it "list" do
+          @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
+        end
+
+        after do
+          @list.send(method) { true }
+        end
+
       end
 
-      it "list" do
-        @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @list.all? { true }
-      end
-
-    end
-
-    describe "when empty" do
-
-      before do
-        @list = Hamster.list
-      end
-
-      it "with a block returns true" do
-        @list.all? {}.should == true
-      end
-
-      it "with no block returns true" do
-        @list.all?.should == true
-      end
-
-    end
-
-    describe "when not empty" do
-
-      describe "with a block" do
+      describe "when empty" do
 
         before do
-          @list = Hamster.list("A", "B", "C")
+          @list = Hamster.list
         end
 
-        describe "if the block always returns true" do
-
-          before do
-            @result = @list.all? { |item| true }
-          end
-
-          it "returns true" do
-            @result.should == true
-          end
-
+        it "with a block returns true" do
+          @list.send(method) {}.should == true
         end
 
-        describe "if the block ever returns false" do
-
-          before do
-            @result = @list.all? { |item| item == "D" }
-          end
-
-          it "returns false" do
-            @result.should == false
-          end
-
+        it "with no block returns true" do
+          @list.send(method).should == true
         end
 
       end
 
-      describe "with no block" do
+      describe "when not empty" do
 
-        describe "if all values are truthy" do
+        describe "with a block" do
 
           before do
-            @result = Hamster.list(true, "A").all?
+            @list = Hamster.list("A", "B", "C")
           end
 
-          it "returns true" do
-            @result.should == true
-          end
-
-        end
-
-        [nil, false].each do |value|
-
-          describe "if any value is #{value.inspect}" do
+          describe "if the block always returns true" do
 
             before do
-              @result = Hamster.list(value, true, "A").all?
+              @result = @list.send(method) { |item| true }
+            end
+
+            it "returns true" do
+              @result.should == true
+            end
+
+          end
+
+          describe "if the block ever returns false" do
+
+            before do
+              @result = @list.send(method) { |item| item == "D" }
             end
 
             it "returns false" do
               @result.should == false
+            end
+
+          end
+
+        end
+
+        describe "with no block" do
+
+          describe "if all values are truthy" do
+
+            before do
+              @result = Hamster.list(true, "A").send(method)
+            end
+
+            it "returns true" do
+              @result.should == true
+            end
+
+          end
+
+          [nil, false].each do |value|
+
+            describe "if any value is #{value.inspect}" do
+
+              before do
+                @result = Hamster.list(value, true, "A").send(method)
+              end
+
+              it "returns false" do
+                @result.should == false
+              end
+
             end
 
           end

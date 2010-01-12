@@ -154,6 +154,7 @@ module Hamster
       return all? { |item| item } unless block_given?
       !! yield(head) && tail.all?(&block)
     end
+    def_delegator :self, :all?, :forall?
 
     def none?(&block)
       return none? { |item| item } unless block_given?

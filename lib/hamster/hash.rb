@@ -98,11 +98,8 @@ module Hamster
     def_delegator :self, :remove, :delete_if
 
     def any?
-      if block_given?
-        each { |key, value| return true if yield(key, value) }
-      else
-        return !empty?
-      end
+      return !empty? unless block_given?
+      each { |key, value| return true if yield(key, value) }
       false
     end
     def_delegator :self, :any?, :exist?
@@ -114,13 +111,11 @@ module Hamster
       end
       true
     end
+    def_delegator :self, :all?, :forall?
 
     def none?
-      if block_given?
-        each { |key, value| return false if yield(key, value) }
-      else
-        return empty?
-      end
+      return empty? unless block_given?
+      each { |key, value| return false if yield(key, value) }
       true
     end
 
