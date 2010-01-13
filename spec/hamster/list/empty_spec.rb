@@ -8,6 +8,10 @@ describe Hamster::List do
 
     describe "##{method}" do
 
+      it "does something" do
+        Hamster::Stream.new { Hamster.list }.send(method).should == true
+      end
+
       [
         [[], true],
         [["A"], false],

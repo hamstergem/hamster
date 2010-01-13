@@ -7,11 +7,13 @@ module Hamster
     module IO
 
       def to_list(sep = $/)
-        line = gets(sep)
-        if line
-          Stream.new(line) { to_list }
-        else
-          EmptyList
+        Stream.new do
+          line = gets(sep)
+          if line
+            Sequence.new(line, to_list)
+          else
+            EmptyList
+          end
         end
       end
 
