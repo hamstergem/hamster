@@ -1,7 +1,6 @@
 require 'forwardable'
 require 'monitor'
 
-require 'hamster/thunk'
 require 'hamster/set'
 
 module Hamster
@@ -16,17 +15,17 @@ module Hamster
 
     def stream(&block)
       return EmptyList unless block_given?
-      Stream.new(yield) { stream(&block) }
+      Stream.new { Sequence.new(yield, stream(&block)) }
     end
 
     def interval(from, to)
       return EmptyList if from > to
-      Stream.new(from) { interval(from.succ, to) }
+      Stream.new { Sequence.new(from, interval(from.succ, to)) }
     end
     def_delegator :self, :interval, :range
 
     def repeat(item)
-      Stream.new(item) { repeat(item) }
+      Stream.new { Sequence.new(item, repeat(item)) }
     end
 
     def replicate(number, item)
@@ -34,7 +33,8 @@ module Hamster
     end
 
     def iterate(item, &block)
-      Stream.new(item) { iterate(yield(item), &block) }
+      # TODO: this isn't really lazy :/
+      Stream.new { Sequence.new(item, iterate(yield(item), &block)) }
     end
 
   end
@@ -66,33 +66,39 @@ module Hamster
     end
     def_delegator :self, :cons, :>>
 
-    def each(&block)
+    def each
       return self unless block_given?
-      yield(head)
-      tail.each(&block)
+      list = self
+      while !list.empty?
+        yield(list.head)
+        list = list.tail
+      end
     end
     def_delegator :self, :each, :foreach
 
     def map(&block)
       return self unless block_given?
-      Stream.new(yield(head)) { tail.map(&block) }
+      Stream.new { Sequence.new(yield(head), tail.map(&block)) }
     end
     def_delegator :self, :map, :collect
 
     def reduce(memo = Undefined, &block)
       return tail.reduce(head, &block) if memo.equal?(Undefined)
       return memo unless block_given?
-      tail.reduce(yield(memo, head), &block)
+      each { |item| memo = yield(memo, item)  }
+      memo
     end
     def_delegator :self, :reduce, :inject
     def_delegator :self, :reduce, :fold
 
     def filter(&block)
       return self unless block_given?
-      if yield(head)
-        Stream.new(head) { tail.filter(&block) }
-      else
-        tail.filter(&block)
+      Stream.new do
+        if yield(head)
+          Sequence.new(head, tail.filter(&block))
+        else
+          tail.filter(&block)
+        end
       end
     end
     def_delegator :self, :filter, :select
@@ -107,36 +113,34 @@ module Hamster
 
     def take_while(&block)
       return self unless block_given?
-      if yield(head)
-        Stream.new(head) { tail.take_while(&block) }
-      else
-        EmptyList
+      Stream.new do
+        if yield(head)
+          Sequence.new(head, tail.take_while(&block))
+        else
+          EmptyList
+        end
       end
     end
 
     def drop_while(&block)
       return self unless block_given?
-      if yield(head)
-        tail.drop_while(&block)
-      else
-        self
+      Stream.new do
+        if yield(head)
+          tail.drop_while(&block)
+        else
+          self
+        end
       end
     end
 
     def take(number)
-      if number > 0
-        Stream.new(head) { tail.take(number - 1) }
-      else
-        EmptyList
-      end
+      return EmptyList unless number > 0
+      Stream.new { Sequence.new(head, tail.take(number - 1)) }
     end
 
     def drop(number)
-      if number > 0
-        tail.drop(number - 1)
-      else
-        self
-      end
+      return self unless number > 0
+      Stream.new { tail.drop(number - 1) }
     end
 
     def include?(object)
@@ -179,11 +183,11 @@ module Hamster
 
     def partition(&block)
       return self unless block_given?
-      Stream.new(filter(&block)) { Sequence.new(remove(&block)) }
+      Stream.new { Sequence.new(filter(&block), Sequence.new(remove(&block))) }
     end
 
     def append(other)
-      Stream.new(head) { tail.append(other) }
+      Stream.new { Sequence.new(head, tail.append(other)) }
     end
     def_delegator :self, :append, :concat
     def_delegator :self, :append, :cat
@@ -206,28 +210,29 @@ module Hamster
     def_delegator :self, :maximum, :max
 
     def grep(pattern, &block)
+      # TODO:
       filter { |item| pattern === item }.map(&block)
     end
 
     def zip(other)
-      Stream.new(Sequence.new(other.head).cons(head)) { tail.zip(other.tail) }
+      Stream.new { Sequence.new(Sequence.new(head, Sequence.new(other.head)), tail.zip(other.tail)) }
     end
 
     def cycle
-      Stream.new(head) { tail.append(self.cycle) }
+      Stream.new { Sequence.new(head, tail.append(self.cycle)) }
     end
 
     def split_at(number)
-      Sequence.new(drop(number)).cons(take(number))
+      Sequence.new(take(number), Sequence.new(drop(number)))
     end
 
     def span(&block)
-      return Sequence.new(EmptyList).cons(self) unless block_given?
-      Stream.new(take_while(&block)) { Sequence.new(drop_while(&block)) }
+      return Sequence.new(self, Sequence.new(EmptyList)) unless block_given?
+      Sequence.new(take_while(&block), Sequence.new(drop_while(&block)))
     end
 
     def break(&block)
-      return Sequence.new(EmptyList).cons(self) unless block_given?
+      return Sequence.new(self, Sequence.new(EmptyList)) unless block_given?
       span { |item| !yield(item) }
     end
 
@@ -255,12 +260,12 @@ module Hamster
 
     def intersperse(sep)
       return self if tail.empty?
-      Stream.new(head) { Stream.new(sep) { tail.intersperse(sep) } }
+      Stream.new { Sequence.new(head, Sequence.new(sep, tail.intersperse(sep))) }
     end
 
     def uniq(items = Set.new)
       return tail.uniq(items) if items.include?(head)
-      Stream.new(head) { tail.uniq(items.add(head)) }
+      Stream.new { Sequence.new(head, tail.uniq(items.add(head))) }
     end
     def_delegator :self, :uniq, :nub
     def_delegator :self, :uniq, :remove_duplicates
@@ -272,7 +277,7 @@ module Hamster
 
     def init
       return EmptyList if tail.empty?
-      Stream.new(head) { tail.init }
+      Stream.new { Sequence.new(head, tail.init) }
     end
 
     def last
@@ -289,24 +294,33 @@ module Hamster
     end
 
     def tails
-      Stream.new(self) { tail.tails }
+      Stream.new { Sequence.new(self, tail.tails) }
     end
 
     def inits
-      Stream.new(EmptyList) { tail.inits.map { |list| list.cons(head) } }
+      Stream.new { Sequence.new(EmptyList, tail.inits.map { |list| list.cons(head) }) }
     end
 
     def combinations(number)
+      # TODO:
       return Sequence.new(EmptyList) if number == 0
-      tail.combinations(number - 1).map { |list| list.cons(head) }.append(Thunk.new { tail.combinations(number) })
+      Stream.new { tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number)) }
     end
     def_delegator :self, :combinations, :combination
 
     def eql?(other)
-      return true if other.equal?(self)
       return false unless other.is_a?(List)
-      return false if other.empty?
-      other.head.eql?(head) && other.tail.eql?(tail)
+
+      list = self
+      while !list.empty? && !other.empty?
+        return true if other.equal?(list)
+        return false unless other.is_a?(List)
+        return false unless other.head.eql?(list.head)
+        list = list.tail
+        other = other.tail
+      end
+
+      other.empty? && list.empty?
     end
     def_delegator :self, :eql?, :==
 
@@ -375,22 +389,37 @@ module Hamster
 
     include List
 
-    attr_reader :head
-
-    def initialize(head, &block)
-      @head = head
+    def initialize(&block)
       @block = block
       @mutex = Mutex.new
     end
 
+    def head
+      target.head
+    end
+
     def tail
+      target.tail
+    end
+
+    def size
+      target.size
+    end
+
+    def empty?
+      target.empty?
+    end
+
+    private
+
+    def target
       @mutex.synchronize do
-        unless defined?(@tail)
-          @tail = @block.call
+        unless defined?(@target)
+          @target = @block.call
           @block = nil
         end
       end
-      @tail
+      @target
     end
 
   end
@@ -417,16 +446,8 @@ module Hamster
         0
       end
 
-      def each
-        return self unless block_given?
-      end
-
       def map
         self
-      end
-
-      def reduce(memo = nil)
-        memo
       end
 
       def filter
@@ -513,10 +534,6 @@ module Hamster
       def combinations(number)
         return Sequence.new(self) if number == 0
         self
-      end
-
-      def eql?(other)
-        other.is_a?(List) &&other.empty?
       end
 
     end

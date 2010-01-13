@@ -124,7 +124,7 @@ module Hamster
 
     def partition(&block)
       return self unless block_given?
-      Stream.new(filter(&block)) { Sequence.new(reject(&block)) }
+      Stream.new { Sequence.new(filter(&block), Sequence.new(reject(&block))) }
     end
 
     def grep(pattern, &block)
