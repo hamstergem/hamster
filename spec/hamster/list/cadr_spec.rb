@@ -29,6 +29,10 @@ describe Hamster::List do
           @result = @original.send(method)
         end
 
+        it "responds to #{method}" do
+          @original.respond_to?(method, false).should == true
+        end
+
         it "preserves the original" do
           @original.should == Hamster.list(*values)
         end
