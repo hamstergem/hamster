@@ -516,7 +516,7 @@ module Hamster
       end
 
       def eql?(other)
-        other.empty?
+        other.is_a?(List) &&other.empty?
       end
 
     end
