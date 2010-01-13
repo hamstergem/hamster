@@ -33,7 +33,6 @@ module Hamster
     end
 
     def iterate(item, &block)
-      # TODO: this isn't really lazy :/
       Stream.new { Sequence.new(item, iterate(yield(item), &block)) }
     end
 
@@ -223,7 +222,6 @@ module Hamster
     def_delegator :self, :maximum, :max
 
     def grep(pattern, &block)
-      # TODO:
       filter { |item| pattern === item }.map(&block)
     end
 
@@ -321,7 +319,6 @@ module Hamster
     end
 
     def combinations(number)
-      # TODO:
       return Sequence.new(EmptyList) if number == 0
       return self if empty?
       Stream.new { tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number)) }
