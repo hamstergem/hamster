@@ -77,6 +77,7 @@ module Hamster
     def_delegator :self, :each, :foreach
 
     def map(&block)
+      return self if empty?
       return self unless block_given?
       Stream.new { Sequence.new(yield(head), tail.map(&block)) }
     end
@@ -92,6 +93,7 @@ module Hamster
     def_delegator :self, :reduce, :fold
 
     def filter(&block)
+      return self if empty?
       return self unless block_given?
       Stream.new do
         if yield(head)
@@ -105,6 +107,7 @@ module Hamster
     def_delegator :self, :filter, :find_all
 
     def remove(&block)
+      return self if empty?
       return self unless block_given?
       filter { |item| !yield(item) }
     end
@@ -112,6 +115,7 @@ module Hamster
     def_delegator :self, :remove, :delete_if
 
     def take_while(&block)
+      return self if empty?
       return self unless block_given?
       Stream.new do
         if yield(head)
@@ -123,6 +127,7 @@ module Hamster
     end
 
     def drop_while(&block)
+      return self if empty?
       return self unless block_given?
       Stream.new do
         if yield(head)
@@ -134,11 +139,13 @@ module Hamster
     end
 
     def take(number)
+      return self if empty?
       return EmptyList unless number > 0
       Stream.new { Sequence.new(head, tail.take(number - 1)) }
     end
 
     def drop(number)
+      return self if empty?
       return self unless number > 0
       Stream.new { tail.drop(number - 1) }
     end
@@ -151,6 +158,7 @@ module Hamster
     def_delegator :self, :include?, :elem?
 
     def any?(&block)
+      return false if empty?
       return any? { |item| item } unless block_given?
       !! yield(head) || tail.any?(&block)
     end
@@ -158,23 +166,27 @@ module Hamster
     def_delegator :self, :any?, :exists?
 
     def all?(&block)
+      return true if empty?
       return all? { |item| item } unless block_given?
       !! yield(head) && tail.all?(&block)
     end
     def_delegator :self, :all?, :forall?
 
     def none?(&block)
+      return true if empty?
       return none? { |item| item } unless block_given?
       !yield(head) && tail.none?(&block)
     end
 
     def one?(&block)
+      return false if empty?
       return one? { |item| item } unless block_given?
       return tail.none?(&block) if yield(head)
       tail.one?(&block)
     end
 
     def find(&block)
+      return nil if empty?
       return nil unless block_given?
       return head if yield(head)
       tail.find(&block)
@@ -187,6 +199,7 @@ module Hamster
     end
 
     def append(other)
+      return other if empty?
       Stream.new { Sequence.new(head, tail.append(other)) }
     end
     def_delegator :self, :append, :concat
@@ -215,10 +228,12 @@ module Hamster
     end
 
     def zip(other)
+      return self if empty? && other.empty?
       Stream.new { Sequence.new(Sequence.new(head, Sequence.new(other.head)), tail.zip(other.tail)) }
     end
 
     def cycle
+      return self if empty?
       Stream.new { Sequence.new(head, tail.append(self.cycle)) }
     end
 
@@ -254,6 +269,7 @@ module Hamster
     end
 
     def join(sep = "")
+      return "" if empty?
       sep = sep.to_s
       tail.reduce(head.to_s) { |string, item| string << sep << item.to_s }
     end
@@ -264,6 +280,7 @@ module Hamster
     end
 
     def uniq(items = Set.new)
+      return self if empty?
       return tail.uniq(items) if items.include?(head)
       Stream.new { Sequence.new(head, tail.uniq(items.add(head))) }
     end
@@ -294,16 +311,19 @@ module Hamster
     end
 
     def tails
+      return Sequence.new(self) if empty?
       Stream.new { Sequence.new(self, tail.tails) }
     end
 
     def inits
+      return Sequence.new(self) if empty?
       Stream.new { Sequence.new(EmptyList, tail.inits.map { |list| list.cons(head) }) }
     end
 
     def combinations(number)
       # TODO:
       return Sequence.new(EmptyList) if number == 0
+      return self if empty?
       Stream.new { tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number)) }
     end
     def_delegator :self, :combinations, :combination
@@ -402,10 +422,6 @@ module Hamster
       target.tail
     end
 
-    def size
-      target.size
-    end
-
     def empty?
       target.empty?
     end
@@ -440,100 +456,6 @@ module Hamster
 
       def empty?
         true
-      end
-
-      def size
-        0
-      end
-
-      def map
-        self
-      end
-
-      def filter
-        self
-      end
-
-      def remove
-        self
-      end
-
-      def take_while
-        self
-      end
-
-      def drop_while
-        self
-      end
-
-      def take(number)
-        self
-      end
-
-      def drop(number)
-        self
-      end
-
-      def include?(object)
-        false
-      end
-
-      def any?
-        false
-      end
-
-      def all?
-        true
-      end
-
-      def none?
-        true
-      end
-
-      def one?
-        false
-      end
-
-      def find(&block)
-        nil
-      end
-
-      def append(other)
-        other
-      end
-
-      def zip(other)
-        return super unless other.empty?
-        self
-      end
-
-      def cycle
-        self
-      end
-
-      def count(&block)
-        0
-      end
-
-      def join(sep = "")
-        ""
-      end
-
-      def uniq(items = nil)
-        self
-      end
-
-      def tails
-        Sequence.new(self)
-      end
-
-      def inits
-        Sequence.new(self)
-      end
-
-      def combinations(number)
-        return Sequence.new(self) if number == 0
-        self
       end
 
     end
