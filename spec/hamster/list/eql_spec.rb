@@ -32,7 +32,7 @@ describe Hamster::List do
           @list = Hamster.list("A", "B", "C")
         end
 
-        it "an array" do
+        it "an array with the same contents" do
           @list.send(method, ["A", "B", "C"]).should == false
         end
 
@@ -40,6 +40,10 @@ describe Hamster::List do
           @list.send(method, Object.new).should == false
         end
 
+      end
+
+      it "returns false when comparing an empty list with an empty array" do
+        Hamster.list.send(method, []).should == false
       end
 
       [
