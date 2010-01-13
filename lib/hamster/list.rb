@@ -45,6 +45,8 @@ module Hamster
 
     Undefined = Object.new
 
+    CADR = /^c([ad]+)r$/
+
     def first
       head
     end
@@ -327,10 +329,14 @@ module Hamster
       to_a.inspect
     end
 
+    def respond_to?(name, include_private = false)
+      super || CADR === name
+    end
+
     private
 
     def method_missing(name, *args, &block)
-      if name.to_s =~ /^c([ad]+)r$/
+      if CADR === name
         accessor($1)
       else
         super
