@@ -307,8 +307,13 @@ module Hamster
     end
 
     def intersperse(sep)
-      return self if tail.empty?
-      Stream.new { Sequence.new(head, Sequence.new(sep, tail.intersperse(sep))) }
+      Stream.new do
+        if tail.empty?
+          self
+        else
+          Sequence.new(head, Sequence.new(sep, tail.intersperse(sep)))
+        end
+      end
     end
 
     def uniq(items = Set.new)
