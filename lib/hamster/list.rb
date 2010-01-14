@@ -217,8 +217,13 @@ module Hamster
     end
 
     def append(other)
-      return other if empty?
-      Stream.new { Sequence.new(head, tail.append(other)) }
+      Stream.new do
+        if empty?
+          other
+        else
+          Sequence.new(head, tail.append(other))
+        end
+      end
     end
     def_delegator :self, :append, :concat
     def_delegator :self, :append, :cat
@@ -297,9 +302,15 @@ module Hamster
     end
 
     def uniq(items = Set.new)
-      return self if empty?
-      return tail.uniq(items) if items.include?(head)
-      Stream.new { Sequence.new(head, tail.uniq(items.add(head))) }
+      Stream.new do
+        if empty?
+          self
+        elsif items.include?(head)
+          tail.uniq(items)
+        else
+          Sequence.new(head, tail.uniq(items.add(head)))
+        end
+      end
     end
     def_delegator :self, :uniq, :nub
     def_delegator :self, :uniq, :remove_duplicates
