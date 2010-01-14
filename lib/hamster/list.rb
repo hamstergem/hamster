@@ -292,12 +292,16 @@ module Hamster
     end
 
     def sort(&block)
-      Hamster.list(*to_a.sort(&block))
+      Stream.new do
+        Hamster.list(*to_a.sort(&block))
+      end
     end
 
     def sort_by(&block)
       return sort unless block_given?
-      Hamster.list(*to_a.sort_by(&block))
+      Stream.new do
+        Hamster.list(*to_a.sort_by(&block))
+      end
     end
 
     def join(sep = "")
@@ -476,9 +480,7 @@ module Hamster
     end
 
     def tail
-      Stream.new do
-        target.tail
-      end
+      target.tail
     end
 
     def empty?

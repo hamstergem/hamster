@@ -12,7 +12,7 @@ describe Hamster::List do
     describe "##{method}" do
 
       it "is lazy" do
-        lambda { Hamster.stream { fail }.send(method) }.should_not raise_error
+        lambda { Hamster.stream { fail }.send(method, &comparator) }.should_not raise_error
       end
 
       [

@@ -6,10 +6,6 @@ describe Hamster::List do
 
   describe "#tail" do
 
-    it "is lazy" do
-      lambda { Hamster.stream { fail }.tail }.should_not raise_error
-    end
-
     [
       [[], []],
       [["A"], []],
