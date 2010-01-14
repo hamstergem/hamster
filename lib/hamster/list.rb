@@ -112,7 +112,6 @@ module Hamster
     def_delegator :self, :filter, :find_all
 
     def remove(&block)
-      return self if empty?
       return self unless block_given?
       filter { |item| !yield(item) }
     end
