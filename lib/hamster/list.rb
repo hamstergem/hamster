@@ -76,9 +76,14 @@ module Hamster
     def_delegator :self, :each, :foreach
 
     def map(&block)
-      return self if empty?
       return self unless block_given?
-      Stream.new { Sequence.new(yield(head), tail.map(&block)) }
+      Stream.new do
+        if empty?
+          self
+        else
+          Sequence.new(yield(head), tail.map(&block))
+        end
+      end
     end
     def_delegator :self, :map, :collect
 
