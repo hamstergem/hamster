@@ -255,8 +255,13 @@ module Hamster
     end
 
     def cycle
-      return self if empty?
-      Stream.new { Sequence.new(head, tail.append(self.cycle)) }
+      Stream.new do
+        if empty?
+          self
+        else
+          Sequence.new(head, tail.append(self.cycle))
+        end
+      end
     end
 
     def split_at(number)

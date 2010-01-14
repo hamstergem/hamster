@@ -13,12 +13,12 @@ describe Hamster do
     describe "with an empty list" do
 
       before do
-        @original = Hamster.list
-        @result = @original.cycle
+        original = Hamster.list
+        @result = original.cycle
       end
 
-      it "returns self" do
-        @result.should equal(@original)
+      it "returns an empty list" do
+        @result.should be_empty
       end
 
     end
