@@ -114,10 +114,11 @@ module Hamster
     def_delegator :self, :remove, :delete_if
 
     def take_while(&block)
-      return self if empty?
       return self unless block_given?
       Stream.new do
-        if yield(head)
+        if empty?
+          self
+        elsif yield(head)
           Sequence.new(head, tail.take_while(&block))
         else
           EmptyList
@@ -126,10 +127,11 @@ module Hamster
     end
 
     def drop_while(&block)
-      return self if empty?
       return self unless block_given?
       Stream.new do
-        if yield(head)
+        if empty?
+          self
+        elsif yield(head)
           tail.drop_while(&block)
         else
           self
