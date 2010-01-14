@@ -150,9 +150,15 @@ module Hamster
     end
 
     def drop(number)
-      return self if empty?
-      return self unless number > 0
-      Stream.new { tail.drop(number - 1) }
+      Stream.new do
+        if empty?
+          self
+        elsif number > 0
+          tail.drop(number - 1)
+        else
+          self
+        end
+      end
     end
 
     def include?(object)
