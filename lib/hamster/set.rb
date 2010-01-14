@@ -160,6 +160,10 @@ module Hamster
       to_a.join(sep)
     end
 
+    def compact
+      remove(&:nil?)
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
