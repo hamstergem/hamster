@@ -375,8 +375,13 @@ module Hamster
 
     def combinations(number)
       return Sequence.new(EmptyList) if number == 0
-      return self if empty?
-      Stream.new { tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number)) }
+      Stream.new do
+        if empty?
+          self
+        else
+          tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number))
+        end
+      end
     end
     def_delegator :self, :combinations, :combination
 
