@@ -13,9 +13,7 @@ describe Hamster::List do
       end
 
       it "doesn't run out of stack" do
-        pending do
-          lambda { @list.one? { false } }.should_not raise_error
-        end
+        lambda { @list.one? { false } }.should_not raise_error
       end
 
     end

@@ -175,39 +175,40 @@ module Hamster
     def_delegator :self, :include?, :contains?
     def_delegator :self, :include?, :elem?
 
-    def any?(&block)
-      return false if empty?
+    def any?
       return any? { |item| item } unless block_given?
-      !! yield(head) || tail.any?(&block)
+      each { |item| return true if yield(item) }
+      false
     end
     def_delegator :self, :any?, :exist?
     def_delegator :self, :any?, :exists?
 
-    def all?(&block)
-      return true if empty?
+    def all?
       return all? { |item| item } unless block_given?
-      !! yield(head) && tail.all?(&block)
+      each { |item| return false unless yield(item) }
+      true
     end
     def_delegator :self, :all?, :forall?
 
-    def none?(&block)
-      return true if empty?
+    def none?
       return none? { |item| item } unless block_given?
-      !yield(head) && tail.none?(&block)
+      each { |item| return false if yield(item) }
+      true
     end
 
     def one?(&block)
-      return false if empty?
       return one? { |item| item } unless block_given?
-      return tail.none?(&block) if yield(head)
-      tail.one?(&block)
+      list = self
+      while !list.empty?
+        return list.tail.none?(&block) if yield(list.head)
+        list = list.tail
+      end
+      false
     end
 
-    def find(&block)
-      return nil if empty?
+    def find
       return nil unless block_given?
-      return head if yield(head)
-      tail.find(&block)
+      each { |item| return item if yield(item) }
     end
     def_delegator :self, :find, :detect
 
@@ -345,8 +346,11 @@ module Hamster
     end
 
     def last
-      return head if tail.empty?
-      tail.last
+      list = self
+      while !list.tail.empty?
+        list = list.tail
+      end
+      list.head
     end
 
     def product
