@@ -138,9 +138,15 @@ module Hamster
     end
 
     def take(number)
-      return self if empty?
-      return EmptyList unless number > 0
-      Stream.new { Sequence.new(head, tail.take(number - 1)) }
+      Stream.new do
+        if empty?
+          self
+        elsif number > 0
+          Sequence.new(head, tail.take(number - 1))
+        else
+          EmptyList
+        end
+      end
     end
 
     def drop(number)
