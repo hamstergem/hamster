@@ -393,6 +393,10 @@ module Hamster
     end
     def_delegator :self, :combinations, :combination
 
+    def compact
+      remove(&:nil?)
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 
