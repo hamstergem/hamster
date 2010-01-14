@@ -1,3 +1,29 @@
+=== 0.2.0 / 2010-01-14
+
+* List methods that return lists are now all lazy. Not sure what, if any, negative impact this will have but the positives have so far been well worth it.
+
+* Ensure List#eql? (and #==) doesn't accidentally consider an empty list to be equal to an empty array!
+
+* Ensure List responds_to? cadr and friends.
+
+* Stream now releases the block for garbage collection once called.
+
+* Implement List#combinations.
+
+* Implement List#inits.
+
+* Implement List#tails.
+
+* Implement Hash#uniq.
+
+* Alias #uniq as #remove_duplicates.
+
+* Alias #all? as #forall?
+
+* Implement Set#product.
+
+* Implement Set#sum.
+
 === 0.1.23 / 2010-01-11
 
 * Implement List#product.
