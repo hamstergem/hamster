@@ -250,8 +250,13 @@ module Hamster
     end
 
     def zip(other)
-      return self if empty? && other.empty?
-      Stream.new { Sequence.new(Sequence.new(head, Sequence.new(other.head)), tail.zip(other.tail)) }
+      Stream.new do
+        if empty? && other.empty?
+          self
+        else
+          Sequence.new(Sequence.new(head, Sequence.new(other.head)), tail.zip(other.tail))
+        end
+      end
     end
 
     def cycle
