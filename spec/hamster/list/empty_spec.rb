@@ -8,6 +8,20 @@ describe Hamster::List do
 
     describe "##{method}" do
 
+      describe "on a really big list" do
+
+        before do
+          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
+        end
+
+        it "doesn't run out of stack" do
+          pending do
+            lambda { @list.filter(&:nil?).empty? }.should_not raise_error
+          end
+        end
+
+      end
+
       [
         [[], true],
         [["A"], false],
