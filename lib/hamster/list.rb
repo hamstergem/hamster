@@ -97,10 +97,11 @@ module Hamster
     def_delegator :self, :reduce, :fold
 
     def filter(&block)
-      return self if empty?
       return self unless block_given?
       Stream.new do
-        if yield(head)
+        if empty?
+          self
+        elsif yield(head)
           Sequence.new(head, tail.filter(&block))
         else
           tail.filter(&block)
