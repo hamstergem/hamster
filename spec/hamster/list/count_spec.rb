@@ -6,10 +6,16 @@ describe Hamster::List do
 
   describe "#count" do
 
-    it "is lazy" do
-      pending do
-        lambda { Hamster.stream { false }.count { false } }.should_not raise_error
+    describe "on a really big list" do
+
+      before do
+        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
       end
+
+      it "doesn't run out of stack" do
+        lambda { @list.count }.should_not raise_error
+      end
+
     end
 
     [
