@@ -476,7 +476,9 @@ module Hamster
     end
 
     def tail
-      target.tail
+      Stream.new do
+        target.tail
+      end
     end
 
     def empty?
