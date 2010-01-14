@@ -8,20 +8,8 @@ describe Hamster::List do
 
     describe "##{method}" do
 
-      describe "doesn't run out of stack space on a really big" do
-
-        it "stream" do
-          @a = @b = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        end
-
-        it "list" do
-          @a = @b = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-        end
-
-        after do
-          @a.send(method, @b)
-        end
-
+      it "is lazy" do
+        lambda { Hamster.stream { fail }.append(Hamster.stream { fail }) }.should_not raise_error
       end
 
       [
@@ -53,12 +41,6 @@ describe Hamster::List do
 
         end
 
-      end
-
-      it "is lazy" do
-        count = 0
-        Hamster.stream { count += 1 }.append(Hamster.list("A"))
-        count.should <= 1
       end
 
     end

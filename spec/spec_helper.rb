@@ -4,4 +4,4 @@ require 'rubygems'
 lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-STACK_OVERFLOW_DEPTH = 1000
+STACK_OVERFLOW_DEPTH = 10000

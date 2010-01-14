@@ -6,18 +6,14 @@ describe Hamster::List do
 
   describe "#sum" do
 
-    describe "doesn't run out of stack space on a really big" do
+    describe "on a really big list" do
 
-      it "stream" do
+      before do
         @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
       end
 
-      it "list" do
-        @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @list.sum
+      it "doesn't run out of stack" do
+        lambda { @list.sum }.should_not raise_error
       end
 
     end

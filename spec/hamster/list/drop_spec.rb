@@ -6,20 +6,8 @@ describe Hamster::List do
 
   describe "#drop" do
 
-    describe "doesn't run out of stack space on a really big" do
-
-      it "stream" do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
-      it "list" do
-        @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @list.drop(STACK_OVERFLOW_DEPTH)
-      end
-
+    it "is lazy" do
+      lambda { Hamster.stream { fail }.drop(1) }.should_not raise_error
     end
 
     [

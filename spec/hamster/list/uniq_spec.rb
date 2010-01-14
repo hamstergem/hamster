@@ -8,20 +8,8 @@ describe Hamster::List do
 
     describe "##{method}" do
 
-      describe "doesn't run out of stack space on a really big" do
-
-        it "stream" do
-          @list = Hamster.replicate(STACK_OVERFLOW_DEPTH, 0)
-        end
-
-        it "list" do
-          @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(0) }
-        end
-
-        after do
-          @list.send(method)
-        end
-
+      it "is lazy" do
+        lambda { Hamster.stream { fail }.uniq }.should_not raise_error
       end
 
       [

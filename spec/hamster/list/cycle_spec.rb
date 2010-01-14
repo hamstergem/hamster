@@ -6,27 +6,8 @@ describe Hamster do
 
   describe "#cycle" do
 
-    describe "doesn't run out of stack space on a really big" do
-
-      it "stream" do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
-      it "list" do
-        @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @list.cycle
-      end
-
-    end
-
     it "is lazy" do
-      count = 0
-      list = Hamster.stream { count += 1 }
-      list.cycle
-      count.should <= 1
+      lambda { Hamster.stream { fail }.cycle }.should_not raise_error
     end
 
     describe "with an empty list" do

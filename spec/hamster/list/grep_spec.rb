@@ -6,20 +6,8 @@ describe Hamster::List do
 
   describe "#grep" do
 
-    describe "doesn't run out of stack space on a really big" do
-
-      it "stream" do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
-      it "list" do
-        @list = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @list.grep(Object)
-      end
-
+    it "is lazy" do
+      lambda { Hamster.stream { fail }.grep(Object) { |item| item } }.should_not raise_error
     end
 
     describe "without a block" do
@@ -69,12 +57,6 @@ describe Hamster::List do
 
           it "returns #{expected.inspect}" do
             @result.should == Hamster.list(*expected)
-          end
-
-          it "is lazy" do
-            count = 0
-            @original.grep(Object) { |item| count += 1; item }
-            count.should <= 1
           end
 
         end

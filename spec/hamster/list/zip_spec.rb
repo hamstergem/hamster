@@ -6,28 +6,8 @@ describe Hamster::List do
 
   describe "#zip" do
 
-    describe "doesn't run out of stack space on a really big" do
-
-      it "stream" do
-        @left = @right = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
-      it "list" do
-        @left = @right = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-      end
-
-      after do
-        @left.zip(@right)
-      end
-
-    end
-
     it "is lazy" do
-      count = 0
-      left = Hamster.stream { count += 1 }
-      right = Hamster.stream { count += 1 }
-      result = left.zip(right)
-      count.should <= 2
+      lambda { Hamster.stream { fail }.zip(Hamster.stream { fail }) }.should_not raise_error
     end
 
     [

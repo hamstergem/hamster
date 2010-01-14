@@ -8,28 +8,8 @@ describe Hamster::List do
 
     describe "#union" do
 
-      describe "doesn't run out of stack space on a really big" do
-
-        it "stream" do
-          @a = @b = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        end
-
-        it "list" do
-          @a = @b = (0...STACK_OVERFLOW_DEPTH).reduce(Hamster.list) { |list, i| list.cons(i) }
-        end
-
-        after do
-          @a.send(method, @b)
-        end
-
-      end
-
       it "is lazy" do
-        count = 0
-        a = Hamster.stream { count += 1 }
-        b = Hamster.stream { count += 1 }
-        result = a.send(method, b)
-        count.should <= 2
+        lambda { Hamster.stream { fail }.union(Hamster.stream { fail }) }.should_not raise_error
       end
 
       [
