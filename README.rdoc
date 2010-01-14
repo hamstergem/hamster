@@ -122,7 +122,7 @@ The following code will only call <tt>prime?</tt> as many times as necessary to 
 
 Compare that to the conventional equivalent which needs to calculate all possible values in the range before taking the first 3:
 
-  (10000..1000000).select { |i| prime?(i) }[0, 3]   # => 10s
+  (10000..1000000).select { |i| prime?(i) }.take(3)   # => 10s
 
 Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
