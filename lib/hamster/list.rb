@@ -349,8 +349,13 @@ module Hamster
     end
 
     def inits
-      return Sequence.new(self) if empty?
-      Stream.new { Sequence.new(EmptyList, tail.inits.map { |list| list.cons(head) }) }
+      Stream.new do
+        if empty?
+          Sequence.new(self)
+        else
+          Sequence.new(EmptyList, tail.inits.map { |list| list.cons(head) })
+        end
+      end
     end
 
     def combinations(number)
