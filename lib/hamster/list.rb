@@ -488,10 +488,14 @@ module Hamster
     end
 
     def empty?
-      target.empty?
+      list = target
+      while list.is_a?(Stream)
+        list = list.target
+      end
+      list.empty?
     end
 
-    private
+    protected
 
     def target
       @mutex.synchronize do
