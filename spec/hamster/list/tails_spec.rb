@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#tails" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.tail }.should_not raise_error
+      lambda { Hamster.stream { fail }.tails }.should_not raise_error
     end
 
     [

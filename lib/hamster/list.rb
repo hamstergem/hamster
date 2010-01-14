@@ -344,8 +344,13 @@ module Hamster
     end
 
     def tails
-      return Sequence.new(self) if empty?
-      Stream.new { Sequence.new(self, tail.tails) }
+      Stream.new do
+        if empty?
+          Sequence.new(self)
+        else
+          Sequence.new(self, tail.tails)
+        end
+      end
     end
 
     def inits
