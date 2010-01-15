@@ -1,3 +1,17 @@
+=== 0.2.2 / 2010-01-15
+
+* Implement List#flatten.
+
+* Implement List#each_slice (aliased as #each_chunk).
+
+* Return a tuple rather than a list for #split_at, #partition, #break, and #span.
+
+* Implement List#chunk.
+
+* Implement Set#compact.
+
+* Implement List#compact.
+
 === 0.2.1 / 2010-01-15
 
 * Fix bug: List#empty? would cause a stack overflow on very large streams.
