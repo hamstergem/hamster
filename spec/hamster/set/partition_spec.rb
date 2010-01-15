@@ -27,8 +27,8 @@ describe Hamster::Set do
 
           before do
             @result = @original.partition(&:odd?)
-            @matches = @result.car
-            @remainder = @result.cadr
+            @matches = @result.head
+            @remainder = @result.last
           end
 
           it "preserves the original" do

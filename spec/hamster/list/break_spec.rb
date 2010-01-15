@@ -31,8 +31,8 @@ describe Hamster::List do
 
           before do
             @result = @original.break { |item| item > 2 }
-            @prefix = @result.car
-            @remainder = @result.cadr
+            @prefix = @result.head
+            @remainder = @result.last
           end
 
           it "preserves the original" do
@@ -57,8 +57,8 @@ describe Hamster::List do
 
           before do
             @result = @original.break
-            @prefix = @result.car
-            @remainder = @result.cadr
+            @prefix = @result.head
+            @remainder = @result.last
           end
 
           it "returns a list with two items" do

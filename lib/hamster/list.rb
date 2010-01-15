@@ -402,7 +402,8 @@ module Hamster
         if empty?
           self
         else
-          Sequence.new(take(number), drop(number).chunk(number))
+          split = split_at(number)
+          Sequence.new(split.first, split.last.chunk(number))
         end
       end
     end

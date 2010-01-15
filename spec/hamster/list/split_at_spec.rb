@@ -23,8 +23,8 @@ describe Hamster::List do
         before do
           @original = Hamster.list(*values)
           @result = @original.split_at(2)
-          @prefix = @result.car
-          @remainder = @result.cadr
+          @prefix = @result.head
+          @remainder = @result.last
         end
 
         it "preserves the original" do
