@@ -397,6 +397,16 @@ module Hamster
       remove(&:nil?)
     end
 
+    def chunk(number)
+      Stream.new do
+        if empty?
+          self
+        else
+          Sequence.new(take(number), drop(number).chunk(number))
+        end
+      end
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 

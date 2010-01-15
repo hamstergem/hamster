@@ -7,9 +7,7 @@ describe Hamster::List do
   describe "#chunk" do
 
     it "is lazy" do
-      pending do
-        lambda { Hamster.stream { fail }.chunk(2) }.should_not raise_error
-      end
+      lambda { Hamster.stream { fail }.chunk(2) }.should_not raise_error
     end
 
     [
@@ -22,9 +20,7 @@ describe Hamster::List do
 
         before do
           @original = Hamster.list(*values)
-          pending do
-            @result = @original.chunk(2)
-          end
+          @result = @original.chunk(2)
         end
 
         it "preserves the original" do
