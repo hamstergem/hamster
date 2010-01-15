@@ -409,6 +409,11 @@ module Hamster
       end
     end
 
+    def each_chunk(number, &block)
+      chunk(number).each(&block)
+    end
+    def_delegator :self, :each_chunk, :each_slice
+
     def eql?(other)
       return false unless other.is_a?(List)
 
