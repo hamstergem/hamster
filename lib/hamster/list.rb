@@ -414,6 +414,18 @@ module Hamster
     end
     def_delegator :self, :each_chunk, :each_slice
 
+    def flatten
+      Stream.new do
+        if empty?
+          self
+        elsif head.is_a?(List)
+          head.append(tail.flatten)
+        else
+          Sequence.new(head, tail.flatten)
+        end
+      end
+    end
+
     def eql?(other)
       return false unless other.is_a?(List)
 
