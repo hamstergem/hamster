@@ -1,6 +1,7 @@
 require 'forwardable'
 require 'monitor'
 
+require 'hamster/tuple'
 require 'hamster/set'
 
 module Hamster
@@ -214,7 +215,7 @@ module Hamster
 
     def partition(&block)
       return self unless block_given?
-      Stream.new { Sequence.new(filter(&block), Sequence.new(remove(&block))) }
+      Tuple.new(filter(&block), remove(&block))
     end
 
     def append(other)
@@ -271,16 +272,16 @@ module Hamster
     end
 
     def split_at(number)
-      Sequence.new(take(number), Sequence.new(drop(number)))
+      Tuple.new(take(number), drop(number))
     end
 
     def span(&block)
-      return Sequence.new(self, Sequence.new(EmptyList)) unless block_given?
-      Sequence.new(take_while(&block), Sequence.new(drop_while(&block)))
+      return Tuple.new(self, EmptyList) unless block_given?
+      Tuple.new(take_while(&block), drop_while(&block))
     end
 
     def break(&block)
-      return Sequence.new(self, Sequence.new(EmptyList)) unless block_given?
+      return Tuple.new(self, EmptyList) unless block_given?
       span { |item| !yield(item) }
     end
 

@@ -1,5 +1,6 @@
 require 'forwardable'
 
+require 'hamster/tuple'
 require 'hamster/trie'
 require 'hamster/list'
 
@@ -124,7 +125,7 @@ module Hamster
 
     def partition(&block)
       return self unless block_given?
-      Stream.new { Sequence.new(filter(&block), Sequence.new(reject(&block))) }
+      Tuple.new(filter(&block), reject(&block))
     end
 
     def grep(pattern, &block)

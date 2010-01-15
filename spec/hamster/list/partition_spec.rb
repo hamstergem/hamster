@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+require 'hamster/tuple'
 require 'hamster/list'
 
 describe Hamster::List do
@@ -31,7 +32,7 @@ describe Hamster::List do
 
           before do
             @result = @original.partition(&:odd?)
-            @matches = @result.head
+            @matches = @result.first
             @remainder = @result.last
           end
 
@@ -39,8 +40,8 @@ describe Hamster::List do
             @original.should == Hamster.list(*values)
           end
 
-          it "returns a list with two items" do
-            @result.size.should == 2
+          it "returns a tuple with two items" do
+            @result.is_a?(Hamster::Tuple).should == true
           end
 
           it "correctly identifies the matches" do

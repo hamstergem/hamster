@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+require 'hamster/tuple'
 require 'hamster/list'
 
 describe Hamster::List do
@@ -31,7 +32,7 @@ describe Hamster::List do
 
           before do
             @result = @original.span { |item| item <= 2 }
-            @prefix = @result.head
+            @prefix = @result.first
             @remainder = @result.last
           end
 
@@ -39,8 +40,8 @@ describe Hamster::List do
             @original.should == Hamster.list(*values)
           end
 
-          it "returns a list with two items" do
-            @result.size.should == 2
+          it "returns a tuple with two items" do
+            @result.is_a?(Hamster::Tuple).should == true
           end
 
           it "correctly identifies the prefix" do
@@ -57,12 +58,12 @@ describe Hamster::List do
 
           before do
             @result = @original.span
-            @prefix = @result.head
+            @prefix = @result.first
             @remainder = @result.last
           end
 
-          it "returns a list with two items" do
-            @result.size.should == 2
+          it "returns a tuple with two items" do
+            @result.is_a?(Hamster::Tuple).should == true
           end
 
           it "returns self as the prefix" do
