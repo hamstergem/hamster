@@ -58,6 +58,9 @@ module Hamster
     def_delegator :self, :cons, :>>
 
     def each
+      # return nil if empty?
+      # yield(head)
+      # tail.each(&block)
       return self unless block_given?
       list = self
       while !list.empty?
@@ -80,6 +83,10 @@ module Hamster
     def_delegator :self, :map, :collect
 
     def reduce(memo = Undefined, &block)
+      # return memo if empty?
+      # return memo unless block_given?
+      # return tail.reduce(head, &block) if memo.equal?(Undefined)
+      # tail.reduce(yield(memo, head), &block)
       return tail.reduce(head, &block) if memo.equal?(Undefined)
       return memo unless block_given?
       each { |item| memo = yield(memo, item)  }
@@ -168,6 +175,9 @@ module Hamster
     def_delegator :self, :include?, :elem?
 
     def any?
+      # return false if empty?
+      # return any? { |item| item } unless block_given?
+      # !! yield(head) || tail.any?(&block)
       return any? { |item| item } unless block_given?
       each { |item| return true if yield(item) }
       false
@@ -176,6 +186,9 @@ module Hamster
     def_delegator :self, :any?, :exists?
 
     def all?
+      # return true if empty?
+      # return all? { |item| item } unless block_given?
+      # !! yield(head) && tail.all?(&block)
       return all? { |item| item } unless block_given?
       each { |item| return false unless yield(item) }
       true
@@ -183,6 +196,9 @@ module Hamster
     def_delegator :self, :all?, :forall?
 
     def none?
+      # return true if empty?
+      # return none? { |item| item } unless block_given?
+      # !yield(head) && tail.none?(&block)
       return none? { |item| item } unless block_given?
       each { |item| return false if yield(item) }
       true
@@ -199,6 +215,10 @@ module Hamster
     end
 
     def find
+      # return nil if empty?
+      # return nil unless block_given?
+      # return head if yield(head)
+      # tail.find(&block)
       return nil unless block_given?
       each { |item| return item if yield(item) }
     end
@@ -418,8 +438,12 @@ module Hamster
     end
 
     def eql?(other)
+      # return true if other.equal?(self)
+      # return false unless other.is_a?(List)
+      # return other.empty? if empty?
+      # return empty? if other.empty?
+      # other.head.eql?(head) && other.tail.eql?(tail)
       return false unless other.is_a?(List)
-
       list = self
       while !list.empty? && !other.empty?
         return true if other.equal?(list)
@@ -428,7 +452,6 @@ module Hamster
         list = list.tail
         other = other.tail
       end
-
       other.empty? && list.empty?
     end
     def_delegator :self, :eql?, :==
@@ -475,7 +498,7 @@ module Hamster
     # identify the series of car and cdr operations that is performed by the function. The order in which the 'a's and
     # 'd's appear is the inverse of the order in which the corresponding operations are performed.
     def accessor(sequence)
-      sequence.split(//).reverse!.reduce(self) do |memo, char|
+      sequence.reverse.each_char.reduce(self) do |memo, char|
         case char
         when "a" then memo.head
         when "d" then memo.tail
