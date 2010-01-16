@@ -205,6 +205,9 @@ module Hamster
     end
 
     def one?(&block)
+      # return true if empty?
+      # return none? { |item| item } unless block_given?
+      # !yield(head) && tail.none?(&block)
       return one? { |item| item } unless block_given?
       list = self
       while !list.empty?
