@@ -2,19 +2,20 @@ require 'forwardable'
 
 module Hamster
 
-  def self.tuple(first, last)
-    Tuple.new(first, last)
-  end
-
   class Tuple
 
     extend Forwardable
 
-    attr_reader :first, :last
+    def initialize(*items)
+      @items = items.freeze
+    end
 
-    def initialize(first, last)
-      @first = first
-      @last = last
+    def first
+      @items.first
+    end
+
+    def last
+      @items.last
     end
 
     def dup
@@ -22,8 +23,16 @@ module Hamster
     end
     def_delegator :self, :dup, :clone
 
+    def to_ary
+      @items
+    end
+
+    def to_a
+      @items.dup
+    end
+
     def inspect
-      "(#{first.inspect}, #{last.inspect})"
+      "(#{@items.inspect[1..-2]})"
     end
 
   end

@@ -403,8 +403,8 @@ module Hamster
         if empty?
           self
         else
-          split = split_at(number)
-          Sequence.new(split.first, split.last.chunk(number))
+          first, remainder = split_at(number)
+          Sequence.new(first, remainder.chunk(number))
         end
       end
     end
@@ -450,8 +450,8 @@ module Hamster
     def to_a
       reduce([]) { |a, item| a << item }
     end
-    def_delegator :self, :to_a, :to_ary
     def_delegator :self, :to_a, :entries
+    def_delegator :self, :to_a, :to_ary
 
     def to_list
       self

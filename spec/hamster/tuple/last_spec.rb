@@ -7,7 +7,7 @@ describe Hamster::Tuple do
   describe "#last" do
 
     before do
-      @tuple = Hamster.tuple("A", "B")
+      @tuple = Hamster::Tuple.new("A", "B")
     end
 
     it "returns the last value" do

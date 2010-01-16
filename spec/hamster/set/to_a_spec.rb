@@ -18,10 +18,17 @@ describe Hamster::Set do
 
           before do
             @set = Hamster.set(*values)
+            @result = @set.send(method)
           end
 
           it "returns #{values.inspect}" do
-            @set.send(method).sort.should == values.sort
+            @result.sort.should == values.sort
+          end
+
+          it "returns a mutable array" do
+            @result.last.should_not == "The End"
+            @result << "The End"
+            @result.last.should == "The End"
           end
 
         end

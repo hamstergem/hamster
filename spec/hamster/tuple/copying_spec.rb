@@ -9,7 +9,7 @@ describe Hamster::Tuple do
     describe "#{method}" do
 
       before do
-        @original = Hamster.tuple("A", "B")
+        @original = Hamster::Tuple.new("A", "B")
         @result = @original.send(method)
       end
 

@@ -7,7 +7,7 @@ describe Hamster::Tuple do
   describe "#inspect" do
 
     before do
-      @list = Hamster.tuple("A", "B")
+      @list = Hamster::Tuple.new("A", "B")
     end
 
     it "returns a string with the inspected values" do
