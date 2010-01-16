@@ -25,7 +25,10 @@ describe Hamster::List do
       end
 
       it "block parameters" do
-        [@list].each do |a, b, *c|
+        def func(&block)
+          yield(@list)
+        end
+        func do |a, b, *c|
           a.should == "A"
           b.should == "B"
           c.should == ["C", "D"]

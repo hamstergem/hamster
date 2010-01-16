@@ -13,7 +13,10 @@ describe Hamster::Tuple do
       end
 
       it "block parameters" do
-        [@tuple].each do |a, b, *c|
+        def func(&block)
+          yield(@tuple)
+        end
+        func do |a, b, *c|
           a.should == "A"
           b.should == "B"
           c.should == ["C", "D"]
