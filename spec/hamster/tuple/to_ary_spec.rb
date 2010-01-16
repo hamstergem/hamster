@@ -9,14 +9,24 @@ describe Hamster::Tuple do
     describe "enables implicit conversion to" do
 
       before do
-        @tuple = Hamster::Tuple.new("A", "B")
+        @tuple = Hamster::Tuple.new("A", "B", "C", "D")
       end
 
-      it "call parameters" do
-        [@tuple].each do |a, b|
+      it "block parameters" do
+        [@tuple].each do |a, b, *c|
           a.should == "A"
           b.should == "B"
+          c.should == ["C", "D"]
         end
+      end
+
+      it "method arguments" do
+        def func(a, b, *c)
+          a.should == "A"
+          b.should == "B"
+          c.should == ["C", "D"]
+        end
+        func(*@tuple)
       end
 
     end

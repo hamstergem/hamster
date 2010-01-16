@@ -21,20 +21,24 @@ describe Hamster::List do
     describe "enables implicit conversion to" do
 
       before do
-        @list = Hamster.list("A", "B", "C")
+        @list = Hamster.list("A", "B", "C", "D")
       end
 
-      it "arrays" do
-        array = *@list
-        array.should == ["A", "B", "C"]
-      end
-
-      it "call parameters" do
-        [@list].each do |a, b, c|
+      it "block parameters" do
+        [@list].each do |a, b, *c|
           a.should == "A"
           b.should == "B"
-          c.should == "C"
+          c.should == ["C", "D"]
         end
+      end
+
+      it "method arguments" do
+        def func(a, b, *c)
+          a.should == "A"
+          b.should == "B"
+          c.should == ["C", "D"]
+        end
+        func(*@list)
       end
 
     end
