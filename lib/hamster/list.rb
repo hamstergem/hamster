@@ -43,10 +43,6 @@ module Hamster
 
     extend Forwardable
 
-    Undefined = Object.new
-
-    CADR = /^c([ad]+)r$/
-
     def first
       head
     end
@@ -466,6 +462,10 @@ module Hamster
     end
 
     private
+
+    Undefined = Object.new
+
+    CADR = /^c([ad]+)r$/
 
     def method_missing(name, *args, &block)
       if CADR === name
