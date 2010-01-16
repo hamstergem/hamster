@@ -13,19 +13,12 @@
 * Implement Set#^ as equivalent to ((set | enum) - (set & enum))
 * Implement Hash#merge
 * Work out what we can extract into common "Enumerable-like" code.
-* Independently test list methods on intervals.
 * Make Set and Hash lazy
-* Test laziness of List methods that don't take a block.
 * Generate spec docs
-* Laziness tests can be simplified
-* Add more tests for each method on streams and intervals
 * Add missing immutability tests to Set
 * Add missing immutability tests to Hash
 * Add missing immutability tests to Stack
 * Re-write Trie test-first (it was only a spike)
 * Allow Trie to efficiently add multiple pairs in one go
 * Implement Vector (using a Trie and integer keys?)
-* Factor out the large list stack test stuff.
-* Some of the stack-depth tests are not failing (when the might otherwise) due to the laziness of the implementation. d'oh!
-* Is there a way we can have a stream based on a non-deterministic data source (eg IO/block) and not need to keep backward references?
 * Implement a queue?
