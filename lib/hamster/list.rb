@@ -43,13 +43,8 @@ module Hamster
 
     extend Forwardable
 
-    def first
-      head
-    end
+    def_delegator :self, :head, :first
 
-    def empty?
-      false
-    end
     def_delegator :self, :empty?, :null?
 
     def size
@@ -499,6 +494,10 @@ module Hamster
     def initialize(head, tail = EmptyList)
       @head = head
       @tail = tail
+    end
+
+    def empty?
+      false
     end
 
   end
