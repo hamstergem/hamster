@@ -132,6 +132,10 @@ module Hamster
     def_delegator :self, :dup, :nub
     def_delegator :self, :dup, :remove_duplicates
 
+    def inspect
+      "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}"}.join(", ")}}"
+    end
+
   end
 
 end
