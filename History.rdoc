@@ -1,3 +1,16 @@
+=== 0.2.3 / 2010-01-18
+
+* Implement Set#group_by.
+
+* Implement List#group_by.
+
+* Implement Hash#inspect.
+
+* Tuples can now be implicitly converted to args and variables via #to_ary, meaning you can do:
+
+   integers = Hamster.iterate(1, &:succ)
+   odds, evens = integers.partition(&:odd?)
+
 === 0.2.2 / 2010-01-15
 
 * Implement List#flatten.

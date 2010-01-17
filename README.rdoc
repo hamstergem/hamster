@@ -128,13 +128,18 @@ Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
 <tt>Hamster.interval(from, to)</tt> (aliased as <tt>.range</tt>) creates a lazy list equivalent to a list containing all the values between <tt>from</tt> and <tt>to</tt> without actually creating a list that big.
 
-<tt>Hamster.stream { ... }</tt> allows you to creates infinite lists. Each time a new value is required, the supplied block is called.
+<tt>Hamster.stream { ... }</tt> allows you to creates infinite lists. Each time a new value is required, the supplied block is called. For example, to generate a list of integers you could do:
+
+  count = 1
+  integers = Hamster.stream { count += 1 }
 
 <tt>Hamster.repeat(x)</tt> creates an infinite list with x the value for every element.
 
 <tt>Hamster.replicate(n, x)</tt> creates a list of size n with x the value for every element.
 
-<tt>Hamster.iterate(x) { ... }</tt> creates an infinite list where the first item is calculated by applying the block on the initial argument, the second item by applying the function on the previous result and so on.
+<tt>Hamster.iterate(x) { ... }</tt> creates an infinite list where the first item is calculated by applying the block on the initial argument, the second item by applying the function on the previous result and so on. For example, a simpler way to generate a list of integers would be:
+
+  integers = Hamster.iterate(1, &:succ)
 
 You also get <tt>Enumerable#to_list</tt> so you can slowly transition from built-in collection classes to Hamster.
 
