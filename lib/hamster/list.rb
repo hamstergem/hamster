@@ -445,6 +445,14 @@ module Hamster
       end
     end
 
+    def group_by(&block)
+      return group_by { |item| item } unless block_given?
+      reduce(Hamster::Hash.new) do |hash, item|
+        key = yield(item)
+        hash.put(key, (hash.get(key) || EmptyList).cons(item))
+      end
+    end
+
     def eql?(other)
       # return true if other.equal?(self)
       # return false unless other.is_a?(List)
@@ -481,14 +489,6 @@ module Hamster
 
     def inspect
       to_a.inspect
-    end
-
-    def group_by(&block)
-      return group_by { |item| item } unless block_given?
-      reduce(Hamster::Hash.new) do |hash, item|
-        key = yield(item)
-        hash.put(key, (hash.get(key) || EmptyList).cons(item))
-      end
     end
 
     def respond_to?(name, include_private = false)

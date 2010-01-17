@@ -7,7 +7,7 @@ require 'hamster/list'
 module Hamster
 
   def self.set(*items)
-    items.reduce(Set.new) { |set, item| set.add(item) }
+    items.reduce(EmptySet) { |set, item| set.add(item) }
   end
 
   class Set
@@ -169,6 +169,14 @@ module Hamster
       remove(&:nil?)
     end
 
+    def group_by(&block)
+      return group_by { |item| item } unless block_given?
+      reduce(Hamster::Hash.new) do |hash, item|
+        key = yield(item)
+        hash.put(key, (hash.get(key) || EmptySet).add(item))
+      end
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
@@ -197,5 +205,7 @@ module Hamster
     end
 
   end
+
+  EmptySet = Set.new
 
 end
