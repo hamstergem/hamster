@@ -2,6 +2,7 @@ require 'forwardable'
 require 'monitor'
 
 require 'hamster/tuple'
+require 'hamster/hash'
 require 'hamster/set'
 
 module Hamster
@@ -42,6 +43,10 @@ module Hamster
   module List
 
     extend Forwardable
+
+    Undefined = Object.new
+
+    CADR = /^c([ad]+)r$/
 
     def_delegator :self, :head, :first
 
@@ -478,15 +483,19 @@ module Hamster
       to_a.inspect
     end
 
+    def group_by(&block)
+      return group_by { |item| item } unless block_given?
+      reduce(Hamster::Hash.new) do |hash, item|
+        key = yield(item)
+        hash.put(key, (hash.get(key) || EmptyList).cons(item))
+      end
+    end
+
     def respond_to?(name, include_private = false)
       super || CADR === name
     end
 
     private
-
-    Undefined = Object.new
-
-    CADR = /^c([ad]+)r$/
 
     def method_missing(name, *args, &block)
       if CADR === name

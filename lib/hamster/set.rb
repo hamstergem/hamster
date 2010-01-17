@@ -116,6 +116,10 @@ module Hamster
       true
     end
 
+    def one?
+      return one? { |item| item } unless block_given?
+    end
+
     def find
       return nil unless block_given?
       each { |item| return item if yield(item) }
