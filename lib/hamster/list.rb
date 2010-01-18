@@ -495,13 +495,13 @@ module Hamster
     end
 
     def respond_to?(name, include_private = false)
-      super || CADR === name
+      super || CADR === name.to_s
     end
 
     private
 
     def method_missing(name, *args, &block)
-      if CADR === name
+      if CADR === name.to_s
         accessor($1)
       else
         super
