@@ -75,6 +75,7 @@ module Hamster
     end
     def_delegator :self, :reduce, :inject
     def_delegator :self, :reduce, :fold
+    def_delegator :self, :reduce, :foldr
 
     def filter
       return self unless block_given?

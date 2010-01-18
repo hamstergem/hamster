@@ -4,7 +4,7 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  [:reduce, :inject, :fold].each do |method|
+  [:reduce, :inject, :fold, :foldr].each do |method|
 
     describe "##{method}" do
 
