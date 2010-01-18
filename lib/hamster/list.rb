@@ -544,7 +544,7 @@ module Hamster
 
     def initialize(&block)
       @block = block
-      @mutex = Mutex.new
+      @lock = Monitor.new
     end
 
     def head
@@ -556,18 +556,25 @@ module Hamster
     end
 
     def empty?
-      list = target
-      while list.is_a?(Stream)
-        list = list.target
-      end
-      list.empty?
+      target.empty?
     end
 
     protected
 
     def target
-      @mutex.synchronize do
-        unless defined?(@target)
+      # conjure
+      @lock.synchronize do
+        list = conjure
+        while list.is_a?(Stream)
+          list = list.conjure
+        end
+        list
+      end
+    end
+
+    def conjure
+      @lock.synchronize do
+        unless @block.nil?
           @target = @block.call
           @block = nil
         end
