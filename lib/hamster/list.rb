@@ -212,7 +212,7 @@ module Hamster
 
     def one?(&block)
       # return true if empty?
-      # return none? { |item| item } unless block_given?
+      # return one? { |item| item } unless block_given?
       # !yield(head) && tail.none?(&block)
       return one? { |item| item } unless block_given?
       list = self
