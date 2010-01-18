@@ -1,5 +1,5 @@
 require 'forwardable'
-require 'monitor'
+require 'thread'
 
 require 'hamster/tuple'
 require 'hamster/hash'
