@@ -1,3 +1,15 @@
+=== 0.2.4 / 2010-01-18
+
+* Fix List#cadr and friends under JRuby.
+
+* Remove redundant locking (speed up).
+
+* Make reverse "lazy" (ish).
+
+* Fixed: StackOverflow calling List#head and List#tail on very large lazy lists.
+
+* Alias #reduce as #foldr.
+
 === 0.2.3 / 2010-01-18
 
 * Implement Set#group_by.
