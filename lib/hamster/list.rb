@@ -460,18 +460,18 @@ module Hamster
       # return true if other.equal?(self)
       # return false unless other.is_a?(List)
       # return other.empty? if empty?
-      # return empty? if other.empty?
+      # return false if other.empty?
       # other.head.eql?(head) && other.tail.eql?(tail)
-      return false unless other.is_a?(List)
       list = self
-      while !list.empty? && !other.empty?
+      loop do
         return true if other.equal?(list)
         return false unless other.is_a?(List)
+        return other.empty? if list.empty?
+        return false if other.empty?
         return false unless other.head.eql?(list.head)
         list = list.tail
         other = other.tail
       end
-      other.empty? && list.empty?
     end
     def_delegator :self, :eql?, :==
 
