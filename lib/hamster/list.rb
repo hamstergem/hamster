@@ -252,7 +252,9 @@ module Hamster
     def_delegator :self, :append, :+
 
     def reverse
-      reduce(EmptyList) { |list, item| list.cons(item) }
+      Stream.new do
+        reduce(EmptyList) { |list, item| list.cons(item) }
+      end
     end
 
     def minimum(&block)

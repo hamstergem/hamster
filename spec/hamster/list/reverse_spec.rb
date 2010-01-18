@@ -18,6 +18,10 @@ describe Hamster::List do
 
     end
 
+    it "is lazy" do
+      lambda { Hamster.stream { fail }.reverse }.should_not raise_error
+    end
+
     [
       [[], []],
       [["A"], ["A"]],
