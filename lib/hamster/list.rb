@@ -456,6 +456,11 @@ module Hamster
       end
     end
 
+    def at(index)
+      drop(index).head
+    end
+    def_delegator :self, :at, :[]
+
     def eql?(other)
       # return true if other.equal?(self)
       # return false unless other.is_a?(List)
