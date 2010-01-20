@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 require 'hamster/stack'
 
-describe Hamster do
+describe Hamster::Stack do
 
   describe "#stack" do
 

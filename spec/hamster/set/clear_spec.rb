@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-require 'hamster/list'
+require 'hamster/set'
 
-describe Hamster::List do
+describe Hamster::Set do
 
   describe "#clear" do
 
@@ -15,15 +15,15 @@ describe Hamster::List do
       describe "on #{values}" do
 
         before do
-          @original = Hamster.list(*values)
+          @original = Hamster.set(*values)
           @result = @original.clear
         end
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          @original.should == Hamster.set(*values)
         end
 
-        it "returns an empty list" do
+        it "returns an empty set" do
           @result.should be_empty
         end
 

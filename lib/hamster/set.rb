@@ -178,6 +178,10 @@ module Hamster
       end
     end
 
+    def clear
+      EmptySet
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end

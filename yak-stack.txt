@@ -1,8 +1,8 @@
 * Make List#size not O(n)!
 * Make List#sort/#sort_by efficient :)
 * Make Set#sort/#sort_by efficient :)
-* Add List #hash, #fill, #sample, #index (#find_index), #slice, #insert, #insert_by, #to_set, #permutation (aliased as #permutations), #subsequences, #transpose
-* Add Set #hash, #one?, #cycle, #sample, #clear, #max(imum), #min(imum), #flatten
+* Add List #hash, #fill, #sample, #index (#find_index), #insert, #insert_by, #to_set, #permutation (aliased as #permutations), #subsequences, #transpose
+* Add Set #hash, #one?, #cycle, #sample, #max(imum), #min(imum), #flatten
 * Add Hash #hash, #find (#detect), #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
 * Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
