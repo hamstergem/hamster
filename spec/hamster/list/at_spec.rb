@@ -27,7 +27,7 @@ describe Hamster::List do
         [["A", "B", "C"], 2, "C"],
       ].each do |values, number, expected|
 
-        describe "#{number} from #{values.inspect}" do
+        describe "#{values.inspect} with #{number}" do
 
           before do
             @original = Hamster.list(*values)

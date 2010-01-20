@@ -456,10 +456,15 @@ module Hamster
       end
     end
 
-    def at(index)
-      drop(index).head
+    def at(from)
+      drop(from).head
     end
-    def_delegator :self, :at, :[]
+
+    def slice(from, length = Undefined)
+      return at(from) if length.equal?(Undefined)
+      drop(from).take(length)
+    end
+    def_delegator :self, :slice, :[]
 
     def eql?(other)
       # return true if other.equal?(self)
