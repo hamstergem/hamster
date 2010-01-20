@@ -36,21 +36,13 @@ module Hamster
     def_delegator :self, :include?, :elem?
 
     def add(item)
-      if include?(item)
-        self
-      else
-        self.class.new(@trie.put(item, nil))
-      end
+      return self if include?(item)
+      self.class.new(@trie.put(item, nil))
     end
     def_delegator :self, :add, :<<
 
-    def delete(key)
-      trie = @trie.delete(key)
-      if trie.equal?(@trie)
-        self
-      else
-        self.class.new(trie)
-      end
+    def delete(item)
+      filter { |x| !x.eql?(item)}
     end
 
     def each
@@ -61,11 +53,8 @@ module Hamster
 
     def map
       return self unless block_given?
-      if empty?
-        self
-      else
-        self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(yield(entry.key), nil) })
-      end
+      return self if empty?
+      self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(yield(entry.key), nil) })
     end
     def_delegator :self, :map, :collect
 
@@ -82,6 +71,8 @@ module Hamster
       trie = @trie.filter { |entry| yield(entry.key) }
       if trie.equal?(@trie)
         self
+      elsif trie.empty?
+        EmptySet
       else
         self.class.new(trie)
       end
