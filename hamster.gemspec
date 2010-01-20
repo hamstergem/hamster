@@ -15,4 +15,5 @@ Gem::Specification.new do |s|
   s.require_path     = "lib"
   s.files            = Dir["lib/**/*", "spec/**/*", "tasks/**/*", "Rakefile"] + s.extra_rdoc_files
   s.add_development_dependency("rspec", ">= 1.2.9")
+  s.add_development_dependency("diff-lcs", ">= 1.1.2")
 end

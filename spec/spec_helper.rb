@@ -1,7 +1,3 @@
-require 'rubygems'
-
-# Support running specs with "rake spec" and "spec"
-lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+# Common spec-related code goes here
 
 STACK_OVERFLOW_DEPTH = 10000
