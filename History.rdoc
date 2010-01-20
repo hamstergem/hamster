@@ -1,3 +1,11 @@
+=== 0.2.5 / 2010-01-18
+
+* Implement Set#clear.
+
+* Implement List#slice (also aliased as #[from, length]).
+
+* Implement List#at (aliased as #[index]).
+
 === 0.2.4 / 2010-01-18
 
 * Fix List#cadr and friends under JRuby.

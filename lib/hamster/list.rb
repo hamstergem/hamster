@@ -456,8 +456,8 @@ module Hamster
       end
     end
 
-    def at(from)
-      drop(from).head
+    def at(index)
+      drop(index).head
     end
 
     def slice(from, length = Undefined)
