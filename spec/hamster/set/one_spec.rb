@@ -40,7 +40,7 @@ describe Hamster::Set do
           end
         end
 
-        it "returns fale if the block never returns true" do
+        it "returns false if the block never returns true" do
           pending do
             @set.one? { |item| false }.should == false
           end

@@ -46,7 +46,7 @@ describe Hamster::List do
           @list.one? { |item| true }.should == false
         end
 
-        it "returns fale if the block never returns true" do
+        it "returns false if the block never returns true" do
           @list.one? { |item| false }.should == false
         end
 
