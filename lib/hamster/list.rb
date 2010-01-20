@@ -137,15 +137,17 @@ module Hamster
     end
 
     def drop_while(&block)
+      # return self unless block_given?
+      # return self if empty?
+      # return self unless yield(head)
+      # tail.drop_while(&block)
       return self unless block_given?
       Stream.new do
-        if empty?
-          self
-        elsif yield(head)
-          tail.drop_while(&block)
-        else
-          self
+        list = self
+        while !list.empty? && yield(list.head)
+          list = list.tail
         end
+        list
       end
     end
 
@@ -162,14 +164,17 @@ module Hamster
     end
 
     def drop(number)
+      # return self unless block_given?
+      # return self if empty?
+      # return self unless number > 0
+      # tail.drop(number - 1)
       Stream.new do
-        if empty?
-          self
-        elsif number > 0
-          tail.drop(number - 1)
-        else
-          self
+        list = self
+        while !list.empty? && number > 0
+          number -= 1
+          list = list.tail
         end
+        list
       end
     end
 
@@ -252,9 +257,7 @@ module Hamster
     def_delegator :self, :append, :+
 
     def reverse
-      Stream.new do
-        reduce(EmptyList) { |list, item| list.cons(item) }
-      end
+      Stream.new { reduce(EmptyList) { |list, item| list.cons(item) } }
     end
 
     def minimum(&block)
@@ -303,7 +306,7 @@ module Hamster
     end
 
     def break(&block)
-      return Tuple.new(self, EmptyList) unless block_given?
+      return span unless block_given?
       span { |item| !yield(item) }
     end
 
@@ -316,16 +319,12 @@ module Hamster
     end
 
     def sort(&block)
-      Stream.new do
-        Hamster.list(*to_a.sort(&block))
-      end
+      Stream.new { Hamster.list(*to_a.sort(&block)) }
     end
 
     def sort_by(&block)
       return sort unless block_given?
-      Stream.new do
-        Hamster.list(*to_a.sort_by(&block))
-      end
+      Stream.new { Hamster.list(*to_a.sort_by(&block)) }
     end
 
     def join(sep = "")
