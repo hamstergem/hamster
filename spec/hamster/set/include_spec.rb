@@ -9,10 +9,10 @@ describe Hamster::Set do
     describe "##{method}" do
 
       before do
-        @set = Hamster.set("A", "B", "C", nil)
+        @set = Hamster.set("A", "B", "C", 2.0, nil)
       end
 
-      ["A", "B", "C", nil].each do |value|
+      ["A", "B", "C", 2.0, nil].each do |value|
 
         it "returns true for an existing value (#{value.inspect})" do
           @set.send(method, value).should == true
@@ -22,6 +22,10 @@ describe Hamster::Set do
 
       it "returns false for a non-existing value" do
         @set.send(method, "D").should == false
+      end
+
+      it "uses #eql? for equality" do
+        @set.send(method, 2).should == false
       end
 
     end

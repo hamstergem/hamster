@@ -30,6 +30,10 @@ describe Hamster::List do
         [["A", "B", nil], "B", true],
         [["A", "B", nil], nil, true],
         [["A", "B", nil], "C", false],
+        [[2], 2, true],
+        [[2], 2.0, true],
+        [[2.0], 2.0, true],
+        [[2.0], 2, true],
       ].each do |values, item, expected|
 
         describe "on #{values.inspect}" do
