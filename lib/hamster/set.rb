@@ -42,7 +42,13 @@ module Hamster
     def_delegator :self, :add, :<<
 
     def delete(item)
-      filter { |x| !x.eql?(item)}
+      trie = @trie.delete(item)
+      if trie.equal?(@trie)
+        self
+      else
+        self.class.new(trie)
+      end
+
     end
 
     def each

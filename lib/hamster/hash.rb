@@ -35,9 +35,7 @@ module Hamster
 
     def get(key)
       entry = @trie.get(key)
-      if entry
-        entry.value
-      end
+      return entry.value if entry
     end
     def_delegator :self, :get, :[]
 
@@ -63,11 +61,8 @@ module Hamster
 
     def map
       return self unless block_given?
-      if empty?
-        self
-      else
-        self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
-      end
+      return self if empty?
+      self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
     end
     def_delegator :self, :map, :collect
 
@@ -107,9 +102,7 @@ module Hamster
     def_delegator :self, :any?, :exists?
 
     def all?
-      if block_given?
-        each { |key, value| return false unless yield(key, value) }
-      end
+      each { |key, value| return false unless yield(key, value) } if block_given?
       true
     end
     def_delegator :self, :all?, :forall?
