@@ -48,7 +48,6 @@ module Hamster
       else
         self.class.new(trie)
       end
-
     end
 
     def each

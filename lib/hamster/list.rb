@@ -78,11 +78,8 @@ module Hamster
     def map(&block)
       return self unless block_given?
       Stream.new do
-        if empty?
-          self
-        else
-          Sequence.new(yield(head), tail.map(&block))
-        end
+        next self if empty?
+        Sequence.new(yield(head), tail.map(&block))
       end
     end
     def_delegator :self, :map, :collect
@@ -104,13 +101,9 @@ module Hamster
     def filter(&block)
       return self unless block_given?
       Stream.new do
-        if empty?
-          self
-        elsif yield(head)
-          Sequence.new(head, tail.filter(&block))
-        else
-          tail.filter(&block)
-        end
+        next self if empty?
+        next Sequence.new(head, tail.filter(&block)) if yield(head)
+        tail.filter(&block)
       end
     end
     def_delegator :self, :filter, :select
@@ -126,13 +119,9 @@ module Hamster
     def take_while(&block)
       return self unless block_given?
       Stream.new do
-        if empty?
-          self
-        elsif yield(head)
-          Sequence.new(head, tail.take_while(&block))
-        else
-          EmptyList
-        end
+        next self if empty?
+        next Sequence.new(head, tail.take_while(&block)) if yield(head)
+        EmptyList
       end
     end
 
@@ -153,13 +142,9 @@ module Hamster
 
     def take(number)
       Stream.new do
-        if empty?
-          self
-        elsif number > 0
-          Sequence.new(head, tail.take(number - 1))
-        else
-          EmptyList
-        end
+        next self if empty?
+        next Sequence.new(head, tail.take(number - 1)) if number > 0
+        EmptyList
       end
     end
 
@@ -245,11 +230,8 @@ module Hamster
 
     def append(other)
       Stream.new do
-        if empty?
-          other
-        else
-          Sequence.new(head, tail.append(other))
-        end
+        next other if empty?
+        Sequence.new(head, tail.append(other))
       end
     end
     def_delegator :self, :append, :concat
@@ -278,21 +260,15 @@ module Hamster
 
     def zip(other)
       Stream.new do
-        if empty? && other.empty?
-          self
-        else
-          Sequence.new(Sequence.new(head, Sequence.new(other.head)), tail.zip(other.tail))
-        end
+        next self if empty? && other.empty?
+        Sequence.new(Sequence.new(head, Sequence.new(other.head)), tail.zip(other.tail))
       end
     end
 
     def cycle
       Stream.new do
-        if empty?
-          self
-        else
-          Sequence.new(head, tail.append(self.cycle))
-        end
+        next self if empty?
+        Sequence.new(head, tail.append(self.cycle))
       end
     end
 
@@ -335,23 +311,16 @@ module Hamster
 
     def intersperse(sep)
       Stream.new do
-        if tail.empty?
-          self
-        else
-          Sequence.new(head, Sequence.new(sep, tail.intersperse(sep)))
-        end
+        next self if tail.empty?
+        Sequence.new(head, Sequence.new(sep, tail.intersperse(sep)))
       end
     end
 
     def uniq(items = Set.new)
       Stream.new do
-        if empty?
-          self
-        elsif items.include?(head)
-          tail.uniq(items)
-        else
-          Sequence.new(head, tail.uniq(items.add(head)))
-        end
+        next self if empty?
+        next tail.uniq(items) if items.include?(head)
+        Sequence.new(head, tail.uniq(items.add(head)))
       end
     end
     def_delegator :self, :uniq, :nub
@@ -385,32 +354,23 @@ module Hamster
 
     def tails
       Stream.new do
-        if empty?
-          Sequence.new(self)
-        else
-          Sequence.new(self, tail.tails)
-        end
+        next Sequence.new(self) if empty?
+        Sequence.new(self, tail.tails)
       end
     end
 
     def inits
       Stream.new do
-        if empty?
-          Sequence.new(self)
-        else
-          Sequence.new(EmptyList, tail.inits.map { |list| list.cons(head) })
-        end
+        next Sequence.new(self) if empty?
+        Sequence.new(EmptyList, tail.inits.map { |list| list.cons(head) })
       end
     end
 
     def combinations(number)
       return Sequence.new(EmptyList) if number == 0
       Stream.new do
-        if empty?
-          self
-        else
-          tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number))
-        end
+        next self if empty?
+        tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number))
       end
     end
     def_delegator :self, :combinations, :combination
@@ -421,12 +381,9 @@ module Hamster
 
     def chunk(number)
       Stream.new do
-        if empty?
-          self
-        else
-          first, remainder = split_at(number)
-          Sequence.new(first, remainder.chunk(number))
-        end
+        next self if empty?
+        first, remainder = split_at(number)
+        Sequence.new(first, remainder.chunk(number))
       end
     end
 
@@ -437,13 +394,9 @@ module Hamster
 
     def flatten
       Stream.new do
-        if empty?
-          self
-        elsif head.is_a?(List)
-          head.append(tail.flatten)
-        else
-          Sequence.new(head, tail.flatten)
-        end
+        next self if empty?
+        next head.append(tail.flatten) if head.is_a?(List)
+        Sequence.new(head, tail.flatten)
       end
     end
 
@@ -536,11 +489,8 @@ module Hamster
     private
 
     def method_missing(name, *args, &block)
-      if CADR === name.to_s
-        accessor($1)
-      else
-        super
-      end
+      return accessor($1) if CADR === name.to_s
+      super
     end
 
     # Perform compositions of <tt>car</tt> and <tt>cdr</tt> operations. Their names consist of a 'c', followed by at
