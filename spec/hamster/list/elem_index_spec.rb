@@ -4,7 +4,7 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  [:index, :elem_index].each do |method|
+  [:elem_index, :index].each do |method|
 
     describe "##{method}" do
 

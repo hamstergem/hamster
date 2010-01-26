@@ -465,21 +465,31 @@ module Hamster
     end
     def_delegator :self, :slice, :[]
 
-    def index(object)
-      # def index(object, i = 0)
+    def index(object = Undefined, &block)
+      return elem_index(object) unless object.equal?(Undefined)
+      find_index(&block)
+    end
+
+    def elem_index(object)
+      find_index { |item| item == object }
+    end
+
+    def find_index
+    # def find_index(i = 0, &block)
       # return nil if empty?
-      # return i if object == head
-      # tail.index(object, i + 1)
+      # return nil unless block_given?
+      # return i if yield(head)
+      # tail.find_index(i + 1, &block)
+      return nil unless block_given?
       i = 0
       list = self
       loop do
         return nil if list.empty?
-        return i if object == list.head
+        return i if yield(list.head)
         i += 1
         list = list.tail
       end
     end
-    def_delegator :self, :index, :elem_index
 
     def eql?(other)
       # return true if other.equal?(self)
