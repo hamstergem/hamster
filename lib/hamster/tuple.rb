@@ -18,6 +18,13 @@ module Hamster
       @items.last
     end
 
+    def eql?(other)
+      return true if other.equal?(self)
+      return false unless other.class.equal?(self.class)
+      @items.eql?(other.instance_eval{@items})
+    end
+    def_delegator :self, :eql?, :==
+
     def dup
       self
     end

@@ -113,6 +113,13 @@ module Hamster
       true
     end
 
+    def find
+      return nil unless block_given?
+      each { |key, value| return Tuple.new(key, value) if yield(key, value) }
+      nil
+    end
+    def_delegator :self, :find, :detect
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
