@@ -479,7 +479,7 @@ module Hamster
         list = list.tail
       end
     end
-    def_delegator :self, :index, :find_index
+    def_delegator :self, :index, :elem_index
 
     def eql?(other)
       # return true if other.equal?(self)
