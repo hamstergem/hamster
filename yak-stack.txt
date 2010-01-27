@@ -13,7 +13,6 @@
 * Implement Set#^ as equivalent to ((set | enum) - (set & enum))
 * Implement Hash#merge
 * Work out what we can extract into common "Enumerable-like" code.
-* Make Set and Hash lazy
 * Generate spec docs
 * Add missing immutability tests to Set
 * Add missing immutability tests to Hash
