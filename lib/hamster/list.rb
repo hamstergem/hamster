@@ -546,12 +546,18 @@ module Hamster
 
   class Stream
 
+    extend Forwardable
+
     include List
 
     def initialize(&block)
       @block = block
       @lock = Mutex.new
     end
+
+    def_delegator :target, :head
+    def_delegator :target, :tail
+    def_delegator :target, :empty?
 
     def head
       target.head

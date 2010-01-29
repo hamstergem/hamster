@@ -12,7 +12,7 @@ module Hamster
       @collection = collection
     end
 
-    def_delegator :@collection, :each, :each
+    def_delegator :@collection, :each
 
   end
 
