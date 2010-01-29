@@ -1,8 +1,8 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-require 'hamster/core_ext/array'
+require 'hamster/core_ext/enumerable'
 
-describe Enumerable do
+describe Array do
 
   describe "#to_list" do
 

@@ -1,7 +1,7 @@
 require 'forwardable'
 require 'thread'
 
-require 'hamster/core_ext/array'
+require 'hamster/core_ext/enumerable'
 require 'hamster/tuple'
 require 'hamster/sorter'
 require 'hamster/hash'

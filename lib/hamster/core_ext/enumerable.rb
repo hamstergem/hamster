@@ -23,3 +23,9 @@ module Enumerable
   include Hamster::CoreExt::Enumerable
 
 end
+
+class Array
+
+  include Hamster::CoreExt::Enumerable
+
+end
