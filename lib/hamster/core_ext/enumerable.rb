@@ -7,7 +7,9 @@ module Hamster
     module Enumerable
 
       def to_list
-        Hamster.list(*self)
+        list = EmptyList
+        reverse_each { |item| list = list.cons(item) }
+        list
       end
 
     end

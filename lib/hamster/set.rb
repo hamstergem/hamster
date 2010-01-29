@@ -152,12 +152,12 @@ module Hamster
     end
 
     def sort(&block)
-      Stream.new { Hamster.list(*Sorter.new(self).sort(&block)) }
+      Stream.new { Sorter.new(self).sort(&block).to_list }
     end
 
     def sort_by(&block)
       return sort unless block_given?
-      Stream.new { Hamster.list(*Sorter.new(self).sort_by(&block)) }
+      Stream.new { Sorter.new(self).sort_by(&block).to_list }
     end
 
     def join(sep = nil)

@@ -1,6 +1,7 @@
 require 'forwardable'
 require 'thread'
 
+require 'hamster/core_ext/array'
 require 'hamster/tuple'
 require 'hamster/sorter'
 require 'hamster/hash'
@@ -13,7 +14,7 @@ module Hamster
     extend Forwardable
 
     def list(*items)
-      items.reverse.reduce(EmptyList) { |list, item| list.cons(item) }
+      items.to_list
     end
 
     def stream(&block)
@@ -296,12 +297,12 @@ module Hamster
     end
 
     def sort(&block)
-      Stream.new { Hamster.list(*Sorter.new(self).sort(&block)) }
+      Stream.new { Sorter.new(self).sort(&block).to_list }
     end
 
     def sort_by(&block)
       return sort unless block_given?
-      Stream.new { Hamster.list(*Sorter.new(self).sort_by(&block)) }
+      Stream.new { Sorter.new(self).sort_by(&block).to_list }
     end
 
     def join(sep = "")
