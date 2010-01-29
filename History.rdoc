@@ -1,3 +1,19 @@
+=== 0.2.6 / 2010-01-29
+
+* Implement Array#to_list.
+
+* Simplify (and improve performance of) conversions from arrays to lists.
+
+* Speed up Set and List sorting.
+
+* Implement Hash#find (aliased as #detect).
+
+* Implement List#elem_indices, List#find_indices (aliased as #indices as appropriate).
+
+* Implement List#index as per MRI and alias as #elem_index, and #find_index as appropriate.
+
+* Remove some redundant construction of streams.
+
 === 0.2.5 / 2010-01-19
 
 * Implement Set#clear.
