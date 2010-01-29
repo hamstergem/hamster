@@ -2,6 +2,7 @@ require 'forwardable'
 require 'thread'
 
 require 'hamster/tuple'
+require 'hamster/sorter'
 require 'hamster/hash'
 require 'hamster/set'
 
@@ -295,12 +296,12 @@ module Hamster
     end
 
     def sort(&block)
-      Stream.new { Hamster.list(*to_a.sort(&block)) }
+      Stream.new { Hamster.list(*Sorter.new(self).sort(&block)) }
     end
 
     def sort_by(&block)
       return sort unless block_given?
-      Stream.new { Hamster.list(*to_a.sort_by(&block)) }
+      Stream.new { Hamster.list(*Sorter.new(self).sort_by(&block)) }
     end
 
     def join(sep = "")
