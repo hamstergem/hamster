@@ -24,7 +24,7 @@ module Hamster
 
     def interval(from, to)
       return EmptyList if from > to
-      Stream.new { Sequence.new(from, interval(from.succ, to)) }
+      interval_exclusive(from, to.succ)
     end
     def_delegator :self, :interval, :range
 
@@ -38,6 +38,13 @@ module Hamster
 
     def iterate(item, &block)
       Stream.new { Sequence.new(item, iterate(yield(item), &block)) }
+    end
+
+    private
+
+    def interval_exclusive(from, to)
+      return EmptyList if from == to
+      Stream.new { Sequence.new(from, interval_exclusive(from.succ, to)) }
     end
 
   end

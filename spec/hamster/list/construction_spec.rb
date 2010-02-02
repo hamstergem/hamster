@@ -73,12 +73,28 @@ describe Hamster do
 
     describe ".#{method}" do
 
-      before do
-        @list = Hamster.send(method, "A", "D")
+      describe "for numbers" do
+
+        before do
+          @list = Hamster.send(method, 98, 102)
+        end
+
+        it "is equivalent to a list with explicit values" do
+          @list.should == Hamster.list(98, 99, 100, 101, 102)
+        end
+
       end
 
-      it "is equivalent to a list with explicit values" do
-        @list.should == Hamster.list("A", "B", "C", "D")
+      describe "for strings" do
+
+        before do
+          @list = Hamster.send(method, "A", "AA")
+        end
+
+        it "is equivalent to a list with explicit values" do
+          @list.should == Hamster.list("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA")
+        end
+
       end
 
     end
