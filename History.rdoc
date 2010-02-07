@@ -1,3 +1,7 @@
+=== 0.2.7 / 2010-02-08
+
+* Fixed bug with Hamster.interval (and Hamster.range) not handling Strings correctly.
+
 === 0.2.6 / 2010-01-29
 
 * Implement Array#to_list.

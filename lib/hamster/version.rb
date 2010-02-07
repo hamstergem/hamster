@@ -1,5 +1,5 @@
 module Hamster
 
-  VERSION = "0.2.6".freeze
+  VERSION = "0.2.7".freeze
 
 end
