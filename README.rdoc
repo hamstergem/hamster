@@ -34,12 +34,6 @@ If you prefer, you can instead require individual classes as necessary:
   require 'hamster/list'
   require 'hamster/stack'
 
-== Reporting bugs
-
-Please report all bugs on the GitHub issue tracker located at:
-
-    http://github.com/harukizaemon/hamster/issues
-
 == Examples
 
 Most classes support an API that resembles their standard library counterparts with the caveat that any modification returns a new instance. What follows are some simple examples to help illustrate this point.
@@ -154,6 +148,10 @@ Hamster started out as a spike to prove a point and has since morphed into somet
 Performance is pretty good -- especially with lazy lists -- but there are some things which may blow the stack due to a lack of Tail-Call-Optimisation in Ruby.
 
 Documentation is sparse but I've tried as best I can to write specs that read as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
+
+== Reporting bugs
+
+Please report all bugs on the GitHub issue tracker located at: http://github.com/harukizaemon/hamster/issues
 
 == But I still don't understand why I should care?
 
