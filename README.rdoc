@@ -5,7 +5,7 @@
   email:      haruki.zaemon@gmail.com
   IRC:        #haruki_zaemon on freenode
 
-== Intro
+== Introduction
 
 Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) including Set, List, and Stack.
 
