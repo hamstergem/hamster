@@ -2,11 +2,18 @@
 
 GitHub:     http://github.com/harukizaemon/bundler
 Gemcutter:  http://gemcutter/harukizaemon/hamster
+email:      haruki.zaemon@gmail.com
 IRC:        #haruki_zaemon on freenode
 
 == Intro
 
-Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
+Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) including Set, List, and Stack.
+
+Unlike Ruby's standard library, Hamster collections are immutable. Whenever you modify a Hamster collection, say a Hash for example, the original is preserved and a modified copy is returned, making them inherently thread-safe and sharable. (For an interesting perspective on why immutability itself is inherently a good thing, you might like to take a look at Matthias Felleisen's Function Objects presentation: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf) By making use of some very well understood and very simple techniques, the returned copy is also very space efficient, sharing a much of the original's structure.
+
+Hamster collections are almost always closed under a given operation. That is, whereas Ruby's collection class methods always return arrays, Hamster classes will return an instance of the same class wherever possible.
+
+And lastly, Hamster lists are lazy -- where Ruby's language constructs permit -- making it possible to, among other things, process "infinitely large" lists. (Note: Ruby 1.9 supports a form of laziness using Enumerator however they're implemented using Fibers which unfortunately can't be shared across threads.)
 
 == Installation
 
@@ -16,114 +23,69 @@ Installation via the gem is easy:
 
   > gem install hamster
 
-I'll leave it up to you to install from source :)
+Once installed, all that remains is to make the collection classes available in your code:
 
-== What are persistent data structures?
+  require 'hamster'
 
-Persistent data structures have a really neat property: very efficient copy-on-write operations. That allows you to create immutable data-structures that only need copying when something changes. For example:
+If you prefer, you can instead require individual classes as necessary:
 
-  hash = Hamster.hash
+  require 'hamster/hash'
+  require 'hamster/set'
+  require 'hamster/list'
+  require 'hamster/stack'
 
-  hash.put("Name", "Simon")
-  hash.has_key?("Name")     # => false
-  hash.get("Name")          # => nil
+== Reporting bugs
 
-== Double Huh? That's not much use!
+Please report all bugs on the GitHub issue tracker located at:
 
-Whoops! Unlike Ruby's standard library, each call to <tt>Hamster::hash#put</tt> creates an efficient copy containing the modifications, leaving the original unmodified. Thus, all Hamster classes follow Command-Query-Seperation (see http://martinfowler.com/bliki/CommandQuerySeparation.html) and return the modified copy of themselves after any mutating operation. Let's try that again:
+    http://github.com/harukizaemon/hamster/issues
 
-  original = Hamster.hash
-  copy = original.put("Name", "Simon")
+== Examples
 
-  original.get("Name")             # => nil
-  copy.get("Name")                 # => "Simon"
+Most classes support an API that resembles their standard library counterparts with the caveat that any modification returns a new instance. What follows are some simple examples to help illustrate this point.
 
-The same goes for <tt>#remove</tt>:
+=== Hash
 
-  original = Hamster.hash
-  original = original.put("Name", "Simon")
-  copy = hash.remove("Name")
+Constructing a Hamster Hash is almost as simple as a regular one:
 
-  original.get("Name")  # => Simon
-  copy.get("Name")      # => nil
+  simon = Hamster.hash(:name => "Simon", :gender => :male)  # => {:name => "Simon", :gender => :male}
 
-== Oh, I get it. Cool. But I still don't understand why I should care?
+Accessing the contents will be familiar to you:
 
-As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of memory in the process. Moreover, because they're immutable, you can pass them around between objects, methods, and functions and never worry about data corruption; no more defensive calls to <tt>collection.dup</tt>!
+  simon[:name]          # => "Simon"
+  simon.get(:gender)    # => :male
 
-For an interesting read on why immutability is a good thing, take a look at Matthias Felleisen's Function Objects presnetation (http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf).
+Updating the contents is a little different than you are used to:
 
-== OK, that sounds mildly interesting. What's the downside--there's always a downside?
+  james = simon.put(:name, "James")   # => {:name => "James", :gender => :male}
+  simon                               # => {:name => "Simon", :gender => :male}
+  james[:name]                        # => "James"
+  simon[:name]                        # => "Simon"
 
-There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of <tt>Hash</tt>. For example:
+As you can see, updating the hash returned a copy leaving the original intact. Similarly, deleting a key returns yet another copy:
 
-  hash = Hamster.hash
-  (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
-  (1..10000).each { |i| hash.get(i) }  # => 0.008s
+  male = simon.delete(:name)    # => {:gender => :male}
+  simon                         # => {:name => "Simon", :gender => :male}
+  male.has_key?(:name)          # => false
+  simon.has_key?(:name)         # => true
 
-versus
+=== Set
 
-  hash = {}
-  (1..10000).each { |i| hash[i] = i }  # => 0.004s
-  (1..10000).each { |i| hash[i] }  # => 0.001s
+=== List
 
-== That seems pretty bad?
-
-Well, yes and no. The previous comparison wasn't really fair. Sure, if all you want to do is replace your existing uses of <tt>Hash</tt> in single-threaded environments then don't even bother. However, if you need something that can be used efficiently in concurrent environments where multiple threads are accessing--reading AND writing--the contents things get much better.
-
-== Do you have a better example?
-
-A more realistic comparison might look like:
-
-  hash = Hamster.hash
-  (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
-  (1..10000).each { |i| hash.get(i) }  # => 0.008s
-
-versus
-
-  hash = {}
-  (1..10000).each { |i|
-    hash = hash.dup
-    hash[i] = i
-  } # => 19.8s
-
-  (1..10000).each { |i| hash[i] }  # => 0.001s
-
-Impressive huh? What's even better is--or worse depending on your perspective--is that after all that, the native <tt>Hash</tt> version still isn't thread-safe and still requires some synchronisation around it slowing it down even further.
-
-The <tt>Hamster::Hash</tt> version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster.
-
-== Sure, but as you say, you still need synchronisation so why bother with the copying?
-
-Well, I could show you one but I'd have to re-write--or at least wrap--most <tt>Hash</tt> methods to make it generic, or at least write some application-specific code that synchronised using a <tt>Mutex</tt> and ... well ... it's hard, I always make mistakes, I always end up with weird edge cases and race conditions so, I'll leave that as an exercise for you :)
-
-And don't forget that even if threading isn't a concern for you, the safety provided by immutability is worth it, not to mention the lazy implementations.
-
-== But doesn't Ruby 1.9 now support lazy behaviour using Enumerators?
-
-Sure does but they're implemented using Fibers which can't be shared across threads. All Hamster types are inherently thread-safe and sharable.
-
-Moreover, Ruby's Enumerable module always returns an array -- calling <tt>Set#filter</tt> returns an <tt>Array</tt> -- whereas Hamster classes are almost always closed under a given operation. That is, Calling <tt>#filter</tt> on <tt>Set</tt> will return a <tt>Set</tt>, on a <tt>List</tt> will return a <tt>List</tt>, etc.
-
-== So, you mentioned Sets, Lists, and Stacks?
-
-Indeed I did.
-
-=== Lists
-
-Lists have a head--the value of the item at the head of the list--and a tail--containing the remaining items. For example:
+Lists have a head -- the value of the item at the head of the list -- and a tail -- containing the remaining items. For example:
 
   list = Hamster.list(1, 2, 3)
 
   list.head    # => 1
   list.tail    # => Hamster.list(2, 3)
 
-To add to a list you use <tt>#cons</tt>:
+To add to a list, you use <tt>#cons</tt>:
 
   original = Hamster.list(1, 2, 3)
   copy = original.cons(0)           # => Hamster.list(0, 1, 2, 3)
 
-Notice how modifying a list actually returns a new list. That's because Hamster lists are immutable. Thankfully, just like Hamster <tt>Set</tt> and <tt>Hash</tt>, they're also very efficient at making copies!
+Notice how modifying a list actually returns a new list. That's because Hamster lists are immutable. Thankfully, just like Hamster Set and Hash, they're also very efficient at making copies!
 
 Lists are, where possible, lazy. That is, they try to defer processing items until absolutely necessary. For example, given a crude function to detect prime numbers:
 
@@ -183,20 +145,62 @@ Unfortunately, though the second example reads nicely, it takes around 13 second
 
 How is this even possible? It's possible because <tt>IO#to_list</tt> creates a lazy list whereby each line is only ever read and processed as needed, in effect converting it to the first example without all the syntactic, imperative, noise.
 
-=== Stacks
-
-=== Sets
+=== Stack
 
 == Disclaimer
 
 Hamster started out as a spike to prove a point and has since morphed into something I actually use. My primary concern has been to round out the functionality with good test coverage and clean, readable code.
 
-Performance is pretty good--especially with lazy lists--but there are some things which may blow the stack due to a lack of Tail-Call-Optimisation in Ruby.
+Performance is pretty good -- especially with lazy lists -- but there are some things which may blow the stack due to a lack of Tail-Call-Optimisation in Ruby.
 
 Documentation is sparse but I've tried as best I can to write specs that read as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
 
-== Reporting bugs
+== But I still don't understand why I should care?
 
-Please report all bugs on the GitHub issue tracker located at:
+As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of memory in the process. Moreover, because they're immutable, you can pass them around between objects, methods, and functions and never worry about data corruption; no more defensive calls to <tt>#dup</tt>!
 
-    http://github.com/harukizaemon/hamster/issues
+=== OK, that sounds mildly interesting. What's the downside--there's always a downside?
+
+There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of Hash. For example:
+
+  hash = Hamster.hash
+  (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
+  (1..10000).each { |i| hash.get(i) }  # => 0.008s
+
+versus
+
+  hash = {}
+  (1..10000).each { |i| hash[i] = i }  # => 0.004s
+  (1..10000).each { |i| hash[i] }  # => 0.001s
+
+=== That seems pretty bad?
+
+Well, yes and no. The previous comparison wasn't really fair. Sure, if all you want to do is replace your existing uses of Hash in single-threaded environments then don't even bother. However, if you need something that can be used efficiently in concurrent environments where multiple threads are accessing--reading AND writing--the contents things get much better.
+
+=== Do you have a better example?
+
+A more realistic comparison might look like:
+
+  hash = Hamster.hash
+  (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
+  (1..10000).each { |i| hash.get(i) }  # => 0.008s
+
+versus
+
+  hash = {}
+  (1..10000).each { |i|
+    hash = hash.dup
+    hash[i] = i
+  } # => 19.8s
+
+  (1..10000).each { |i| hash[i] }  # => 0.001s
+
+Impressive huh? What's even better is--or worse depending on your perspective--is that after all that, the native Hash version still isn't thread-safe and still requires some synchronisation around it slowing it down even further.
+
+The Hamster version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster.
+
+=== Sure, but as you say, you still need synchronisation so why bother with the copying?
+
+Well, I could show you one but I'd have to re-write--or at least wrap--most Hash methods to make it generic, or at least write some application-specific code that synchronised using a <tt>Mutex</tt> and ... well ... it's hard, I always make mistakes, I always end up with weird edge cases and race conditions so, I'll leave that as an exercise for you :)
+
+And don't forget that even if threading isn't a concern for you, the safety provided by immutability is worth it, not to mention the lazy implementations.
