@@ -149,7 +149,7 @@ Hamster started out as a spike to prove a point and has since morphed into somet
 
 Performance is pretty good -- especially with lazy lists -- but there are some things which may blow the stack due to a lack of Tail-Call-Optimisation in Ruby.
 
-Documentation is sparse but I've tried as best I can to write specs that read as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
+Documentation is sparse but I've tried as best I can to write specs that read as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to ease code migration.
 
 == Reporting bugs
 
@@ -157,21 +157,23 @@ Please report all bugs on the GitHub issue tracker located at: http://github.com
 
 == But I still don't understand why I should care?
 
-As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of memory in the process. Moreover, because they're immutable, you can pass them around between objects, methods, and functions and never worry about data corruption; no more defensive calls to <tt>#dup</tt>!
+As mentioned earlier, persistent data structures perform a copy whenever they are modified meaning there is never any chance that two threads could be modifying the same instance at any one time. And, because they are very efficient copies, you don't need to worry about using up gobs of memory in the process.
+
+Even if threading isn't a concern, because they're immutable, you can pass them around between objects, methods, and functions in the same thread and never worry about data corruption; no more defensive calls to <tt>#dup</tt>!
 
 === OK, that sounds mildly interesting. What's the downside--there's always a downside?
 
 There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of Hash. For example:
 
   hash = Hamster.hash
-  (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
-  (1..10000).each { |i| hash.get(i) }  # => 0.008s
+  (1..10000).each { |i| hash = hash.put(i, i) }   # => 0.05s
+  (1..10000).each { |i| hash.get(i) }             # => 0.008s
 
 versus
 
   hash = {}
-  (1..10000).each { |i| hash[i] = i }  # => 0.004s
-  (1..10000).each { |i| hash[i] }  # => 0.001s
+  (1..10000).each { |i| hash[i] = i }   # => 0.004s
+  (1..10000).each { |i| hash[i] }       # => 0.001s
 
 === That seems pretty bad?
 
@@ -182,8 +184,8 @@ Well, yes and no. The previous comparison wasn't really fair. Sure, if all you w
 A more realistic comparison might look like:
 
   hash = Hamster.hash
-  (1..10000).each { |i| hash = hash.put(i, i) }  # => 0.05s
-  (1..10000).each { |i| hash.get(i) }  # => 0.008s
+  (1..10000).each { |i| hash = hash.put(i, i) }   # => 0.05s
+  (1..10000).each { |i| hash.get(i) }             # => 0.008s
 
 versus
 
@@ -191,16 +193,16 @@ versus
   (1..10000).each { |i|
     hash = hash.dup
     hash[i] = i
-  } # => 19.8s
+  }                                 # => 19.8s
 
-  (1..10000).each { |i| hash[i] }  # => 0.001s
+  (1..10000).each { |i| hash[i] }   # => 0.001s
 
-Impressive huh? What's even better is--or worse depending on your perspective--is that after all that, the native Hash version still isn't thread-safe and still requires some synchronisation around it slowing it down even further.
+What's even better -- or worse depending on your perspective -- is that after all that, the native Hash version still isn't thread-safe and still requires some synchronisation around it slowing it down even further and.
 
 The Hamster version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster.
 
 === Sure, but as you say, you still need synchronisation so why bother with the copying?
 
-Well, I could show you one but I'd have to re-write--or at least wrap--most Hash methods to make it generic, or at least write some application-specific code that synchronised using a <tt>Mutex</tt> and ... well ... it's hard, I always make mistakes, I always end up with weird edge cases and race conditions so, I'll leave that as an exercise for you :)
+Well, I could show you one but I'd have to re-write/wrap most Hash methods to make them generic, or at the very least write some application-specific code that synchronised using a <tt>Mutex</tt> and ... well ... it's hard, I always make mistakes, I always end up with weird edge cases and race conditions so, I'll leave that as an exercise for you :)
 
-And don't forget that even if threading isn't a concern for you, the safety provided by immutability is worth it, not to mention the lazy implementations.
+And don't forget that even if threading isn't a concern for you, the safety provided by immutability alone is worth it, not to mention the lazy implementations.
