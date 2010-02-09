@@ -1,6 +1,22 @@
 = Hamster - Efficient, Immutable, Thread-Safe Collection classes for Ruby
 
+GitHub:     http://github.com/harukizaemon/bundler
+Gemcutter:  http://gemcutter/harukizaemon/hamster
+IRC:        #haruki_zaemon on freenode
+
+== Intro
+
 Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) such as Sets, Lists, Stacks, etc.
+
+== Installation
+
+Hamster is distributed as a gem via gemcutter (http://gemcutter.org/gems/hamster) or as source via GitHub (http://github.com/harukizaemon/hamster).
+
+Installation via the gem is easy:
+
+  > gem install hamster
+
+I'll leave it up to you to install from source :)
 
 == What are persistent data structures?
 
@@ -179,12 +195,8 @@ Performance is pretty good--especially with lazy lists--but there are some thing
 
 Documentation is sparse but I've tried as best I can to write specs that read as documentation. I've also tried to alias methods as their <tt>Enumerable</tt> equivalents where possible to make it easier for people to migrate code.
 
-== Installation
+== Reporting bugs
 
-Hamster is distributed as a gem via gemcutter (http://gemcutter.org/gems/hamster) or as source via GitHub (http://github.com/harukizaemon/hamster).
+Please report all bugs on the GitHub issue tracker located at:
 
-Installation via the gem is easy:
-
-  > gem install hamster
-
-I'll leave it up to you to install from source :)
+    http://github.com/harukizaemon/hamster/issues
