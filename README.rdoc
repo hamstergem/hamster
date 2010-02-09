@@ -36,7 +36,7 @@ If you prefer, you can instead require individual classes as necessary:
 
 == Examples
 
-Most classes support an API that resembles their standard library counterparts with the caveat that any modification returns a new instance. What follows are some simple examples to help illustrate this point.
+Most Hamster classes support an API that resembles their standard library counterpart with the caveat that any modification returns a new instance. What follows are some simple examples to help illustrate this point.
 
 === Hash
 
