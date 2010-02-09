@@ -69,7 +69,7 @@ Hamster's hash doesn't provide an assignment (<tt>#[]=</tt>) method. The reason 
 
   {}[:name] = "Simon"   # => "Simon"
 
-Because of this language <strike>restruction</strike>"feature", the returned copy would be lost thus making the construct useless.
+Because of this, the returned copy would be lost thus making the construct useless.
 
 === Set
 
