@@ -4,44 +4,40 @@ require 'hamster/hash'
 
 describe Hamster::Hash do
 
-  [:put, :[]=].each do |method|
+  describe "#put" do
 
-    describe "##{method}" do
+    before do
+      @original = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+    end
+
+    describe "with a unique key" do
 
       before do
-        @original = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+        @result = @original.put("D", "dee")
       end
 
-      describe "with a unique key" do
-
-        before do
-          @result = @original.send(method, "D", "dee")
-        end
-
-        it "preserves the original" do
-          @original.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-        end
-
-        it "returns a copy with the superset of key/value pairs" do
-          @result.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", "D" => "dee")
-        end
-
+      it "preserves the original" do
+        @original.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
       end
 
-      describe "with a duplicate key" do
+      it "returns a copy with the superset of key/value pairs" do
+        @result.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", "D" => "dee")
+      end
 
-        before do
-          @result = @original.send(method, "C", "sea")
-        end
+    end
 
-        it "preserves the original" do
-          @original.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-        end
+    describe "with a duplicate key" do
 
-        it "returns a copy with the superset of key/value pairs" do
-          @result.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "sea")
-        end
+      before do
+        @result = @original.put("C", "sea")
+      end
 
+      it "preserves the original" do
+        @original.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+      end
+
+      it "returns a copy with the superset of key/value pairs" do
+        @result.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "sea")
       end
 
     end

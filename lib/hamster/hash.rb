@@ -42,7 +42,6 @@ module Hamster
     def put(key, value)
       self.class.new(@trie.put(key, value))
     end
-    def_delegator :self, :put, :[]=
 
     def delete(key)
       trie = @trie.delete(key)

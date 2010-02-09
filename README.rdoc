@@ -65,6 +65,12 @@ As you can see, updating the hash returned a copy leaving the original intact. S
   male.has_key?(:name)          # => false
   simon.has_key?(:name)         # => true
 
+Hamster's hash doesn't provide an assignment (<tt>#[]=</tt>) method. The reason for this is simple yet irritating: Ruby assignment methods always return the assigned value, no matter what the method itself returns. For example:
+
+  {}[:name] = "Simon"   # => "Simon"
+
+Because of this language <strike>restruction</strike>"feature", the returned copy would be lost thus making the construct useless.
+
 === Set
 
 === List
@@ -111,7 +117,11 @@ Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
 <tt>Hamster.replicate(n, x)</tt> creates a list of size n with x the value for every element.
 
-<tt>Hamster.iterate(x) { ... }</tt> creates an infinite list where the first item is calculated by applying the block on the initial argument, the second item by applying the function on the previous result and so on. For example, a simpler way to generate a list of integers would be:
+<tt>Hamster.iterate(x) { |x| ... }</tt> creates an infinite list where the first item is calculated by applying the block on the initial argument, the second item by applying the function on the previous result and so on. For example, a simpler way to generate a list of integers would be:
+
+  integers = Hamster.iterate(1) { |i| i + 1 }
+
+or even more succinctly:
 
   integers = Hamster.iterate(1, &:succ)
 
