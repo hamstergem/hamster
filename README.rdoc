@@ -9,9 +9,11 @@
 
 Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) including Set, List, and Stack.
 
-Unlike Ruby's standard library, Hamster collections are immutable. Whenever you modify a Hamster collection, say a Hash for example, the original is preserved and a modified copy is returned, making them inherently thread-safe and sharable. (For an interesting perspective on why immutability itself is inherently a good thing, you might like to take a look at Matthias Felleisen's Function Objects presentation: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf) By making use of some very well understood and very simple techniques, the returned copy is also very space efficient, sharing a much of the original's structure.
+Hamster collections are immutable. Whenever you modify a Hamster collection, the original is preserved and a modified copy is returned. This makes them inherently thread-safe and sharable. (For an interesting perspective on why immutability itself is inherently a good thing, you might like to take a look at Matthias Felleisen's Function Objects presentation: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf)
 
-Hamster collections are almost always closed under a given operation. That is, whereas Ruby's collection class methods always return arrays, Hamster classes will return an instance of the same class wherever possible.
+Hamster collection classes remain space efficient by making use of some very well understood and very simple techniques that enable sharing between copies.
+
+Hamster collections are almost always closed under a given operation. That is, whereas Ruby's collection methods always return arrays, Hamster collections will return an instance of the same class wherever possible.
 
 And lastly, Hamster lists are lazy -- where Ruby's language constructs permit -- making it possible to, among other things, process "infinitely large" lists. (Note: Ruby 1.9 supports a form of laziness using Enumerator however they're implemented using Fibers which unfortunately can't be shared across threads.)
 
