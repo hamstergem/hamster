@@ -2,7 +2,6 @@
 * Add List #hash, #fill, #sample, #insert, #insert_by, #to_set, #permutation (aliased as #permutations), #subsequences, #transpose
 * Add Set #hash, #one?, #cycle, #sample, #max(imum), #min(imum), #flatten, #product (aliased as #*)
 * Add Hash #hash, #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
-* Implement Set#^ as equivalent to ((set | enum) - (set & enum))
 * Implement Hash#merge
 * Work out what we can extract into common "Enumerable-like" code.
 * Generate spec docs

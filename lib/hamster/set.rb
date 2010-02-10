@@ -185,6 +185,11 @@ module Hamster
     def_delegator :self, :difference, :subtract
     def_delegator :self, :difference, :-
 
+    def exclusion(other)
+      ((self | other) - (self & other))
+    end
+    def_delegator :self, :exclusion, :^
+
     def subset?(other)
       all? { |item| other.include?(item) }
     end
