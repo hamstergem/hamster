@@ -2,7 +2,6 @@
 * Add List #hash, #fill, #sample, #insert, #insert_by, #to_set, #permutation (aliased as #permutations), #subsequences, #transpose
 * Add Set #hash, #one?, #cycle, #sample, #max(imum), #min(imum), #flatten
 * Add Hash #hash, #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear
-* Implement Set#union aliased as #| and #+
 * Implement Set#intersection aliased as #&
 * Implement Set#difference aliased as #-
 * Implement Set#subtract
