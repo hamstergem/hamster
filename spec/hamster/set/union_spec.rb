@@ -1,16 +1,12 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
-require 'hamster/list'
+require 'hamster/set'
 
-describe Hamster::List do
+describe Hamster::Set do
 
-  [:union, :|].each do |method|
+  [:union, :|, :+].each do |method|
 
     describe "##{method}" do
-
-      it "is lazy" do
-        lambda { Hamster.stream { fail }.union(Hamster.stream { fail }) }.should_not raise_error
-      end
 
       [
         [[], [], []],
@@ -22,8 +18,8 @@ describe Hamster::List do
         describe "returns #{expected.inspect}" do
 
           before do
-            @a = Hamster.list(*a)
-            @b = Hamster.list(*b)
+            @a = Hamster.set(*a)
+            @b = Hamster.set(*b)
           end
 
           it "for #{a.inspect} and #{b.inspect}"  do
@@ -35,7 +31,7 @@ describe Hamster::List do
           end
 
           after  do
-            @result.should == Hamster.list(*expected)
+            @result.should == Hamster.set(*expected)
           end
 
         end

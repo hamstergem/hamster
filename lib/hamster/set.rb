@@ -44,11 +44,8 @@ module Hamster
 
     def delete(item)
       trie = @trie.delete(item)
-      if trie.equal?(@trie)
-        self
-      else
-        self.class.new(trie)
-      end
+      return self if trie.equal?(@trie)
+      self.class.new(trie)
     end
 
     def each
@@ -75,13 +72,9 @@ module Hamster
     def filter
       return self unless block_given?
       trie = @trie.filter { |entry| yield(entry.key) }
-      if trie.equal?(@trie)
-        self
-      elsif trie.empty?
-        EmptySet
-      else
-        self.class.new(trie)
-      end
+      return self if trie.equal?(@trie)
+      return EmptySet if trie.empty?
+      self.class.new(trie)
     end
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all
@@ -163,6 +156,17 @@ module Hamster
     def join(sep = nil)
       to_a.join(sep)
     end
+
+    def union(other)
+      trie = other.reduce(@trie) do |trie, item|
+        next trie if trie.has_key?(item)
+        trie.put(item, nil)
+      end
+      return self if trie.equal?(@trie)
+      self.class.new(trie)
+    end
+    def_delegator :self, :union, :|
+    def_delegator :self, :union, :+
 
     def compact
       remove(&:nil?)
