@@ -176,6 +176,15 @@ module Hamster
     def_delegator :self, :intersection, :intersect
     def_delegator :self, :intersection, :&
 
+    def difference(other)
+      trie = @trie.filter { |entry| !other.include?(entry.key) }
+      return self if trie.equal?(@trie)
+      self.class.new(trie)
+    end
+    def_delegator :self, :difference, :diff
+    def_delegator :self, :difference, :subtract
+    def_delegator :self, :difference, :-
+
     def compact
       remove(&:nil?)
     end
