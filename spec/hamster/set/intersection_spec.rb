@@ -4,15 +4,16 @@ require 'hamster/set'
 
 describe Hamster::Set do
 
-  [:union, :|, :+].each do |method|
+  [:intersection, :intersect, :&].each do |method|
 
     describe "##{method}" do
 
       [
         [[], [], []],
-        [["A"], [], ["A"]],
+        [["A"], [], []],
         [["A"], ["A"], ["A"]],
-        [["A", "B", "C"], [], ["A", "B", "C"]],
+        [["A", "B", "C"], ["B"], ["B"]],
+        [["A", "B", "C"], ["A", "C"], ["A", "C"]],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do
