@@ -110,7 +110,7 @@ Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
 <tt>Hamster.stream { ... }</tt> allows you to creates infinite lists. Each time a new value is required, the supplied block is called. For example, to generate a list of integers you could do:
 
-  count = 1
+  count = 0
   integers = Hamster.stream { count += 1 }
 
 <tt>Hamster.repeat(x)</tt> creates an infinite list with x the value for every element.
