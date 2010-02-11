@@ -63,7 +63,7 @@ DESC
             @remainder = @result.last
           end
 
-          it "returns a tuple with two items" do
+          it "returns a tuple" do
             @result.is_a?(Hamster::Tuple).should == true
           end
 
@@ -71,7 +71,7 @@ DESC
             @prefix.should equal(@original)
           end
 
-          it "leaves the remainder empty" do
+          it "returns an empty list as the remainder" do
             @remainder.should be_empty
           end
 
