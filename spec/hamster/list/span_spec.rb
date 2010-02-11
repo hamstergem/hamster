@@ -13,8 +13,8 @@ describe Hamster::List do
 
     describe <<-DESC do
 given a predicate (in the form of a block), splits the list into two lists (returned as a tuple) such that elements in
-the first list are taken from the head of the list while the predicate is satisfied, and elements in the second list are
-the remaining elements from the list once the predicate is not satisfied.
+the first list (the prefix) are taken from the head of the list while the predicate is satisfied, and elements in the
+second list (the remainder) are the remaining elements from the list once the predicate is not satisfied. For example:
 DESC
 
       [
@@ -28,13 +28,13 @@ DESC
         [[4], [], [4]],
       ].each do |values, expected_prefix, expected_remainder|
 
-        describe "on #{values.inspect}" do
+        describe "given the list #{values.inspect}" do
 
           before do
             @original = Hamster.list(*values)
           end
 
-          describe "with a block" do
+          describe "and a predicate that returns true for values <= 2" do
 
             before do
               @result = @original.span { |item| item <= 2 }
@@ -50,17 +50,17 @@ DESC
               @result.is_a?(Hamster::Tuple).should == true
             end
 
-            it "correctly identifies the prefix" do
+            it "correctly identifies the prefix as #{expected_prefix.inspect}" do
               @prefix.should == Hamster.list(*expected_prefix)
             end
 
-            it "correctly identifies the remainder" do
+            it "correctly identifies the remainder as #{expected_remainder.inspect}" do
               @remainder.should == Hamster.list(*expected_remainder)
             end
 
           end
 
-          describe "without a block" do
+          describe "without a predicate" do
 
             before do
               @result = @original.span
