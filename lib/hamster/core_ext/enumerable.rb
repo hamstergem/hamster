@@ -6,10 +6,15 @@ module Hamster
 
     module Enumerable
 
-      def to_list
-        list = EmptyList
-        reverse_each { |item| list = list.cons(item) }
-        list
+      def self.included(base)
+        base.class_eval do
+          def to_list
+            list = EmptyList
+            reverse_each { |item| list = list.cons(item) }
+            list
+          end
+        end
+
       end
 
     end
@@ -19,12 +24,6 @@ module Hamster
 end
 
 module Enumerable
-
-  include Hamster::CoreExt::Enumerable
-
-end
-
-class Array
 
   include Hamster::CoreExt::Enumerable
 

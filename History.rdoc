@@ -1,3 +1,7 @@
+=== 0.2.9 / 2010-02-11
+
+* Fix #to_list not available in all Enumerables.
+
 === 0.2.8 / 2010-02-10
 
 * Implement Set#exclusion (aliased as #^) as equivalent to ((a | b) - (a & b)).
