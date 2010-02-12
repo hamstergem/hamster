@@ -119,6 +119,10 @@ module Hamster
     end
     def_delegator :self, :find, :detect
 
+    def keys
+      reduce(Hamster.set) { |keys, key, value| keys.add(key) }
+    end
+
     def eql?(other)
       other.is_a?(self.class) && @trie.eql?(other.instance_eval{@trie})
     end
