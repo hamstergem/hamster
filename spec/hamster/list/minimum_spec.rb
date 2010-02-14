@@ -32,7 +32,7 @@ describe Hamster::List do
 
             before do
               original = Hamster.list(*values)
-              @result = original.send(method) { |maximum, item| item.length <=> maximum.length }
+              @result = original.send(method) { |minimum, item| item.length <=> minimum.length }
             end
 
             it "returns #{expected.inspect}" do

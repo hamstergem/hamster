@@ -21,7 +21,7 @@ describe Hamster::Set do
             before do
               original = Hamster.set(*values)
               pending do
-                @result = original.send(method) { |maximum, item| item.length <=> maximum.length }
+                @result = original.send(method) { |minimum, item| item.length <=> minimum.length }
               end
             end
 
