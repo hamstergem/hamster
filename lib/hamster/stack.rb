@@ -64,6 +64,10 @@ module Hamster
     end
     def_delegator :self, :to_a, :entries
 
+    def to_ary
+      @list.to_ary
+    end
+
     def to_list
       @list
     end

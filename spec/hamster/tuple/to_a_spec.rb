@@ -23,11 +23,6 @@ describe Hamster::Tuple do
           @result.should == values
         end
 
-        it "works with splat" do
-          array = *@tuple
-          array.should == values
-        end
-
         it "returns a mutable array" do
           @result.last.should_not == "The End"
           @result << "The End"

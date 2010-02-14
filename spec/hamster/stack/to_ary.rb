@@ -1,32 +1,20 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
-require 'hamster/list'
+require 'hamster/stack'
 
-describe Hamster::List do
+describe Hamster::Stack do
 
   describe "#to_ary" do
-
-    describe "on a really big list" do
-
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
-      it "doesn't run out of stack" do
-        lambda { @list.to_ary }.should_not raise_error
-      end
-
-    end
 
     describe "enables implicit conversion to" do
 
       before do
-        @list = Hamster.list("A", "B", "C", "D")
+        @stack = Hamster.stack("D", "C", "B", "A")
       end
 
       it "block parameters" do
         def func(&block)
-          yield(@list)
+          yield(@stack)
         end
         func do |a, b, *c|
           a.should == "A"
@@ -41,11 +29,11 @@ describe Hamster::List do
           b.should == "B"
           c.should == ["C", "D"]
         end
-        func(*@list)
+        func(*@stack)
       end
 
       it "works with splat" do
-        array = *@list
+        array = *@stack
         array.should == ["A", "B", "C", "D"]
       end
 

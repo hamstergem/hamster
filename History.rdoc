@@ -1,3 +1,9 @@
+=== 0.2.10 / 2010-02-15
+
+* Fix a bunch of spec failures under 1.8.7.
+
+* Remove some redundant object construction.
+
 === 0.2.9 / 2010-02-11
 
 * Fix #to_list not available in all Enumerables.

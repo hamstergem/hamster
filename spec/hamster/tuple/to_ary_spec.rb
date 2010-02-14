@@ -32,6 +32,11 @@ describe Hamster::Tuple do
         func(*@tuple)
       end
 
+      it "works with splat" do
+        array = *@tuple
+        array.should == ["A", "B", "C", "D"]
+      end
+
     end
 
   end

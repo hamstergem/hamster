@@ -325,7 +325,7 @@ module Hamster
       end
     end
 
-    def uniq(items = Set.new)
+    def uniq(items = EmptySet)
       Stream.new do
         next self if empty?
         next tail.uniq(items) if items.include?(head)
@@ -503,6 +503,10 @@ module Hamster
 
     def to_list
       self
+    end
+
+    def to_set
+      reduce(EmptySet) { |set, item| set.add(item) }
     end
 
     def inspect

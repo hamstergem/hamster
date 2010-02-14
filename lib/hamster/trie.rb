@@ -6,7 +6,7 @@ module Hamster
 
     extend Forwardable
 
-    def initialize(significant_bits = 0, entries = [], children = [])
+    def initialize(significant_bits, entries = [], children = [])
       @significant_bits = significant_bits
       @entries = entries
       @children = children
@@ -81,7 +81,7 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> with the given key (and associated value) deleted. If not found, returns <tt>self</tt>.
     def delete(key)
-      find_and_delete(key) || Trie.new(@significant_bits)
+      find_and_delete(key) || self.class.new(@significant_bits)
     end
 
     def include?(key, value)
@@ -166,5 +166,7 @@ module Hamster
     end
 
   end
+
+  EmptyTrie = Trie.new(0)
 
 end

@@ -12,7 +12,7 @@ module Hamster
 
     extend Forwardable
 
-    def initialize(trie = Trie.new)
+    def initialize(trie = EmptyTrie)
       @trie = trie
     end
 
@@ -61,7 +61,7 @@ module Hamster
     def map
       return self unless block_given?
       return self if empty?
-      self.class.new(@trie.reduce(Trie.new) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
+      self.class.new(@trie.reduce(EmptyTrie) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
     end
     def_delegator :self, :map, :collect
 
