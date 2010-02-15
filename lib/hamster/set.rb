@@ -112,7 +112,15 @@ module Hamster
     end
 
     def one?
-      return one? { |item| item } unless block_given?
+      return one? { |item| !! item } unless block_given?
+      @trie.reduce(false) do |previously_matched, entry|
+        if yield(entry.key)
+          return false if previously_matched
+          true
+        else
+          previously_matched
+        end
+      end
     end
 
     def find
