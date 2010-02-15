@@ -1,5 +1,6 @@
 require 'forwardable'
 
+require 'hamster/undefined'
 require 'hamster/tuple'
 require 'hamster/sorter'
 require 'hamster/trie'
@@ -61,9 +62,12 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
-    def reduce(memo)
-      return memo unless block_given?
-      @trie.reduce(memo) { |memo, entry| yield(memo, entry.key) }
+    def reduce(memo = Undefined)
+      memo = @trie.reduce(memo) do |memo, entry|
+        next entry.key if memo.equal?(Undefined)
+        yield(memo, entry.key)
+      end if block_given?
+      Undefined.erase(memo)
     end
     def_delegator :self, :reduce, :inject
     def_delegator :self, :reduce, :fold

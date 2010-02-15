@@ -8,45 +8,72 @@ describe Hamster::Set do
 
     describe "##{method}" do
 
-      describe "when empty" do
+      [
+        [[], 10, 10],
+        [[1], 10, 9],
+        [[1, 2, 3], 10, 4],
+      ].each do |values, initial, expected|
 
-        before do
-          @original = Hamster.set
-          @result = @original.send(method, "ABC") {}
-        end
+        describe "on #{values.inspect}" do
 
-        it "returns the memo" do
-          @result.should == "ABC"
+          before do
+            @set = Hamster.set(*values)
+          end
+
+          describe "with an initial value of #{initial}" do
+
+            describe "and a block" do
+
+              it "returns #{expected.inspect}" do
+                @set.send(method, initial) { |memo, item| memo - item }.should == expected
+              end
+
+            end
+
+            describe "and no block" do
+
+              it "returns the memo" do
+                @set.send(method, initial).should == initial
+              end
+
+            end
+
+          end
+
         end
 
       end
 
-      describe "when not empty" do
+      [
+        [[], nil],
+        [[1], 1],
+        [[1, 2, 3], -4],
+      ].each do |values, expected|
 
-        before do
-          @original = Hamster.set("A", "B", "C")
-        end
-
-        describe "with a block" do
-
-          before do
-            @result = @original.send(method, 0) { |memo, item| memo + 1 }
-          end
-
-          it "returns the final memo" do
-            @result.should == 3
-          end
-
-        end
-
-        describe "with no block" do
+        describe "on #{values.inspect}" do
 
           before do
-            @result = @original.send(method, "ABC")
+            @set = Hamster.set(*values)
           end
 
-          it "returns the memo" do
-            @result.should == "ABC"
+          describe "with no initial value" do
+
+            describe "and a block" do
+
+              it "returns #{expected.inspect}" do
+                @set.send(method) { |memo, item| memo - item }.should == expected
+              end
+
+            end
+
+            describe "and no block" do
+
+              it "returns nil" do
+                @set.send(method).should be_nil
+              end
+
+            end
+
           end
 
         end

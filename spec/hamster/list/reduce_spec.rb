@@ -80,8 +80,8 @@ describe Hamster::List do
 
             describe "and no block" do
 
-              it "returns the first value in the list" do
-                @list.send(method).should == values.first
+              it "returns nil" do
+                @list.send(method).should be_nil
               end
 
             end
