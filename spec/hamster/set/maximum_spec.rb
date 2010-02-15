@@ -20,9 +20,7 @@ describe Hamster::Set do
 
             before do
               original = Hamster.set(*values)
-              pending do
-                @result = original.send(method) { |maximum, item| item.length <=> maximum.length }
-              end
+              @result = original.send(method) { |maximum, item| item.length <=> maximum.length }
             end
 
             it "returns #{expected.inspect}" do
@@ -47,9 +45,7 @@ describe Hamster::Set do
 
             before do
               original = Hamster.set(*values)
-              pending do
-                @result = original.send(method)
-              end
+              @result = original.send(method)
             end
 
             it "returns #{expected.inspect}" do
