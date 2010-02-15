@@ -71,9 +71,6 @@ module Hamster
     def_delegator :self, :cons, :>>
 
     def each
-      # return nil if empty?
-      # yield(head)
-      # tail.each(&block)
       return self unless block_given?
       list = self
       while !list.empty?
@@ -131,10 +128,6 @@ module Hamster
     end
 
     def drop_while(&block)
-      # return self unless block_given?
-      # return self if empty?
-      # return self unless yield(head)
-      # tail.drop_while(&block)
       return self unless block_given?
       Stream.new do
         list = self
@@ -154,10 +147,6 @@ module Hamster
     end
 
     def drop(number)
-      # return self unless block_given?
-      # return self if empty?
-      # return self unless number > 0
-      # tail.drop(number - 1)
       Stream.new do
         list = self
         while !list.empty? && number > 0
@@ -176,9 +165,6 @@ module Hamster
     def_delegator :self, :include?, :elem?
 
     def any?
-      # return false if empty?
-      # return any? { |item| item } unless block_given?
-      # !! yield(head) || tail.any?(&block)
       return any? { |item| item } unless block_given?
       each { |item| return true if yield(item) }
       false
@@ -187,9 +173,6 @@ module Hamster
     def_delegator :self, :any?, :exists?
 
     def all?
-      # return true if empty?
-      # return all? { |item| item } unless block_given?
-      # !! yield(head) && tail.all?(&block)
       return all? { |item| item } unless block_given?
       each { |item| return false unless yield(item) }
       true
@@ -197,18 +180,12 @@ module Hamster
     def_delegator :self, :all?, :forall?
 
     def none?
-      # return true if empty?
-      # return none? { |item| item } unless block_given?
-      # !yield(head) && tail.none?(&block)
       return none? { |item| item } unless block_given?
       each { |item| return false if yield(item) }
       true
     end
 
     def one?(&block)
-      # return true if empty?
-      # return one? { |item| item } unless block_given?
-      # !yield(head) && tail.none?(&block)
       return one? { |item| item } unless block_given?
       list = self
       while !list.empty?
@@ -219,10 +196,6 @@ module Hamster
     end
 
     def find
-      # return nil if empty?
-      # return nil unless block_given?
-      # return head if yield(head)
-      # tail.find(&block)
       return nil unless block_given?
       each { |item| return item if yield(item) }
     end
@@ -424,11 +397,6 @@ module Hamster
     def_delegator :self, :slice, :[]
 
     def find_index
-    # def find_index(i = 0, &block)
-      # return nil if empty?
-      # return nil unless block_given?
-      # return i if yield(head)
-      # tail.find_index(i + 1, &block)
       return nil unless block_given?
       i = 0
       list = self
@@ -468,11 +436,6 @@ module Hamster
     end
 
     def eql?(other)
-      # return true if other.equal?(self)
-      # return false unless other.is_a?(List)
-      # return other.empty? if empty?
-      # return false if other.empty?
-      # other.head.eql?(head) && other.tail.eql?(tail)
       list = self
       loop do
         return true if other.equal?(list)
@@ -582,15 +545,15 @@ module Hamster
     protected
 
     def target
-      # conjure
-      list = conjure
+      # vivify
+      list = vivify
       while list.is_a?(Stream)
-        list = list.conjure
+        list = list.vivify
       end
       list
     end
 
-    def conjure
+    def vivify
       @lock.synchronize do
         unless @block.nil?
           @target = @block.call
