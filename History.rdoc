@@ -1,3 +1,15 @@
+=== 0.2.11 / 2010-02-15
+
+* Implement Set#one?
+
+* Implement Set#minimum (aliased as #min).
+
+* Implement Set#maximum (aliased as #max).
+
+* Implement Set#reduce with an optional memo.
+
+* Fix List#reduce should return nil when given no block and no starting value.
+
 === 0.2.10 / 2010-02-15
 
 * Fix a bunch of spec failures under 1.8.7.
