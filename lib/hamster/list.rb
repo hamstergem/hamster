@@ -284,7 +284,7 @@ module Hamster
     def join(sep = "")
       return "" if empty?
       sep = sep.to_s
-      tail.reduce(head.to_s) { |string, item| string << sep << item.to_s }
+      tail.reduce(head.to_s.dup) { |result, item| result << sep << item.to_s }
     end
 
     def intersperse(sep)

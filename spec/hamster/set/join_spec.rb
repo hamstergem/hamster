@@ -17,8 +17,12 @@ describe Hamster::Set do
         describe "on #{values.inspect}" do
 
           before do
-            original = Hamster.set(*values)
-            @result = original.join("|")
+            @original = Hamster.set(*values)
+            @result = @original.join("|")
+          end
+
+          it "preserves the original" do
+            @original.should == Hamster.set(*values)
           end
 
           it "returns #{expected.inspect}" do
@@ -42,8 +46,12 @@ describe Hamster::Set do
         describe "on #{values.inspect}" do
 
           before do
-            original = Hamster.set(*values)
-            @result = original.join
+            @original = Hamster.set(*values)
+            @result = @original.join
+          end
+
+          it "preserves the original" do
+            @original.should == Hamster.set(*values)
           end
 
           it "returns #{expected.inspect}" do

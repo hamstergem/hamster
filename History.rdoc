@@ -1,3 +1,7 @@
+=== 0.2.12 / 2010-03-01
+
+* Fixed bug: List#join accidentally modifying head if it was a string.
+
 === 0.2.11 / 2010-02-15
 
 * Implement Set#one?

@@ -29,8 +29,12 @@ describe Hamster::List do
         describe "on #{values.inspect}" do
 
           before do
-            original = Hamster.list(*values)
-            @result = original.join("|")
+            @original = Hamster.list(*values)
+            @result = @original.join("|")
+          end
+
+          it "preserves the original" do
+            @original.should == Hamster.list(*values)
           end
 
           it "returns #{expected.inspect}" do
@@ -54,8 +58,12 @@ describe Hamster::List do
         describe "on #{values.inspect}" do
 
           before do
-            original = Hamster.list(*values)
-            @result = original.join
+            @original = Hamster.list(*values)
+            @result = @original.join
+          end
+
+          it "preserves the original" do
+            @original.should == Hamster.list(*values)
           end
 
           it "returns #{expected.inspect}" do
