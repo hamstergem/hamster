@@ -226,6 +226,13 @@ module Hamster
       remove(&:nil?)
     end
 
+    def flatten
+      reduce(EmptySet) do |set, item|
+        next set.union(item.flatten) if item.is_a?(Set)
+        set.add(item)
+      end
+    end
+
     def group_by(&block)
       return group_by { |item| item } unless block_given?
       reduce(Hamster::Hash.new) do |hash, item|
