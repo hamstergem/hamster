@@ -1,5 +1,5 @@
 * Make List#size not O(n)!
-* Add List #hash, #fill, #sample, #insert, #insert_by, #to_set, #permutation (aliased as #permutations), #subsequences, #transpose
+* Add List #hash, #fill, #sample, #insert, #insert_by, #permutation (aliased as #permutations), #subsequences, #transpose
 * Add Set #hash, #cycle, #sample
 * Add Hash #hash, #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear, #key
 * Implement Hash#merge
