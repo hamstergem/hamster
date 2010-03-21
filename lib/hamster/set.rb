@@ -250,6 +250,10 @@ module Hamster
     end
     def_delegator :self, :eql?, :==
 
+    def hash
+      reduce(0) { |h, item| h + item.hash }
+    end
+
     def dup
       self
     end

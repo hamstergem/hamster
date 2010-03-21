@@ -1,6 +1,6 @@
 * Make List#size not O(n)!
 * Add List #fill, #sample, #insert, #insert_by, #permutation (aliased as #permutations), #subsequences, #transpose
-* Add Set #hash, #cycle, #sample
+* Add Set #cycle, #sample
 * Add Hash #hash, #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear, #key
 * Implement Hash#merge
 * Work out what we can extract into common "Enumerable-like" code.
