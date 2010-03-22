@@ -48,7 +48,7 @@ describe Hamster::List do
       end
 
       it "returns XOR of each item's hash" do
-        @result.should == 157
+        @result.should == 103
       end
 
     end
