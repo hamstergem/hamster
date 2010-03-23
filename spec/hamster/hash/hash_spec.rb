@@ -1,15 +1,15 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
-require 'hamster/set'
+require 'hamster/hash'
 
-describe Hamster::Set do
+describe Hamster::Hash do
 
   describe "#hash" do
 
-    describe "on an empty set" do
+    describe "on an empty hash" do
 
       before do
-        @result = Hamster.set.hash
+        @result = Hamster.hash.hash
       end
 
       it "returns 0" do
@@ -18,7 +18,7 @@ describe Hamster::Set do
 
     end
 
-    describe "on a non-empty set" do
+    describe "on a non-empty hash" do
 
       class Item
 
@@ -31,8 +31,8 @@ describe Hamster::Set do
       end
 
       before do
-        set = Hamster.set(Item.new(19), Item.new(31), Item.new(107))
-        @result = set.hash
+        hash = Hamster.hash(Item.new(19) => "A", Item.new(31) => "B", Item.new(107) => "C")
+        @result = hash.hash
       end
 
       it "returns XOR of each item's hash" do
