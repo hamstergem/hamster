@@ -1,3 +1,13 @@
+=== 0.2.13 / 2010-03-25
+
+* Implement Hash#hash.
+
+* Implement Set#hash.
+
+* Implement List#hash.
+
+* Implement Set#flatten.
+
 === 0.2.12 / 2010-03-01
 
 * Fixed bug: List#join accidentally modifying head if it was a string.
