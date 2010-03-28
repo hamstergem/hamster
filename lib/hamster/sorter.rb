@@ -1,10 +1,14 @@
 require 'forwardable'
 
+require 'hamster/immutable'
+
 module Hamster
 
   class Sorter
 
     extend Forwardable
+
+    include Immutable
 
     include Enumerable
 

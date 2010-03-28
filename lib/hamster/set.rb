@@ -1,5 +1,6 @@
 require 'forwardable'
 
+require 'hamster/immutable'
 require 'hamster/undefined'
 require 'hamster/tuple'
 require 'hamster/sorter'
@@ -16,8 +17,10 @@ module Hamster
 
     extend Forwardable
 
-    def initialize(trie = EmptyTrie)
-      @trie = trie
+    include Immutable
+
+    def initialize
+      @trie = EmptyTrie
     end
 
     def empty?
@@ -38,15 +41,13 @@ module Hamster
     def_delegator :self, :include?, :elem?
 
     def add(item)
-      return self if include?(item)
-      self.class.new(@trie.put(item, nil))
+      transform_unless(include?(item)) { @trie = @trie.put(item, nil) }
     end
     def_delegator :self, :add, :<<
 
     def delete(item)
       trie = @trie.delete(item)
-      return self if trie.equal?(@trie)
-      self.class.new(trie)
+      transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
 
     def each
@@ -58,7 +59,7 @@ module Hamster
     def map
       return self unless block_given?
       return self if empty?
-      self.class.new(@trie.reduce(EmptyTrie) { |trie, entry| trie.put(yield(entry.key), nil) })
+      transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(yield(entry.key), nil) } }
     end
     def_delegator :self, :map, :collect
 
@@ -78,7 +79,7 @@ module Hamster
       trie = @trie.filter { |entry| yield(entry.key) }
       return self if trie.equal?(@trie)
       return EmptySet if trie.empty?
-      self.class.new(trie)
+      transform { @trie = trie }
     end
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all
@@ -186,24 +187,21 @@ module Hamster
         next trie if trie.has_key?(item)
         trie.put(item, nil)
       end
-      return self if trie.equal?(@trie)
-      self.class.new(trie)
+      transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :union, :|
     def_delegator :self, :union, :+
 
     def intersection(other)
       trie = @trie.filter { |entry| other.include?(entry.key) }
-      return self if trie.equal?(@trie)
-      self.class.new(trie)
+      transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :intersection, :intersect
     def_delegator :self, :intersection, :&
 
     def difference(other)
       trie = @trie.filter { |entry| !other.include?(entry.key) }
-      return self if trie.equal?(@trie)
-      self.class.new(trie)
+      transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :difference, :diff
     def_delegator :self, :difference, :subtract
@@ -254,10 +252,6 @@ module Hamster
       reduce(0) { |h, item| h ^ item.hash }
     end
 
-    def dup
-      self
-    end
-    def_delegator :self, :dup, :clone
     def_delegator :self, :dup, :uniq
     def_delegator :self, :dup, :nub
     def_delegator :self, :dup, :to_set

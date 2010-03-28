@@ -1,5 +1,6 @@
 require 'forwardable'
 
+require 'hamster/immutable'
 require 'hamster/trie'
 
 module Hamster
@@ -12,8 +13,10 @@ module Hamster
 
     extend Forwardable
 
-    def initialize(trie = EmptyTrie)
-      @trie = trie
+    include Immutable
+
+    def initialize
+      @trie = EmptyTrie
     end
 
     def size
@@ -40,16 +43,12 @@ module Hamster
     def_delegator :self, :get, :[]
 
     def put(key, value)
-      self.class.new(@trie.put(key, value))
+      transform { @trie = @trie.put(key, value) }
     end
 
     def delete(key)
       trie = @trie.delete(key)
-      if trie.equal?(@trie)
-        self
-      else
-        self.class.new(trie)
-      end
+      transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
 
     def each
@@ -61,7 +60,7 @@ module Hamster
     def map
       return self unless block_given?
       return self if empty?
-      self.class.new(@trie.reduce(EmptyTrie) { |trie, entry| trie.put(*yield(entry.key, entry.value)) })
+      transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(*yield(entry.key, entry.value)) } }
     end
     def_delegator :self, :map, :collect
 
@@ -76,11 +75,7 @@ module Hamster
     def filter
       return self unless block_given?
       trie = @trie.filter { |entry| yield(entry.key, entry.value) }
-      if trie.equal?(@trie)
-        self
-      else
-        self.class.new(trie)
-      end
+      transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all
@@ -132,10 +127,6 @@ module Hamster
       reduce(0) { |h, key, value| h ^ key.hash }
     end
 
-    def dup
-      self
-    end
-    def_delegator :self, :dup, :clone
     def_delegator :self, :dup, :uniq
     def_delegator :self, :dup, :nub
     def_delegator :self, :dup, :remove_duplicates

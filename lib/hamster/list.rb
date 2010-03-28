@@ -534,28 +534,7 @@ module Hamster
     def_delegator :target, :tail
     def_delegator :target, :empty?
 
-    def head
-      target.head
-    end
-
-    def tail
-      target.tail
-    end
-
-    def empty?
-      target.empty?
-    end
-
     protected
-
-    def target
-      # vivify
-      list = vivify
-      while list.is_a?(Stream)
-        list = list.vivify
-      end
-      list
-    end
 
     def vivify
       @lock.synchronize do
@@ -565,6 +544,16 @@ module Hamster
         end
       end
       @target
+    end
+
+    private
+
+    def target
+      list = vivify
+      while list.is_a?(Stream)
+        list = list.vivify
+      end
+      list
     end
 
   end

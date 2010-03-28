@@ -1,5 +1,6 @@
 require 'forwardable'
 
+require 'hamster/immutable'
 require 'hamster/list'
 
 module Hamster
@@ -12,8 +13,10 @@ module Hamster
 
     extend Forwardable
 
-    def initialize(list)
-      @list = list
+    include Immutable
+
+    def initialize
+      @list = EmptyList
     end
 
     def empty?
@@ -30,7 +33,7 @@ module Hamster
     end
 
     def push(item)
-      self.class.new(@list.cons(item))
+      transform { @list = @list.cons(item) }
     end
     def_delegator :self, :push, :<<
 
@@ -39,7 +42,7 @@ module Hamster
       if list.empty?
         EmptyStack
       else
-        self.class.new(list)
+        transform { @list = list }
       end
     end
 
@@ -53,11 +56,6 @@ module Hamster
       @list.eql?(other.instance_eval{@list})
     end
     def_delegator :self, :eql?, :==
-
-    def dup
-      self
-    end
-    def_delegator :self, :dup, :clone
 
     def to_a
       @list.to_a
@@ -78,6 +76,6 @@ module Hamster
 
   end
 
-  EmptyStack = Stack.new(EmptyList)
+  EmptyStack = Stack.new
 
 end

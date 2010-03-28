@@ -1,10 +1,14 @@
 require 'forwardable'
 
+require 'hamster/immutable'
+
 module Hamster
 
   class Tuple
 
     extend Forwardable
+
+    include Immutable
 
     def initialize(*items)
       @items = items.freeze
@@ -24,11 +28,6 @@ module Hamster
       @items.eql?(other.instance_eval{@items})
     end
     def_delegator :self, :eql?, :==
-
-    def dup
-      self
-    end
-    def_delegator :self, :dup, :clone
 
     def to_ary
       @items

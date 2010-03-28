@@ -1,3 +1,4 @@
+* Make Trie.include Immutable
 * Make List#size not O(n)!
 * Add List #fill, #sample, #insert, #insert_by, #permutation (aliased as #permutations), #subsequences, #transpose
 * Add Set #cycle, #sample
