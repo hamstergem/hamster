@@ -1,3 +1,9 @@
+=== 0.3.0 / 2010-03-28
+
+* Add Hamster::Immutable as general purpose module to facililate immutability.
+
+* List, Stack, Set, and Hash now all implement Hamster::Immutable.
+
 === 0.2.13 / 2010-03-25
 
 * Implement Hash#hash.
