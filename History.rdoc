@@ -1,3 +1,7 @@
+=== 0.3.1 / 2010-04-04
+
+* Fixed: Immutable not required in hamster.rb
+
 === 0.3.0 / 2010-03-28
 
 * Add Hamster::Immutable as general purpose module to facililate immutability.
