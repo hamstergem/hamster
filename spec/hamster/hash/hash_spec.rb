@@ -31,12 +31,12 @@ describe Hamster::Hash do
       end
 
       before do
-        hash = Hamster.hash(Item.new(19) => "A", Item.new(31) => "B", Item.new(107) => "C")
+        hash = Hamster.hash(Item.new(19) => Item.new(100), Item.new(31) => Item.new(78942), Item.new(107) => Item.new(309))
         @result = hash.hash
       end
 
-      it "returns XOR of each item's hash" do
-        @result.should == 103
+      it "returns XOR of each key/value pair hash" do
+        @result.should == 79208
       end
 
     end

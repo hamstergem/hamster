@@ -124,7 +124,7 @@ module Hamster
     def_delegator :self, :eql?, :==
 
     def hash
-      reduce(0) { |h, key, value| h ^ key.hash }
+      reduce(0) { |h, key, value| h ^ key.hash ^ value.hash }
     end
 
     def_delegator :self, :dup, :uniq
