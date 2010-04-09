@@ -1,3 +1,7 @@
+=== 0.3.3 / 2010-04-09
+
+* Fixed: hash code generation had VERY poor distribution.
+
 === 0.3.1 / 2010-04-04
 
 * Fixed: Immutable not required in hamster.rb
