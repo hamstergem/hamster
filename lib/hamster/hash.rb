@@ -38,7 +38,7 @@ module Hamster
 
     def get(key)
       entry = @trie.get(key)
-      return entry.value if entry
+      entry.value if entry
     end
     def_delegator :self, :get, :[]
 
