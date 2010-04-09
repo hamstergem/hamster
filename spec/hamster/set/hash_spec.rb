@@ -18,27 +18,12 @@ describe Hamster::Set do
 
     end
 
-    describe "on a non-empty set" do
-
-      class Item
-
-        attr_reader :hash
-
-        def initialize(h)
-          @hash = h
-        end
-
-      end
-
-      before do
-        set = Hamster.set(Item.new(19), Item.new(31), Item.new(107))
-        @result = set.hash
-      end
-
-      it "returns XOR of each item's hash" do
-        @result.should == 103
-      end
-
+    it "values are sufficiently distributed" do
+      (1..4000)
+        .each_slice(4)
+        .map { |a, b, c, d| Hamster.set(a, b, c, d).hash }
+        .uniq
+        .size.should == 1000
     end
 
   end

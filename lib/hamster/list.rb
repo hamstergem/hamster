@@ -450,7 +450,7 @@ module Hamster
     def_delegator :self, :eql?, :==
 
     def hash
-      reduce(0) { |h, item| h ^ item.hash }
+      reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
     def dup
