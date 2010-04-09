@@ -6,7 +6,7 @@ require 'hamster/trie'
 module Hamster
 
   def self.hash(pairs = {})
-    pairs.reduce(Hash.new) { |hash, pair| hash.put(pair.first, pair.last) }
+    pairs.reduce(EmptyHash) { |hash, pair| hash.put(pair.first, pair.last) }
   end
 
   class Hash
@@ -136,5 +136,7 @@ module Hamster
     end
 
   end
+
+  EmptyHash = Hash.new
 
 end

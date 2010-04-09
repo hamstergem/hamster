@@ -233,7 +233,7 @@ module Hamster
 
     def group_by(&block)
       return group_by { |item| item } unless block_given?
-      reduce(Hamster::Hash.new) do |hash, item|
+      reduce(EmptyHash) do |hash, item|
         key = yield(item)
         hash.put(key, (hash.get(key) || EmptySet).add(item))
       end
