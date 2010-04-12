@@ -27,8 +27,8 @@ module Hamster
         frozen?
       end
 
-      alias_method :__copy__, :dup
-      private :__copy__
+      alias_method :__hamster_dup__, :dup
+      private :__hamster_dup__
 
       def dup
         self
@@ -42,7 +42,7 @@ module Hamster
       end
 
       def transform(&block)
-        __copy__.tap { |copy| copy.instance_eval(&block) }.freeze
+        __hamster_dup__.tap { |copy| copy.instance_eval(&block) }.freeze
       end
 
     end
