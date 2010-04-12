@@ -1,5 +1,3 @@
-require 'forwardable'
-
 module Hamster
 
   module Immutable
@@ -21,8 +19,6 @@ module Hamster
 
     module InstanceMethods
 
-      extend Forwardable
-
       def immutable?
         frozen?
       end
@@ -33,7 +29,10 @@ module Hamster
       def dup
         self
       end
-      def_delegator :self, :dup, :clone
+
+      def clone
+        self
+      end
 
       protected
 
