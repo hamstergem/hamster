@@ -15,13 +15,19 @@ module Hamster
     end
 
     def put(key, value)
-      @lock.synchronize { @hash = @hash.put(key, value) }
-      self
+      @lock.synchronize {
+        original_value = @hash.get(key)
+        @hash = @hash.put(key, value)
+        original_value
+      }
     end
 
     def delete(key)
-      @lock.synchronize { @hash = @hash.delete(key) }
-      self
+      @lock.synchronize {
+        original_value = @hash.get(key)
+        @hash = @hash.delete(key)
+        original_value
+      }
     end
 
     def eql?(other)

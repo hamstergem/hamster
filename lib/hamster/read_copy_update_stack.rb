@@ -20,8 +20,11 @@ module Hamster
     end
 
     def pop
-      @lock.synchronize { @stack = @stack.pop }
-      self
+      @lock.synchronize {
+        top_value = @stack.peek
+        @stack = @stack.pop
+        top_value
+      }
     end
 
     def eql?(other)
