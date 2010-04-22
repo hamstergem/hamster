@@ -5,7 +5,7 @@ require 'hamster/set'
 
 module Hamster
 
-  class CopyUpdateReadStack
+  class ReadCopyUpdateStack
 
     extend Forwardable
 

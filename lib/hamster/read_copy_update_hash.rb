@@ -5,7 +5,7 @@ require 'hamster/hash'
 
 module Hamster
 
-  class CopyUpdateReadHash
+  class ReadCopyUpdateHash
 
     extend Forwardable
 
