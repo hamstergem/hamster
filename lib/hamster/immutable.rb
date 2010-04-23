@@ -11,8 +11,24 @@ module Hamster
 
     module ClassMethods
 
-      def new(*args)
-        super.immutable!
+      # def new(*args)
+      #   super.immutable!
+      # end
+
+      def memoize(*names)
+        names.each do |name|
+          original_method = "__hamster_immutable_#{name}__"
+          alias_method original_method, name
+          class_eval <<-METHOD, __FILE__, __LINE__
+          def #{name}
+            if instance_variable_defined?(:@#{name})
+              @#{name}
+            else
+              @#{name} = #{original_method}
+            end
+          end
+          METHOD
+        end
       end
 
     end
