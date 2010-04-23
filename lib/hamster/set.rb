@@ -244,7 +244,7 @@ module Hamster
     end
 
     def eql?(other)
-      other.class.equal?(self.class) && other.instance_eval{@trie}.eql?(@trie)
+      instance_of?(other.class) && @trie.eql?(other.instance_eval{@trie})
     end
     def_delegator :self, :eql?, :==
 

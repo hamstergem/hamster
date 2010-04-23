@@ -91,8 +91,8 @@ module Hamster
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
-      return true if other.equal?(self)
-      return false unless other.class.equal?(self.class) && other.size == size
+      return true if equal?(other)
+      return false unless instance_of?(other.class) && size == other.size
       each do |entry|
         return false unless other.include?(entry.key, entry.value)
       end
