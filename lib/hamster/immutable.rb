@@ -12,12 +12,16 @@ module Hamster
     module ClassMethods
 
       def new(*args)
-        super.freeze
+        super.immutable!
       end
 
     end
 
     module InstanceMethods
+
+      def immutable!
+        freeze
+      end
 
       def immutable?
         frozen?
