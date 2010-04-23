@@ -25,7 +25,7 @@ module Hamster
     end
 
     def eql?(other)
-      other.is_a?(self.class) && @set.eql?(other.instance_eval{@set})
+      other.class.equal?(self.class) && other.instance_eval{@set}.eql?(@set)
     end
     def_delegator :self, :eql?, :==
 
