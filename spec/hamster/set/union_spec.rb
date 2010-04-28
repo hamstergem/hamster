@@ -4,7 +4,7 @@ require 'hamster/set'
 
 describe Hamster::Set do
 
-  [:union, :|, :+].each do |method|
+  [:union, :|, :+, :merge].each do |method|
 
     describe "##{method}" do
 

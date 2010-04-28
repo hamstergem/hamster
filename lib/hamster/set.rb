@@ -191,6 +191,7 @@ module Hamster
     end
     def_delegator :self, :union, :|
     def_delegator :self, :union, :+
+    def_delegator :self, :union, :merge
 
     def intersection(other)
       trie = @trie.filter { |entry| other.include?(entry.key) }
