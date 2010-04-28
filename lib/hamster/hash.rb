@@ -114,6 +114,14 @@ module Hamster
     end
     def_delegator :self, :find, :detect
 
+    def merge(other)
+      trie = other.reduce(@trie) do |trie, key, value|
+        trie.put(key, value)
+      end
+      transform_unless(trie.equal?(@trie)) { @trie = trie }
+    end
+    def_delegator :self, :merge, :+
+
     def keys
       reduce(Hamster.set) { |keys, key, value| keys.add(key) }
     end
