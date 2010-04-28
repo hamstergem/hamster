@@ -1,3 +1,17 @@
+=== 0.3.4 / 2010-04-29
+
+* Reduce garbage collection by keeping a singleton instance of an empty hash.
+
+* Added some VERY experimental Read-Copy-Update collections (no tests).
+
+* Slightly improve performance and greatly improve the readability of #eql?/#== methods.
+
+* Added some VERY experimental memoization for immutable objects.
+
+* Added Set#merge as an alias for Set#union.
+
+* Implemented Hash#merge (aliased as #+).
+
 === 0.3.3 / 2010-04-09
 
 * Fixed: hash code generation had VERY poor distribution.
