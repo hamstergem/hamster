@@ -44,7 +44,7 @@ module Hamster
     def_delegator :self, :get, :[]
 
     def put(key, value = Undefined)
-      return put(key, yield(key, get(key))) if value.equal?(Undefined)
+      return put(key, yield(get(key))) if value.equal?(Undefined)
       transform { @trie = @trie.put(key, value) }
     end
 

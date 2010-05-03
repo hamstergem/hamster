@@ -12,17 +12,18 @@ describe Hamster::Hash do
 
     describe "with a block" do
 
-      it "passes the key to the block" do
-        @original.put("A") { |key, value| key.should == "A" }
-      end
-
       it "passes the value to the block" do
-        @original.put("A") { |key, value| value.should == "aye" }
+        @original.put("A") { |value| value.should == "aye" }
       end
 
       it "replaces the value with the result of the block" do
-        result = @original.put("A") { |key, value| "FLIBBLE" }
+        result = @original.put("A") { |value| "FLIBBLE" }
         result.get("A").should == "FLIBBLE"
+      end
+
+      it "supports to_proc methods" do
+        result = @original.put("A", &:next)
+        result.get("A").should == "ayf"
       end
 
     end

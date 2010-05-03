@@ -67,9 +67,16 @@ As you can see, updating the hash returned a copy leaving the original intact. S
 
 Hamster's hash doesn't provide an assignment (<tt>#[]=</tt>) method. The reason for this is simple yet irritating: Ruby assignment methods always return the assigned value, no matter what the method itself returns. For example:
 
-  {}[:name] = "Simon"   # => "Simon"
+  counters = Hamster.hash(:odds => 0, :evens => 0)
+  counters[:odds] += 1          # => 1
 
-Because of this, the returned copy would be lost thus making the construct useless.
+Because of this, the returned copy would be lost thus making the construct useless. Instead <tt>#put</tt> accepts a block instead of an explicit value so we can still do something similar
+
+  counters.put(:odds) { |value| value + 1 }    # => {:odds => 1, :evens => 0}
+
+or more succinctly:
+
+  counters.put(:odds, &:next)   # => {:odds => 1, :evens => 0}
 
 === Set
 
@@ -123,7 +130,7 @@ Besides <tt>Hamster.list</tt> there are other ways to construct lists:
 
 or even more succinctly:
 
-  integers = Hamster.iterate(1, &:succ)
+  integers = Hamster.iterate(1, &:next)
 
 You also get <tt>Enumerable#to_list</tt> so you can slowly transition from built-in collection classes to Hamster.
 
