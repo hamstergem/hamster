@@ -1,6 +1,7 @@
 require 'forwardable'
 
 require 'hamster/immutable'
+require 'hamster/undefined'
 require 'hamster/trie'
 
 module Hamster
@@ -42,7 +43,8 @@ module Hamster
     end
     def_delegator :self, :get, :[]
 
-    def put(key, value)
+    def put(key, value = Undefined)
+      return put(key, yield(key, get(key))) if value.equal?(Undefined)
       transform { @trie = @trie.put(key, value) }
     end
 

@@ -10,6 +10,23 @@ describe Hamster::Hash do
       @original = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
     end
 
+    describe "with a block" do
+
+      it "passes the key to the block" do
+        @original.put("A") { |key, value| key.should == "A" }
+      end
+
+      it "passes the value to the block" do
+        @original.put("A") { |key, value| value.should == "aye" }
+      end
+
+      it "replaces the value with the result of the block" do
+        result = @original.put("A") { |key, value| "FLIBBLE" }
+        result.get("A").should == "FLIBBLE"
+      end
+
+    end
+
     describe "with a unique key" do
 
       before do
