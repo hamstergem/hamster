@@ -1,4 +1,4 @@
-=== 0.3.5 / 2010-05-03
+=== 0.3.6 / 2010-05-03
 
 * Hash#put now supports returning a value from a block instead of passing an explicit value. Almost like a substitute for the non-functional []=
 
