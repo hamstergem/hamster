@@ -6,13 +6,13 @@ describe Hamster::Immutable do
 
   describe "#transform" do
 
-    class Person < Struct.new(:first, :last)
+    class TransformPerson < Struct.new(:first, :last)
       include Hamster::Immutable
       public :transform
     end
 
     before do
-      @original = Person.new("Simon", "Harris")
+      @original = TransformPerson.new("Simon", "Harris")
       @result = @original.transform { self.first = "Sampy" }
     end
 

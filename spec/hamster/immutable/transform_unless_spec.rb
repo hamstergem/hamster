@@ -6,13 +6,13 @@ describe Hamster::Immutable do
 
   describe "#transform_unless" do
 
-    class Person < Struct.new(:first, :last)
+    class TransformUnlessPerson < Struct.new(:first, :last)
       include Hamster::Immutable
       public :transform_unless
     end
 
     before do
-      @original = Person.new("Simon", "Harris")
+      @original = TransformUnlessPerson.new("Simon", "Harris")
     end
 
     describe "when the condition is false" do

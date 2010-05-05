@@ -6,12 +6,12 @@ describe Hamster::Immutable do
 
   describe "#new" do
 
-    class Person < Struct.new(:first, :last)
+    class NewPerson < Struct.new(:first, :last)
       include Hamster::Immutable
     end
 
     before do
-      @instance = Person.new("Simon", "Harris")
+      @instance = NewPerson.new("Simon", "Harris")
     end
 
     it "passes the constructor arguments" do

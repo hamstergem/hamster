@@ -19,11 +19,11 @@ describe Hamster::Set do
     end
 
     it "values are sufficiently distributed" do
-      (1..4000)
-        .each_slice(4)
-        .map { |a, b, c, d| Hamster.set(a, b, c, d).hash }
-        .uniq
-        .size.should == 1000
+      (1..4000).
+        each_slice(4).
+        map { |a, b, c, d| Hamster.set(a, b, c, d).hash }.
+        uniq.
+        size.should == 1000
     end
 
   end
