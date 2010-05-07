@@ -4,9 +4,9 @@ require 'hamster/stack'
 
 describe Hamster::Stack do
 
-  describe "#pop" do
+  [:pop, :dequeue].each do |method|
 
-    [:pop, :dequeue].each do |method|
+    describe "##{method}" do
 
       [
         [["A", "B"], ["A"]],
