@@ -1,7 +1,7 @@
 require 'forwardable'
 require 'thread'
 
-require 'hamster/set'
+require 'hamster/stack'
 
 module Hamster
 
