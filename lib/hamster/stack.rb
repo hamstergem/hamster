@@ -28,9 +28,10 @@ module Hamster
     end
     def_delegator :self, :size, :length
 
-    def top
+    def peek
       @list.head
     end
+    def_delegator :self, :peek, :top
 
     def push(item)
       transform { @list = @list.cons(item) }
