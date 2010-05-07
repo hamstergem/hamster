@@ -7,7 +7,7 @@
 
 == Introduction
 
-Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) including Set, List, and Stack.
+Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) including Set, List, Stack, and Queue.
 
 Hamster collections are immutable. Whenever you modify a Hamster collection, the original is preserved and a modified copy is returned. This makes them inherently thread-safe and sharable. (For an interesting perspective on why immutability itself is inherently a good thing, you might like to take a look at Matthias Felleisen's Function Objects presentation: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf)
 
@@ -35,6 +35,7 @@ If you prefer, you can instead require individual classes as necessary:
   require 'hamster/set'
   require 'hamster/list'
   require 'hamster/stack'
+  require 'hamster/queue'
 
 == Examples
 
@@ -159,6 +160,8 @@ Unfortunately, though the second example reads nicely, it takes around 13 second
 How is this even possible? It's possible because <tt>IO#to_list</tt> creates a lazy list whereby each line is only ever read and processed as needed, in effect converting it to the first example without all the syntactic, imperative, noise.
 
 === Stack
+
+=== Queue
 
 == Disclaimer
 
