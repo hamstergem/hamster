@@ -3,7 +3,6 @@
 * Add List #fill, #sample, #insert, #insert_by, #permutation (aliased as #permutations), #subsequences, #transpose
 * Add Set #cycle, #sample
 * Add Hash #count, #partition, #one?, #sort, #sort_by, #max(imum), #min(imum), #cycle, #clear, #key
-* Implement Hash#merge
 * Work out what we can extract into common "Enumerable-like" code.
 * Generate spec docs
 * Add missing immutability tests to Set
@@ -12,3 +11,4 @@
 * Re-write Trie test-first (it was only a spike)
 * Allow Trie to efficiently add multiple pairs in one go
 * Implement a circular queue based on a queue that enqueues on every dequeue.
+* Should RCU collections return RCU collections? Eg. RCUSet#map -> RCUSet
