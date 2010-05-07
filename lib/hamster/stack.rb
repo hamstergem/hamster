@@ -36,6 +36,7 @@ module Hamster
       transform { @list = @list.cons(item) }
     end
     def_delegator :self, :push, :<<
+    def_delegator :self, :push, :enqueue
 
     def pop
       list = @list.tail
@@ -45,6 +46,7 @@ module Hamster
         transform { @list = list }
       end
     end
+    def_delegator :self, :pop, :dequeue
 
     def clear
       EmptyStack

@@ -4,7 +4,7 @@ require 'hamster/stack'
 
 describe Hamster::Stack do
 
-  [:push, :<<].each do |method|
+  [:push, :<<, :enqueue].each do |method|
 
     describe "##{method}" do
 
