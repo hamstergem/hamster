@@ -41,7 +41,7 @@ module Hamster
     def_delegator :self, :enqueue, :<<
 
     def dequeue
-      front = @front.tail
+      front = @front
       rear = @rear
       if front.empty?
         return EmptyQueue if rear.empty?
@@ -50,7 +50,7 @@ module Hamster
       end
 
       transform {
-        @front = front
+        @front = front.tail
         @rear = rear
       }
     end

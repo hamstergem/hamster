@@ -1,41 +1,26 @@
-require 'forwardable'
-require 'thread'
-
+require 'hamster/read_copy_update'
 require 'hamster/queue'
 
 module Hamster
 
   class ReadCopyUpdateQueue
 
-    extend Forwardable
+    include ReadCopyUpdate
 
     def initialize
-      @queue = EmptyQueue
-      @lock = Mutex.new
+      super(EmptyQueue)
     end
 
     def enqueue(value)
-      @lock.synchronize { @queue = @queue.enqueue(value) }
-      self
-    end
-
-    def dequeue
-      @lock.synchronize {
-        top_value = @queue.peek
-        @queue = @queue.dequeue
-        top_value
+      transform {
+        self.tap { @content = @content.enqueue(value) }
       }
     end
 
-    def eql?(other)
-      instance_of?(other.class) && @queue.eql?(other.instance_variable_get(:@queue))
-    end
-    def_delegator :self, :eql?, :==
-
-    private
-
-    def method_missing(name, *args, &block)
-      @queue.send(name, *args, &block)
+    def dequeue
+      transform {
+        peek.tap { @content = @content.dequeue }
+      }
     end
 
   end

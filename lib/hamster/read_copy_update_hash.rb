@@ -1,44 +1,26 @@
-require 'forwardable'
-require 'thread'
-
+require 'hamster/read_copy_update'
 require 'hamster/hash'
 
 module Hamster
 
   class ReadCopyUpdateHash
 
-    extend Forwardable
+    include ReadCopyUpdate
 
     def initialize
-      @hash = EmptyHash
-      @lock = Mutex.new
+      super(EmptyHash)
     end
 
     def put(key, value)
-      @lock.synchronize {
-        original_value = @hash.get(key)
-        @hash = @hash.put(key, value)
-        original_value
+      transform {
+        get(key).tap { @content = @content.put(key, value) }
       }
     end
 
     def delete(key)
-      @lock.synchronize {
-        original_value = @hash.get(key)
-        @hash = @hash.delete(key)
-        original_value
+      transform {
+        get(key).tap { @content = @content.delete(key) }
       }
-    end
-
-    def eql?(other)
-      instance_of?(other.class) && @hash.eql?(other.instance_variable_get(:@hash))
-    end
-    def_delegator :self, :eql?, :==
-
-    private
-
-    def method_missing(name, *args, &block)
-      @hash.send(name, *args, &block)
     end
 
   end
