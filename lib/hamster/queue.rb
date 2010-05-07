@@ -16,8 +16,7 @@ module Hamster
     include Immutable
 
     def initialize
-      @front = EmptyList
-      @rear = EmptyList
+      @front = @read = EmptyList
     end
 
     def empty?
@@ -31,7 +30,7 @@ module Hamster
 
     def peek
       return @front.head unless @front.empty?
-      return @rear.last
+      @rear.last
     end
     def_delegator :self, :peek, :front
     def_delegator :self, :peek, :head
