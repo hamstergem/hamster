@@ -17,6 +17,8 @@ module Hamster
     end
     def_delegator :self, :eql?, :==
 
+    def_delegator :@content, :inspect
+
     protected
 
     def transform(&block)

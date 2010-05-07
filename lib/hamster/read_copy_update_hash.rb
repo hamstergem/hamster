@@ -11,7 +11,7 @@ module Hamster
       super(EmptyHash)
     end
 
-    def put(key, value)
+    def put(key, value = Undefined)
       transform {
         get(key).tap { @content = @content.put(key, value) }
       }
