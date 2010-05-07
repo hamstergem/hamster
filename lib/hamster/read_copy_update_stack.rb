@@ -11,10 +11,9 @@ module Hamster
       super(EmptyStack)
     end
 
-    def push(value)
-      transform {
-        self.tap { @content = @content.push(value) }
-      }
+    def push(item)
+      transform { @content = @content.push(item) }
+      self
     end
 
     def pop

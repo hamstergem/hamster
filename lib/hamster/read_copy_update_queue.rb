@@ -11,10 +11,9 @@ module Hamster
       super(EmptyQueue)
     end
 
-    def enqueue(value)
-      transform {
-        self.tap { @content = @content.enqueue(value) }
-      }
+    def enqueue(item)
+      transform { @content = @content.enqueue(item) }
+      self
     end
 
     def dequeue

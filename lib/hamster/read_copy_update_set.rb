@@ -11,16 +11,14 @@ module Hamster
       super(EmptySet)
     end
 
-    def add(value)
-      transform {
-        self.tap { @content = @content.add(value) }
-      }
+    def add(item)
+      transform { @content = @content.add(item) }
+      self
     end
 
-    def delete(value)
-      transform {
-        self.tap { @content = @content.delete(value) }
-      }
+    def delete(item)
+      transform { @content = @content.delete(item) }
+      self
     end
 
   end
