@@ -16,7 +16,7 @@ module Hamster
     include Immutable
 
     def initialize
-      @front = @read = EmptyList
+      @front = @rear = EmptyList
     end
 
     def empty?
