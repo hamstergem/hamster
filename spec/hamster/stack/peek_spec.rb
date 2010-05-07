@@ -18,7 +18,7 @@ describe Hamster::Stack do
 
           before do
             @original = Hamster.stack(*values)
-            @result = @original.top
+            @result = @original.send(method)
           end
 
           it "preserves the original" do
