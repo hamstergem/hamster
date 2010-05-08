@@ -8,23 +8,26 @@ describe Hamster::Set do
 
     describe "##{method}" do
 
-      [
-        [[], nil],
-        [["A"], "A"],
-        [[1, 2, 3], 1],
-      ].each do |values, expected|
+      describe "on an empty set" do
 
-        describe "on #{values.inspect}" do
+        before do
+          @result = Hamster.set.send(method)
+        end
 
-          before do
-            original = Hamster.set(*values)
-            @result = original.send(method)
-          end
+        it "returns nil" do
+          @returns.should be_nil
+        end
 
-          it "returns #{expected.inspect}" do
-            @result.should == expected
-          end
+      end
 
+      describe "on a non-empty set" do
+
+        before do
+          @result = Hamster.set("A", "B", "C").send(method)
+        end
+
+        it "returns an arbitrary value from the set" do
+          ["A", "B", "C"].should include(@result)
         end
 
       end

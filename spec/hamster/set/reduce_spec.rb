@@ -47,7 +47,7 @@ describe Hamster::Set do
       [
         [[], nil],
         [[1], 1],
-        [[1, 2, 3], -4],
+        [[1, 2, 3], 6],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
@@ -61,7 +61,7 @@ describe Hamster::Set do
             describe "and a block" do
 
               it "returns #{expected.inspect}" do
-                @set.send(method) { |memo, item| memo - item }.should == expected
+                @set.send(method) { |memo, item| memo + item }.should == expected
               end
 
             end

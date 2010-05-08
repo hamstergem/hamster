@@ -9,7 +9,7 @@ describe Hamster::Hash do
     [
       [[], "{}"],
       [["A" => "aye"], "{\"A\" => \"aye\"}"],
-      [[1 => :one, 2 => :two, 3 => :three], "{1 => :one, 2 => :two, 3 => :three}"]
+      [[DeterministicHash.new("A", 1) => "aye", DeterministicHash.new("B", 2) => "bee", DeterministicHash.new("C", 3) => "see"], "{\"A\" => \"aye\", \"B\" => \"bee\", \"C\" => \"see\"}"]
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do

@@ -9,7 +9,7 @@ describe Hamster::Set do
     [
       [[], "{}"],
       [["A"], "{\"A\"}"],
-      [[1, 2, 3], "{1, 2, 3}"]
+      [[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)], "{\"A\", \"B\", \"C\"}"]
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
