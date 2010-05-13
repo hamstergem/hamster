@@ -1,6 +1,8 @@
 # Common spec-related code goes here
 
-STACK_OVERFLOW_DEPTH = begin
+STACK_OVERFLOW_DEPTH = if defined?(JRUBY_VERSION)
+  0
+else
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)
   rescue SystemStackError
