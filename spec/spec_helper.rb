@@ -1,14 +1,14 @@
 # Common spec-related code goes here
 
-STACK_OVERFLOW_DEPTH = if defined?(JRUBY_VERSION)
-  0
-else
+STACK_OVERFLOW_DEPTH = if RUBY_VERSION =~ /^ruby /
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)
   rescue SystemStackError
     n
   end
   calculate_stack_overflow_depth(2)
+else
+  0
 end
 
 class DeterministicHash
