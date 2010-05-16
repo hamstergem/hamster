@@ -30,10 +30,10 @@ describe Hamster::Queue do
 
     end
 
-    describe "after dequeueing an item from multiple" do
+    describe "after dequeueing an item from #{["A", "B", "C"].inspect}" do
 
       before do
-        @result = Hamster.queue("A", "B").dequeue
+        @result = Hamster.queue("A", "B", "C").dequeue
       end
 
       it "returns false" do

@@ -18,7 +18,7 @@ describe Hamster::Queue do
 
           before do
             @original = Hamster.queue(*values)
-            @result = @original.tail
+            @result = @original.send(method)
           end
 
           it "preserves the original" do
