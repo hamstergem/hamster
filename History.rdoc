@@ -1,3 +1,13 @@
+=== 0.3.7 / 2010-05-16
+
+* Initial Queue implementation complete.
+
+* Implement Stack#peek.
+
+* Add Stack#enqueue, #dequeue to reflect the fact that a Stack is also a LIFO Queue.
+
+* Fix incompatibilities with Ruby 1.8.7 syntax.
+
 === 0.3.6 / 2010-05-03
 
 * Hash#put now supports returning a value from a block instead of passing an explicit value. Almost like a substitute for the non-functional []=
