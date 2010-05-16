@@ -125,6 +125,10 @@ module Hamster
       reduce(Hamster.set) { |keys, key, value| keys.add(key) }
     end
 
+    def clear
+      EmptyHash
+    end
+
     def eql?(other)
       instance_of?(other.class) && @trie.eql?(other.instance_variable_get(:@trie))
     end
