@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-require 'hamster/list'
+require 'hamster/queue'
 
-describe Hamster::List do
+describe Hamster::Queue do
 
   describe "#clear" do
 
@@ -15,16 +15,16 @@ describe Hamster::List do
       describe "on #{values}" do
 
         before do
-          @original = Hamster.list(*values)
+          @original = Hamster.queue(*values)
           @result = @original.clear
         end
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          @original.should == Hamster.queue(*values)
         end
 
-        it "returns an empty list" do
-          @result.should equal(Hamster.list)
+        it "returns an empty queue" do
+          @result.should equal(Hamster.queue)
         end
 
       end

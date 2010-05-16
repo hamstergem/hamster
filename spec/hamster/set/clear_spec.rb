@@ -24,7 +24,7 @@ describe Hamster::Set do
         end
 
         it "returns an empty set" do
-          @result.should be_empty
+          @result.should equal(Hamster.set)
         end
 
       end

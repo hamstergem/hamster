@@ -24,7 +24,7 @@ describe Hamster::Stack do
         end
 
         it "returns an empty list" do
-          @result.should be_empty
+          @result.should equal(Hamster.stack)
         end
 
       end
