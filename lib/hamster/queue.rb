@@ -20,8 +20,9 @@ module Hamster
     end
 
     def empty?
-      @front.empty?
+      @front.empty? && @rear.empty?
     end
+    def_delegator :self, :empty?, :null?
 
     def size
       @front.size + @rear.size
