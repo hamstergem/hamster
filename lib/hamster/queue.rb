@@ -65,8 +65,7 @@ module Hamster
 
     def eql?(other)
       instance_of?(other.class) &&
-        @front.eql?(other.instance_variable_get(:@front)) &&
-        @rear.eql?(other.instance_variable_get(:@rear))
+        to_list.eql?(other.to_list)
     end
     def_delegator :self, :eql?, :==
 

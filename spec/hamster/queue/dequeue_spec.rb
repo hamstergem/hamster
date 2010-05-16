@@ -1,0 +1,40 @@
+require 'spec_helper'
+
+require 'hamster/queue'
+
+describe Hamster::Queue do
+
+  [:dequeue, :tail].each do |method|
+
+    describe "##{method}" do
+
+      [
+        [[], []],
+        [["A"], []],
+        [["A", "B", "C"], ["B", "C"]],
+      ].each do |values, expected|
+
+        describe "on #{values.inspect}" do
+
+          before do
+            @original = Hamster.queue(*values)
+            @result = @original.tail
+          end
+
+          it "preserves the original" do
+            @original.should == Hamster.queue(*values)
+          end
+
+          it "returns #{expected.inspect}" do
+            @result.should == Hamster.queue(*expected)
+          end
+
+        end
+
+      end
+
+    end
+
+  end
+
+end
