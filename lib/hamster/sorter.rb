@@ -8,9 +8,9 @@ module Hamster
 
     extend Forwardable
 
-    include Immutable
-
     include Enumerable
+
+    include Immutable
 
     def initialize(collection)
       @collection = collection
