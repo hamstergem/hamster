@@ -29,17 +29,19 @@ module Hamster
     end
     def_delegator :self, :size, :length
 
-    def peek
+    def head
       return @front.head unless @front.empty?
       @rear.last
     end
-    def_delegator :self, :peek, :front
-    def_delegator :self, :peek, :head
+    def_delegator :self, :head, :first
+    def_delegator :self, :head, :peek
+    def_delegator :self, :head, :front
 
     def enqueue(item)
       transform { @rear = @rear.cons(item) }
     end
     def_delegator :self, :enqueue, :<<
+    def_delegator :self, :enqueue, :add
 
     def dequeue
       front = @front
