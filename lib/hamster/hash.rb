@@ -6,8 +6,8 @@ require 'hamster/trie'
 
 module Hamster
 
-  def self.hash(pairs = {})
-    pairs.reduce(EmptyHash) { |hash, pair| hash.put(pair.first, pair.last) }
+  def self.hash(pairs = {}, &block)
+    pairs.reduce(block_given? ? Hash.new(&block) : EmptyHash) { |hash, pair| hash.put(pair.first, pair.last) }
   end
 
   class Hash
@@ -16,8 +16,9 @@ module Hamster
 
     include Immutable
 
-    def initialize
+    def initialize(&block)
       @trie = EmptyTrie
+      @default = block
     end
 
     def size
@@ -39,7 +40,11 @@ module Hamster
 
     def get(key)
       entry = @trie.get(key)
-      entry.value if entry
+      if entry
+        entry.value
+      elsif @default
+        @default.call(key)
+      end
     end
     def_delegator :self, :get, :[]
 

@@ -8,25 +8,57 @@ describe Hamster::Hash do
 
     describe "##{method}" do
 
-      before do
-        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
-      end
+      describe "with a default block" do
 
-      [
-        ["A", "aye"],
-        ["B", "bee"],
-        ["C", "see"],
-        [nil, "NIL"]
-        ].each do |key, value|
+        describe "when the key exists" do
 
-          it "returns the value (#{value.inspect}) for an existing key (#{key.inspect})" do
-            @hash.send(method, key).should == value
+          before do
+            @hash = Hamster.hash("A" => "aye") { |key| fail }
+          end
+
+          it "returns the value associated with the key" do
+            @hash.get("A").should == "aye"
           end
 
         end
 
-        it "returns nil for a non-existing key" do
-          @hash.send(method, "D").should be_nil
+        describe "when the key does not exist" do
+
+          before do
+            @hash = Hamster.hash("A" => "aye") { |key| key.should == "B"; "bee" }
+          end
+
+          it "returns the value associated with the key" do
+            @hash.get("B").should == "bee"
+          end
+
+        end
+
+      end
+
+      describe "with no default block" do
+
+        before do
+          @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
+        end
+
+        [
+          ["A", "aye"],
+          ["B", "bee"],
+          ["C", "see"],
+          [nil, "NIL"]
+          ].each do |key, value|
+
+            it "returns the value (#{value.inspect}) for an existing key (#{key.inspect})" do
+              @hash.send(method, key).should == value
+            end
+
+          end
+
+          it "returns nil for a non-existing key" do
+            @hash.send(method, "D").should be_nil
+          end
+
         end
 
       end
