@@ -130,6 +130,10 @@ module Hamster
       reduce(Hamster.set) { |keys, key, value| keys.add(key) }
     end
 
+    def values
+      reduce(Hamster.set) { |values, key, value| values.add(value) }
+    end
+
     def clear
       EmptyHash
     end

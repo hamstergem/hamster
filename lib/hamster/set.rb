@@ -19,8 +19,8 @@ module Hamster
 
     include Immutable
 
-    def initialize
-      @trie = EmptyTrie
+    def initialize(trie = EmptyTrie)
+      @trie = trie
     end
 
     def empty?
