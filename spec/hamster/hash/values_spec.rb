@@ -3,12 +3,12 @@ require 'spec_helper'
 require 'hamster/hash'
 require 'hamster/set'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   describe "#values" do
 
     before do
-      hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+      hash = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
       @result = hash.values
     end
 

@@ -2,14 +2,14 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:filter, :select, :find_all].each do |method|
 
     describe "##{method}" do
 
       before do
-        @original = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+        @original = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
       end
 
       describe "when everything matches" do
@@ -33,11 +33,11 @@ describe Hamster::Hash do
           end
 
           it "preserves the original" do
-            @original.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+            @original.should == Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
           end
 
           it "returns a set with the matching values" do
-            @result.should == Hamster.hash("A" => "aye")
+            @result.should == Hamster.Hash("A" => "aye")
           end
 
         end

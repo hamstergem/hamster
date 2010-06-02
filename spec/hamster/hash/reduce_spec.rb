@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:reduce, :inject, :fold, :foldr].each do |method|
 
@@ -11,7 +11,7 @@ describe Hamster::Hash do
       describe "when empty" do
 
         before do
-          @original = Hamster.hash
+          @original = Hamster.Hash
           @result = @original.send(method, "ABC") {}
         end
 
@@ -24,7 +24,7 @@ describe Hamster::Hash do
       describe "when not empty" do
 
         before do
-          @original = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+          @original = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
         end
 
         describe "with a block" do

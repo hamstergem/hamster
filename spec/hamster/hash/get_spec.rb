@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:get, :[]].each do |method|
 
@@ -13,7 +13,7 @@ describe Hamster::Hash do
         describe "when the key exists" do
 
           before do
-            @hash = Hamster.hash("A" => "aye") { |key| fail }
+            @hash = Hamster.Hash("A" => "aye") { |key| fail }
           end
 
           it "returns the value associated with the key" do
@@ -25,7 +25,7 @@ describe Hamster::Hash do
         describe "when the key does not exist" do
 
           before do
-            @hash = Hamster.hash("A" => "aye") { |key| key.should == "B"; "bee" }
+            @hash = Hamster.Hash("A" => "aye") { |key| key.should == "B"; "bee" }
           end
 
           it "returns the value associated with the key" do
@@ -39,7 +39,7 @@ describe Hamster::Hash do
       describe "with no default block" do
 
         before do
-          @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
+          @hash = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
         end
 
         [

@@ -22,7 +22,7 @@ describe Hamster::Set do
           end
 
           it "returns #{expected.inspect}" do
-            @result.should == Hamster.hash(*expected)
+            @result.should == Hamster.Hash(*expected)
           end
 
         end
@@ -47,7 +47,7 @@ describe Hamster::Set do
           end
 
           it "returns #{expected.inspect}" do
-            @result.should == Hamster.hash(*expected)
+            @result.should == Hamster.Hash(*expected)
           end
 
         end

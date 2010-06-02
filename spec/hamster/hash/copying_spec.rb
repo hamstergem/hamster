@@ -2,10 +2,10 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   before do
-    @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+    @hash = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
   end
 
   [:dup, :clone].each do |method|

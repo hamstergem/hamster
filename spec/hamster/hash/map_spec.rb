@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:map, :collect].each do |method|
 
@@ -11,7 +11,7 @@ describe Hamster::Hash do
       describe "when empty" do
 
         before do
-          @original = Hamster.hash
+          @original = Hamster.Hash
           @mapped = @original.send(method) {}
         end
 
@@ -24,7 +24,7 @@ describe Hamster::Hash do
       describe "when not empty" do
 
         before do
-          @original = Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see")
+          @original = Hamster.Hash("A" => "aye", "B"  => "bee", "C" => "see")
         end
 
         describe "with a block" do
@@ -34,11 +34,11 @@ describe Hamster::Hash do
           end
 
           it "preserves the original values" do
-            @original.should == Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see")
+            @original.should == Hamster.Hash("A" => "aye", "B"  => "bee", "C" => "see")
           end
 
           it "returns a new hash with the mapped values" do
-            @mapped.should == Hamster.hash("a" => "AYE", "b"  => "BEE", "c" => "SEE")
+            @mapped.should == Hamster.Hash("a" => "AYE", "b"  => "BEE", "c" => "SEE")
           end
 
         end

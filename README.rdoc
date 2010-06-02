@@ -45,7 +45,7 @@ Most Hamster classes support an API that resembles their standard library counte
 
 Constructing a Hamster Hash is almost as simple as a regular one:
 
-  simon = Hamster.hash(:name => "Simon", :gender => :male)  # => {:name => "Simon", :gender => :male}
+  simon = Hamster.Hash(:name => "Simon", :gender => :male)  # => {:name => "Simon", :gender => :male}
 
 Accessing the contents will be familiar to you:
 
@@ -68,7 +68,7 @@ As you can see, updating the hash returned a copy leaving the original intact. S
 
 Hamster's hash doesn't provide an assignment (<tt>#[]=</tt>) method. The reason for this is simple yet irritating: Ruby assignment methods always return the assigned value, no matter what the method itself returns. For example:
 
-  counters = Hamster.hash(:odds => 0, :evens => 0)
+  counters = Hamster.Hash(:odds => 0, :evens => 0)
   counters[:odds] += 1          # => 1
 
 Because of this, the returned copy would be lost thus making the construct useless. Instead <tt>#put</tt> accepts a block instead of an explicit value so we can still do something similar
@@ -185,7 +185,7 @@ Even if threading isn't a concern, because they're immutable, you can pass them 
 
 There's a potential performance hit when compared with MRI's built-in, native, hand-crafted C-code implementation of Hash. For example:
 
-  hash = Hamster.hash
+  hash = Hamster.Hash
   (1..10000).each { |i| hash = hash.put(i, i) }   # => 0.05s
   (1..10000).each { |i| hash.get(i) }             # => 0.008s
 
@@ -203,7 +203,7 @@ Well, yes and no. The previous comparison wasn't really fair. Sure, if all you w
 
 A more realistic comparison might look like:
 
-  hash = Hamster.hash
+  hash = Hamster.Hash
   (1..10000).each { |i| hash = hash.put(i, i) }   # => 0.05s
   (1..10000).each { |i| hash.get(i) }             # => 0.008s
 

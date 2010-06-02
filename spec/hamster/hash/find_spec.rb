@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'hamster/tuple'
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:find, :detect].each do |method|
 
@@ -24,7 +24,7 @@ describe Hamster::Hash do
         describe "on #{values.inspect}" do
 
           before do
-            @hash = Hamster.hash(*values)
+            @hash = Hamster.Hash(*values)
           end
 
           describe "with a block" do

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:merge, :+].each do |method|
 
@@ -18,11 +18,11 @@ describe Hamster::Hash do
         describe "for #{a.inspect} and #{b.inspect}" do
 
           before do
-            @result = Hamster.hash(*a).send(method, Hamster.hash(*b))
+            @result = Hamster.Hash(*a).send(method, Hamster.Hash(*b))
           end
 
           it "returns #{expected.inspect}"  do
-            @result.should == Hamster.hash(*expected)
+            @result.should == Hamster.Hash(*expected)
           end
 
         end

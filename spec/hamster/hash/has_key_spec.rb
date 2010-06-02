@@ -2,14 +2,14 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:has_key?, :key?, :include?, :member?].each do |method|
 
     describe "#has_key?" do
 
       before do
-        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL", 2.0 => "two")
+        @hash = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL", 2.0 => "two")
       end
 
       ["A", "B", "C", nil, 2.0].each do |key|

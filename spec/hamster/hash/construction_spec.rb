@@ -2,14 +2,14 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   describe ".hash" do
 
     describe "with nothing" do
 
       before do
-        @hash = Hamster.hash
+        @hash = Hamster.Hash
       end
 
       it "returns an empty hash" do
@@ -21,11 +21,11 @@ describe Hamster::Hash do
     describe "with an implicit hash" do
 
       before do
-        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+        @hash = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
       end
 
       it "is equivalent to repeatedly using #put" do
-        @hash.should == Hamster.hash.put("A", "aye").put("B", "bee").put("C", "see")
+        @hash.should == Hamster.Hash.put("A", "aye").put("B", "bee").put("C", "see")
       end
 
     end

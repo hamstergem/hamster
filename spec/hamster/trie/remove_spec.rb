@@ -1,13 +1,13 @@
 # require 'spec_helper'
 #
-# describe Hamster::Hash do
+# describe "Hamster.Hash" do
 #
 #   describe "#remove" do
 #
 #     describe "the last key" do
 #
 #       before do
-#         @hash = Hamster::Hash.new.put("A", "aye").remove("A")
+#         @hash = Hamster.Hash.new.put("A", "aye").remove("A")
 #       end
 #
 #       it "no longer provides access to the removed key" do
@@ -19,7 +19,7 @@
 #     describe "with an existing key" do
 #
 #       before do
-#         @original = Hamster::Hash.new.put("A", "aye").put("B", "bee")
+#         @original = Hamster.Hash.new.put("A", "aye").put("B", "bee")
 #         @copy = @original.remove("A")
 #       end
 #
@@ -61,7 +61,7 @@
 #     describe "with non-existing keys" do
 #
 #       before do
-#         @original = Hamster::Hash.new.put("A", "aye")
+#         @original = Hamster.Hash.new.put("A", "aye")
 #         @copy = @original.remove("missing")
 #       end
 #
@@ -97,7 +97,7 @@
 #       before do
 #         @a = Key.new
 #         @b = Key.new
-#         @original = Hamster::Hash.new.put(@a, "aye").put(@b, "bee")
+#         @original = Hamster.Hash.new.put(@a, "aye").put(@b, "bee")
 #       end
 #
 #       it "no longer provides access to the removed key" do

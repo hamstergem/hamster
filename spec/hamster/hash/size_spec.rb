@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:size, :length].each do |method|
 
@@ -15,7 +15,7 @@ describe Hamster::Hash do
       ].each do |values, result|
 
         it "returns #{result} for #{values.inspect}" do
-          Hamster.hash(*values).send(method).should == result
+          Hamster.Hash(*values).send(method).should == result
         end
 
       end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:eql?, :==].each do |method|
 
@@ -11,7 +11,7 @@ describe Hamster::Hash do
       describe "returns false when comparing with" do
 
         before do
-          @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+          @hash = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
         end
 
         it "a standard hash" do
@@ -39,8 +39,8 @@ describe Hamster::Hash do
         describe "returns #{expected.inspect}" do
 
           before do
-            @a = Hamster.hash(a)
-            @b = Hamster.hash(b)
+            @a = Hamster.Hash(a)
+            @b = Hamster.Hash(b)
           end
 
           it "for #{a.inspect} and #{b.inspect}" do

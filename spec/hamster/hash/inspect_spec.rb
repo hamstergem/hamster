@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   describe "#inspect" do
 
@@ -15,7 +15,7 @@ describe Hamster::Hash do
       describe "on #{values.inspect}" do
 
         before do
-          original = Hamster.hash(*values)
+          original = Hamster.Hash(*values)
           @result = original.inspect
         end
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:all?, :forall?].each do |method|
 
@@ -11,7 +11,7 @@ describe Hamster::Hash do
       describe "when empty" do
 
         before do
-          @hash = Hamster.hash
+          @hash = Hamster.Hash
         end
 
         it "with a block returns true" do
@@ -27,7 +27,7 @@ describe Hamster::Hash do
       describe "when not empty" do
 
         before do
-          @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+          @hash = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
         end
 
         describe "with a block" do

@@ -2,14 +2,14 @@ require 'spec_helper'
 
 require 'hamster/hash'
 
-describe Hamster::Hash do
+describe "Hamster.Hash" do
 
   [:each, :foreach].each do |method|
 
     describe "##{method}" do
 
       before do
-        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+        @hash = Hamster.Hash("A" => "aye", "B" => "bee", "C" => "see")
       end
 
       describe "with a block (internal iteration)" do
