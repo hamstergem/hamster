@@ -1,3 +1,7 @@
+=== 0.3.8 / 2010-06-02
+
+* Hash now accepts a block for supplying default values.
+
 === 0.3.7 / 2010-05-16
 
 * Initial Queue implementation complete.
