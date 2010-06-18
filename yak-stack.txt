@@ -1,3 +1,4 @@
+* Methods should accept 1 or many.
 * Make Trie.include Immutable
 * Make List#size not O(n)!
 * Add List #fill, #sample, #insert, #insert_by, #permutation (aliased as #permutations), #subsequences, #transpose
