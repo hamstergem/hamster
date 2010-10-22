@@ -483,7 +483,7 @@ module Hamster
     private
 
     def method_missing(name, *args, &block)
-      return accessor($1) if CADR === name.to_s
+      return accessor($1) if CADR === name
       super
     end
 
