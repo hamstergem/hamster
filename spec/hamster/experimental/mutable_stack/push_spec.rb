@@ -22,7 +22,7 @@ describe Hamster::MutableStack do
             @result = @stack.send(method, new_value)
           end
 
-          it "returns the stack" do
+          it "returns self" do
             @result.should equal(@stack)
           end
 
