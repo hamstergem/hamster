@@ -1,3 +1,7 @@
+=== 0.3.10 / 2010-10-22
+
+* Update to RSpec 2.
+
 === 0.3.9 / 2010-06-02
 
 * Implement Hash#values.
