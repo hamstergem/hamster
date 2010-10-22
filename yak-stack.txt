@@ -1,3 +1,4 @@
+* Should mutable variants wrap results (eg #tail) in a mutable?
 * Methods should accept 1 or many.
 * Make Trie.include Immutable
 * Make List#size not O(n)!
