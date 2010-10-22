@@ -17,18 +17,17 @@ module Hamster
     end
     def_delegator :self, :eql?, :==
 
-    def_delegator :@content, :inspect
-
     protected
 
-    def transform(&block)
-      @lock.synchronize(&block)
+    def transform
+      @lock.synchronize { @content = yield(@content) }
+      self
     end
 
     private
 
     def method_missing(name, *args, &block)
-      @content.send(name, *args, &block)
+      @content.send(name, *args, &block) rescue super
     end
 
   end
