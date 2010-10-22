@@ -13,12 +13,12 @@ describe Hamster::MutableStack do
         [["A"], "B", ["A", "B"]],
         [["A"], "A", ["A", "A"]],
         [["A", "B", "C"], "D", ["A", "B", "C", "D"]],
-      ].each do |values, new_value, expected|
+      ].each do |initial_state, new_value, resulting_state|
 
-        describe "on #{values.inspect} with #{new_value.inspect}" do
+        describe "on #{initial_state.inspect} with #{new_value.inspect}" do
 
           before do
-            @stack = Hamster.mutable_stack(*values)
+            @stack = Hamster.mutable_stack(*initial_state)
             @result = @stack.send(method, new_value)
           end
 
@@ -26,8 +26,8 @@ describe Hamster::MutableStack do
             @result.should equal(@stack)
           end
 
-          it "modifies the stack to #{expected.inspect}" do
-            @result.should == Hamster.mutable_stack(*expected)
+          it "modifies the stack to #{resulting_state.inspect}" do
+            @stack.should == Hamster.mutable_stack(*resulting_state)
           end
 
         end

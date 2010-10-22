@@ -6,7 +6,7 @@ describe IO do
 
   describe "#to_list" do
 
-    context "with a File" do
+    describe "with a File" do
 
       it "returns an equivalent list" do
         File.open(File.dirname(__FILE__) + "/io_spec.txt") do |io|
@@ -16,7 +16,7 @@ describe IO do
 
     end
 
-    context "with a StringIO" do
+    describe "with a StringIO" do
 
       it "returns an equivalent list" do
         StringIO.new("A\nB\nC\n").to_list.should == Hamster.list("A\n", "B\n", "C\n")

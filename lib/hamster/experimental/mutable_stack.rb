@@ -28,7 +28,7 @@ module Hamster
       }
       top
     end
-    def_delegator :self, :push, :dequeue
+    def_delegator :self, :pop, :dequeue
 
   end
 
