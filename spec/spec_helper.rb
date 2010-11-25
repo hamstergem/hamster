@@ -1,6 +1,6 @@
 # Common spec-related code goes here
 
-STACK_OVERFLOW_DEPTH = if RUBY_VERSION =~ /^ruby /
+STACK_OVERFLOW_DEPTH = if RUBY_VERSION =~ /^(ruby |\d+\.\d+\.\d+$)/
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)
   rescue SystemStackError
