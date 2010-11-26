@@ -75,7 +75,7 @@ module Hamster
 
       def each(&block)
         return self unless block_given?
-        return if empty?
+        return nil if empty?
         yield(head)
         tail.each(&block)
       end
@@ -94,8 +94,7 @@ module Hamster
         return Undefined.erase(memo) if empty?
         return Undefined.erase(memo) unless block_given?
         return tail.reduce(head, &block) if memo.equal?(Undefined)
-        each { |item| memo = yield(memo, item) }
-        memo
+        tail.reduce(yield(memo, head), &block)
       end
       def_delegator :self, :reduce, :inject
       def_delegator :self, :reduce, :fold
@@ -105,11 +104,8 @@ module Hamster
         return self unless block_given?
         Stream.new do
           next self if empty?
-          if yield(head)
-            Sequence.new(head, tail.filter(&block))
-          else
-            tail.filter(&block)
-          end
+          next Sequence.new(head, tail.filter(&block)) if yield(head)
+          tail.filter(&block)
         end
       end
       def_delegator :self, :filter, :select
@@ -126,11 +122,8 @@ module Hamster
         return self unless block_given?
         Stream.new do
           next self if empty?
-          if yield(head)
-            Sequence.new(head, tail.take_while(&block))
-          else
-            EmptyList
-          end
+          next EmptyList unless yield(head)
+          Sequence.new(head, tail.take_while(&block))
         end
       end
 
@@ -138,33 +131,24 @@ module Hamster
         return self unless block_given?
         Stream.new do
           next self if empty?
-          if yield(head)
-            tail.drop_while(&block)
-          else
-            self
-          end
+          next self unless yield(head)
+          tail.drop_while(&block)
         end
       end
 
       def take(number)
         Stream.new do
           next self if empty?
-          if number > 0
-            Sequence.new(head, tail.take(number - 1))
-          else
-            EmptyList
-          end
+          next EmptyList unless number > 0
+          Sequence.new(head, tail.take(number - 1))
         end
       end
 
       def drop(number)
         Stream.new do
           next self if empty?
-          if number > 0
-            tail.drop(number - 1)
-          else
-            self
-          end
+          next self unless number > 0
+          tail.drop(number - 1)
         end
       end
 
@@ -175,25 +159,28 @@ module Hamster
       def_delegator :self, :include?, :contains?
       def_delegator :self, :include?, :elem?
 
-      def any?
+      def any?(&block)
+        return false if empty?
         return any? { |item| item } unless block_given?
-        each { |item| return true if yield(item) }
-        false
+        return true if yield(head)
+        tail.any?(&block)
       end
       def_delegator :self, :any?, :exist?
       def_delegator :self, :any?, :exists?
 
-      def all?
+      def all?(&block)
+        return true if empty?
         return all? { |item| item } unless block_given?
-        each { |item| return false unless yield(item) }
-        true
+        return false unless yield(head)
+        tail.all?(&block)
       end
       def_delegator :self, :all?, :forall?
 
-      def none?
+      def none?(&block)
+        return true if empty?
         return none? { |item| item } unless block_given?
-        each { |item| return false if yield(item) }
-        true
+        return false if yield(head)
+        tail.none?(&block)
       end
 
       def one?(&block)
@@ -206,9 +193,11 @@ module Hamster
         false
       end
 
-      def find
+      def find(&block)
         return nil unless block_given?
-        each { |item| return item if yield(item) }
+        return nil if empty?
+        return head if yield(head)
+        tail.find(&block)
       end
       def_delegator :self, :find, :detect
 
@@ -381,11 +370,8 @@ module Hamster
       def flatten
         Stream.new do
           next self if empty?
-          if head.is_a?(List)
-            head.append(tail.flatten)
-          else
-            Sequence.new(head, tail.flatten)
-          end
+          next head.append(tail.flatten) if head.is_a?(List)
+          Sequence.new(head, tail.flatten)
         end
       end
 
@@ -410,11 +396,8 @@ module Hamster
       def find_index(index = 0, &block)
         return nil unless block_given?
         return nil if empty?
-        if yield(head)
-          index
-        else
-          tail.find_index(index + 1, &block)
-        end
+        return index if yield(head)
+        tail.find_index(index + 1, &block)
       end
 
       def elem_index(object)
@@ -430,11 +413,8 @@ module Hamster
         return EmptyList unless block_given?
         Stream.new do
           next EmptyList if empty?
-          if yield(head)
-            Sequence.new(i, tail.find_indices(i + 1, &block))
-          else
-            tail.find_indices(i + 1, &block)
-          end
+          next Sequence.new(i, tail.find_indices(i + 1, &block)) if yield(head)
+          tail.find_indices(i + 1, &block)
         end
       end
 
