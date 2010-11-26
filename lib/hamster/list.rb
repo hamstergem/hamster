@@ -70,13 +70,11 @@ module Hamster
     end
     def_delegator :self, :cons, :>>
 
-    def each
+    def each(&block)
       return self unless block_given?
-      list = self
-      while !list.empty?
-        yield(list.head)
-        list = list.tail
-      end
+      return if empty?
+      yield(head)
+      tail.each(&block)
     end
     def_delegator :self, :each, :foreach
 
@@ -104,8 +102,11 @@ module Hamster
       return self unless block_given?
       Stream.new do
         next self if empty?
-        next Sequence.new(head, tail.filter(&block)) if yield(head)
-        tail.filter(&block)
+        if yield(head)
+          Sequence.new(head, tail.filter(&block))
+        else
+          tail.filter(&block)
+        end
       end
     end
     def_delegator :self, :filter, :select
@@ -122,38 +123,45 @@ module Hamster
       return self unless block_given?
       Stream.new do
         next self if empty?
-        next Sequence.new(head, tail.take_while(&block)) if yield(head)
-        EmptyList
+        if yield(head)
+          Sequence.new(head, tail.take_while(&block))
+        else
+          EmptyList
+        end
       end
     end
 
     def drop_while(&block)
       return self unless block_given?
       Stream.new do
-        list = self
-        while !list.empty? && yield(list.head)
-          list = list.tail
+        next self if empty?
+        if yield(head)
+          tail.drop_while(&block)
+        else
+          self
         end
-        list
       end
     end
 
     def take(number)
       Stream.new do
         next self if empty?
-        next Sequence.new(head, tail.take(number - 1)) if number > 0
-        EmptyList
+        if number > 0
+          Sequence.new(head, tail.take(number - 1))
+        else
+          EmptyList
+        end
       end
     end
 
     def drop(number)
       Stream.new do
-        list = self
-        while !list.empty? && number > 0
-          number -= 1
-          list = list.tail
+        next self if empty?
+        if number > 0
+          tail.drop(number - 1)
+        else
+          self
         end
-        list
       end
     end
 
@@ -315,11 +323,8 @@ module Hamster
     end
 
     def last
-      list = self
-      while !list.tail.empty?
-        list = list.tail
-      end
-      list.head
+      return head if tail.empty?
+      tail.last
     end
 
     def product
@@ -373,8 +378,11 @@ module Hamster
     def flatten
       Stream.new do
         next self if empty?
-        next head.append(tail.flatten) if head.is_a?(List)
-        Sequence.new(head, tail.flatten)
+        if head.is_a?(List)
+          head.append(tail.flatten)
+        else
+          Sequence.new(head, tail.flatten)
+        end
       end
     end
 
@@ -396,15 +404,13 @@ module Hamster
     end
     def_delegator :self, :slice, :[]
 
-    def find_index
+    def find_index(index = 0, &block)
       return nil unless block_given?
-      i = 0
-      list = self
-      loop do
-        return nil if list.empty?
-        return i if yield(list.head)
-        i += 1
-        list = list.tail
+      return nil if empty?
+      if yield(head)
+        index
+      else
+        tail.find_index(index + 1, &block)
       end
     end
 
@@ -421,8 +427,11 @@ module Hamster
       return EmptyList unless block_given?
       Stream.new do
         next EmptyList if empty?
-        next Sequence.new(i, tail.find_indices(i + 1, &block)) if yield(head)
-        tail.find_indices(i + 1, &block)
+        if yield(head)
+          Sequence.new(i, tail.find_indices(i + 1, &block))
+        else
+          tail.find_indices(i + 1, &block)
+        end
       end
     end
 
@@ -436,16 +445,11 @@ module Hamster
     end
 
     def eql?(other)
-      list = self
-      loop do
-        return true if other.equal?(list)
-        return false unless other.is_a?(List)
-        return other.empty? if list.empty?
-        return false if other.empty?
-        return false unless other.head.eql?(list.head)
-        list = list.tail
-        other = other.tail
-      end
+      return true if other.equal?(self)
+      return false unless other.is_a?(List)
+      return other.empty? if empty?
+      return false if other.empty?
+      other.head.eql?(head) && tail.eql?(other.tail)
     end
     def_delegator :self, :eql?, :==
 

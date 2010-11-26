@@ -1,17 +1,14 @@
 # Common spec-related code goes here
 
-STACK_OVERFLOW_DEPTH = if RUBY_VERSION =~ /^(ruby |\d+\.\d+\.\d+$)/
+STACK_OVERFLOW_DEPTH = begin
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)
   rescue SystemStackError
-    n
+    # n
+    1
   end
   calculate_stack_overflow_depth(2)
-else
-  16384
 end
-
-puts STACK_OVERFLOW_DEPTH
 
 class DeterministicHash
 
