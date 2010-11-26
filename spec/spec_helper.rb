@@ -11,8 +11,6 @@ else
   16384
 end
 
-puts STACK_OVERFLOW_DEPTH
-
 class DeterministicHash
 
   def initialize(value, hash)
