@@ -4,8 +4,7 @@ STACK_OVERFLOW_DEPTH = begin
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)
   rescue SystemStackError
-    # n
-    1
+    n
   end
   calculate_stack_overflow_depth(2)
 end
