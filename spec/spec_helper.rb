@@ -8,8 +8,10 @@ STACK_OVERFLOW_DEPTH = if RUBY_VERSION =~ /^(ruby |\d+\.\d+\.\d+$)/
   end
   calculate_stack_overflow_depth(2)
 else
-  0
+  16384
 end
+
+puts STACK_OVERFLOW_DEPTH
 
 class DeterministicHash
 
