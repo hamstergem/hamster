@@ -1,3 +1,15 @@
+=== n.n.n / yyy-mm-dd
+
+* Set 1.8.7 as default Ruby version if using rvm. (Paul O'Keefe)
+
+* Removed redundant block from rspec rake task. (Paul O'Keefe)
+
+* Tightened up gem versions using spermy dependencies.  (Paul O'Keefe)
+
+* Added bundler support. (Paul O'Keefe)
+
+* Tweaked the documentation - updated the gemcutter reference to rubygems. (Paul O'Keefe)
+
 === 0.3.10 / 2010-10-22
 
 * Update to RSpec 2.
