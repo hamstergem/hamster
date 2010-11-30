@@ -7,7 +7,7 @@
 
 == Introduction
 
-Hamster started out as an implementation of Hash Array Mapped Trees (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) including Set, List, Stack, and Queue.
+Hamster started out as an implementation of Hash Array Mapped Tries (HAMT) for Ruby (see http://lamp.epfl.ch/papers/idealhashtrees.pdf) and has since expanded to include implementations of other Persistent Data Structures (see http://en.wikipedia.org/wiki/Persistent_data_structure) including Set, List, Stack, and Queue.
 
 Hamster collections are immutable. Whenever you modify a Hamster collection, the original is preserved and a modified copy is returned. This makes them inherently thread-safe and sharable. (For an interesting perspective on why immutability itself is inherently a good thing, you might like to take a look at Matthias Felleisen's Function Objects presentation: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf)
 
@@ -15,11 +15,11 @@ Hamster collection classes remain space efficient by making use of some very wel
 
 Hamster collections are almost always closed under a given operation. That is, whereas Ruby's collection methods always return arrays, Hamster collections will return an instance of the same class wherever possible.
 
-And lastly, Hamster lists are lazy -- where Ruby's language constructs permit -- making it possible to, among other things, process "infinitely large" lists. (Note: Ruby 1.9 supports a form of laziness using Enumerator however they're implemented using Fibers which unfortunately can't be shared across threads.)
+And lastly, Hamster lists are lazy -- where Ruby's language constructs permit -- making it possible to, among other things, process "infinitely large" lists. (Note: Ruby 1.9 supports a form of laziness using Enumerator. However, they're implemented using Fibers which unfortunately can't be shared across threads.)
 
 == Installation
 
-Hamster is distributed as a gem via gemcutter (http://gemcutter.org/gems/hamster) or as source via GitHub (http://github.com/harukizaemon/hamster).
+Hamster is distributed as a gem via rubygems (http://rubygems.org/gems/hamster) or as source via GitHub (http://github.com/harukizaemon/hamster).
 
 Installation via the gem is easy:
 
@@ -39,7 +39,7 @@ If you prefer, you can instead require individual classes as necessary:
 
 == Examples
 
-Most Hamster classes support an API that resembles their standard library counterpart with the caveat that any modification returns a new instance. What follows are some simple examples to help illustrate this point.
+Most Hamster classes support an API that resembles their standard library counterpart, with the caveat that any modification returns a new instance. What follows are some simple examples to help illustrate this point.
 
 === Hash
 
