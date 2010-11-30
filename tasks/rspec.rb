@@ -1,5 +1,4 @@
 require 'rspec/core/rake_task'
 
 desc "Run specifications"
-RSpec::Core::RakeTask.new(:rspec) do |t|
-end
+RSpec::Core::RakeTask.new(:rspec)
