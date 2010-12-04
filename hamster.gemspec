@@ -16,4 +16,5 @@ Gem::Specification.new do |s|
   s.files            = Dir["lib/**/*", "spec/**/*", "tasks/**/*", "Rakefile"] + s.extra_rdoc_files
   s.add_development_dependency("rspec", "~> 2.0")
   s.add_development_dependency("diff-lcs", "~> 1.1.2")
+  s.add_development_dependency("simplecov", ">= 0.3.7") if RUBY_VERSION=~/^1\.9\./
 end

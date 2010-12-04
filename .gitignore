@@ -3,3 +3,4 @@ pkg/*
 .bundle
 .rspec
 .idea
+coverage/

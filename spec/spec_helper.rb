@@ -1,5 +1,11 @@
 # Common spec-related code goes here
 
+# This must be in the very beginning
+if ENV['SimpleCov']
+  require 'simplecov'
+  SimpleCov.start
+end
+
 STACK_OVERFLOW_DEPTH = if RUBY_VERSION =~ /^(ruby |\d+\.\d+\.\d+$)/
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)
