@@ -79,7 +79,8 @@ module Hamster
     end
 
     def get(index)
-      return nil if empty? or index >= size
+      return nil if empty? or index == size
+      return nil if index.abs > size
       return get(size + index) if index < 0
       leaf_node_for(index)[index & INDEX_MASK]
     end

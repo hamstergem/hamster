@@ -11,7 +11,7 @@ describe Hamster::Vector do
       describe "on a really big vector" do
 
         before do
-          @vector = Hamster.vector(0..STACK_OVERFLOW_DEPTH)
+          @vector = Hamster.vector(*(0..STACK_OVERFLOW_DEPTH))
         end
 
         it "doesn't run out of stack" do
