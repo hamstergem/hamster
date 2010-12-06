@@ -17,6 +17,10 @@ module Hamster
 
     include Immutable
 
+    BLOCK_SIZE = 32
+    INDEX_MASK = BLOCK_SIZE - 1
+    XXX = 5
+
     def initialize
       @size = 0
       @tail = []
@@ -42,7 +46,7 @@ module Hamster
     end
 
     def add(value)
-      if @tail.size < 32
+      if @tail.size < BLOCK_SIZE
         transform do
           @size += 1
           @tail = @tail.dup
@@ -71,13 +75,13 @@ module Hamster
     def set(index, value = Undefined)
       return set(index, yield(get(index))) if value.equal?(Undefined)
       raise IndexError if index < 0 or index >= size
-      node_for(index)[index & 31] = value
+      leaf_node_for(index)[index & INDEX_MASK] = value
     end
 
     def get(index)
       return nil if empty? or index >= size
       return get(size + index) if index < 0
-      node_for(index)[index & 31]
+      leaf_node_for(index)[index & INDEX_MASK]
     end
     def_delegator :self, :set, :[]
     def_delegator :self, :set, :at
@@ -95,7 +99,7 @@ module Hamster
 
     private
 
-    def node_for(index)
+    def leaf_node_for(index)
       @tail
     end
 
