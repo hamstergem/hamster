@@ -1,0 +1,72 @@
+require 'spec_helper'
+
+require 'hamster/vector'
+
+describe Hamster::Vector do
+
+  [:each, :foreach].each do |method|
+
+    describe "##{method}" do
+
+      describe "on a really big vector" do
+
+        before do
+          @vector = Hamster.vector(0..STACK_OVERFLOW_DEPTH)
+        end
+
+        it "doesn't run out of stack" do
+          lambda { @vector.send(method) { |item| } }.should_not raise_error
+        end
+
+      end
+
+      [
+        [],
+        ["A"],
+        ["A", "B", "C"],
+      ].each do |values|
+
+        describe "on #{values.inspect}" do
+
+          before do
+            @original = Hamster.vector(*values)
+          end
+
+          describe "with a block" do
+
+            before do
+              @items = []
+              @result = @original.send(method) { |item| @items << item }
+            end
+
+            it "iterates over the items in order" do
+              @items.should == values
+            end
+
+            it "returns nil" do
+              @result.should be_nil
+            end
+
+          end
+
+          describe "without a block" do
+
+            before do
+              @result = @original.send(method)
+            end
+
+            it "returns self" do
+              @result.should equal(@original)
+            end
+
+          end
+
+        end
+
+      end
+
+    end
+
+  end
+
+end

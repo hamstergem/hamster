@@ -85,6 +85,7 @@ module Hamster
     def each(&block)
       return self unless block_given?
       @tail.each(&block)
+      nil
     end
     def_delegator :self, :each, :foreach
 
