@@ -82,6 +82,7 @@ module Hamster
     def filter
       return self unless block_given?
       trie = @trie.filter { |entry| yield(entry.key, entry.value) }
+      return EmptyHash if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :filter, :select

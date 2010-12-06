@@ -56,6 +56,22 @@ describe Hamster::Set do
 
       end
 
+      describe "when nothing matches" do
+
+        before do
+          @result = @original.send(method) { |item| false }
+        end
+
+        it "preserves the original" do
+          @original.should == Hamster.set("A", "B", "C")
+        end
+
+        it "returns an empty set" do
+          @result.should equal(Hamster.set)
+        end
+
+      end
+
     end
 
   end

@@ -7,7 +7,6 @@ describe Hamster do
   describe "#flatten" do
 
     [
-      [[], []],
       [["A"], ["A"]],
       [["A", "B", "C"], ["A", "B", "C"]],
       [["A", Hamster.set("B"), "C"], ["A", "B", "C"]],
@@ -25,10 +24,22 @@ describe Hamster do
           @original.should == Hamster.set(*values)
         end
 
-        it "returns an empty set" do
+        it "returns the inlined values" do
           @result.should == Hamster.set(*expected)
         end
 
+      end
+
+    end
+
+    describe "on an empty set" do
+
+      before do
+        @result = Hamster.set.flatten
+      end
+
+      it "returns an empty set" do
+        @result.should equal(Hamster.set)
       end
 
     end
