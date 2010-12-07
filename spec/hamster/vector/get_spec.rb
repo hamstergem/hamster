@@ -25,7 +25,7 @@ describe Hamster::Vector do
       describe "when not empty" do
 
         before do
-          @vector = Hamster.vector(*(1..993))
+          @vector = Hamster.vector(*(1..1024))
         end
 
         describe "with a positive index" do
@@ -43,7 +43,7 @@ describe Hamster::Vector do
           describe "outside the absolute bounds of the vector" do
 
             it "returns nil" do
-              @vector.get(993).should be_nil
+              @vector.get(1024).should be_nil
             end
 
           end
@@ -55,8 +55,8 @@ describe Hamster::Vector do
           describe "within the absolute bounds of the vector" do
 
             it "returns the value at the specified index from the tail" do
-              (-993..-1).each do |i|
-                @vector.get(i).should == 993 + i + 1
+              (-1024..-1).each do |i|
+                @vector.get(i).should == 1024 + i + 1
               end
             end
 

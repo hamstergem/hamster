@@ -59,18 +59,18 @@ module Hamster
             @tail = [value]
             @root << @tail
           end
-        elsif @root.size < BLOCK_SIZE
+        else
           @root = @root.dup
           if @tail.size < BLOCK_SIZE
             @tail = @tail.dup
             @tail << value
             @root[-1] = @tail
-          else
+          elsif @root.size < BLOCK_SIZE
             @tail = [value]
             @root << @tail
+          else
+            raise size.to_s
           end
-        else
-          raise size.to_s
         end
         @size += 1
       end
