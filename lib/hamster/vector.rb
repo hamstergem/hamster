@@ -109,15 +109,10 @@ module Hamster
 
     private
 
-    def leaf_node_for(index)
-      node = @root
-      node_index_bits = @height * XXX
-      @height.times do
-        node_index = index >> node_index_bits
-        node = node[node_index & INDEX_MASK]
-        node_index_bits -= XXX
-      end
-      node
+    def leaf_node_for(node = @root, child_index_bits = @height * XXX, index)
+      return node if child_index_bits == 0
+      child_index = (index >> child_index_bits)
+      leaf_node_for(node[child_index & INDEX_MASK], child_index_bits - XXX, index)
     end
 
   end
