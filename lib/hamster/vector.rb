@@ -22,8 +22,9 @@ module Hamster
     XXX = 5
 
     def initialize
+      @height = 0
+      @root = @tail = []
       @size = 0
-      @tail = []
     end
 
     def empty?
@@ -46,25 +47,33 @@ module Hamster
     end
 
     def add(value)
-      if @tail.size < BLOCK_SIZE
-        transform do
-          @size += 1
-          @tail = @tail.dup
-          @tail << value
+      transform do
+        if @height == 0
+          if @tail.size < BLOCK_SIZE
+            @tail = @tail.dup
+            @root = @tail
+            @tail << value
+          else
+            @height = 1
+            @root = [@tail]
+            @tail = [value]
+            @root << @tail
+          end
+        elsif @root.size < BLOCK_SIZE
+          @root = @root.dup
+          if @tail.size < BLOCK_SIZE
+            @tail = @tail.dup
+            @tail << value
+            @root[-1] = @tail
+          else
+            @tail = [value]
+            @root << @tail
+          end
+        else
+          raise size.to_s
         end
+        @size += 1
       end
-
-      # Else
-      #   until we're at the root
-      #      If enough room to add another leaf
-      #         add nother leaf (and intervening nodes)
-      #         make it the tail
-      #         try again
-      #      Else
-      #         loop at the parent
-      # Otherwise
-      #    insert a new root
-      #    try again
     end
     def_delegator :self, :set, :<<
     def_delegator :self, :set, :cons
@@ -101,7 +110,14 @@ module Hamster
     private
 
     def leaf_node_for(index)
-      @tail
+      node = @root
+      node_index_bits = @height * XXX
+      @height.times do
+        node_index = index >> node_index_bits
+        node = node[node_index & INDEX_MASK]
+        node_index_bits -= XXX
+      end
+      node
     end
 
   end
