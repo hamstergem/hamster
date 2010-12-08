@@ -22,8 +22,8 @@ describe Hamster::Hash do
       end
 
       it "supports to_proc methods" do
-        result = @original.put("A", &:next)
-        result.get("A").should == "ayf"
+        result = @original.put("A", &:upcase)
+        result.get("A").should == "AYE"
       end
 
     end

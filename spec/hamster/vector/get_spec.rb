@@ -15,7 +15,7 @@ describe Hamster::Vector do
         end
 
         it "always returns nil" do
-          (-10..10).each do |i|
+          (-1..1).each do |i|
             @vector.get(i).should be_nil
           end
         end
@@ -43,7 +43,7 @@ describe Hamster::Vector do
           describe "outside the absolute bounds of the vector" do
 
             it "returns nil" do
-              @vector.get(1025).should be_nil
+              @vector.get(@vector.size).should be_nil
             end
 
           end
@@ -55,8 +55,8 @@ describe Hamster::Vector do
           describe "within the absolute bounds of the vector" do
 
             it "returns the value at the specified index from the tail" do
-              (-1025..-1).each do |i|
-                @vector.get(i).should == 1025 + i + 1
+              (-@vector.size..-1).each do |i|
+                @vector.get(i).should == @vector.size + i + 1
               end
             end
 

@@ -62,8 +62,9 @@ module Hamster
 
     def set(index, value = Undefined)
       return set(index, yield(get(index))) if value.equal?(Undefined)
-      raise IndexError if index < 0 or index >= size
-      leaf_node_for(index)[index & INDEX_MASK] = value
+      raise IndexError if empty? or index == size
+      raise IndexError if index.abs > size
+      return set(size + index, value) if index < 0
     end
 
     def get(index)
