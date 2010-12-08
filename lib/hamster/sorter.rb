@@ -6,9 +6,9 @@ module Hamster
 
   class Sorter
 
-    extend Forwardable
+    include ::Enumerable
 
-    include Enumerable
+    extend Forwardable
 
     include Immutable
 
