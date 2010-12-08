@@ -1,5 +1,6 @@
 pkg/*
 *.gem
 .bundle
-.rspec
 .idea
+.rspec
+.rvmrc
