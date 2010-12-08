@@ -3,8 +3,6 @@ require 'forwardable'
 require 'hamster/undefined'
 require 'hamster/immutable'
 
-# Store values in leaf nodes only, add branches as necessary to expand
-
 module Hamster
 
   def self.vector(*items)
@@ -46,11 +44,11 @@ module Hamster
       get(-1)
     end
 
-    def add(value)
+    def add(item)
       transform do
         make_new_root
         make_new_tail
-        @tail << value
+        @tail << item
         @size += 1
       end
     end
@@ -60,11 +58,11 @@ module Hamster
     # def delete(index)
     # end
 
-    def set(index, value = Undefined)
-      return set(index, yield(get(index))) if value.equal?(Undefined)
+    def set(index, item = Undefined)
+      return set(index, yield(get(index))) if item.equal?(Undefined)
       raise IndexError if empty? or index == size
       raise IndexError if index.abs > size
-      return set(size + index, value) if index < 0
+      return set(size + index, item) if index < 0
     end
 
     def get(index)
@@ -82,6 +80,15 @@ module Hamster
       nil
     end
     def_delegator :self, :each, :foreach
+
+    def each_with_index(&block)
+      return self unless block_given?
+      index = 0
+      each do |item|
+        yield(item, index)
+        index += 1
+      end
+    end
 
     def clear
       EmptyVector

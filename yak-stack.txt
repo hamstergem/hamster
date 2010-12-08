@@ -1,4 +1,3 @@
-* Implement Vector#each_with_index
 * More efficient initialisation of Hash/Set (ie Trie), and Vector by not copying.
 * Should mutable variants wrap results (eg #tail) in a mutable?
 * Methods should accept 1 or many.
