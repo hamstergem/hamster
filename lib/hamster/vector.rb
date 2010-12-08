@@ -73,8 +73,8 @@ module Hamster
       return get(size + index) if index < 0
       leaf_node_for(index)[index & INDEX_MASK]
     end
-    def_delegator :self, :set, :[]
-    def_delegator :self, :set, :at
+    def_delegator :self, :get, :[]
+    def_delegator :self, :get, :at
 
     def each(&block)
       return self unless block_given?
