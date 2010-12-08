@@ -90,18 +90,6 @@ module Hamster
       end
     end
 
-    def minimum(&block)
-      return minimum { |minimum, item| item <=> minimum } unless block_given?
-      reduce { |minimum, item| yield(minimum, item) < 0 ? item : minimum }
-    end
-    def_delegator :self, :minimum, :min
-
-    def maximum(&block)
-      return maximum { |maximum, item| item <=> maximum } unless block_given?
-      reduce { |maximum, item| yield(maximum, item) > 0 ? item : maximum }
-    end
-    def_delegator :self, :maximum, :max
-
     def grep(pattern, &block)
       filter { |item| pattern === item }.map(&block)
     end
