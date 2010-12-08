@@ -1,9 +1,9 @@
 = Hamster - Efficient, Immutable, Thread-Safe Collection classes for Ruby
 
-  GitHub:     http://github.com/harukizaemon/hamster
-  Gemcutter:  http://gemcutter/gems/hamster
-  email:      haruki.zaemon@gmail.com
-  IRC:        #haruki_zaemon on freenode
+  GitHub:   http://github.com/harukizaemon/hamster
+  RubyGems: https://rubygems.org/gems/hamster
+  email:    haruki_zaemon@mac.com
+  IRC:      #haruki_zaemon on freenode
 
 == Introduction
 
