@@ -6,7 +6,26 @@ describe Hamster::Vector do
 
   describe "#last" do
 
-    it "is not implemented yet"
+    [
+      [[], nil],
+      [["A"], "A"],
+      [["A", "B", "C"], "C"],
+    ].each do |values, expected|
+
+      describe "on #{values.inspect}" do
+
+        before do
+          original = Hamster.vector(*values)
+          @result = original.last
+        end
+
+        it "returns #{expected.inspect}" do
+          @result.should == expected
+        end
+
+      end
+
+    end
 
   end
 

@@ -8,7 +8,25 @@ describe Hamster::Vector do
 
     describe "##{method}" do
 
-      it "is not implemented yet"
+      [
+        [[], nil],
+        [["A"], "A"],
+        [["A", "B", "C"], "A"],
+      ].each do |values, expected|
+
+        describe "on #{values.inspect}" do
+
+          before do
+            @vector = Hamster.vector(*values)
+          end
+
+          it "returns #{expected.inspect}" do
+            @vector.send(method).should == expected
+          end
+
+        end
+
+      end
 
     end
 

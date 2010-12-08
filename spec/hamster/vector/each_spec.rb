@@ -8,18 +8,6 @@ describe Hamster::Vector do
 
     describe "##{method}" do
 
-      describe "on a really big vector" do
-
-        before do
-          @vector = Hamster.vector(*(0..STACK_OVERFLOW_DEPTH))
-        end
-
-        it "doesn't run out of stack" do
-          lambda { @vector.send(method) { |item| } }.should_not raise_error
-        end
-
-      end
-
       describe "with no block" do
 
         before do
