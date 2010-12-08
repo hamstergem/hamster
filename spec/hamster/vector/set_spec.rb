@@ -33,17 +33,23 @@ describe Hamster::Vector do
           describe "within the absolute bounds of the vector" do
 
             it "passes the current value to the block" do
-              @original.set(1) { |value| value.should == "B" }
+              pending do
+                @original.set(1) { |value| value.should == "B" }
+              end
             end
 
             it "replaces the value with the result of the block" do
-              result = @original.set(1) { |value| "FLIBBLE" }
-              result.should == Hamster.vector("A", "FLIBBLE", "C")
+              pending do
+                result = @original.set(1) { |value| "FLIBBLE" }
+                result.should == Hamster.vector("A", "FLIBBLE", "C")
+              end
             end
 
             it "supports to_proc methods" do
-              result = @original.set(1, &:downcase)
-              result.should == Hamster.vector("A", "b", "C")
+              pending do
+                result = @original.set(1, &:downcase)
+                result.should == Hamster.vector("A", "b", "C")
+              end
             end
 
           end
@@ -63,17 +69,23 @@ describe Hamster::Vector do
           describe "within the absolute bounds of the vector" do
 
             it "passes the current value to the block" do
-              @original.set(-2) { |value| value.should == "B" }
+              pending do
+                @original.set(-2) { |value| value.should == "B" }
+              end
             end
 
             it "replaces the value with the result of the block" do
-              result = @original.set(-2) { |value| "FLIBBLE" }
-              result.should == Hamster.vector("A", "FLIBBLE", "C")
+              pending do
+                result = @original.set(-2) { |value| "FLIBBLE" }
+                result.should == Hamster.vector("A", "FLIBBLE", "C")
+              end
             end
 
             it "supports to_proc methods" do
-              result = @original.set(-2, &:downcase)
-              result.should == Hamster.vector("A", "b", "C")
+              pending do
+                result = @original.set(-2, &:downcase)
+                result.should == Hamster.vector("A", "b", "C")
+              end
             end
 
           end
@@ -97,7 +109,9 @@ describe Hamster::Vector do
           describe "within the absolute bounds of the vector" do
 
             before do
-              @result = @original.set(1, "FLIBBLE")
+              pending do
+                @result = @original.set(1, "FLIBBLE")
+              end
             end
 
             it "preserves the original" do
@@ -123,7 +137,9 @@ describe Hamster::Vector do
         describe "with a negative index" do
 
           before do
-            @result = @original.set(-2, "FLIBBLE")
+            pending do
+              @result = @original.set(-2, "FLIBBLE")
+            end
           end
 
           it "preserves the original" do

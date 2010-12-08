@@ -2,6 +2,7 @@ require 'forwardable'
 
 require 'hamster/undefined'
 require 'hamster/immutable'
+require 'hamster/enumerable'
 
 module Hamster
 
@@ -14,6 +15,8 @@ module Hamster
     extend Forwardable
 
     include Immutable
+
+    include Enumerable
 
     BLOCK_SIZE = 32
     INDEX_MASK = BLOCK_SIZE - 1
@@ -80,16 +83,6 @@ module Hamster
       nil
     end
     def_delegator :self, :each, :foreach
-
-    def reduce(memo = Undefined)
-      each do |item|
-        memo = memo.equal?(Undefined) ? item : yield(memo, item)
-      end if block_given?
-      Undefined.erase(memo)
-    end
-    def_delegator :self, :reduce, :inject
-    def_delegator :self, :reduce, :fold
-    def_delegator :self, :reduce, :foldr
 
     def each_with_index(&block)
       return self unless block_given?

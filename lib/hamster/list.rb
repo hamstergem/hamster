@@ -3,6 +3,7 @@ require 'thread'
 
 require 'hamster/core_ext/enumerable'
 require 'hamster/undefined'
+require 'hamster/enumerable'
 require 'hamster/tuple'
 require 'hamster/sorter'
 require 'hamster/hash'
@@ -54,6 +55,8 @@ module Hamster
 
     extend Forwardable
 
+    include Enumerable
+
     CADR = /^c([ad]+)r$/
 
     def_delegator :self, :head, :first
@@ -88,17 +91,6 @@ module Hamster
       end
     end
     def_delegator :self, :map, :collect
-
-    def reduce(memo = Undefined, &block)
-      return Undefined.erase(memo) if empty?
-      return Undefined.erase(memo) unless block_given?
-      return tail.reduce(head, &block) if memo.equal?(Undefined)
-      each { |item| memo = yield(memo, item) }
-      memo
-    end
-    def_delegator :self, :reduce, :inject
-    def_delegator :self, :reduce, :fold
-    def_delegator :self, :reduce, :foldr
 
     def filter(&block)
       return self unless block_given?

@@ -2,6 +2,7 @@ require 'forwardable'
 
 require 'hamster/immutable'
 require 'hamster/undefined'
+require 'hamster/enumerable'
 require 'hamster/tuple'
 require 'hamster/sorter'
 require 'hamster/trie'
@@ -18,6 +19,8 @@ module Hamster
     extend Forwardable
 
     include Immutable
+
+    include Enumerable
 
     def initialize(trie = EmptyTrie)
       @trie = trie
@@ -62,17 +65,6 @@ module Hamster
       transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(yield(entry.key), nil) } }
     end
     def_delegator :self, :map, :collect
-
-    def reduce(memo = Undefined)
-      memo = @trie.reduce(memo) do |memo, entry|
-        next entry.key if memo.equal?(Undefined)
-        yield(memo, entry.key)
-      end if block_given?
-      Undefined.erase(memo)
-    end
-    def_delegator :self, :reduce, :inject
-    def_delegator :self, :reduce, :fold
-    def_delegator :self, :reduce, :foldr
 
     def filter
       return self unless block_given?
