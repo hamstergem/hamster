@@ -108,13 +108,10 @@ module Hamster
 
     def eql?(other)
       return true if other.equal?(self)
-      return false unless other.is_a?(Vector)
-      return false unless other.size == size
-      each_with_index { |item, index| return false unless other.at(index).eql?(item) }
-      true
+      return false unless instance_of?(other.class) && size == other.size
+      @root.eql?(other.instance_variable_get(:@root))
     end
     def_delegator :self, :eql?, :==
-
 
     private
 
