@@ -15,7 +15,7 @@ describe Hamster::Hash do
       describe "when everything matches" do
 
         before do
-          @result = @original.send(method) { |key, value| true }
+          @result = @original.send(method) { |entry| true }
         end
 
         it "returns self" do
@@ -29,7 +29,7 @@ describe Hamster::Hash do
         describe "with a block" do
 
           before do
-            @result = @original.send(method) { |key, value| key == "A" && value == "aye" }
+            @result = @original.send(method) { |entry| entry.key == "A" && entry.value == "aye" }
           end
 
           it "preserves the original" do

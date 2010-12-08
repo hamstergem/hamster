@@ -33,11 +33,11 @@ describe Hamster::Hash do
         describe "with a block" do
 
           it "returns true if the block always returns true" do
-            @hash.send(method) { |key, value| true }.should == true
+            @hash.send(method) { |entry| true }.should == true
           end
 
           it "returns false if the block ever returns false" do
-            @hash.send(method) { |key, value| key == "D" || value == "dee" }.should == false
+            @hash.send(method) { |entry| entry.key == "D" || entry.value == "dee" }.should == false
           end
 
         end

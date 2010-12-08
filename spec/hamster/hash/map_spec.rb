@@ -30,7 +30,7 @@ describe Hamster::Hash do
         describe "with a block" do
 
           before do
-            @mapped = @original.send(method) { |key, value| [key.downcase, value.upcase] }
+            @mapped = @original.send(method) { |entry| [entry.key.downcase, entry.value.upcase] }
           end
 
           it "preserves the original values" do

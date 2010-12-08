@@ -38,11 +38,11 @@ describe Hamster::Hash do
         ].each do |pair|
 
           it "returns false if the block ever returns true (#{pair.inspect})" do
-            @hash.none? { |key, value| key == pair.first && value == pair.last }.should == false
+            @hash.none? { |entry| entry.key == pair.first && entry.value == pair.last }.should == false
           end
 
           it "returns true if the block always returns false" do
-            @hash.none? { |key, value| key == "D" && value == "dee" }.should == true
+            @hash.none? { |entry| entry.key == "D" && entry.value == "dee" }.should == true
           end
 
         end

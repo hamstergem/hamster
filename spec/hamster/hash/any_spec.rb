@@ -40,11 +40,11 @@ describe Hamster::Hash do
           ].each do |pair|
 
             it "returns true if the block ever returns true (#{pair.inspect})" do
-              @hash.send(method) { |key, value| key == pair.first && value == pair.last }.should == true
+              @hash.send(method) { |entry| entry.key == pair.first && entry.value == pair.last }.should == true
             end
 
             it "returns false if the block always returns false" do
-              @hash.send(method) { |key, value| key == "D" && value == "dee" }.should == false
+              @hash.send(method) { |entry| entry.key == "D" && entry.value == "dee" }.should == false
             end
 
           end

@@ -30,7 +30,7 @@ describe Hamster::Hash do
           describe "with a block" do
 
             before do
-              @result = @hash.send(method) { |k, v| k == key }
+              @result = @hash.send(method) { |entry| entry.key == key }
             end
 
             it "returns #{expected.inspect}" do

@@ -163,6 +163,10 @@ module Hamster
         @value = value
       end
 
+      def inspect
+        "#{key.inspect} => #{value.inspect}"
+      end
+
     end
 
   end
