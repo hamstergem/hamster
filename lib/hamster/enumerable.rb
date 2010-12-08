@@ -70,6 +70,22 @@ module Hamster
     end
     def_delegator :self, :maximum, :max
 
+    def grep(pattern, &block)
+      filter { |item| pattern === item }.map(&block)
+    end
+
+    def count(&block)
+      filter(&block).size
+    end
+
+    def product
+      reduce(1, &:*)
+    end
+
+    def sum
+      reduce(0, &:+)
+    end
+
   end
 
 end

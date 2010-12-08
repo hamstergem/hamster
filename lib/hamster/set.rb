@@ -90,26 +90,10 @@ module Hamster
       end
     end
 
-    def grep(pattern, &block)
-      filter { |item| pattern === item }.map(&block)
-    end
-
-    def count(&block)
-      filter(&block).size
-    end
-
     def head
       find { true }
     end
     def_delegator :self, :head, :first
-
-    def product
-      reduce(1, &:*)
-    end
-
-    def sum
-      reduce(0, &:+)
-    end
 
     def sort(&block)
       Stream.new { Sorter.new(self).sort(&block).to_list }

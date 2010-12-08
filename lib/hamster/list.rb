@@ -173,10 +173,6 @@ module Hamster
       Stream.new { reduce(EmptyList) { |list, item| list.cons(item) } }
     end
 
-    def grep(pattern, &block)
-      filter { |item| pattern === item }.map(&block)
-    end
-
     def zip(other)
       Stream.new do
         next self if empty? && other.empty?
@@ -203,10 +199,6 @@ module Hamster
     def break(&block)
       return span unless block_given?
       span { |item| !yield(item) }
-    end
-
-    def count(&block)
-      filter(&block).size
     end
 
     def clear
@@ -261,14 +253,6 @@ module Hamster
         list = list.tail
       end
       list.head
-    end
-
-    def product
-      reduce(1, &:*)
-    end
-
-    def sum
-      reduce(0, &:+)
     end
 
     def tails
