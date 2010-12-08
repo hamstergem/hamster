@@ -106,6 +106,16 @@ module Hamster
       to_a.inspect
     end
 
+    def eql?(other)
+      return true if other.equal?(self)
+      return false unless other.is_a?(Vector)
+      return false unless other.size == size
+      each_with_index { |item, index| return false unless other.at(index).eql?(item) }
+      true
+    end
+    def_delegator :self, :eql?, :==
+
+
     private
 
     def traverse_depth_first(node = @root, height = @levels, &block)
