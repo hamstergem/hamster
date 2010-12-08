@@ -184,11 +184,6 @@ module Hamster
     def_delegator :self, :dup, :to_set
     def_delegator :self, :dup, :remove_duplicates
 
-    def to_a
-      reduce([]) { |a, item| a << item }
-    end
-    def_delegator :self, :to_a, :entries
-
     def to_list
       reduce(EmptyList) { |list, item| list.cons(item) }
     end

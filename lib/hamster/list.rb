@@ -383,12 +383,6 @@ module Hamster
     end
     def_delegator :self, :dup, :clone
 
-    def to_a
-      reduce([]) { |a, item| a << item }
-    end
-    def_delegator :self, :to_a, :entries
-    def_delegator :self, :to_a, :to_ary
-
     def to_list
       self
     end

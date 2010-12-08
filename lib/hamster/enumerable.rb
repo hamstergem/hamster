@@ -86,6 +86,12 @@ module Hamster
       reduce(0, &:+)
     end
 
+    def to_a
+      reduce([]) { |a, item| a << item }
+    end
+    def_delegator :self, :to_a, :entries
+    def_delegator :self, :to_a, :to_ary
+
   end
 
 end
