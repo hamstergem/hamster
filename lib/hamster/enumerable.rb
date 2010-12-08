@@ -18,6 +18,12 @@ module Hamster
     def_delegator :self, :reduce, :fold
     def_delegator :self, :reduce, :foldr
 
+    def find
+      return nil unless block_given?
+      each { |item| return item if yield(item) }
+    end
+    def_delegator :self, :find, :detect
+
     def include?(object)
       any? { |item| item == object }
     end

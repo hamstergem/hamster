@@ -159,12 +159,6 @@ module Hamster
       false
     end
 
-    def find
-      return nil unless block_given?
-      each { |item| return item if yield(item) }
-    end
-    def_delegator :self, :find, :detect
-
     def partition(&block)
       return self unless block_given?
       Tuple.new(filter(&block), remove(&block))
