@@ -19,10 +19,10 @@ module Hamster
 
     BLOCK_SIZE = 32
     INDEX_MASK = BLOCK_SIZE - 1
-    XXX = 5
+    BITS_PER_LEVEL = 5
 
     def initialize
-      @height = 0
+      @levels = 0
       @root = @tail = []
       @size = 0
     end
@@ -89,27 +89,27 @@ module Hamster
 
     private
 
-    def traverse_depth_first(node = @root, height = @height, &block)
+    def traverse_depth_first(node = @root, height = @levels, &block)
       return node.each(&block) if height == 0
       node.each { |child| traverse_depth_first(child, height - 1, &block) }
     end
 
-    def leaf_node_for(node = @root, child_index_bits = @height * XXX, index)
+    def leaf_node_for(node = @root, child_index_bits = @levels * BITS_PER_LEVEL, index)
       return node if child_index_bits == 0
       child_index = (index >> child_index_bits)
-      leaf_node_for(node[child_index & INDEX_MASK], child_index_bits - XXX, index)
+      leaf_node_for(node[child_index & INDEX_MASK], child_index_bits - BITS_PER_LEVEL, index)
     end
 
     def make_new_root
       if full?
         @root = [@root]
-        @height += 1
+        @levels += 1
       else
         @root = @root.dup
       end
     end
 
-    def make_new_tail(node = @root, child_index_bits = @height * XXX)
+    def make_new_tail(node = @root, child_index_bits = @levels * BITS_PER_LEVEL)
       return @tail = node if child_index_bits == 0
 
       child_index = (@size >> child_index_bits) & INDEX_MASK
@@ -122,7 +122,7 @@ module Hamster
 
       node[child_index] = child_node
 
-      make_new_tail(child_node, child_index_bits - XXX)
+      make_new_tail(child_node, child_index_bits - BITS_PER_LEVEL)
     end
 
     def full?
