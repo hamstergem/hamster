@@ -94,6 +94,18 @@ module Hamster
       EmptyVector
     end
 
+    def to_a
+      [].tap do |a|
+        each { |item| a << item }
+      end
+    end
+    def_delegator :self, :to_a, :entries
+    def_delegator :self, :to_a, :to_ary
+
+    def inspect
+      to_a.inspect
+    end
+
     private
 
     def traverse_depth_first(node = @root, height = @levels, &block)
