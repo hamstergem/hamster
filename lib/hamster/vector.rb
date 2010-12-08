@@ -84,15 +84,6 @@ module Hamster
     end
     def_delegator :self, :each, :foreach
 
-    def each_with_index(&block)
-      return self unless block_given?
-      reduce(0) do |index, item|
-        yield(item, index)
-        index.next
-      end
-      nil
-    end
-
     def clear
       EmptyVector
     end

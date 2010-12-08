@@ -9,6 +9,15 @@ module Hamster
 
     extend Forwardable
 
+    def each_with_index(&block)
+      return self unless block_given?
+      reduce(0) do |index, item|
+        yield(item, index)
+        index.next
+      end
+      nil
+    end
+
     def reduce(memo = Undefined)
       each do |item|
         memo = memo.equal?(Undefined) ? item : yield(memo, item)
