@@ -159,11 +159,6 @@ module Hamster
       false
     end
 
-    def partition(&block)
-      return self unless block_given?
-      Tuple.new(filter(&block), remove(&block))
-    end
-
     def append(other)
       Stream.new do
         next other if empty?

@@ -1,6 +1,7 @@
 require 'forwardable'
 
 require 'hamster/undefined'
+require 'hamster/tuple'
 
 module Hamster
 
@@ -17,6 +18,11 @@ module Hamster
     def_delegator :self, :reduce, :inject
     def_delegator :self, :reduce, :fold
     def_delegator :self, :reduce, :foldr
+
+    def partition(&block)
+      return self unless block_given?
+      Tuple.new(filter(&block), remove(&block))
+    end
 
     def find
       return nil unless block_given?

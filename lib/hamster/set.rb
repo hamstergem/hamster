@@ -3,7 +3,6 @@ require 'forwardable'
 require 'hamster/immutable'
 require 'hamster/undefined'
 require 'hamster/enumerable'
-require 'hamster/tuple'
 require 'hamster/sorter'
 require 'hamster/trie'
 require 'hamster/list'
@@ -89,11 +88,6 @@ module Hamster
           previously_matched
         end
       end
-    end
-
-    def partition(&block)
-      return self unless block_given?
-      Tuple.new(filter(&block), reject(&block))
     end
 
     def minimum(&block)
