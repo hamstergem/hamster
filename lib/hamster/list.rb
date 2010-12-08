@@ -103,13 +103,6 @@ module Hamster
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all
 
-    def remove(&block)
-      return self unless block_given?
-      filter { |item| !yield(item) }
-    end
-    def_delegator :self, :remove, :reject
-    def_delegator :self, :remove, :delete_if
-
     def take_while(&block)
       return self unless block_given?
       Stream.new do
@@ -277,10 +270,6 @@ module Hamster
       end
     end
     def_delegator :self, :combinations, :combination
-
-    def compact
-      remove(&:nil?)
-    end
 
     def chunk(number)
       Stream.new do

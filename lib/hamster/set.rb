@@ -67,13 +67,6 @@ module Hamster
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all
 
-    def remove
-      return self unless block_given?
-      filter { |item| !yield(item) }
-    end
-    def_delegator :self, :remove, :reject
-    def_delegator :self, :remove, :delete_if
-
     def include?(object)
       any? { |item| item.eql?(object) }
     end
@@ -145,10 +138,6 @@ module Hamster
 
     def superset?(other)
       other.subset?(self)
-    end
-
-    def compact
-      remove(&:nil?)
     end
 
     def flatten

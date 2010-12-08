@@ -92,6 +92,17 @@ module Hamster
     def_delegator :self, :to_a, :entries
     def_delegator :self, :to_a, :to_ary
 
+    def remove
+      return self unless block_given?
+      filter { |item| !yield(item) }
+    end
+    def_delegator :self, :remove, :reject
+    def_delegator :self, :remove, :delete_if
+
+    def compact
+      remove(&:nil?)
+    end
+
   end
 
 end
