@@ -77,7 +77,7 @@ module Hamster
 
     def each(&block)
       return self unless block_given?
-      @tail.each(&block)
+      traverse_depth_first(&block)
       nil
     end
     def_delegator :self, :each, :foreach
@@ -87,6 +87,11 @@ module Hamster
     end
 
     private
+
+    def traverse_depth_first(node = @root, height = @height, &block)
+      return node.each(&block) if height == 0
+      node.each { |child| traverse_depth_first(child, height - 1, &block) }
+    end
 
     def leaf_node_for(node = @root, child_index_bits = @height * XXX, index)
       return node if child_index_bits == 0

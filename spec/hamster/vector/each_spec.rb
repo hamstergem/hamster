@@ -20,47 +20,33 @@ describe Hamster::Vector do
 
       end
 
-      [
-        [],
-        ["A"],
-        ["A", "B", "C"],
-      ].each do |values|
+      describe "with no block" do
 
-        describe "on #{values.inspect}" do
+        before do
+          @vector = Hamster.vector("A", "B", "C")
+          @result = @vector.send(method)
+        end
 
-          before do
-            @original = Hamster.vector(*values)
-          end
+        it "returns self" do
+          @result.should equal(@vector)
+        end
 
-          describe "with a block" do
+      end
 
-            before do
-              @items = []
-              @result = @original.send(method) { |item| @items << item }
-            end
+      describe "with a block" do
 
-            it "iterates over the items in order" do
-              @items.should == values
-            end
+        before do
+          @vector = Hamster.vector(*(1..1025))
+          @items = []
+          @result = @vector.send(method) { |item| @items << item }
+        end
 
-            it "returns nil" do
-              @result.should be_nil
-            end
+        it "returns nil" do
+          @result.should be_nil
+        end
 
-          end
-
-          describe "without a block" do
-
-            before do
-              @result = @original.send(method)
-            end
-
-            it "returns self" do
-              @result.should equal(@original)
-            end
-
-          end
-
+        it "iterates over the items in order" do
+          @items.should == (1..1025).to_a
         end
 
       end
