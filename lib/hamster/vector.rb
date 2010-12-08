@@ -48,17 +48,8 @@ module Hamster
 
     def add(value)
       transform do
-        if @tail.size == BLOCK_SIZE &&    # if the tail is full ...
-           @root.size == BLOCK_SIZE       # ... and the root is full ...
-          @root = [@root]                 # ... then, increase the height
-          @height += 1
-        else
-          @root = @root.dup               # otherwise, start with a copy of the root
-        end
-
-        @tail = new_tail
-
-        # add the value
+        make_new_root
+        make_new_tail
         @tail << value
         @size += 1
       end
@@ -103,8 +94,17 @@ module Hamster
       leaf_node_for(node[child_index & INDEX_MASK], child_index_bits - XXX, index)
     end
 
-    def new_tail(node = @root, child_index_bits = @height * XXX)
-      return node if child_index_bits == 0
+    def make_new_root
+      if full?
+        @root = [@root]
+        @height += 1
+      else
+        @root = @root.dup
+      end
+    end
+
+    def make_new_tail(node = @root, child_index_bits = @height * XXX)
+      return @tail = node if child_index_bits == 0
 
       child_index = (@size >> child_index_bits) & INDEX_MASK
 
@@ -116,7 +116,11 @@ module Hamster
 
       node[child_index] = child_node
 
-      new_tail(child_node, child_index_bits - XXX)
+      make_new_tail(child_node, child_index_bits - XXX)
+    end
+
+    def full?
+      @tail.size == BLOCK_SIZE && @root.size == BLOCK_SIZE
     end
 
   end
