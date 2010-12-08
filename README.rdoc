@@ -31,11 +31,12 @@ Once installed, all that remains is to make the collection classes available in 
 
 If you prefer, you can instead require individual classes as necessary:
 
-  require 'hamster/hash'
-  require 'hamster/set'
   require 'hamster/list'
   require 'hamster/stack'
   require 'hamster/queue'
+  require 'hamster/hash'
+  require 'hamster/set'
+  require 'hamster/vector'
 
 == Examples
 
@@ -162,6 +163,8 @@ How is this even possible? It's possible because <tt>IO#to_list</tt> creates a l
 === Stack
 
 === Queue
+
+=== Vector
 
 == Disclaimer
 
