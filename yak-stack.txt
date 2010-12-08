@@ -1,3 +1,4 @@
+* Document Enumerable and the expected protocol (ie #each, #filter, #drop, or whatever).
 * Set#sort should probably return a SortedSet.
 * More efficient initialisation of Hash/Set (ie Trie), and Vector by not copying.
 * Should mutable variants wrap results (eg #tail) in a mutable?
