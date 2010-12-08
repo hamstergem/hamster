@@ -52,8 +52,8 @@ module Hamster
         @size += 1
       end
     end
-    def_delegator :self, :set, :<<
-    def_delegator :self, :set, :cons
+    def_delegator :self, :add, :<<
+    def_delegator :self, :add, :cons
 
     # def delete(index)
     # end
