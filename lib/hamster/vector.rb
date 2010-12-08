@@ -81,13 +81,23 @@ module Hamster
     end
     def_delegator :self, :each, :foreach
 
+    def reduce(memo = Undefined)
+      each do |item|
+        memo = memo.equal?(Undefined) ? item : yield(memo, item)
+      end if block_given?
+      Undefined.erase(memo)
+    end
+    def_delegator :self, :reduce, :inject
+    def_delegator :self, :reduce, :fold
+    def_delegator :self, :reduce, :foldr
+
     def each_with_index(&block)
       return self unless block_given?
-      index = 0
-      each do |item|
+      reduce(0) do |index, item|
         yield(item, index)
-        index += 1
+        index.next
       end
+      nil
     end
 
     def clear
@@ -95,9 +105,7 @@ module Hamster
     end
 
     def to_a
-      [].tap do |a|
-        each { |item| a << item }
-      end
+      reduce([]) { |a, item| a << item }
     end
     def_delegator :self, :to_a, :entries
     def_delegator :self, :to_a, :to_ary
