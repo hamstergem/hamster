@@ -26,7 +26,7 @@ module Hamster
     end
 
     def empty?
-      size == 0
+      @size == 0
     end
     def_delegator :self, :empty?, :null?
 
@@ -60,15 +60,15 @@ module Hamster
 
     def set(index, item = Undefined)
       return set(index, yield(get(index))) if item.equal?(Undefined)
-      raise IndexError if empty? or index == size
-      raise IndexError if index.abs > size
-      return set(size + index, item) if index < 0
+      raise IndexError if empty? or index == @size
+      raise IndexError if index.abs > @size
+      return set(@size + index, item) if index < 0
     end
 
     def get(index)
-      return nil if empty? or index == size
-      return nil if index.abs > size
-      return get(size + index) if index < 0
+      return nil if empty? or index == @size
+      return nil if index.abs > @size
+      return get(@size + index) if index < 0
       leaf_node_for(index)[index & INDEX_MASK]
     end
     def_delegator :self, :get, :[]
@@ -116,7 +116,7 @@ module Hamster
 
     def eql?(other)
       return true if other.equal?(self)
-      return false unless instance_of?(other.class) && size == other.size
+      return false unless instance_of?(other.class) && @size == other.size
       @root.eql?(other.instance_variable_get(:@root))
     end
     def_delegator :self, :eql?, :==
