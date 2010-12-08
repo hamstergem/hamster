@@ -98,12 +98,6 @@ module Hamster
       reduce(0, &:+)
     end
 
-    def to_a
-      reduce([]) { |a, item| a << item }
-    end
-    def_delegator :self, :to_a, :entries
-    def_delegator :self, :to_a, :to_ary
-
     def remove
       return self unless block_given?
       filter { |item| !yield(item) }
@@ -114,6 +108,12 @@ module Hamster
     def compact
       remove(&:nil?)
     end
+
+    def to_a
+      reduce([]) { |a, item| a << item }
+    end
+    def_delegator :self, :to_a, :entries
+    def_delegator :self, :to_a, :to_ary
 
   end
 
