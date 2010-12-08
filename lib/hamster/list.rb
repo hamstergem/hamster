@@ -142,16 +142,6 @@ module Hamster
       end
     end
 
-    def one?(&block)
-      return one? { |item| item } unless block_given?
-      list = self
-      while !list.empty?
-        return list.tail.none?(&block) if yield(list.head)
-        list = list.tail
-      end
-      false
-    end
-
     def append(other)
       Stream.new do
         next other if empty?

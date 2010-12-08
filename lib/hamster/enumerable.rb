@@ -58,6 +58,18 @@ module Hamster
       true
     end
 
+    def one?
+      return one? { |item| !! item } unless block_given?
+      reduce(false) do |previously_matched, item|
+        if yield(item)
+          return false if previously_matched
+          true
+        else
+          previously_matched
+        end
+      end
+    end
+
     def minimum(&block)
       return minimum { |minimum, item| item <=> minimum } unless block_given?
       reduce { |minimum, item| yield(minimum, item) < 0 ? item : minimum }
