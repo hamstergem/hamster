@@ -36,13 +36,6 @@ module Hamster
     end
     def_delegator :self, :size, :length
 
-    def include?(item)
-      @trie.has_key?(item)
-    end
-    def_delegator :self, :include?, :member?
-    def_delegator :self, :include?, :contains?
-    def_delegator :self, :include?, :elem?
-
     def add(item)
       transform_unless(include?(item)) { @trie = @trie.put(item, nil) }
     end
@@ -82,25 +75,8 @@ module Hamster
     def_delegator :self, :remove, :reject
     def_delegator :self, :remove, :delete_if
 
-    def any?
-      return any? { |item| item } unless block_given?
-      each { |item| return true if yield(item) }
-      false
-    end
-    def_delegator :self, :any?, :exist?
-    def_delegator :self, :any?, :exists?
-
-    def all?
-      return all? { |item| item } unless block_given?
-      each { |item| return false unless yield(item) }
-      true
-    end
-    def_delegator :self, :all?, :forall?
-
-    def none?
-      return none? { |item| item } unless block_given?
-      each { |item| return false if yield(item) }
-      true
+    def include?(object)
+      any? { |item| item.eql?(object) }
     end
 
     def one?

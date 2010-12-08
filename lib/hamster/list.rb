@@ -149,34 +149,6 @@ module Hamster
       end
     end
 
-    def include?(object)
-      any? { |item| item == object }
-    end
-    def_delegator :self, :include?, :member?
-    def_delegator :self, :include?, :contains?
-    def_delegator :self, :include?, :elem?
-
-    def any?
-      return any? { |item| item } unless block_given?
-      each { |item| return true if yield(item) }
-      false
-    end
-    def_delegator :self, :any?, :exist?
-    def_delegator :self, :any?, :exists?
-
-    def all?
-      return all? { |item| item } unless block_given?
-      each { |item| return false unless yield(item) }
-      true
-    end
-    def_delegator :self, :all?, :forall?
-
-    def none?
-      return none? { |item| item } unless block_given?
-      each { |item| return false if yield(item) }
-      true
-    end
-
     def one?(&block)
       return one? { |item| item } unless block_given?
       list = self

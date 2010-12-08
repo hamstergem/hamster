@@ -93,21 +93,6 @@ module Hamster
       nil
     end
 
-    def include?(object)
-      any? { |item| item == object }
-    end
-    def_delegator :self, :include?, :member?
-    def_delegator :self, :include?, :contains?
-    def_delegator :self, :include?, :elem?
-
-    def any?
-      return any? { |item| item } unless block_given?
-      each { |item| return true if yield(item) }
-      false
-    end
-    def_delegator :self, :any?, :exist?
-    def_delegator :self, :any?, :exists?
-
     def clear
       EmptyVector
     end
