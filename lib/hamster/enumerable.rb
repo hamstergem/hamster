@@ -24,7 +24,7 @@ module Hamster
       return self unless block_given?
       reduce(0) do |index, item|
         yield(item, index)
-        index.next
+        index + 1
       end
       nil
     end
@@ -107,7 +107,8 @@ module Hamster
     end
 
     def count(&block)
-      filter(&block).size
+      return size unless block_given?
+      reduce(0) { |count, item| yield(item) ? count + 1 : count }
     end
 
     def product
