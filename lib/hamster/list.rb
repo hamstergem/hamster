@@ -81,7 +81,6 @@ module Hamster
         list = list.tail
       end
     end
-    def_delegator :self, :each, :foreach
 
     def map(&block)
       return self unless block_given?
@@ -100,8 +99,6 @@ module Hamster
         tail.filter(&block)
       end
     end
-    def_delegator :self, :filter, :select
-    def_delegator :self, :filter, :find_all
 
     def take_while(&block)
       return self unless block_given?

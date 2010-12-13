@@ -49,7 +49,6 @@ module Hamster
       return self unless block_given?
       @trie.each { |entry| yield(entry.key) }
     end
-    def_delegator :self, :each, :foreach
 
     def map
       return self unless block_given?
@@ -64,8 +63,6 @@ module Hamster
       return EmptySet if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
-    def_delegator :self, :filter, :select
-    def_delegator :self, :filter, :find_all
 
     def include?(object)
       any? { |item| item.eql?(object) }

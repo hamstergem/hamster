@@ -9,6 +9,17 @@ module Hamster
 
     extend Forwardable
 
+    def each
+      raise NoMethodError, "undefined method `each' for #{self.class.name}"
+    end
+    def_delegator :self, :each, :foreach
+
+    def filter
+      raise NoMethodError, "undefined method `filter' for #{self.class.name}"
+    end
+    def_delegator :self, :filter, :select
+    def_delegator :self, :filter, :find_all
+
     def each_with_index(&block)
       return self unless block_given?
       reduce(0) do |index, item|

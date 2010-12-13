@@ -83,7 +83,11 @@ module Hamster
       traverse_depth_first(&block)
       nil
     end
-    def_delegator :self, :each, :foreach
+
+    def filter
+      return self unless block_given?
+      reduce(EmptyVector) { |vector, item| yield(item) ? vector.add(item) : vector }
+    end
 
     def clear
       EmptyVector
