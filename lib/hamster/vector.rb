@@ -49,9 +49,7 @@ module Hamster
 
     def add(item)
       transform do
-        make_new_root
-        make_new_tail
-        @tail << item
+        new_tail << item
         @size += 1
       end
     end
@@ -66,6 +64,11 @@ module Hamster
       raise IndexError if empty? or index == @size
       raise IndexError if index.abs > @size
       return set(@size + index, item) if index < 0
+
+      transform do
+        new_leaf_node_for(index)[index & INDEX_MASK]
+      end
+
     end
 
     def get(index)
@@ -101,27 +104,34 @@ module Hamster
 
     private
 
-    def traverse_depth_first(node = @root, height = @levels, &block)
-      return node.each(&block) if height == 0
-      node.each { |child| traverse_depth_first(child, height - 1, &block) }
+    def traverse_depth_first(node = @root, level = @levels, &block)
+      return node.each(&block) if level == 0
+      node.each { |child| traverse_depth_first(child, level - 1, &block) }
     end
 
-    def leaf_node_for(node = @root, child_index_bits = @levels * BITS_PER_LEVEL, index)
+    def leaf_node_for(node = @root, child_index_bits = root_index_bits, index)
       return node if child_index_bits == 0
       child_index = (index >> child_index_bits)
       leaf_node_for(node[child_index & INDEX_MASK], child_index_bits - BITS_PER_LEVEL, index)
     end
 
-    def make_new_root
+    def copy_leaf_node_for(node = copy_root, child_index_bits = root_index_bits, index)
+    end
+
+    def new_root
       if full?
-        @root = [@root]
         @levels += 1
+        @root = [@root]
       else
-        @root = @root.dup
+        copy_root
       end
     end
 
-    def make_new_tail(node = @root, child_index_bits = @levels * BITS_PER_LEVEL)
+    def copy_root
+      @root = @root.dup
+    end
+
+    def new_tail(node = new_root, child_index_bits = root_index_bits)
       return @tail = node if child_index_bits == 0
 
       child_index = (@size >> child_index_bits) & INDEX_MASK
@@ -134,11 +144,15 @@ module Hamster
 
       node[child_index] = child_node
 
-      make_new_tail(child_node, child_index_bits - BITS_PER_LEVEL)
+      new_tail(child_node, child_index_bits - BITS_PER_LEVEL)
     end
 
     def full?
       @tail.size == BLOCK_SIZE && @root.size == BLOCK_SIZE
+    end
+
+    def root_index_bits
+      @levels * BITS_PER_LEVEL
     end
 
   end
