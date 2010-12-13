@@ -49,7 +49,7 @@ module Hamster
 
     def add(item)
       transform do
-        new_tail << item
+        update_leaf_node(@size, item)
         @size += 1
       end
     end
@@ -65,7 +65,7 @@ module Hamster
       raise IndexError if index.abs > @size
       return set(@size + index, item) if index < 0
       transform do
-        copy_leaf_node_for(index)[index & INDEX_MASK] = item
+        update_leaf_node(index, item)
       end
     end
 
@@ -73,7 +73,7 @@ module Hamster
       return nil if empty? or index == @size
       return nil if index.abs > @size
       return get(@size + index) if index < 0
-      leaf_node_for(index)[index & INDEX_MASK]
+      leaf_node_for(@root, root_index_bits, index)[index & INDEX_MASK]
     end
     def_delegator :self, :get, :[]
     def_delegator :self, :get, :at
@@ -107,22 +107,26 @@ module Hamster
       node.each { |child| traverse_depth_first(child, level - 1, &block) }
     end
 
-    def leaf_node_for(node = @root, child_index_bits = root_index_bits, index)
+    def leaf_node_for(node, child_index_bits, index)
       return node if child_index_bits == 0
       child_index = (index >> child_index_bits) & INDEX_MASK
       leaf_node_for(node[child_index], child_index_bits - BITS_PER_LEVEL, index)
     end
 
-    def copy_leaf_node_for(node = copy_root, child_index_bits = root_index_bits, index)
-      return node if child_index_bits == 0
-      child_index = (index >> child_index_bits) & INDEX_MASK
-      child_node = node[child_index].dup
-      node[child_index] = child_node
-      copy_leaf_node_for(child_node, child_index_bits - BITS_PER_LEVEL, index)
+    def update_leaf_node(index, item)
+      copy_leaf_node_for(new_root, root_index_bits, index)[index & INDEX_MASK] = item
     end
 
-    def copy_root
-      @root = @root.dup
+    def copy_leaf_node_for(node, child_index_bits, index)
+      return node if child_index_bits == 0
+      child_index = (index >> child_index_bits) & INDEX_MASK
+      if child_node = node[child_index]
+        child_node = child_node.dup
+      else
+        child_node = []
+      end
+      node[child_index] = child_node
+      copy_leaf_node_for(child_node, child_index_bits - BITS_PER_LEVEL, index)
     end
 
     def new_root
@@ -130,24 +134,8 @@ module Hamster
         @levels += 1
         @root = [@root]
       else
-        copy_root
+        @root = @root.dup
       end
-    end
-
-    def new_tail(node = new_root, child_index_bits = root_index_bits)
-      return node if child_index_bits == 0
-
-      child_index = (@size >> child_index_bits) & INDEX_MASK
-
-      if child_node = node[child_index]
-        child_node = child_node.dup
-      else
-        child_node = []
-      end
-
-      node[child_index] = child_node
-
-      new_tail(child_node, child_index_bits - BITS_PER_LEVEL)
     end
 
     def full?
