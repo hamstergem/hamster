@@ -64,11 +64,9 @@ module Hamster
       raise IndexError if empty? or index == @size
       raise IndexError if index.abs > @size
       return set(@size + index, item) if index < 0
-
       transform do
-        new_leaf_node_for(index)[index & INDEX_MASK]
+        copy_leaf_node_for(index)[index & INDEX_MASK] = item
       end
-
     end
 
     def get(index)
@@ -111,11 +109,21 @@ module Hamster
 
     def leaf_node_for(node = @root, child_index_bits = root_index_bits, index)
       return node if child_index_bits == 0
-      child_index = (index >> child_index_bits)
-      leaf_node_for(node[child_index & INDEX_MASK], child_index_bits - BITS_PER_LEVEL, index)
+      child_index = (index >> child_index_bits) & INDEX_MASK
+      leaf_node_for(node[child_index], child_index_bits - BITS_PER_LEVEL, index)
     end
 
     def copy_leaf_node_for(node = copy_root, child_index_bits = root_index_bits, index)
+      # TODO: What if it's the current tail?
+      return node if child_index_bits == 0
+      child_index = (index >> child_index_bits) & INDEX_MASK
+      child_node = node[child_index].dup
+      node[child_index] = child_node
+      copy_leaf_node_for(child_node, child_index_bits - BITS_PER_LEVEL, index)
+    end
+
+    def copy_root
+      @root = @root.dup
     end
 
     def new_root
@@ -125,10 +133,6 @@ module Hamster
       else
         copy_root
       end
-    end
-
-    def copy_root
-      @root = @root.dup
     end
 
     def new_tail(node = new_root, child_index_bits = root_index_bits)

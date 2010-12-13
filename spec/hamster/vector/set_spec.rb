@@ -23,7 +23,7 @@ describe Hamster::Vector do
     describe "when not empty" do
 
       before do
-        @vector = Hamster.vector("A", "B", "C")
+        @original = Hamster.vector("A", "B", "C")
       end
 
       describe "with a block" do
@@ -33,23 +33,17 @@ describe Hamster::Vector do
           describe "within the absolute bounds of the vector" do
 
             it "passes the current value to the block" do
-              pending do
-                @original.set(1) { |value| value.should == "B" }
-              end
+              @original.set(1) { |value| value.should == "B" }
             end
 
             it "replaces the value with the result of the block" do
-              pending do
-                result = @original.set(1) { |value| "FLIBBLE" }
-                result.should == Hamster.vector("A", "FLIBBLE", "C")
-              end
+              result = @original.set(1) { |value| "FLIBBLE" }
+              result.should == Hamster.vector("A", "FLIBBLE", "C")
             end
 
             it "supports to_proc methods" do
-              pending do
-                result = @original.set(1, &:downcase)
-                result.should == Hamster.vector("A", "b", "C")
-              end
+              result = @original.set(1, &:downcase)
+              result.should == Hamster.vector("A", "b", "C")
             end
 
           end
@@ -57,7 +51,7 @@ describe Hamster::Vector do
           describe "outside the absolute bounds of the vector" do
 
             it "raises an error" do
-              lambda { @vector.set(@vector.size) {} }.should raise_error
+              lambda { @original.set(@original.size) {} }.should raise_error
             end
 
           end
@@ -69,23 +63,17 @@ describe Hamster::Vector do
           describe "within the absolute bounds of the vector" do
 
             it "passes the current value to the block" do
-              pending do
-                @original.set(-2) { |value| value.should == "B" }
-              end
+              @original.set(-2) { |value| value.should == "B" }
             end
 
             it "replaces the value with the result of the block" do
-              pending do
-                result = @original.set(-2) { |value| "FLIBBLE" }
-                result.should == Hamster.vector("A", "FLIBBLE", "C")
-              end
+              result = @original.set(-2) { |value| "FLIBBLE" }
+              result.should == Hamster.vector("A", "FLIBBLE", "C")
             end
 
             it "supports to_proc methods" do
-              pending do
-                result = @original.set(-2, &:downcase)
-                result.should == Hamster.vector("A", "b", "C")
-              end
+              result = @original.set(-2, &:downcase)
+              result.should == Hamster.vector("A", "b", "C")
             end
 
           end
@@ -93,7 +81,7 @@ describe Hamster::Vector do
           describe "outside the absolute bounds of the vector" do
 
             it "raises an error" do
-              lambda { @vector.set(-@vector.size.next) {} }.should raise_error
+              lambda { @original.set(-@original.size.next) {} }.should raise_error
             end
 
           end
@@ -109,9 +97,7 @@ describe Hamster::Vector do
           describe "within the absolute bounds of the vector" do
 
             before do
-              pending do
-                @result = @original.set(1, "FLIBBLE")
-              end
+              @result = @original.set(1, "FLIBBLE")
             end
 
             it "preserves the original" do
@@ -127,7 +113,7 @@ describe Hamster::Vector do
           describe "outside the absolute bounds of the vector" do
 
             it "raises an error" do
-              lambda { @vector.set(@vector.size, "FLIBBLE") }.should raise_error
+              lambda { @original.set(@original.size, "FLIBBLE") }.should raise_error
             end
 
           end
@@ -137,9 +123,7 @@ describe Hamster::Vector do
         describe "with a negative index" do
 
           before do
-            pending do
-              @result = @original.set(-2, "FLIBBLE")
-            end
+            @result = @original.set(-2, "FLIBBLE")
           end
 
           it "preserves the original" do
@@ -155,7 +139,7 @@ describe Hamster::Vector do
         describe "outside the absolute bounds of the vector" do
 
           it "raises an error" do
-            lambda { @vector.set(-@vector.size.next, "FLIBBLE") }.should raise_error
+            lambda { @original.set(-@original.size.next, "FLIBBLE") }.should raise_error
           end
 
         end
