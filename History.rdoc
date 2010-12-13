@@ -1,6 +1,6 @@
-=== n.n.n / yyy-mm-dd
+=== 0.4.0 / 2010-12-13
 
-* Added initial implementation of Vector.
+* Added initial implementation of Vector for efficient indexed access.
 
 * Fix car/cdr so they work on Ruby 1.8.7 (Tianyi Cui)
 
