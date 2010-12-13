@@ -1,3 +1,4 @@
+* Consider implementing =~ for approximately equals.
 * Hash should yield entries rather than key, value. This will allow us to extract more Enumerable stuff as well.
 * Consider re-working Vector to simplify the implementation of Hash/Set.
 * Document Enumerable and the expected protocol (ie #each, #filter, #drop, or whatever).
