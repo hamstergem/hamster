@@ -24,7 +24,7 @@ module Hamster
 
     def initialize
       @levels = 0
-      @root = @tail = []
+      @root = []
       @size = 0
     end
 
@@ -114,7 +114,6 @@ module Hamster
     end
 
     def copy_leaf_node_for(node = copy_root, child_index_bits = root_index_bits, index)
-      # TODO: What if it's the current tail?
       return node if child_index_bits == 0
       child_index = (index >> child_index_bits) & INDEX_MASK
       child_node = node[child_index].dup
@@ -136,7 +135,7 @@ module Hamster
     end
 
     def new_tail(node = new_root, child_index_bits = root_index_bits)
-      return @tail = node if child_index_bits == 0
+      return node if child_index_bits == 0
 
       child_index = (@size >> child_index_bits) & INDEX_MASK
 
@@ -152,7 +151,7 @@ module Hamster
     end
 
     def full?
-      @tail.size == BLOCK_SIZE && @root.size == BLOCK_SIZE
+      (@size >> root_index_bits) > 0
     end
 
     def root_index_bits
