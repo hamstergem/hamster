@@ -4,3 +4,4 @@ pkg/*
 .idea
 .rspec
 .rvmrc
+Gemfile.lock
