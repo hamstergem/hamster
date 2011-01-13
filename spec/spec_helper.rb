@@ -1,6 +1,6 @@
 # Common spec-related code goes here
 
-STACK_OVERFLOW_DEPTH = if RUBY_ENGINE != "rbx"
+STACK_OVERFLOW_DEPTH = if RUBY_ENGINE == "ruby"
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)
   rescue SystemStackError
