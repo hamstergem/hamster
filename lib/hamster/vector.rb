@@ -84,6 +84,12 @@ module Hamster
       nil
     end
 
+    def map(&block)
+      return self unless block_given?
+      reduce(EmptyVector) { |vector, item| vector.add(yield(item)) }
+    end
+    def_delegator :self, :map, :collect
+
     def filter
       return self unless block_given?
       reduce(EmptyVector) { |vector, item| yield(item) ? vector.add(item) : vector }

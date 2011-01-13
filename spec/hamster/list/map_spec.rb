@@ -27,7 +27,7 @@ describe Hamster::List do
           describe "with a block" do
 
             before do
-              @result = @original.send(method) { |item| item.downcase }
+              @result = @original.send(method, &:downcase)
             end
 
             it "preserves the original" do

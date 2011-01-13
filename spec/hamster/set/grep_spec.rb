@@ -47,7 +47,7 @@ describe Hamster::Set do
           end
 
           it "returns #{expected.inspect}" do
-            @list.grep(String) { |item| item.downcase }.should == Hamster.set(*expected)
+            @list.grep(String, &:downcase).should == Hamster.set(*expected)
           end
 
 

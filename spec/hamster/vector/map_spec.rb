@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-require 'hamster/set'
+require 'hamster/vector'
 
-describe Hamster::Set do
+describe Hamster::Vector do
 
   [:map, :collect].each do |method|
 
@@ -11,7 +11,7 @@ describe Hamster::Set do
       describe "when empty" do
 
         before do
-          @original = Hamster.set
+          @original = Hamster.vector
           @mapped = @original.send(method) {}
         end
 
@@ -24,7 +24,7 @@ describe Hamster::Set do
       describe "when not empty" do
 
         before do
-          @original = Hamster.set("A", "B", "C")
+          @original = Hamster.vector("A", "B", "C")
         end
 
         describe "with a block" do
@@ -34,11 +34,11 @@ describe Hamster::Set do
           end
 
           it "preserves the original values" do
-            @original.should == Hamster.set("A", "B", "C")
+            @original.should == Hamster.vector("A", "B", "C")
           end
 
-          it "returns a new set with the mapped values" do
-            @mapped.should == Hamster.set("a", "b", "c")
+          it "returns a new vector with the mapped values" do
+            @mapped.should == Hamster.vector("a", "b", "c")
           end
 
         end

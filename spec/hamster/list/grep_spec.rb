@@ -48,7 +48,7 @@ describe Hamster::List do
 
           before do
             @original = Hamster.list(*values)
-            @result = @original.grep(String) { |item| item.downcase }
+            @result = @original.grep(String, &:downcase)
           end
 
           it "preserves the original" do
