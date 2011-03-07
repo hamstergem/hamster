@@ -1,5 +1,14 @@
 # Common spec-related code goes here
 
+require 'simplecov'
+SimpleCov.start 'rails'
+SimpleCov.at_exit do
+  SimpleCov.result.format!
+  open("#{SimpleCov.coverage_dir}/covered_percent", "w") do |f|
+    f.puts SimpleCov.result.covered_percent.to_s
+  end
+end
+
 STACK_OVERFLOW_DEPTH = if RUBY_ENGINE == "ruby"
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)

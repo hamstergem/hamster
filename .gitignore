@@ -4,4 +4,5 @@ pkg/*
 .idea
 .rspec
 .rvmrc
+coverage
 Gemfile.lock
