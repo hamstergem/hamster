@@ -1,7 +1,7 @@
 # Common spec-related code goes here
 
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start
 SimpleCov.at_exit do
   SimpleCov.result.format!
   open("#{SimpleCov.coverage_dir}/covered_percent", "w") do |f|

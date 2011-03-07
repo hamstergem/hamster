@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
   s.require_path     = "lib"
   s.files            = Dir["lib/**/*", "spec/**/*", "tasks/**/*", "Rakefile"] + s.extra_rdoc_files
   s.add_development_dependency("rspec", "~> 2")
-  s.add_development_dependency("simplecov", "~> 0.2")
+  s.add_development_dependency("simplecov", "~> 0.3")
 end
