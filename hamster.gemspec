@@ -5,7 +5,6 @@ Gem::Specification.new do |s|
   s.version          = Hamster::VERSION.dup
   s.platform         = Gem::Platform::RUBY
   s.required_ruby_version = ">= 1.8.7"
-  s.has_rdoc         = true
   s.extra_rdoc_files = ["README.rdoc", "History.rdoc", "LICENSE"]
   s.summary          = "Efficient, Immutable, Thread-Safe Collection classes for Ruby"
   s.description      = s.summary
