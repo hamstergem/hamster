@@ -286,6 +286,7 @@ module Hamster
         hash.put(key, (hash.get(key) || EmptyList).cons(item))
       end
     end
+    def_delegator :self, :group_by, :group
 
     def at(index)
       drop(index).head

@@ -4,62 +4,66 @@ require 'hamster/list'
 
 describe Hamster::List do
 
-  describe "#group_by" do
+  [:group_by, :group].each do |method|
 
-    describe "on a really big list" do
+    describe "##{method}" do
 
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
+      describe "on a really big list" do
+
+        before do
+          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
+        end
+
+        it "doesn't run out of stack" do
+          lambda { @list.send(method) }.should_not raise_error
+        end
+
       end
 
-      it "doesn't run out of stack" do
-        lambda { @list.group_by }.should_not raise_error
-      end
+      describe "with a block" do
 
-    end
+        [
+          [[], []],
+          [[1], [true => Hamster.list(1)]],
+          [[1, 2, 3, 4], [true => Hamster.list(3, 1), false => Hamster.list(4, 2)]],
+        ].each do |values, expected|
 
-    describe "with a block" do
+          describe "on #{values.inspect}" do
 
-      [
-        [[], []],
-        [[1], [true => Hamster.list(1)]],
-        [[1, 2, 3, 4], [true => Hamster.list(3, 1), false => Hamster.list(4, 2)]],
-      ].each do |values, expected|
+            before do
+              original = Hamster.list(*values)
+              @result = original.send(method, &:odd?)
+            end
 
-        describe "on #{values.inspect}" do
+            it "returns #{expected.inspect}" do
+              @result.should == Hamster.hash(*expected)
+            end
 
-          before do
-            original = Hamster.list(*values)
-            @result = original.group_by(&:odd?)
-          end
-
-          it "returns #{expected.inspect}" do
-            @result.should == Hamster.hash(*expected)
           end
 
         end
 
       end
 
-    end
+      describe "without a block" do
 
-    describe "without a block" do
+        [
+          [[], []],
+          [[1], [1 => Hamster.list(1)]],
+          [[1, 2, 3, 4], [1 => Hamster.list(1), 2 => Hamster.list(2), 3 => Hamster.list(3), 4 => Hamster.list(4)]],
+        ].each do |values, expected|
 
-      [
-        [[], []],
-        [[1], [1 => Hamster.list(1)]],
-        [[1, 2, 3, 4], [1 => Hamster.list(1), 2 => Hamster.list(2), 3 => Hamster.list(3), 4 => Hamster.list(4)]],
-      ].each do |values, expected|
+          describe "on #{values.inspect}" do
 
-        describe "on #{values.inspect}" do
+            before do
+              original = Hamster.list(*values)
+              @result = original.send(method)
+            end
 
-          before do
-            original = Hamster.list(*values)
-            @result = original.group_by
-          end
+            it "returns #{expected.inspect}" do
+              @result.should == Hamster.hash(*expected)
+            end
 
-          it "returns #{expected.inspect}" do
-            @result.should == Hamster.hash(*expected)
           end
 
         end
