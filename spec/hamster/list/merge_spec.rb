@@ -26,7 +26,7 @@ describe Hamster::List do
 
     subject { Hamster.list(Hamster.list("C", "F", "G", "H"), Hamster.list("A", "B", "D", "E", "I"))}
 
-    its(:merge) { should == ["A", "B", "C", "D", "E", "F", "G", "H", "I"] }
+    its(:merge) { should == Hamster.list("A", "B", "C", "D", "E", "F", "G", "H", "I") }
 
   end
 

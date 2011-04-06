@@ -338,8 +338,11 @@ module Hamster
     end
 
     def merge
-      return self if empty?
-      return head if tail.empty?
+      Stream.new do
+        sorted = remove(&:empty?).sort_by(&:head)
+        next EmptyList if sorted.empty?
+        Sequence.new(sorted.head.head, Stream.new { sorted.tail.cons(sorted.head.tail).merge })
+      end
     end
 
     def eql?(other)
