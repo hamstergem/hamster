@@ -1,6 +1,7 @@
 require 'forwardable'
 
 require 'hamster/immutable'
+require 'hamster/core_ext/enumerator'
 
 module Hamster
 
@@ -17,6 +18,14 @@ module Hamster
     end
 
     def_delegator :@collection, :each
+
+    def sort
+      super.to_enum.to_list
+    end
+
+    def sort_by(&block)
+      super.to_enum.to_list
+    end
 
   end
 
