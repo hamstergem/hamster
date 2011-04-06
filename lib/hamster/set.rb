@@ -73,13 +73,13 @@ module Hamster
     end
     def_delegator :self, :head, :first
 
-    def sort(&block)
-      Stream.new { Sorter.new(self).sort(&block) }
+    def sort(&comparator)
+      Stream.new { Sorter.new(self).sort(&comparator) }
     end
 
-    def sort_by(&block)
+    def sort_by(&transformer)
       return sort unless block_given?
-      Stream.new { Sorter.new(self).sort_by(&block) }
+      Stream.new { Sorter.new(self).sort_by(&transformer) }
     end
 
     def join(sep = nil)
