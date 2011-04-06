@@ -1,3 +1,7 @@
+=== 0.4.1 / yyyy-mm-dd
+
+* Added Enumerator#to_list produces a lazy list.
+
 === 0.4.0 / 2010-12-13
 
 * Added initial implementation of Vector for efficient indexed access.
