@@ -337,6 +337,11 @@ module Hamster
       find_indices(&block)
     end
 
+    def merge
+      return self if empty?
+      return head if tail.empty?
+    end
+
     def eql?(other)
       list = self
       loop do
