@@ -1,6 +1,7 @@
 === 0.4.1 / yyyy-mm-dd
 
 * Added Enumerator#to_list produces a lazy list.
+* Alias List/Set#group_by as #group.
 
 === 0.4.0 / 2010-12-13
 

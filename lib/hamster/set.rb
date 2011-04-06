@@ -139,6 +139,7 @@ module Hamster
         hash.put(key, (hash.get(key) || EmptySet).add(item))
       end
     end
+    def_delegator :self, :group_by, :group
 
     def clear
       EmptySet
