@@ -337,12 +337,27 @@ module Hamster
       find_indices(&block)
     end
 
-    def merge
+    def merge(&comparator)
+      return merge { |a, b| a <=> b } unless block_given?
       Stream.new do
-        sorted = remove(&:empty?).sort_by(&:head)
+        sorted = remove(&:empty?).sort do |a, b|
+          yield(a.head, b.head)
+        end
         next EmptyList if sorted.empty?
-        Sequence.new(sorted.head.head, Stream.new { sorted.tail.cons(sorted.head.tail).merge })
+        Sequence.new(sorted.head.head, Stream.new { sorted.tail.cons(sorted.head.tail).merge(&comparator) })
       end
+    end
+
+    def merge_by(&transformer)
+      return merge_by { |item| item } unless block_given?
+      Stream.new do
+        sorted = remove(&:empty?).sort_by do |list|
+          yield(list.head)
+        end
+        next EmptyList if sorted.empty?
+        Sequence.new(sorted.head.head, Stream.new { sorted.tail.cons(sorted.head.tail).merge_by(&transformer) })
+      end
+
     end
 
     def eql?(other)
