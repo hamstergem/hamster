@@ -1,5 +1,6 @@
-=== 0.4.1 / yyyy-mm-dd
+=== 0.4.1 / 2011-04-07
 
+* Added List#merge/merge_by to merge sorted lists into a single stream.
 * Added Enumerator#to_list produces a lazy list.
 * Alias List/Set#group_by as #group.
 
