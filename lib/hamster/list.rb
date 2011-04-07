@@ -344,7 +344,7 @@ module Hamster
           yield(a.head, b.head)
         end
         next EmptyList if sorted.empty?
-        Sequence.new(sorted.head.head, Stream.new { sorted.tail.cons(sorted.head.tail).merge(&comparator) })
+        Sequence.new(sorted.head.head, sorted.tail.cons(sorted.head.tail).merge(&comparator))
       end
     end
 
@@ -355,7 +355,7 @@ module Hamster
           yield(list.head)
         end
         next EmptyList if sorted.empty?
-        Sequence.new(sorted.head.head, Stream.new { sorted.tail.cons(sorted.head.tail).merge_by(&transformer) })
+        Sequence.new(sorted.head.head, sorted.tail.cons(sorted.head.tail).merge_by(&transformer))
       end
 
     end
