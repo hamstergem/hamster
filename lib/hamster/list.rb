@@ -338,7 +338,7 @@ module Hamster
     end
 
     def merge(&comparator)
-      return merge { |a, b| a <=> b } unless block_given?
+      return merge_by unless block_given?
       Stream.new do
         sorted = remove(&:empty?).sort do |a, b|
           yield(a.head, b.head)
@@ -357,7 +357,6 @@ module Hamster
         next EmptyList if sorted.empty?
         Sequence.new(sorted.head.head, sorted.tail.cons(sorted.head.tail).merge_by(&transformer))
       end
-
     end
 
     def eql?(other)
