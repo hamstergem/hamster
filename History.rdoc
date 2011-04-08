@@ -1,4 +1,4 @@
-=== 0.4.1 / 2011-04-07
+=== 0.4.2 / 2011-04-07
 
 * Added List#merge/merge_by to merge sorted lists into a single stream.
 * Added Enumerator#to_list produces a lazy list.
