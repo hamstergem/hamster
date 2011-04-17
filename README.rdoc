@@ -3,7 +3,7 @@
   GitHub:   http://github.com/harukizaemon/hamster
   RubyGems: https://rubygems.org/gems/hamster
   email:    haruki_zaemon@mac.com
-  IRC:      #haruki_zaemon on freenode
+  IRC:      ##haruki_zaemon on freenode
 
 == Introduction
 
@@ -28,6 +28,11 @@ Installation via the gem is easy:
 Once installed, all that remains is to make the collection classes available in your code:
 
   require 'hamster'
+
+Installation via bundler is even easier:
+
+  gem "hamster"
+
 
 If you prefer, you can instead require individual classes as necessary:
 
