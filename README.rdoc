@@ -225,7 +225,7 @@ versus
 
   (1..10000).each { |i| hash[i] }   # => 0.001s
 
-What's even better -- or worse depending on your perspective -- is that after all that, the native Hash version still isn't thread-safe and still requires some synchronisation around it slowing it down even further and.
+What's even better -- or worse depending on your perspective -- is that after all that, the native Hash version still isn't thread-safe and still requires some synchronisation around it slowing it down even further.
 
 The Hamster version on the other hand was unchanged from the original whilst remaining inherently thread-safe, and 3 orders of magnitude faster.
 
