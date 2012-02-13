@@ -1,3 +1,4 @@
+* Laziness is the default with lists but perhaps we could consider making them strict unless you ask for them to be lazy???
 * Consider implementing =~ for approximately equals.
 * Hash should yield entries rather than key, value. This will allow us to extract more Enumerable stuff as well.
 * Consider re-working Vector to simplify the implementation of Hash/Set.
