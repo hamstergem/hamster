@@ -6,7 +6,7 @@ describe Hamster::Hash do
 
   [:has_key?, :key?, :include?, :member?].each do |method|
 
-    describe "#has_key?" do
+    describe "##{method}" do
 
       before do
         @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL", 2.0 => "two")
