@@ -127,6 +127,14 @@ module Hamster
     end
     def_delegator :self, :merge, :+
 
+    def except(*keys)
+      keys.reduce(self) { |hash, key| hash.delete(key) }
+    end
+
+    def slice(*keys)
+      except(*self.keys - keys)
+    end
+
     def keys
       reduce(Hamster.set) { |keys, key, value| keys.add(key) }
     end
