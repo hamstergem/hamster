@@ -12,10 +12,23 @@ describe Hamster::Hash do
       @result = hash.values
     end
 
-    it "returns the keys as a set" do
-      @result.should == Hamster.set("aye", "bee", "see")
+    it "returns the keys as a list" do
+      @result.should be_a Hamster::List
+      @result.to_a.sort.should == %w(aye bee see)
     end
 
+  end
+
+  describe "#values with duplicates" do
+    before do
+      hash = Hamster.hash(:A => 15, :B => 19, :C => 15)
+      @result = hash.values
+    end
+
+    it "returns the keys as a list" do
+      @result.should be_a Hamster::List
+      @result.to_a.sort.should == [15,15,19]
+    end
   end
 
 end
