@@ -140,7 +140,7 @@ module Hamster
     end
 
     def values
-      reduce(Hamster.set) { |values, key, value| values.add(value) }
+      reduce(Hamster.list) { |values, key, value| values.cons(value) }
     end
 
     def clear
