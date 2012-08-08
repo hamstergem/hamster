@@ -6,15 +6,16 @@ module Hamster
 
     extend Forwardable
 
-    def initialize(significant_bits, entries = [], children = [])
+    def initialize(significant_bits, size = 0, entries = [], children = [])
       @significant_bits = significant_bits
       @entries = entries
       @children = children
+      @size = size
     end
 
     # Returns the number of key-value pairs in the trie.
     def size
-      reduce(0) { |memo, item| memo.next }
+      @size
     end
 
     # Returns <tt>true</tt> if the trie contains no key-value pairs.
@@ -49,19 +50,27 @@ module Hamster
     def put(key, value)
       index = index_for(key)
       entry = @entries[index]
-      if !entry || entry.key.eql?(key)
+
+      if !entry
         entries = @entries.dup
         entries[index] = Entry.new(key, value)
-        self.class.new(@significant_bits, entries, @children)
+        self.class.new(@significant_bits, @size + 1, entries, @children)
+      elsif entry.key.eql?(key)
+        entries = @entries.dup
+        entries[index] = Entry.new(key, value)
+        self.class.new(@significant_bits, @size, entries, @children)
       else
         children = @children.dup
         child = children[index]
+        child_size = child ? child.size : 0
         children[index] = if child
           child.put(key, value)
         else
           self.class.new(@significant_bits + 5).put!(key, value)
         end
-        self.class.new(@significant_bits, @entries, children)
+        new_child_size = children[index].size
+        new_self_size = @size + (new_child_size - child_size)
+        self.class.new(@significant_bits, new_self_size, @entries, children)
       end
     end
 
@@ -104,7 +113,9 @@ module Hamster
 
     # Returns <tt>self</tt> after overwriting the element associated with the specified key.
     def put!(key, value)
-      @entries[index_for(key)] = Entry.new(key, value)
+      index = index_for(key)
+      @size += 1 unless @entries[index]
+      @entries[index] = Entry.new(key, value)
       self
     end
 
@@ -123,7 +134,8 @@ module Hamster
           if !copy.equal?(child)
             children = @children.dup
             children[index] = copy
-            return self.class.new(@significant_bits, @entries, children)
+            new_size = @size - (child.size - copy.size)
+            return self.class.new(@significant_bits, new_size, @entries, children)
           end
         end
       end
@@ -144,7 +156,7 @@ module Hamster
         else
           entries[index] = nil
         end
-        self.class.new(@significant_bits, entries, children || @children)
+        self.class.new(@significant_bits, @size - 1, entries, children || @children)
       end
     end
 
