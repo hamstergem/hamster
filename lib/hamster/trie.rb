@@ -134,7 +134,8 @@ module Hamster
           if !copy.equal?(child)
             children = @children.dup
             children[index] = copy
-            new_size = @size - (child.size - copy.size)
+            copy_size = copy ? copy.size : 0
+            new_size = @size - (child.size - copy_size)
             return self.class.new(@significant_bits, new_size, @entries, children)
           end
         end
