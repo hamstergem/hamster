@@ -7,7 +7,7 @@ require 'hamster/trie'
 module Hamster
 
   def self.hash(pairs = {}, &block)
-    pairs.reduce(block_given? ? Hash.new(&block) : EmptyHash) { |hash, pair| hash.put(pair.first, pair.last) }
+    Hash.new(pairs, &block)
   end
 
   class Hash
@@ -15,6 +15,15 @@ module Hamster
     extend Forwardable
 
     include Immutable
+
+    class << self
+      def new(pairs = {}, &block)
+        @empty ||= super()
+        pairs.reduce(block_given? ? super(&block) : @empty) { |hash, pair| hash.put(pair.first, pair.last) }
+      end
+
+      attr_reader :empty
+    end
 
     def initialize(&block)
       @trie = EmptyTrie
@@ -82,7 +91,7 @@ module Hamster
     def filter
       return self unless block_given?
       trie = @trie.filter { |entry| yield(entry.key, entry.value) }
-      return EmptyHash if trie.empty?
+      return self.class.empty if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :filter, :select
@@ -144,7 +153,7 @@ module Hamster
     end
 
     def clear
-      EmptyHash
+      self.class.empty
     end
 
     def eql?(other)
