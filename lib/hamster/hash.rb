@@ -57,6 +57,19 @@ module Hamster
     end
     def_delegator :self, :get, :[]
 
+    def fetch(key, default = Undefined)
+      entry = @trie.get(key)
+      if entry
+        entry.value
+      elsif default != Undefined
+        default
+      elsif block_given?
+        yield
+      else
+        raise KeyError.new("key not found: #{key.inspect}")
+      end
+    end
+
     def put(key, value = Undefined)
       return put(key, yield(get(key))) if value.equal?(Undefined)
       transform { @trie = @trie.put(key, value) }
