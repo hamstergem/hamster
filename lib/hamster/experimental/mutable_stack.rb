@@ -1,6 +1,6 @@
 require 'forwardable'
 require 'hamster/stack'
-require 'hamster/experimental/read_copy_update'
+require 'hamster/read_copy_update'
 
 module Hamster
 
@@ -22,10 +22,10 @@ module Hamster
 
     def pop
       top = nil
-      transform { |stack|
+      transform do |stack|
         top = stack.peek
         stack.pop
-      }
+      end
       top
     end
     def_delegator :self, :pop, :dequeue

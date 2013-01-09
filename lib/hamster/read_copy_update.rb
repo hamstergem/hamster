@@ -17,10 +17,15 @@ module Hamster
     end
     def_delegator :self, :eql?, :==
 
+    def_delegator :@content, :inspect
+    def_delegator :@content, :to_s
+
     protected
 
     def transform
-      @lock.synchronize { @content = yield(@content) }
+      @lock.synchronize do
+        @content = yield(@content)
+      end
       self
     end
 

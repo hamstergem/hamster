@@ -1,5 +1,6 @@
+require 'forwardable'
 require 'hamster/hash'
-require 'hamster/experimental/read_copy_update'
+require 'hamster/read_copy_update'
 
 module Hamster
 
@@ -9,23 +10,26 @@ module Hamster
 
   class MutableHash
 
+    extend Forwardable
+
     include ReadCopyUpdate
 
     def put(key, value = Undefined, &block)
-      old_value = nil
-      transform { |hash|
-        old_value = hash.get(key)
-        hash.put(key, value, &block)
-      }
-      old_value
+      transform { |hash| hash.put(key, value, &block) }
     end
+
+    def store(key, value)
+      put(key, value)
+      value
+    end
+    def_delegator :self, :store, :[]=
 
     def delete(key)
       old_value = nil
-      transform { |hash|
+      transform do |hash|
         old_value = hash.get(key)
         hash.delete(key)
-      }
+      end
       old_value
     end
 

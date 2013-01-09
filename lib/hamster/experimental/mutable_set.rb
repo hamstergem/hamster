@@ -1,6 +1,6 @@
 require 'forwardable'
 require 'hamster/set'
-require 'hamster/experimental/read_copy_update'
+require 'hamster/read_copy_update'
 
 module Hamster
 
@@ -21,10 +21,10 @@ module Hamster
 
     def add?(item)
       added = false
-      transform { |set|
+      transform do |set|
         added = !set.include?(item)
         set.add(item)
-      }
+      end
       added
     end
 
@@ -34,10 +34,10 @@ module Hamster
 
     def delete?(item)
       deleted = false
-      transform { |set|
+      transform do |set|
         deleted = set.include?(item)
         set.delete(item)
-      }
+      end
       deleted
     end
 

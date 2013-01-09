@@ -1,6 +1,6 @@
 require 'forwardable'
 require 'hamster/queue'
-require 'hamster/experimental/read_copy_update'
+require 'hamster/read_copy_update'
 
 module Hamster
 
@@ -22,10 +22,10 @@ module Hamster
 
     def dequeue
       head = nil
-      transform { |queue|
+      transform do |queue|
         head = queue.head
         queue.dequeue
-      }
+      end
       head
     end
 
