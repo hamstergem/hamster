@@ -188,11 +188,15 @@ module Hamster
     end
 
     def marshal_dump
-      reduce(Hamster.list) { |kvs, key, value| kvs.cons(Tuple.new(key, value)) }
+      output = {}
+      each do |key, value|
+        output[key] = value
+      end
+      output
     end
 
-    def marshal_load key_value_pairs
-      @trie = key_value_pairs.reduce EmptyTrie do |trie, key_value|
+    def marshal_load dictionary
+      @trie = dictionary.reduce EmptyTrie do |trie, key_value|
         trie.put(key_value.first, key_value.last)
       end
     end
