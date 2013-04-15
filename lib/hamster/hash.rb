@@ -3,6 +3,7 @@ require 'forwardable'
 require 'hamster/immutable'
 require 'hamster/undefined'
 require 'hamster/trie'
+require 'hamster/list'
 
 module Hamster
 
@@ -184,6 +185,20 @@ module Hamster
 
     def inspect
       "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}"}.join(", ")}}"
+    end
+
+    def marshal_dump
+      output = {}
+      each do |key, value|
+        output[key] = value
+      end
+      output
+    end
+
+    def marshal_load dictionary
+      @trie = dictionary.reduce EmptyTrie do |trie, key_value|
+        trie.put(key_value.first, key_value.last)
+      end
     end
 
   end
