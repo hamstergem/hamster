@@ -176,7 +176,9 @@ module Hamster
     def_delegator :self, :eql?, :==
 
     def hash
-      reduce(0) { |hash, key, value| (hash << 32) - hash + key.hash + value.hash }
+      keys.sort.reduce(0) do |hash, key|
+        (hash << 32) - hash + key.hash + get(key).hash
+      end
     end
 
     def_delegator :self, :dup, :uniq
