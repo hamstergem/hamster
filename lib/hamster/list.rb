@@ -73,6 +73,11 @@ module Hamster
     end
     def_delegator :self, :cons, :>>
 
+    def add(item)
+      self.append(Hamster.list(item))
+    end
+    def_delegator :self, :add, :<<
+
     def each
       return self unless block_given?
       list = self
@@ -124,6 +129,15 @@ module Hamster
       Stream.new do
         next self if empty?
         next Sequence.new(head, tail.take(number - 1)) if number > 0
+        EmptyList
+      end
+    end
+
+    def pop
+      Stream.new do
+        next self if empty?
+        new_size = size - 1
+        next Sequence.new(head, tail.take(new_size - 1)) if new_size >= 1
         EmptyList
       end
     end
