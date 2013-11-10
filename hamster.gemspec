@@ -3,7 +3,6 @@ lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "hamster/version"
 
-Gem::Specification.new do |s|
   s.name             = "hamster"
   s.version          = Hamster::VERSION.dup
   s.platform         = Gem::Platform::RUBY
@@ -18,4 +17,5 @@ Gem::Specification.new do |s|
   s.files            = Dir["lib/**/*", "spec/**/*", "tasks/**/*", "Rakefile"] + s.extra_rdoc_files
   s.add_development_dependency("rspec", "~> 2")
   s.add_development_dependency("simplecov", "~> 0.3")
+Gem::Specification.new do |spec|
 end
