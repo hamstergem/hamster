@@ -3,7 +3,6 @@ lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "hamster/version"
 
-  s.extra_rdoc_files = ["README.rdoc", "History.rdoc", "LICENSE"]
   s.add_development_dependency("rspec", "~> 2")
   s.add_development_dependency("simplecov", "~> 0.3")
 Gem::Specification.new do |spec|
