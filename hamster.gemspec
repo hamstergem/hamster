@@ -3,7 +3,6 @@ lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "hamster/version"
 
-  s.add_development_dependency("rspec", "~> 2")
 Gem::Specification.new do |spec|
   spec.name          = "hamster"
   spec.version       = Hamster::VERSION
@@ -21,5 +20,6 @@ Gem::Specification.new do |spec|
   spec.executables   = Dir["bin/**/*"].map! { |f| f.gsub(/bin\//, '') }
   spec.test_files    = Dir["test/**/*", "spec/**/*"]
   spec.require_paths = ["lib"]
+  spec.add_development_dependency "rspec", "~> 2.14"
   spec.add_development_dependency "coveralls", "~> 0.7"
 end
