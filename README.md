@@ -1,12 +1,12 @@
 blankgem
 --------
 
-  - [![Version](https://badge.fury.io/rb/blankgem.png)](https://rubygems.org/gems/blankgem)
-  - [![Climate](https://codeclimate.com/github/krainboltgreene/blankgem.png)](https://codeclimate.com/github/krainboltgreene/blankgem)
-  - [![Build](http://img.shields.io/travis-ci/krainboltgreene/blankgem.png)](https://travis-ci.org/krainboltgreene/blankgem)
-  - [![Dependencies](https://gemnasium.com/krainboltgreene/blankgem.png)](https://gemnasium.com/krainboltgreene/blankgem)
-  - [![Coverage](http://img.shields.io/coveralls/krainboltgreene/blankgem.png)](https://coveralls.io/r/krainboltgreene/blankgem)
-  - [![Gittip](http://img.shields.io/gittip/krainboltgreene.png)](https://www.gittip.com/krainboltgreene/)
+  - [![Version](https://badge.fury.io/rb/hamster.png)](https://rubygems.org/gems/hamster)
+  - [![Climate](https://codeclimate.com/github/harukizaemon/hamster.png)](https://codeclimate.com/github/harukizaemon/hamster)
+  - [![Build](http://img.shields.io/travis-ci/harukizaemon/hamster.png)](https://travis-ci.org/harukizaemon/hamster)
+  - [![Dependencies](https://gemnasium.com/harukizaemon/hamster.png)](https://gemnasium.com/harukizaemon/hamster)
+  - [![Coverage](http://img.shields.io/coveralls/harukizaemon/hamster.png)](https://coveralls.io/r/harukizaemon/hamster)
+  - [![Gittip](http://img.shields.io/gittip/hamstergem.png)](https://www.gittip.com/hamstergem/)
   - [![License](http://img.shields.io/license/MIT.png?color=green)](http://opensource.org/licenses/MIT)
 
 Efficient, immutable, and thread-safe collection classes for Ruby.
