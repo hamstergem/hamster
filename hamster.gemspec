@@ -13,6 +13,8 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Efficient, immutable, thread-safe collection classes for Ruby}
   spec.description   = spec.summary
   spec.homepage      = "http://harukizaemon.github.io/hamster"
+  spec.license       = "MIT"
+
   spec.platform      = Gem::Platform::RUBY
   spec.required_ruby_version = ">= 1.8.7"
 
