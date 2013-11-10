@@ -15,29 +15,85 @@ module Hamster
 
     extend Forwardable
 
+    # Create a list containing the given items
+    #
+    # @example
+    #   list = Hamster.list(:a, :b, :c)
+    #   # => [:a, :b, :c]
+    #
+    # @return [Hamster::List]
+    #
+    # @api public
     def list(*items)
       items.to_list
     end
 
+    # Create a lazy, infinite list
+    #
+    # The given block is repeatedly called to yield the elements of the list.
+    #
+    # @example
+    #   Hamster.stream { :hello }.take(3)
+    #   # => [:hello, :hello, :hello]
+    #
+    # @return [Hamster::List]
+    #
+    # @api public
     def stream(&block)
       return EmptyList unless block_given?
       Stream.new { Sequence.new(yield, stream(&block)) }
     end
 
+    # Construct a list of consecutive integers
+    #
+    # @example
+    #   Hamster.interval(5,9)
+    #   # => [5, 6, 7, 8, 9]
+    #
+    # @param from [Integer] Start value, inclusive
+    # @param from [Integer] End value, inclusive
+    # @return [Hamster::List]
+    #
+    # @api public
     def interval(from, to)
       return EmptyList if from > to
       interval_exclusive(from, to.next)
     end
     def_delegator :self, :interval, :range
 
+    # Create an infinite list repeating the same item indefinitely
+    #
+    # @example
+    #   Hamster.repeat(:chunky).take(4)
+    #   => [:chunky, :chunky, :chunky, :chunky]
+    #
+    # @api public
     def repeat(item)
       Stream.new { Sequence.new(item, repeat(item)) }
     end
 
+    # Create a list that contains a given item a fixed number of times
+    #
+    # @example
+    #   Hamster.replicate(3).(:hamster)
+    #   #=> [:hamster, :hamster, :hamster]
+    #
+    # @api public
     def replicate(number, item)
       repeat(item).take(number)
     end
 
+    # Create an infinite list where each item is based on the previous one
+    #
+    # @example
+    #   Hamster.iterate(0) {|i| i.next}.take(5)
+    #   # => [0, 1, 2, 3, 4]
+    #
+    # @param item [Object] Starting value
+    # @yieldparam [Object] The previous value
+    # @yieldreturn [Object] The next value
+    #
+    # @api public
     def iterate(item, &block)
       Stream.new { Sequence.new(item, iterate(yield(item), &block)) }
     end
@@ -51,6 +107,20 @@ module Hamster
 
   end
 
+  # Common behavior for lists
+  #
+  # A +Hamster::List+ can be constructed with {Hamster.list Hamster.list}. It
+  # consists of a +head+ (the first element) and a +tail+, containing the rest
+  # of the list.
+  #
+  # This is a singly linked list. Prepending to the list with {List#cons} runs
+  # in constant time. Traversing the list from front to back is efficient,
+  # indexed access however runs in linear time because the list needs to be
+  # traversed to find the element.
+  #
+  # In practice lists are constructed of a combination of {Sequence}, providing
+  # the basic blocks that are linked, {Stream} for providing laziness, and
+  # {EmptyList} as a terminator.
   module List
 
     extend Forwardable
@@ -434,6 +504,16 @@ module Hamster
 
   end
 
+  # The basic building block for constructing lists
+  #
+  # A Sequence, also known as a "cons cell", has a +head+ and a +tail+, where
+  # the +head+ is an element in the list, and the +tail+ is a reference to the
+  # rest of the list. This way a singly linked list can be constructed, with
+  # each +Sequence+ holding a single element and a pointer to the next
+  # +Sequence+.
+  #
+  # The last +Sequence+ instance in the chain has the {EmptyList} as its tail.
+  #
   class Sequence
 
     include List
@@ -451,6 +531,17 @@ module Hamster
 
   end
 
+  # Lazy list stream
+  #
+  # A +Stream+ takes a block that returns a +List+, i.e. an object that responds
+  # to +head+, +tail+ and +empty?+. The list is only realized when one of these
+  # operations is performed.
+  #
+  # By returning a +Sequence+ that in turn has a {Stream} as its +tail+, one can
+  # construct infinite lazy lists.
+  #
+  # The recommended interface for using this is through {Hamster.stream Hamster.stream}
+  #
   class Stream
 
     extend Forwardable
@@ -490,6 +581,10 @@ module Hamster
 
   end
 
+  # A list without any elements
+  #
+  # This is a singleton, since all empty lists are equivalent. It is used
+  # as a terminating element in a chain of +Sequence+ instances.
   module EmptyList
 
     class << self
