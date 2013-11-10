@@ -1,4 +1,5 @@
 require File.expand_path('../lib/hamster/version', __FILE__)
+# coding: utf-8
 
 Gem::Specification.new do |s|
   s.name             = "hamster"
