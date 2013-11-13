@@ -57,8 +57,6 @@ Contact
 
   - GitHub:   http://github.com/harukizaemon/hamster
   - RubyGems: https://rubygems.org/gems/hamster
-  - email:    haruki_zaemon@mac.com
-  - IRC:      ##haruki_zaemon on freenode
 
 
 Using
