@@ -98,6 +98,29 @@ module Hamster
       Stream.new { Sequence.new(item, iterate(yield(item), &block)) }
     end
 
+    # Turn an enumerator into a Hamster list
+    #
+    # The result is a lazy collection where the values are memoized as they are
+    # generated.
+    #
+    # @example
+    #   def rg ; loop { yield rand(100) } ; end
+    #   Hamster.enumerate(to_enum(:rg)).take(10)
+    #
+    # @param enum [Enumerator] The object to iterate over
+    # @return [Stream]
+    #
+    # @api public
+    def enumerate(enum)
+      Stream.new do
+        begin
+          Sequence.new(enum.next, enumerate(enum))
+        rescue StopIteration
+          EmptyList
+        end
+      end
+    end
+
     private
 
     def interval_exclusive(from, to)
