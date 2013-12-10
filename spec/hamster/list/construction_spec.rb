@@ -137,4 +137,27 @@ describe Hamster do
 
   end
 
+  describe ".enumerate" do
+    let(:counter) { i = 0 ; -> { i+=1 } }
+
+    let(:enum) do
+      Enumerator.new do |yielder|
+        yielder << 1
+        yielder << 2
+        yielder << 3
+        raise "list fully realized"
+      end
+    end
+
+    let(:list) { Hamster.enumerate(enum) }
+
+    it 'should return a list based on the values yielded from the enumerator' do
+      expect(list.take(2)).to eq Hamster.list(1,2)
+    end
+
+    it 'should realize values as they are needed' do
+      expect { list.take(3).to_a }.to raise_exception
+    end
+  end
+
 end
