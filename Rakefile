@@ -4,9 +4,7 @@ require "rspec/core/rake_task"
 require "yard"
 require "pathname"
 
-HAMSTER_ROOT = Pathname.new(__FILE__).join('../..')
-BENCH_ROOT   = HAMSTER_ROOT.join('bench')
-
+HAMSTER_ROOT = Pathname.new(__FILE__).dirname
 
 RSpec::Core::RakeTask.new(:spec)
 
@@ -19,16 +17,25 @@ desc "Default: run tests and generate docs"
 task default: [ :spec, :yard ]
 
 
-def bench_task_name(file_name)
-  file_name.relative_path_from(HAMSTER_ROOT).sub(/\_bench.rb$/, '').to_s.tr('/', ':')
+def bench_suites
+  Dir[ HAMSTER_ROOT.join('bench/*') ]
+    .map(&method(:Pathname))
+    .select(&:directory?)
 end
 
-bench_suites = Dir[HAMSTER_ROOT.join('bench/*')].map(&method(:Pathname)).select(&:directory?)
+def bench_files(suite)
+  Dir[File.join(suite, '/**/*.rb')].map(&method(:Pathname))
+end
 
-bench_suites.each do |bench_suite|
-  bench_files = Dir[File.join(bench_suite, '/**/*.rb')].map(&method(:Pathname))
+def bench_task_name(file_name)
+  file_name.relative_path_from(HAMSTER_ROOT)
+           .sub(/\_bench.rb$/, '')
+           .to_s
+           .tr('/', ':')
+end
 
-  bench_files.each do |bench_file|
+bench_suites.each do |suite|
+  bench_files(suite).each do |bench_file|
     name = bench_task_name(bench_file)
 
     desc "Benchmark #{name}"
@@ -37,17 +44,18 @@ bench_suites.each do |bench_suite|
         $LOAD_PATH.unshift HAMSTER_ROOT.join('lib')
         load bench_file
       rescue LoadError => e
-        if e.path == 'benchmark/ips'
-          STDERR.puts "Please install the benchmark-ips gem"
+        if e.message == /benchmark\/ips/
+          $stderr.puts "Please install the benchmark-ips gem"
         else
-          STDERR.puts e
+          $stderr.puts e
         end
+        exit 69 # EX_UNAVAILABLE
       end
     end
   end
 
-  desc "Benchmark #{bench_task_name(bench_suite)}"
-  task bench_task_name(bench_suite) => bench_files.map(&method(:bench_task_name))
+  desc "Benchmark #{bench_task_name(suite)}"
+  task bench_task_name(suite) => bench_files(suite).map(&method(:bench_task_name))
 end
 
 desc "Run all benchmarks"
