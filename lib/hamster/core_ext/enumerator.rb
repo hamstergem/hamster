@@ -6,15 +6,9 @@ module Hamster
 
     module Enumerator
 
+      # @deprecated Please use {Hamster#enumerate} instead
       def to_list
-        Stream.new do
-          begin
-            Sequence.new(self.next, to_list)
-          rescue StopIteration
-            EmptyList
-          end
-        end
-
+        Hamster.enumerate(self)
       end
 
     end
