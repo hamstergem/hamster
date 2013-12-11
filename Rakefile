@@ -5,6 +5,8 @@ require "rubocop/rake_task"
 require "yard"
 require "pathname"
 
+ENV["COVERALLS_NOISY"] = "true"
+
 HAMSTER_ROOT = Pathname.new(__FILE__).dirname
 desc "Check all files for style guidelines"
 Rubocop::RakeTask.new
