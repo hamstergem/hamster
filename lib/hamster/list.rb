@@ -189,6 +189,16 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
+    def flat_map(&block)
+      return self unless block_given?
+      Stream.new do
+        next self if empty?
+        head_list = Hamster.list(*yield(head))
+        next tail.flat_map(&block) if head_list.empty?
+        Sequence.new(head_list.first, head_list.drop(1).append(tail.flat_map(&block)))
+      end
+    end
+
     def filter(&block)
       return self unless block_given?
       Stream.new do
