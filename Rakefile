@@ -1,11 +1,15 @@
 #!/usr/bin/env rake
 require "bundler/gem_tasks"
 require "rspec/core/rake_task"
+require "rubocop/rake_task"
 require "yard"
 require "pathname"
 
 HAMSTER_ROOT = Pathname.new(__FILE__).dirname
+desc "Check all files for style guidelines"
+Rubocop::RakeTask.new
 
+desc "Run all the tests in spec/"
 RSpec::Core::RakeTask.new(:spec)
 
 desc "Generate all of the docs"
@@ -60,3 +64,5 @@ end
 
 desc "Run all benchmarks"
 task bench: bench_suites.map(&method(:bench_task_name))
+desc "Default: run tests and generate docs"
+task default: [ :spec, :yard, :rubocop ]
