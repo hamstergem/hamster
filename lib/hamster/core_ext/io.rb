@@ -6,7 +6,7 @@ module Hamster
 
     module IO
 
-      def to_list(sep = $/)
+      def to_list(sep = $INPUT_RECORD_SEPARATOR)
         Stream.new do
           line = gets(sep)
           if line
