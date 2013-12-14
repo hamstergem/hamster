@@ -145,7 +145,6 @@ module Hamster
   # the basic blocks that are linked, {Stream} for providing laziness, and
   # {EmptyList} as a terminator.
   module List
-
     extend Forwardable
 
     include Enumerable
@@ -153,7 +152,6 @@ module Hamster
     CADR = /^c([ad]+)r$/
 
     def_delegator :self, :head, :first
-
     def_delegator :self, :empty?, :null?
 
     def size

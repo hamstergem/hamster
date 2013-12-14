@@ -7,7 +7,11 @@ require "pry"
 require "rspec"
 
 def fixture(name)
-  File.read(File.join("spec", "fixtures", name))
+  File.read(fixture_path(name))
+end
+
+def fixture_path(name)
+  File.join("spec", "fixtures", name)
 end
 
 if RUBY_ENGINE == "ruby"
