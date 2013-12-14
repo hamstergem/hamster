@@ -1,7 +1,6 @@
-require 'forwardable'
-
-require 'hamster/undefined'
-require 'hamster/tuple'
+require "forwardable"
+require "hamster/undefined"
+require "hamster/tuple"
 
 module Hamster
 
@@ -10,12 +9,12 @@ module Hamster
     extend Forwardable
 
     def each
-      raise NoMethodError, "undefined method `each' for #{self.class.name}"
+      fail NoMethodError, "undefined method `each' for #{self.class.name}"
     end
     def_delegator :self, :each, :foreach
 
     def filter
-      raise NoMethodError, "undefined method `filter' for #{self.class.name}"
+      fail NoMethodError, "undefined method `filter' for #{self.class.name}"
     end
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all

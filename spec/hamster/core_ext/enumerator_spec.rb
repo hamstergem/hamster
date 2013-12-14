@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/core_ext/enumerator'
+require "hamster/core_ext/enumerator"
 
 describe Enumerator do
 

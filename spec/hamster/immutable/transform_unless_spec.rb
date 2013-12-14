@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/immutable'
+require "hamster/immutable"
 
 describe Hamster::Immutable do
 

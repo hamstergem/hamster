@@ -1,7 +1,7 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/stack'
-require 'hamster/list'
+require "hamster/stack"
+require "hamster/list"
 
 describe Hamster::Stack do
 

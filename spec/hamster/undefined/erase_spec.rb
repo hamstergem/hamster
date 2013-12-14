@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/undefined'
+require "hamster/undefined"
 
 describe Hamster::Undefined do
 

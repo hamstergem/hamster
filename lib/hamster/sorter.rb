@@ -1,7 +1,7 @@
-require 'forwardable'
+require "forwardable"
 
-require 'hamster/immutable'
-require 'hamster/core_ext/enumerator'
+require "hamster/immutable"
+require "hamster/core_ext/enumerator"
 
 module Hamster
 

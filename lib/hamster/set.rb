@@ -1,11 +1,11 @@
-require 'forwardable'
+require "forwardable"
 
-require 'hamster/immutable'
-require 'hamster/undefined'
-require 'hamster/enumerable'
-require 'hamster/sorter'
-require 'hamster/trie'
-require 'hamster/list'
+require "hamster/immutable"
+require "hamster/undefined"
+require "hamster/enumerable"
+require "hamster/sorter"
+require "hamster/trie"
+require "hamster/list"
 
 module Hamster
 

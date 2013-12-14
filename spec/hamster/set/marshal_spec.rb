@@ -1,12 +1,12 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/set'
+require "hamster/set"
 
 describe Hamster::Set do
 
   describe "#marshal_dump/#marshal_load" do
 
-    let (:ruby) { File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name']) }
+    let (:ruby) { File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"]) }
 
     let (:child_cmd) {
       %Q|#{ruby} -I lib -r hamster -e 'set = Hamster.set :one, :two; $stdout.write(Marshal.dump(set))'|

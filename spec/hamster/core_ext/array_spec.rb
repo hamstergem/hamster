@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/core_ext/enumerable'
+require "hamster/core_ext/enumerable"
 
 describe Array do
 

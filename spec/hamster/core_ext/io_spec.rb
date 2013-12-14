@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/core_ext/io'
+require "hamster/core_ext/io"
 
 describe IO do
 

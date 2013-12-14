@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 

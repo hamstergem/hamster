@@ -1,5 +1,5 @@
-require 'forwardable'
-require 'thread'
+require "forwardable"
+require "thread"
 
 module Hamster
 

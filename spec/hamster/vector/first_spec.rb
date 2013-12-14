@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/vector'
+require "hamster/vector"
 
 describe Hamster::Vector do
 

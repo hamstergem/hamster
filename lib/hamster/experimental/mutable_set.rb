@@ -1,6 +1,6 @@
-require 'forwardable'
-require 'hamster/set'
-require 'hamster/read_copy_update'
+require "forwardable"
+require "hamster/set"
+require "hamster/read_copy_update"
 
 module Hamster
 

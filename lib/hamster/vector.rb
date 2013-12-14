@@ -1,8 +1,8 @@
-require 'forwardable'
+require "forwardable"
 
-require 'hamster/undefined'
-require 'hamster/immutable'
-require 'hamster/enumerable'
+require "hamster/undefined"
+require "hamster/immutable"
+require "hamster/enumerable"
 
 module Hamster
 

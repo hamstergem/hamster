@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/experimental/mutable_stack'
+require "hamster/experimental/mutable_stack"
 
 describe Hamster::MutableStack do
 

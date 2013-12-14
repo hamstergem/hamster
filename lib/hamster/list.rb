@@ -1,13 +1,13 @@
-require 'forwardable'
-require 'thread'
+require "forwardable"
+require "thread"
 
-require 'hamster/core_ext/enumerable'
-require 'hamster/undefined'
-require 'hamster/enumerable'
-require 'hamster/tuple'
-require 'hamster/sorter'
-require 'hamster/hash'
-require 'hamster/set'
+require "hamster/core_ext/enumerable"
+require "hamster/undefined"
+require "hamster/enumerable"
+require "hamster/tuple"
+require "hamster/sorter"
+require "hamster/hash"
+require "hamster/set"
 
 module Hamster
 

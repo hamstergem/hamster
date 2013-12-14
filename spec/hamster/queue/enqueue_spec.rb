@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/queue'
+require "hamster/queue"
 
 describe Hamster::Queue do
 

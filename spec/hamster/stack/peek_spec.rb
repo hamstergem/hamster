@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/stack'
+require "hamster/stack"
 
 describe Hamster::Stack do
 

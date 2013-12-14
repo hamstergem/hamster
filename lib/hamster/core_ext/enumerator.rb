@@ -1,4 +1,4 @@
-require 'hamster/list'
+require "hamster/list"
 
 module Hamster
 

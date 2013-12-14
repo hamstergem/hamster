@@ -1,6 +1,6 @@
-require 'forwardable'
+require "forwardable"
 
-require 'hamster/immutable'
+require "hamster/immutable"
 
 module Hamster
 
