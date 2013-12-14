@@ -167,7 +167,7 @@ module Hamster
     def_delegator :self, :cons, :>>
 
     def add(item)
-      self.append(Hamster.list(item))
+      append(Hamster.list(item))
     end
     def_delegator :self, :add, :<<
 
@@ -280,7 +280,7 @@ module Hamster
     def cycle
       Stream.new do
         next self if empty?
-        Sequence.new(head, tail.append(self.cycle))
+        Sequence.new(head, tail.append(cycle))
       end
     end
 
@@ -335,7 +335,7 @@ module Hamster
     def_delegator :self, :uniq, :remove_duplicates
 
     def union(other)
-      self.append(other).uniq
+      append(other).uniq
     end
     def_delegator :self, :union, :|
 

@@ -155,7 +155,7 @@ module Hamster
     end
 
     def slice(*keys)
-      except(*self.keys - keys)
+      except(*keys - keys)
     end
 
     def keys
