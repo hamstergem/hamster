@@ -1,4 +1,5 @@
 require "hamster/list"
+require "english"
 
 module Hamster
   module CoreExt
