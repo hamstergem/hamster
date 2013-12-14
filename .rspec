@@ -1,2 +1,5 @@
 --colour
 --format documentation
+--backtrace
+--fail-fast
+--profile

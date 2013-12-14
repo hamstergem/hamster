@@ -13,7 +13,9 @@ desc "Check all files for style guidelines"
 Rubocop::RakeTask.new
 
 desc "Run all the tests in spec/"
-RSpec::Core::RakeTask.new(:spec)
+RSpec::Core::RakeTask.new(:spec) do |config|
+  config.verbose = false
+end
 
 desc "Generate all of the docs"
 YARD::Rake::YardocTask.new do |config|
