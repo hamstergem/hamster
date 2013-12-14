@@ -152,8 +152,8 @@ module Hamster
       keys.reduce(self) { |hash, key| hash.delete(key) }
     end
 
-    def slice(*keys)
-      except(*keys - keys)
+    def slice(*wanted)
+      except(*keys - wanted)
     end
 
     def keys
