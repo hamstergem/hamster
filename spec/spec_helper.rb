@@ -6,6 +6,10 @@ end
 require "pry"
 require "rspec"
 
+def fixture(name)
+  File.read(File.join("spec", "fixtures", name))
+end
+
 if RUBY_ENGINE == "ruby"
   def calculate_stack_overflow_depth(n)
     calculate_stack_overflow_depth(n + 1)
