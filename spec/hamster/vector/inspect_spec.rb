@@ -24,7 +24,5 @@ describe Hamster::Vector do
       end
 
     end
-
   end
-
 end

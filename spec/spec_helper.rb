@@ -31,9 +31,7 @@ class DeterministicHash
   def inspect
     @value.inspect
   end
-
   def hash
     @hash
   end
-
 end

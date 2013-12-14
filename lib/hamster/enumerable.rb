@@ -3,9 +3,7 @@ require "hamster/undefined"
 require "hamster/tuple"
 
 module Hamster
-
   module Enumerable
-
     extend Forwardable
 
     def each
@@ -78,7 +76,7 @@ module Hamster
     end
 
     def one?
-      return one? { |item| !! item } unless block_given?
+      return one? { |item| !!item } unless block_given?
       reduce(false) do |previously_matched, item|
         if yield(item)
           return false if previously_matched
@@ -134,7 +132,5 @@ module Hamster
     end
     def_delegator :self, :to_a, :entries
     def_delegator :self, :to_a, :to_ary
-
   end
-
 end

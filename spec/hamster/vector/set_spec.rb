@@ -4,7 +4,6 @@ require "hamster/vector"
 describe Hamster::Vector do
 
   describe "#set" do
-
     describe "when empty" do
 
       before do
@@ -16,7 +15,6 @@ describe Hamster::Vector do
           lambda { @vector.set(i) }.should raise_error
         end
       end
-
     end
 
     describe "when not empty" do
@@ -44,7 +42,6 @@ describe Hamster::Vector do
               result = @original.set(1, &:downcase)
               result.should == Hamster.vector("A", "b", "C")
             end
-
           end
 
           describe "outside the absolute bounds of the vector" do
@@ -52,9 +49,7 @@ describe Hamster::Vector do
             it "raises an error" do
               lambda { @original.set(@original.size) {} }.should raise_error
             end
-
           end
-
         end
 
         describe "and a negative index" do
@@ -74,7 +69,6 @@ describe Hamster::Vector do
               result = @original.set(-2, &:downcase)
               result.should == Hamster.vector("A", "b", "C")
             end
-
           end
 
           describe "outside the absolute bounds of the vector" do
@@ -82,11 +76,8 @@ describe Hamster::Vector do
             it "raises an error" do
               lambda { @original.set(-@original.size.next) {} }.should raise_error
             end
-
           end
-
         end
-
       end
 
       describe "with a value" do
@@ -106,7 +97,6 @@ describe Hamster::Vector do
             it "sets the new value at the specified index" do
               @result.should == Hamster.vector("A", "FLIBBLE", "C")
             end
-
           end
 
           describe "outside the absolute bounds of the vector" do
@@ -114,9 +104,7 @@ describe Hamster::Vector do
             it "raises an error" do
               lambda { @original.set(@original.size, "FLIBBLE") }.should raise_error
             end
-
           end
-
         end
 
         describe "with a negative index" do
@@ -132,7 +120,6 @@ describe Hamster::Vector do
           it "sets the new value at the specified index" do
             @result.should == Hamster.vector("A", "FLIBBLE", "C")
           end
-
         end
 
         describe "outside the absolute bounds of the vector" do
@@ -140,13 +127,8 @@ describe Hamster::Vector do
           it "raises an error" do
             lambda { @original.set(-@original.size.next, "FLIBBLE") }.should raise_error
           end
-
         end
-
       end
-
     end
-
   end
-
 end

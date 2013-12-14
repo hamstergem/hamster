@@ -5,17 +5,13 @@ require "hamster/immutable"
 require "hamster/enumerable"
 
 module Hamster
-
   def self.vector(*items)
     items.reduce(EmptyVector) { |vector, item| vector.add(item) }
   end
 
   class Vector
-
     extend Forwardable
-
     include Immutable
-
     include Enumerable
 
     BLOCK_SIZE = 32
@@ -155,9 +151,7 @@ module Hamster
     def root_index_bits
       @levels * BITS_PER_LEVEL
     end
-
   end
 
   EmptyVector = Vector.new
-
 end

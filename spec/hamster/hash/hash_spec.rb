@@ -27,7 +27,7 @@ describe Hamster::Hash do
       # bucket in the trie, so depending on which one gets added first, one
       # of them will end up in a child trie. The hash value should be the
       # same regardless of which is added first
-      Hamster.hash.put(:issued_at, nil).put(:expires_at, nil).hash.should == 
+      Hamster.hash.put(:issued_at, nil).put(:expires_at, nil).hash.should ==
         Hamster.hash.put(:expires_at, nil).put(:issued_at, nil).hash
     end
 

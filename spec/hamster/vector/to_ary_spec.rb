@@ -35,9 +35,7 @@ describe Hamster::Vector do
         array = *@vector
         array.should == ["A", "B", "C", "D"]
       end
-
     end
 
   end
-
 end

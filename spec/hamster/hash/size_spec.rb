@@ -22,7 +22,7 @@ describe Hamster::Hash do
 
       lots = (1..10842).to_a
       srand 89533474
-      random_things = (lots + lots).sort_by{|x|rand}
+      random_things = (lots + lots).sort_by { |x|rand }
 
       it "should have the correct size after adding lots of things with colliding keys and such" do
         h = Hamster.hash
@@ -32,8 +32,8 @@ describe Hamster::Hash do
         h.size.should == 10842
       end
 
-      random_actions = (lots.map{|x|[:add, x]} + lots.map{|x|[:add, x]} + lots.map{|x|[:remove, x]}).
-        sort_by{|x|rand}
+      random_actions = (lots.map { |x|[:add, x] } + lots.map { |x|[:add, x] } + lots.map { |x|[:remove, x] }).
+        sort_by { |x|rand }
       ending_size = random_actions.reduce({}) do |h, (act, ob)|
         if act == :add
           h[ob] = 1

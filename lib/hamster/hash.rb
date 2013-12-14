@@ -197,7 +197,7 @@ module Hamster
       output
     end
 
-    def marshal_load dictionary
+    def marshal_load(dictionary)
       @trie = dictionary.reduce EmptyTrie do |trie, key_value|
         trie.put(key_value.first, key_value.last)
       end

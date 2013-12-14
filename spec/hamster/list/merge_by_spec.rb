@@ -30,7 +30,7 @@ describe Hamster::List do
 
     context "with multiple lists" do
 
-      subject { Hamster.list(Hamster.list(3, 6, 7, 8), Hamster.list(1, 2, 4, 5, 9))}
+      subject { Hamster.list(Hamster.list(3, 6, 7, 8), Hamster.list(1, 2, 4, 5, 9)) }
 
       it "merges the lists based on natural sort order" do
         subject.merge_by.should == Hamster.list(1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -66,7 +66,7 @@ describe Hamster::List do
 
     context "with multiple lists" do
 
-      subject { Hamster.list(Hamster.list(8, 7, 6, 3), Hamster.list(9, 5, 4, 2, 1))}
+      subject { Hamster.list(Hamster.list(8, 7, 6, 3), Hamster.list(9, 5, 4, 2, 1)) }
 
       it "merges the lists based on the specified transformer" do
         subject.merge_by { |item| -item }.should == Hamster.list(9, 8, 7, 6, 5, 4, 3, 2, 1)

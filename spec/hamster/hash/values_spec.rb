@@ -27,7 +27,7 @@ describe Hamster::Hash do
 
     it "returns the keys as a list" do
       @result.should be_a Hamster::List
-      @result.to_a.sort.should == [15,15,19]
+      @result.to_a.sort.should == [15, 15, 19]
     end
   end
 

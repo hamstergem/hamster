@@ -25,7 +25,7 @@ module Hamster
 
     # Returns <tt>true</tt> if the given key is present in the trie.
     def has_key?(key)
-      !! get(key)
+      !!get(key)
     end
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
