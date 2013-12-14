@@ -18,6 +18,7 @@ else
 end
 
 class DeterministicHash
+  attr_reader :hash
 
   def initialize(value, hash)
     @value = value
@@ -30,8 +31,5 @@ class DeterministicHash
 
   def inspect
     @value.inspect
-  end
-  def hash
-    @hash
   end
 end
