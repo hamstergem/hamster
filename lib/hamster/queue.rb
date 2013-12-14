@@ -52,10 +52,10 @@ module Hamster
         rear = EmptyList
       end
 
-      transform {
+      transform do
         @front = front.tail
         @rear = rear
-      }
+      end
     end
     def_delegator :self, :dequeue, :tail
 
