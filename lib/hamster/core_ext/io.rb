@@ -1,11 +1,8 @@
 require "hamster/list"
 
 module Hamster
-
   module CoreExt
-
     module IO
-
       def to_list(sep = $INPUT_RECORD_SEPARATOR)
         Stream.new do
           line = gets(sep)
@@ -16,15 +13,10 @@ module Hamster
           end
         end
       end
-
     end
-
   end
-
 end
 
 class IO
-
   include Hamster::CoreExt::IO
-
 end

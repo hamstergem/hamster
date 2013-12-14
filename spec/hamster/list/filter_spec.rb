@@ -1,5 +1,4 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
@@ -55,7 +54,5 @@ describe Hamster::List do
       end
 
     end
-
   end
-
 end

@@ -6,13 +6,11 @@ require "hamster/trie"
 require "hamster/list"
 
 module Hamster
-
   def self.hash(pairs = {}, &block)
     Hash.new(pairs, &block)
   end
 
   class Hash
-
     extend Forwardable
 
     include Immutable
