@@ -13,12 +13,12 @@ describe Hamster::List do
     [
       [[], []],
       [["A"], ["A"]],
-      [["A", "B", "C"], ["A", "B", "C"]],
+      [%w[A B C], %w[A B C]],
       [[nil], []],
       [[nil, "B"], ["B"]],
       [["A", nil], ["A"]],
       [[nil, nil], []],
-      [["A", nil, "C"], ["A", "C"]],
+      [["A", nil, "C"], %w[A C]],
       [[nil, "B", nil], ["B"]],
     ].each do |values, expected|
 

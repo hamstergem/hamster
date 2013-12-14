@@ -12,8 +12,8 @@ describe Hamster::Set do
         [[], [], []],
         [["A"], [], ["A"]],
         [["A"], ["A"], []],
-        [["A", "B", "C"], ["B"], ["A", "C"]],
-        [["A", "B", "C"], ["A", "C"], ["B"]],
+        [%w[A B C], ["B"], %w[A C]],
+        [%w[A B C], %w[A C], ["B"]],
       ].each do |a, b, expected|
 
         describe "for #{a.inspect} and #{b.inspect}" do

@@ -11,7 +11,7 @@ describe Hamster::Stack do
       [
         [[], []],
         [["A"], ["A"]],
-        [["A", "B", "C"], ["C", "B", "A"]],
+        [%w[A B C], ["C", "B", "A"]],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

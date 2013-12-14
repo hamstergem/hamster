@@ -7,7 +7,7 @@ describe Enumerator do
   describe "#to_list" do
 
     before do
-      @enumerator = ["A", "B", "C"].to_enum
+      @enumerator = %w[A B C].to_enum
       @list = @enumerator.to_list
     end
 

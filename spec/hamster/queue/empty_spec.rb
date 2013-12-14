@@ -11,7 +11,7 @@ describe Hamster::Queue do
       [
         [[], true],
         [["A"], false],
-        [["A", "B", "C"], false],
+        [%w[A B C], false],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
@@ -30,7 +30,7 @@ describe Hamster::Queue do
 
     end
 
-    describe "after dequeueing an item from #{["A", "B", "C"].inspect}" do
+    describe "after dequeueing an item from #{%w[A B C].inspect}" do
 
       before do
         @result = Hamster.queue("A", "B", "C").dequeue

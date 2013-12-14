@@ -23,7 +23,7 @@ describe Hamster::List do
       [
         [[], ""],
         [["A"], "A"],
-        [["A", "B", "C"], "A|B|C"]
+        [%w[A B C], "A|B|C"]
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
@@ -52,7 +52,7 @@ describe Hamster::List do
       [
         [[], ""],
         [["A"], "A"],
-        [["A", "B", "C"], "ABC"]
+        [%w[A B C], "ABC"]
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

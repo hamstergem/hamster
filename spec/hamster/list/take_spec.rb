@@ -14,8 +14,8 @@ describe Hamster::List do
       [[], 10, []],
       [["A"], 10, ["A"]],
       [["A"], -1, []],
-      [["A", "B", "C"], 0, []],
-      [["A", "B", "C"], 2, ["A", "B"]],
+      [%w[A B C], 0, []],
+      [%w[A B C], 2, ["A", "B"]],
     ].each do |values, number, expected|
 
       describe "#{number} from #{values.inspect}" do

@@ -7,17 +7,17 @@ describe Hamster::List do
   [
     [[], :car, nil],
     [["A"], :car, "A"],
-    [["A", "B", "C"], :car, "A"],
-    [["A", "B", "C"], :cadr, "B"],
-    [["A", "B", "C"], :caddr, "C"],
-    [["A", "B", "C"], :cadddr, nil],
-    [["A", "B", "C"], :caddddr, nil],
+    [%w[A B C], :car, "A"],
+    [%w[A B C], :cadr, "B"],
+    [%w[A B C], :caddr, "C"],
+    [%w[A B C], :cadddr, nil],
+    [%w[A B C], :caddddr, nil],
     [[], :cdr, Hamster.list],
     [["A"], :cdr, Hamster.list],
-    [["A", "B", "C"], :cdr, Hamster.list("B", "C")],
-    [["A", "B", "C"], :cddr, Hamster.list("C")],
-    [["A", "B", "C"], :cdddr, Hamster.list],
-    [["A", "B", "C"], :cddddr, Hamster.list],
+    [%w[A B C], :cdr, Hamster.list("B", "C")],
+    [%w[A B C], :cddr, Hamster.list("C")],
+    [%w[A B C], :cdddr, Hamster.list],
+    [%w[A B C], :cddddr, Hamster.list],
   ].each do |values, method, expected|
 
     describe "##{method}" do

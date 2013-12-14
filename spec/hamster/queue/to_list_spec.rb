@@ -10,7 +10,7 @@ describe Hamster::Queue do
     [
       [],
       ["A"],
-      ["A", "B", "C"],
+      %w[A B C],
     ].each do |values|
 
       describe "on #{values.inspect}" do
@@ -27,7 +27,7 @@ describe Hamster::Queue do
 
     end
 
-    describe "after dequeueing an item from #{["A", "B", "C"].inspect}" do
+    describe "after dequeueing an item from #{%w[A B C].inspect}" do
 
       before do
         @list = Hamster.queue("A", "B", "C").dequeue.to_list

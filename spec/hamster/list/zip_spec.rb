@@ -15,7 +15,7 @@ describe Hamster::List do
       [["A"], ["aye"], [Hamster.list("A", "aye")]],
       [["A"], [], [Hamster.list("A", nil)]],
       [[], ["A"], [Hamster.list(nil, "A")]],
-      [["A", "B", "C"], ["aye", "bee", "see"], [Hamster.list("A", "aye"), Hamster.list("B", "bee"), Hamster.list("C", "see")]],
+      [%w[A B C], ["aye", "bee", "see"], [Hamster.list("A", "aye"), Hamster.list("B", "bee"), Hamster.list("C", "see")]],
     ].each do |left, right, expected|
 
       describe "on #{left.inspect} and #{right.inspect}" do

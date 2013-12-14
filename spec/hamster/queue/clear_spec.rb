@@ -9,7 +9,7 @@ describe Hamster::Queue do
     [
       [],
       ["A"],
-      ["A", "B", "C"],
+      %w[A B C],
     ].each do |values|
 
       describe "on #{values}" do

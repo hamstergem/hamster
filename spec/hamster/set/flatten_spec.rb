@@ -8,9 +8,9 @@ describe Hamster do
 
     [
       [["A"], ["A"]],
-      [["A", "B", "C"], ["A", "B", "C"]],
-      [["A", Hamster.set("B"), "C"], ["A", "B", "C"]],
-      [[Hamster.set("A"), Hamster.set("B"), Hamster.set("C")], ["A", "B", "C"]],
+      [%w[A B C], %w[A B C]],
+      [["A", Hamster.set("B"), "C"], %w[A B C]],
+      [[Hamster.set("A"), Hamster.set("B"), Hamster.set("C")], %w[A B C]],
     ].each do |values, expected|
 
       describe "on #{values}" do

@@ -16,7 +16,7 @@ describe Hamster::Set do
         end
 
         it "a standard set" do
-          @set.send(method, Set["A", "B", "C"]).should == false
+          @set.send(method, Set%w[A B C]).should == false
         end
 
         it "an aribtrary object" do
@@ -32,8 +32,8 @@ describe Hamster::Set do
         [["A"], ["A"], true],
         [["A"], ["B"], false],
         [["A", "B"], ["A"], false],
-        [["A", "B", "C"], ["A", "B", "C"], true],
-        [["C", "A", "B"], ["A", "B", "C"], true],
+        [%w[A B C], %w[A B C], true],
+        [["C", "A", "B"], %w[A B C], true],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do

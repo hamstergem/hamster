@@ -12,7 +12,7 @@ describe Hamster::List do
         [[], "A", ["A"]],
         [["A"], "B", ["B", "A"]],
         [["A"], "A", ["A", "A"]],
-        [["A", "B", "C"], "D", ["D", "A", "B", "C"]],
+        [%w[A B C], "D", ["D", "A", "B", "C"]],
       ].each do |values, new_value, expected|
 
         describe "on #{values.inspect} with #{new_value.inspect}" do

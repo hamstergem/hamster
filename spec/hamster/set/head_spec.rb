@@ -27,7 +27,7 @@ describe Hamster::Set do
         end
 
         it "returns an arbitrary value from the set" do
-          ["A", "B", "C"].should include(@result)
+          %w[A B C].should include(@result)
         end
 
       end

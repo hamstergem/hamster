@@ -11,13 +11,13 @@ describe Hamster::Set do
       [["A"], [], true],
       [[], ["A"], false],
       [["A"], ["A"], true],
-      [["A", "B", "C"], ["B"], true],
-      [["B"], ["A", "B", "C"], false],
-      [["A", "B", "C"], ["A", "C"], true],
-      [["A", "C"], ["A", "B", "C"], false],
-      [["A", "B", "C"], ["A", "B", "C"], true],
-      [["A", "B", "C"], ["A", "B", "C", "D"], false],
-      [["A", "B", "C", "D"], ["A", "B", "C"], true],
+      [%w[A B C], ["B"], true],
+      [["B"], %w[A B C], false],
+      [%w[A B C], %w[A C], true],
+      [%w[A C], %w[A B C], false],
+      [%w[A B C], %w[A B C], true],
+      [%w[A B C], ["A", "B", "C", "D"], false],
+      [["A", "B", "C", "D"], %w[A B C], true],
     ].each do |a, b, expected|
 
       describe "for #{a.inspect} and #{b.inspect}" do

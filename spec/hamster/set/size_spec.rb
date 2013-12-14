@@ -11,7 +11,7 @@ describe Hamster::Set do
       [
         [[], 0],
         [["A"], 1],
-        [["A", "B", "C"], 3],
+        [%w[A B C], 3],
       ].each do |values, result|
 
         it "returns #{result} for #{values.inspect}" do

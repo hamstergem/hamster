@@ -28,7 +28,7 @@ describe Hamster::List do
         end
 
         it "an array with the same contents" do
-          @list.send(method, ["A", "B", "C"]).should == false
+          @list.send(method, %w[A B C]).should == false
         end
 
         it "an aribtrary object" do
@@ -48,8 +48,8 @@ describe Hamster::List do
         [["A"], ["A"], true],
         [["A"], ["B"], false],
         [["A", "B"], ["A"], false],
-        [["A", "B", "C"], ["A", "B", "C"], true],
-        [["C", "A", "B"], ["A", "B", "C"], false],
+        [%w[A B C], %w[A B C], true],
+        [["C", "A", "B"], %w[A B C], false],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do

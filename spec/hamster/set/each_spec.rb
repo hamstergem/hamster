@@ -22,7 +22,7 @@ describe Hamster::Set do
         it "yields all values" do
           actual_values = Set[]
           @set.send(method) { |value| actual_values << value }
-          actual_values.should == Set["A", "B", "C"]
+          actual_values.should == Set%w[A B C]
         end
 
       end

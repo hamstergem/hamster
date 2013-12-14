@@ -13,9 +13,9 @@ describe Hamster do
     [
       [[], []],
       [["A"], ["A"]],
-      [["A", "B", "C"], ["A", "B", "C"]],
-      [["A", Hamster.list("B"), "C"], ["A", "B", "C"]],
-      [[Hamster.list("A"), Hamster.list("B"), Hamster.list("C")], ["A", "B", "C"]],
+      [%w[A B C], %w[A B C]],
+      [["A", Hamster.list("B"), "C"], %w[A B C]],
+      [[Hamster.list("A"), Hamster.list("B"), Hamster.list("C")], %w[A B C]],
     ].each do |values, expected|
 
       describe "on #{values}" do

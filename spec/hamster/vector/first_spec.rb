@@ -11,7 +11,7 @@ describe Hamster::Vector do
       [
         [[], nil],
         [["A"], "A"],
-        [["A", "B", "C"], "A"],
+        [%w[A B C], "A"],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

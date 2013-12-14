@@ -7,7 +7,7 @@ describe Array do
   describe "#to_list" do
 
     before do
-      array = ["A", "B", "C"]
+      array = %w[A B C]
       @list = array.to_list
     end
 

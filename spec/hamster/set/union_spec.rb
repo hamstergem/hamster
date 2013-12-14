@@ -12,7 +12,7 @@ describe Hamster::Set do
         [[], [], []],
         [["A"], [], ["A"]],
         [["A"], ["A"], ["A"]],
-        [["A", "B", "C"], [], ["A", "B", "C"]],
+        [%w[A B C], [], %w[A B C]],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do

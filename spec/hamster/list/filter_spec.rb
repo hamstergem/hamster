@@ -15,9 +15,9 @@ describe Hamster::List do
       [
         [[], []],
         [["A"], ["A"]],
-        [["A", "B", "C"], ["A", "B", "C"]],
-        [["A", "b", "C"], ["A", "C"]],
-        [["a", "b", "c"], []],
+        [%w[A B C], %w[A B C]],
+        [%w[A B C], %w[A C]],
+        [%w[a b c], []],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

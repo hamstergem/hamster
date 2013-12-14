@@ -11,7 +11,7 @@ describe Hamster::Set do
       [
         [[], true],
         [["A"], false],
-        [["A", "B", "C"], false],
+        [%w[A B C], false],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
