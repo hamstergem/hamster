@@ -26,14 +26,14 @@ describe Hamster::Hash do
 
       [
         [{}, {}, true],
-        [{"A" => "aye"}, {}, false],
-        [{}, {"A" => "aye"}, false],
-        [{"A" => "aye"}, {"A" => "aye"}, true],
-        [{"A" => "aye"}, {"B" => "bee"}, false],
-        [{"A" => "aye", "B" => "bee"}, {"A" => "aye"}, false],
-        [{"A" => "aye"}, {"A" => "aye", "B" => "bee"}, false],
-        [{"A" => "aye", "B" => "bee", "C" => "see"}, {"A" => "aye", "B" => "bee", "C" => "see"}, true],
-        [{"C" => "see", "A" => "aye", "B" => "bee"}, {"A" => "aye", "B" => "bee", "C" => "see"}, true],
+        [{ "A" => "aye" }, {}, false],
+        [{}, { "A" => "aye" }, false],
+        [{ "A" => "aye" }, { "A" => "aye" }, true],
+        [{ "A" => "aye" }, { "B" => "bee" }, false],
+        [{ "A" => "aye", "B" => "bee" }, { "A" => "aye" }, false],
+        [{ "A" => "aye" }, { "A" => "aye", "B" => "bee" }, false],
+        [{ "A" => "aye", "B" => "bee", "C" => "see" }, { "A" => "aye", "B" => "bee", "C" => "see" }, true],
+        [{ "C" => "see", "A" => "aye", "B" => "bee" }, { "A" => "aye", "B" => "bee", "C" => "see" }, true],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do

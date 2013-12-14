@@ -21,7 +21,7 @@ describe Hamster::Hash do
         it "yields all key/value pairs" do
           actual_pairs = {}
           @hash.send(method) { |key, value| actual_pairs[key] = value }
-          actual_pairs.should == {"A" => "aye", "B" => "bee", "C" => "see"}
+          actual_pairs.should == { "A" => "aye", "B" => "bee", "C" => "see" }
         end
 
       end
