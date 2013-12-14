@@ -10,7 +10,7 @@ describe Hamster::Set do
         @set = Hamster.set("A", "B", "C")
       end
 
-      describe "with a block (internal iteration)" do
+      context "with a block (internal iteration)" do
         it "returns nil" do
           @set.send(method) {}.should be_nil
         end
@@ -22,8 +22,7 @@ describe Hamster::Set do
         end
       end
 
-      describe "with no block" do
-
+      context "with no block" do
         it "returns self" do
           @set.send(method).should equal(@set)
         end
