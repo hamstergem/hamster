@@ -2,10 +2,10 @@ Hamster
 -------
 
   - [![Version](https://badge.fury.io/rb/hamster.png)](https://rubygems.org/gems/hamster)
-  - [![Climate](https://codeclimate.com/github/harukizaemon/hamster.png)](https://codeclimate.com/github/harukizaemon/hamster)
-  - [![Build](http://img.shields.io/travis-ci/harukizaemon/hamster.png)](https://travis-ci.org/harukizaemon/hamster)
-  - [![Dependencies](https://gemnasium.com/harukizaemon/hamster.png)](https://gemnasium.com/harukizaemon/hamster)
-  - [![Coverage](http://img.shields.io/coveralls/harukizaemon/hamster.png)](https://coveralls.io/r/harukizaemon/hamster)
+  - [![Climate](https://codeclimate.com/github/hamstergem/hamster.png)](https://codeclimate.com/github/hamstergem/hamster)
+  - [![Build](http://img.shields.io/travis-ci/hamstergem/hamster.png)](https://travis-ci.org/hamstergem/hamster)
+  - [![Dependencies](https://gemnasium.com/hamstergem/hamster.png)](https://gemnasium.com/hamstergem/hamster)
+  - [![Coverage](http://img.shields.io/coveralls/hamstergem/hamster.png)](https://coveralls.io/r/hamstergem/hamster)
   - [![Gittip](http://img.shields.io/gittip/hamstergem.png)](https://www.gittip.com/hamstergem/)
   - [![License](http://img.shields.io/license/MIT.png?color=green)](http://opensource.org/licenses/MIT)
 
