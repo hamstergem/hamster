@@ -14,7 +14,7 @@ CollectionMethods:
   PreferredMethods:
     collect: map
     collect!: map!
-    reduce: inject
+    inject: reduce
     detect: find
 HashSyntax:
   Enabled: false

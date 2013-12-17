@@ -1,18 +1,14 @@
 require "forwardable"
-
 require "hamster/immutable"
 require "hamster/list"
 
 module Hamster
-
   def self.stack(*items)
     items.reduce(EmptyStack) { |stack, item| stack.push(item) }
   end
 
   class Stack
-
     extend Forwardable
-
     include Immutable
 
     def initialize
@@ -74,9 +70,7 @@ module Hamster
     def inspect
       @list.inspect
     end
-
   end
 
   EmptyStack = Stack.new
-
 end

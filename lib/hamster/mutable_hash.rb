@@ -3,15 +3,12 @@ require "hamster/hash"
 require "hamster/read_copy_update"
 
 module Hamster
-
   def self.mutable_hash(pairs = {}, &block)
     MutableHash.new(hash(pairs, &block))
   end
 
   class MutableHash
-
     extend Forwardable
-
     include ReadCopyUpdate
 
     def put(key, value = Undefined, &block)
@@ -32,7 +29,5 @@ module Hamster
       end
       old_value
     end
-
   end
-
 end

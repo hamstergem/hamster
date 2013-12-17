@@ -28,7 +28,7 @@ describe Hamster::Hash do
       end
 
       random_actions = (lots.map { |x|[:add, x] } + lots.map { |x|[:add, x] } + lots.map { |x|[:remove, x] }).sort_by { |x|rand }
-      ending_size = random_actions.inject({}) do |h, (act, ob)|
+      ending_size = random_actions.reduce({}) do |h, (act, ob)|
         if act == :add
           h[ob] = 1
         else

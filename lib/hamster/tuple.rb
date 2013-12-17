@@ -1,13 +1,9 @@
 require "forwardable"
-
 require "hamster/immutable"
 
 module Hamster
-
   class Tuple
-
     extend Forwardable
-
     include Immutable
 
     def initialize(*items)
@@ -39,7 +35,5 @@ module Hamster
     def inspect
       "(#{@items.inspect[1..-2]})"
     end
-
   end
-
 end

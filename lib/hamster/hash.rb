@@ -12,7 +12,6 @@ module Hamster
 
   class Hash
     extend Forwardable
-
     include Immutable
 
     class << self
@@ -65,7 +64,7 @@ module Hamster
       elsif block_given?
         yield
       else
-        raise KeyError.new("key not found: #{key.inspect}")
+        raise KeyError, "key not found: #{key.inspect}"
       end
     end
 
@@ -200,9 +199,7 @@ module Hamster
         trie.put(key_value.first, key_value.last)
       end
     end
-
   end
 
   EmptyHash = Hash.new
-
 end

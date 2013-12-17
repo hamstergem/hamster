@@ -1,64 +1,57 @@
 require "spec_helper"
-
 require "hamster/immutable"
 
 describe Hamster::Immutable do
+  class Fixture
+    include Hamster::Immutable
+
+    def initialize(&block)
+      @block = block
+    end
+
+    def call
+      @block.call
+    end
+    memoize :call
+
+    def copy
+      transform {}
+    end
+  end
+
+  let(:immutable) { Fixture.new { @count += 1 } }
 
   describe "#memoize" do
 
-    class Fixture
-      include Hamster::Immutable
-
-      def initialize(&block)
-        @block = block
-      end
-
-      def call
-        @block.call
-      end
-      memoize :call
-
-      def copy
-        transform {}
-      end
-
-    end
-
-    before do
+    before(:each) do
       @count = 0
-      @fixture = Fixture.new { @count += 1 }
-      @fixture.call
+      immutable.call
     end
 
     it "should still freezes be immutable" do
-      @fixture.should be_immutable
+      expect(immutable).to be_immutable
     end
 
-    describe "when called multiple times" do
-
-      before do
-        @fixture.call
+    context "when called multiple times" do
+      before(:each) do
+        immutable.call
       end
 
-      it "a memoized method will only be evaluated once" do
-        @count.should == 1
+      it "doesn't evaluate the memoized method more than once" do
+        expect(@count).to eq(1)
       end
-
     end
 
     describe "when making a copy" do
+      let(:copy) { immutable.copy }
 
-      before do
-        @copy = @fixture.copy
-        @copy.call
+      before(:each) do
+        copy.call
       end
 
       it "should clear all memory" do
-        @count.should == 2
+        expect(@count).to eq(2)
       end
-
     end
-
   end
-
 end

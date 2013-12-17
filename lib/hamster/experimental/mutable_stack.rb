@@ -3,15 +3,12 @@ require "hamster/stack"
 require "hamster/read_copy_update"
 
 module Hamster
-
   def self.mutable_stack(*items)
     MutableStack.new(stack(*items))
   end
 
   class MutableStack
-
     extend Forwardable
-
     include ReadCopyUpdate
 
     def push(item)
@@ -29,7 +26,5 @@ module Hamster
       top
     end
     def_delegator :self, :pop, :dequeue
-
   end
-
 end

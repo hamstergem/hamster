@@ -1,12 +1,11 @@
 require "forwardable"
-
 require "hamster/undefined"
 require "hamster/immutable"
 require "hamster/enumerable"
 
 module Hamster
   def self.vector(*items)
-    items.reduce(EmptyVector) { |vector, item| vector.add(item) }
+    items.reduce(EmptyVector) { |a, element| a.add(element) }
   end
 
   class Vector
@@ -18,6 +17,9 @@ module Hamster
     INDEX_MASK = BLOCK_SIZE - 1
     BITS_PER_LEVEL = 5
 
+    attr_reader :size
+    def_delegator :self, :size, :length
+
     def initialize
       @levels = 0
       @root = []
@@ -28,11 +30,6 @@ module Hamster
       @size == 0
     end
     def_delegator :self, :empty?, :null?
-
-    def size
-      @size
-    end
-    def_delegator :self, :size, :length
 
     def first
       get(0)
@@ -57,7 +54,7 @@ module Hamster
 
     def set(index, item = Undefined)
       return set(index, yield(get(index))) if item.equal?(Undefined)
-      raise IndexError if empty? or index == @size
+      raise IndexError if empty? || index == @size
       raise IndexError if index.abs > @size
       return set(@size + index, item) if index < 0
       transform do
@@ -66,7 +63,7 @@ module Hamster
     end
 
     def get(index)
-      return nil if empty? or index == @size
+      return nil if empty? || index == @size
       return nil if index.abs > @size
       return get(@size + index) if index < 0
       leaf_node_for(@root, root_index_bits, index)[index & INDEX_MASK]
@@ -126,7 +123,8 @@ module Hamster
     def copy_leaf_node_for(node, child_index_bits, index)
       return node if child_index_bits == 0
       child_index = (index >> child_index_bits) & INDEX_MASK
-      if child_node = node[child_index]
+      child_node = node[child_index]
+      if child_node
         child_node = child_node.dup
       else
         child_node = []

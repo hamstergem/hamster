@@ -3,15 +3,12 @@ require "hamster/queue"
 require "hamster/read_copy_update"
 
 module Hamster
-
   def self.mutable_queue(*items)
     MutableQueue.new(queue(*items))
   end
 
   class MutableQueue
-
     extend Forwardable
-
     include ReadCopyUpdate
 
     def enqueue(item)
@@ -28,7 +25,5 @@ module Hamster
       end
       head
     end
-
   end
-
 end

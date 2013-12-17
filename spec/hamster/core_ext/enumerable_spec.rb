@@ -1,5 +1,4 @@
 require "spec_helper"
-
 require "hamster/core_ext/enumerable"
 
 describe Enumerable do
@@ -14,18 +13,13 @@ describe Enumerable do
       @values.each(&block)
     end
   end
+  let(:enumerable) { TestEnumerable.new("A", "B", "C") }
 
   describe "#to_list" do
-
-    before do
-      enumerable = TestEnumerable.new("A", "B", "C")
-      @list = enumerable.to_list
-    end
+    let(:to_list) { enumerable.to_list }
 
     it "returns an equivalent list" do
-      @list.should == Hamster.list("A", "B", "C")
+      expect(to_list).to eq(Hamster.list("A", "B", "C"))
     end
-
   end
-
 end

@@ -1,5 +1,4 @@
 require "forwardable"
-
 require "hamster/immutable"
 require "hamster/undefined"
 require "hamster/enumerable"
@@ -8,17 +7,13 @@ require "hamster/trie"
 require "hamster/list"
 
 module Hamster
-
   def self.set(*items)
     items.reduce(EmptySet) { |set, item| set.add(item) }
   end
 
   class Set
-
     extend Forwardable
-
     include Immutable
-
     include Enumerable
 
     def initialize(trie = EmptyTrie)
@@ -87,9 +82,9 @@ module Hamster
     end
 
     def union(other)
-      trie = other.reduce(@trie) do |trie, item|
-        next trie if trie.has_key?(item)
-        trie.put(item, nil)
+      trie = other.reduce(@trie) do |a, element|
+        next a if a.has_key?(element)
+        a.put(element, nil)
       end
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
@@ -166,9 +161,7 @@ module Hamster
     def inspect
       "{#{to_a.inspect[1..-2]}}"
     end
-
   end
 
   EmptySet = Set.new
-
 end

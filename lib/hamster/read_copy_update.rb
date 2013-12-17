@@ -2,9 +2,7 @@ require "forwardable"
 require "thread"
 
 module Hamster
-
   module ReadCopyUpdate
-
     extend Forwardable
 
     def initialize(content)
@@ -34,7 +32,5 @@ module Hamster
     def method_missing(name, *args, &block)
       @content.send(name, *args, &block) rescue super
     end
-
   end
-
 end

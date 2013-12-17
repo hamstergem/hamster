@@ -1,18 +1,14 @@
 require "forwardable"
-
 require "hamster/immutable"
 require "hamster/list"
 
 module Hamster
-
   def self.queue(*items)
     items.reduce(EmptyQueue) { |queue, item| queue.enqueue(item) }
   end
 
   class Queue
-
     extend Forwardable
-
     include Immutable
 
     def initialize
@@ -85,9 +81,7 @@ module Hamster
     def inspect
       to_list.inspect
     end
-
   end
 
   EmptyQueue = Queue.new
-
 end
