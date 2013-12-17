@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#drop_while" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.drop_while { false } }.should_not raise_error
+      -> { Hamster.stream { fail }.drop_while { false } }.should_not raise_error
     end
 
     [

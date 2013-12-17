@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#chunk" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.chunk(2) }.should_not raise_error
+      -> { Hamster.stream { fail }.chunk(2) }.should_not raise_error
     end
 
     [

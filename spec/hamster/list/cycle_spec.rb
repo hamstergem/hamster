@@ -7,7 +7,7 @@ describe Hamster do
   describe "#cycle" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.cycle }.should_not raise_error
+      -> { Hamster.stream { fail }.cycle }.should_not raise_error
     end
 
     describe "with an empty list" do

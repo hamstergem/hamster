@@ -16,7 +16,7 @@ describe Hamster::List do
         end
 
         it "doesn't run out of stack" do
-          lambda { @a.send(method, @b) }.should_not raise_error
+          -> { @a.send(method, @b) }.should_not raise_error
         end
 
       end

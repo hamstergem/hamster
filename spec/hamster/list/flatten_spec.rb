@@ -7,7 +7,7 @@ describe Hamster do
   describe "#flatten" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.flatten }.should_not raise_error
+      -> { Hamster.stream { fail }.flatten }.should_not raise_error
     end
 
     [

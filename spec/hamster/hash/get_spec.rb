@@ -43,9 +43,9 @@ describe Hamster::Hash do
         end
 
         [
-          ["A", "aye"],
-          ["B", "bee"],
-          ["C", "see"],
+          %w[A aye],
+          %w[B bee],
+          %w[C see],
           [nil, "NIL"]
           ].each do |key, value|
 

@@ -8,7 +8,7 @@ describe Hamster::List do
   describe "#break" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.break { |item| false } }.should_not raise_error
+      -> { Hamster.stream { fail }.break { |item| false } }.should_not raise_error
     end
 
     [

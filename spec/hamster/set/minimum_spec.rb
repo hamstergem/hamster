@@ -13,7 +13,7 @@ describe Hamster::Set do
         [
           [[], nil],
           [["A"], "A"],
-          [["Ichi", "Ni", "San"], "Ni"],
+          [%w[Ichi Ni San], "Ni"],
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
@@ -38,7 +38,7 @@ describe Hamster::Set do
         [
           [[], nil],
           [["A"], "A"],
-          [["Ichi", "Ni", "San"], "Ichi"],
+          [%w[Ichi Ni San], "Ichi"],
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do

@@ -15,7 +15,7 @@ describe Hamster::List do
         end
 
         it "doesn't run out of stack" do
-          lambda { @list.send(method) }.should_not raise_error
+          -> { @list.send(method) }.should_not raise_error
         end
 
       end
@@ -25,7 +25,7 @@ describe Hamster::List do
         [
           [[], nil],
           [["A"], "A"],
-          [["Ichi", "Ni", "San"], "Ni"],
+          [%w[Ichi Ni San], "Ni"],
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
@@ -50,7 +50,7 @@ describe Hamster::List do
         [
           [[], nil],
           [["A"], "A"],
-          [["Ichi", "Ni", "San"], "Ichi"],
+          [%w[Ichi Ni San], "Ichi"],
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do

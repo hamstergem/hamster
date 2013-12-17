@@ -31,9 +31,9 @@ describe Hamster::Hash do
       describe "with a block" do
 
         [
-          ["A", "aye"],
-          ["B", "bee"],
-          ["C", "see"],
+          %w[A aye],
+          %w[B bee],
+          %w[C see]
           [nil, "NIL"],
         ].each do |pair|
 

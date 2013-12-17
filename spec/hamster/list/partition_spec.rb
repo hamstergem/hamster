@@ -8,7 +8,7 @@ describe Hamster::List do
   describe "#partition" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.partition }.should_not raise_error
+      -> { Hamster.stream { fail }.partition }.should_not raise_error
     end
 
     [

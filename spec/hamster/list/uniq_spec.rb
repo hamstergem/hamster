@@ -9,14 +9,14 @@ describe Hamster::List do
     describe "##{method}" do
 
       it "is lazy" do
-        lambda { Hamster.stream { fail }.uniq }.should_not raise_error
+        -> { Hamster.stream { fail }.uniq }.should_not raise_error
       end
 
       [
         [[], []],
         [["A"], ["A"]],
         [%w[A B C], %w[A B C]],
-        [["A", "B", "A", "C", "C"], %w[A B C]],
+        [%w[A B A C C], %w[A B C]],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

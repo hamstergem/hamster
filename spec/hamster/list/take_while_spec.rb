@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#take_while" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.take_while { false } }.should_not raise_error
+      -> { Hamster.stream { fail }.take_while { false } }.should_not raise_error
     end
 
     [

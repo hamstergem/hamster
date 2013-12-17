@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#inits" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.inits }.should_not raise_error
+      -> { Hamster.stream { fail }.inits }.should_not raise_error
     end
 
     [

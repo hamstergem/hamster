@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#intersperse" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.intersperse("") }.should_not raise_error
+      -> { Hamster.stream { fail }.intersperse("") }.should_not raise_error
     end
 
     [

@@ -9,7 +9,7 @@ describe Hamster::List do
     describe "##{method}" do
 
       it "is lazy" do
-        lambda { Hamster.stream { fail }.append(Hamster.stream { fail }) }.should_not raise_error
+        -> { Hamster.stream { fail }.append(Hamster.stream { fail }) }.should_not raise_error
       end
 
       [

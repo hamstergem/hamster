@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#zip" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.zip(Hamster.stream { fail }) }.should_not raise_error
+      -> { Hamster.stream { fail }.zip(Hamster.stream { fail }) }.should_not raise_error
     end
 
     [

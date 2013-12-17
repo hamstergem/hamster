@@ -8,7 +8,7 @@ describe Hamster::List do
   describe "#split_at" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.split_at(1) }.should_not raise_error
+      -> { Hamster.stream { fail }.split_at(1) }.should_not raise_error
     end
 
     [

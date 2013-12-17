@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#compact" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.compact }.should_not raise_error
+      -> { Hamster.stream { fail }.compact }.should_not raise_error
     end
 
     [

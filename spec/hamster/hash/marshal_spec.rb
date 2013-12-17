@@ -6,13 +6,13 @@ describe Hamster::Hash do
 
   describe "#marshal_dump/#marshal_load" do
 
-    let (:ruby) { File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"]) }
+    let(:ruby) { File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"]) }
 
-    let (:child_cmd) do
+    let(:child_cmd) do
       %Q|#{ruby} -I lib -r hamster -e 'dict = Hamster.hash existing_key: 42, other_thing: "data"; $stdout.write(Marshal.dump(dict))'|
     end
 
-    let (:reloaded_hash) do
+    let(:reloaded_hash) do
       IO.popen(child_cmd, "r+") do |child|
         reloaded_hash = Marshal.load(child)
         child.close

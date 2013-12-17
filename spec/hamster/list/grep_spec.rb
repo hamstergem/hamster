@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#grep" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.grep(Object) { |item| item } }.should_not raise_error
+      -> { Hamster.stream { fail }.grep(Object) { |item| item } }.should_not raise_error
     end
 
     describe "without a block" do

@@ -13,19 +13,19 @@ describe Hamster::List do
       end
 
       it "doesn't run out of stack" do
-        lambda { @list.reverse }.should_not raise_error
+        -> { @list.reverse }.should_not raise_error
       end
 
     end
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.reverse }.should_not raise_error
+      -> { Hamster.stream { fail }.reverse }.should_not raise_error
     end
 
     [
       [[], []],
       [["A"], ["A"]],
-      [%w[A B C], ["C", "B", "A"]],
+      [%w[A B C], %w[C B A]],
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do

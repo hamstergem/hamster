@@ -9,7 +9,7 @@ describe Hamster::List do
     describe "#slice" do
 
       it "is lazy" do
-        lambda { Hamster.stream { fail }.send(method, 1, 5) }.should_not raise_error
+        -> { Hamster.stream { fail }.send(method, 1, 5) }.should_not raise_error
       end
 
       [
