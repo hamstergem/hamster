@@ -38,7 +38,10 @@ describe Hamster::List do
 
             it "is lazy" do
               count = 0
-              @original.send(method) { |item| count += 1; false }
+              @original.send(method) do |item|
+                count += 1
+                false
+              end
               count.should <= 1
             end
 

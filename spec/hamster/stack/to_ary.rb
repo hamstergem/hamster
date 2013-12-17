@@ -1,44 +1,37 @@
 require "spec_helper"
-
 require "hamster/stack"
 
 describe Hamster::Stack do
+  let(:stack) { Hamster.stack("D", "C", "B", "A") }
 
   describe "#to_ary" do
-
-    describe "enables implicit conversion to" do
-
-      before do
-        @stack = Hamster.stack("D", "C", "B", "A")
-      end
-
+    context "enables implicit conversion to" do
       it "block parameters" do
         def func(&block)
-          yield(@stack)
+          yield(stack)
         end
+
         func do |a, b, *c|
-          a.should == "A"
-          b.should == "B"
-          c.should == %w[C D]
+          expect(a).to eq("A")
+          expect(b).to eq("B")
+          expect(c).to eq(%w[C D])
         end
       end
 
       it "method arguments" do
         def func(a, b, *c)
-          a.should == "A"
-          b.should == "B"
-          c.should == %w[C D]
+          expect(a).to eq("A")
+          expect(b).to eq("B")
+          expect(c).to eq(%w[C D])
         end
-        func(*@stack)
+
+        func(*stack)
       end
 
       it "works with splat" do
-        array = *@stack
-        array.should == %w[A B C D]
+        array = *stack
+        expect(array).to eq(%w[A B C D])
       end
-
     end
-
   end
-
 end

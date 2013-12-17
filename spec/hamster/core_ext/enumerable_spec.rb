@@ -3,9 +3,7 @@ require "spec_helper"
 require "hamster/core_ext/enumerable"
 
 describe Enumerable do
-
   class TestEnumerable
-
     include Enumerable
 
     def initialize(*values)
@@ -15,7 +13,6 @@ describe Enumerable do
     def each(&block)
       @values.each(&block)
     end
-
   end
 
   describe "#to_list" do

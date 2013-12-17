@@ -1,37 +1,26 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
+  let(:list) { Hamster.list(*values) }
 
   describe "#pop" do
+    let(:pop) { list.pop }
 
     context "with an empty list" do
-
-      before(:each) do
-        @list = Hamster.list
-      end
+      let(:values) { [] }
 
       it "returns an empty list" do
-        @list.pop.should == Hamster.list
+        expect(pop).to eq(Hamster.list)
       end
-
     end
 
     context "with a list with a few items" do
-
-      before(:each) do
-        @list = Hamster.list("a", "b", "c")
-      end
+      let(:values) { %w[a b c] }
 
       it "should remove the last item" do
-        @list.pop.should == Hamster.list("a", "b")
-        @list.pop.pop.should == Hamster.list("a")
-        @list.pop.pop.pop.should == Hamster.list
+        expect(pop).to eq(Hamster.list("a", "b"))
       end
-
     end
-
   end
-
 end

@@ -1,44 +1,36 @@
 require "spec_helper"
-
 require "hamster/queue"
 
 describe Hamster::Queue do
+  let(:queue) { Hamster.queue("A", "B", "C", "D") }
 
   describe "#to_ary" do
-
-    describe "enables implicit conversion to" do
-
-      before do
-        @queue = Hamster.queue("A", "B", "C", "D")
-      end
-
+    context "enables implicit conversion to" do
       it "block parameters" do
         def func(&block)
-          yield(@queue)
+          yield(queue)
         end
+
         func do |a, b, *c|
-          a.should == "A"
-          b.should == "B"
-          c.should == %w[C D]
+          expect(a).to eq("A")
+          expect(b).to eq("B")
+          expect(c).to eq(%w[C D])
         end
       end
 
       it "method arguments" do
         def func(a, b, *c)
-          a.should == "A"
-          b.should == "B"
-          c.should == %w[C D]
+          expect(a).to eq("A")
+          expect(b).to eq("B")
+          expect(c).to eq(%w[C D])
         end
-        func(*@queue)
+        func(*queue)
       end
 
       it "works with splat" do
-        array = *@queue
-        array.should == %w[A B C D]
+        array = *queue
+        expect(array).to eq(%w[A B C D])
       end
-
     end
-
   end
-
 end

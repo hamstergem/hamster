@@ -138,7 +138,10 @@ describe Hamster do
   end
 
   describe ".enumerate" do
-    let(:counter) { i = 0 ; -> { i += 1 } }
+    let(:counter) do
+      i = 0
+      -> { i += 1 }
+    end
 
     let(:enum) do
       Enumerator.new do |yielder|

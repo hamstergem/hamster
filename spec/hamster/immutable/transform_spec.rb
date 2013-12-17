@@ -1,31 +1,26 @@
 require "spec_helper"
-
 require "hamster/immutable"
 
 describe Hamster::Immutable do
+  class TransformPerson < Struct.new(:first, :last)
+    include Hamster::Immutable
+
+    public :transform
+  end
+
+  let(:immutable) { TransformPerson.new("Simon", "Harris") }
 
   describe "#transform" do
-
-    class TransformPerson < Struct.new(:first, :last)
-      include Hamster::Immutable
-      public :transform
-    end
-
-    before do
-      @original = TransformPerson.new("Simon", "Harris")
-      @result = @original.transform { self.first = "Sampy" }
-    end
+    let(:transform) { immutable.transform { self.first = "Sampy" } }
+    let(:original) { immutable.first }
+    let(:modified) { transform.first }
 
     it "preserves the original" do
-      @original.first.should == "Simon"
-      @original.last.should == "Harris"
+      expect(original).to eq("Simon")
     end
 
     it "returns a new instance with the updated values" do
-      @result.first.should == "Sampy"
-      @result.last.should == "Harris"
+      expect(modified).to eq("Sampy")
     end
-
   end
-
 end

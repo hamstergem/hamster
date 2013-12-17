@@ -31,12 +31,11 @@ describe Hamster::Hash do
         end
 
         describe "with a block" do
-
-        [
-          %w[A aye],
-          %w[B bee],
-          %w[C see],
-          [nil, "NIL"],
+          [
+            %w[A aye],
+            %w[B bee],
+            %w[C see],
+            [nil, "NIL"],
           ].each do |pair|
 
             it "returns true if the block ever returns true (#{pair.inspect})" do

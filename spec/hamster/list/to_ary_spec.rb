@@ -3,54 +3,43 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
+  let(:list) { Hamster.list("A", "B", "C", "D") }
 
   describe "#to_ary" do
-
-    describe "on a really big list" do
-
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
+    context "on a really big list" do
+      let(:list) { Hamster.interval(0, STACK_OVERFLOW_DEPTH) }
 
       it "doesn't run out of stack" do
-        -> { @list.to_ary }.should_not raise_error
+        -> { list.to_ary }.should_not raise_error
       end
-
     end
 
-    describe "enables implicit conversion to" do
-
-      before do
-        @list = Hamster.list("A", "B", "C", "D")
-      end
-
+    context "enables implicit conversion to" do
       it "block parameters" do
         def func(&block)
-          yield(@list)
+          yield(list)
         end
+
         func do |a, b, *c|
-          a.should == "A"
-          b.should == "B"
-          c.should == %w[C D]
+          expect(a).to eq("A")
+          expect(b).to eq("B")
+          expect(c).to eq(%w[C D])
         end
       end
 
       it "method arguments" do
         def func(a, b, *c)
-          a.should == "A"
-          b.should == "B"
-          c.should == %w[C D]
+          expect(a).to eq("A")
+          expect(b).to eq("B")
+          expect(c).to eq(%w[C D])
         end
-        func(*@list)
+        func(*list)
       end
 
       it "works with splat" do
-        array = *@list
-        array.should == %w[A B C D]
+        array = *list
+        expect(array).to eq(%w[A B C D])
       end
-
     end
-
   end
-
 end

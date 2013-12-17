@@ -1,17 +1,11 @@
 require "spec_helper"
-
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   describe "#hash" do
 
     it "values are sufficiently distributed" do
-      (1..4000).
-        each_slice(4).
-        map { |ka, va, kb, vb| Hamster.hash(ka => va, kb => vb).hash }.
-        uniq.
-        size.should == 1000
+      (1..4000).each_slice(4).map { |ka, va, kb, vb| Hamster.hash(ka => va, kb => vb).hash }.uniq.size.should == 1000
     end
 
     it "differs given the same keys and different values" do
@@ -27,12 +21,10 @@ describe Hamster::Hash do
       # bucket in the trie, so depending on which one gets added first, one
       # of them will end up in a child trie. The hash value should be the
       # same regardless of which is added first
-      Hamster.hash.put(:issued_at, nil).put(:expires_at, nil).hash.should ==
-        Hamster.hash.put(:expires_at, nil).put(:issued_at, nil).hash
+      Hamster.hash.put(:issued_at, nil).put(:expires_at, nil).hash.should == Hamster.hash.put(:expires_at, nil).put(:issued_at, nil).hash
     end
 
     describe "on an empty hash" do
-
       before do
         @result = Hamster.hash.hash
       end
@@ -40,7 +32,6 @@ describe Hamster::Hash do
       it "returns 0" do
         @result.should == 0
       end
-
     end
 
     describe "from a subclass" do
@@ -57,7 +48,5 @@ describe Hamster::Hash do
         @instance.frozen?.should be true
       end
     end
-
   end
-
 end

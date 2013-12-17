@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   [:size, :length].each do |method|
-
     describe "##{method}" do
-
       [
         [[], 0],
         [["A" => "aye"], 1],
@@ -17,11 +13,10 @@ describe Hamster::Hash do
         it "returns #{result} for #{values.inspect}" do
           Hamster.hash(*values).send(method).should == result
         end
-
       end
 
-      lots = (1..10842).to_a
-      srand 89533474
+      lots = (1..10_842).to_a
+      srand 89_533_474
       random_things = (lots + lots).sort_by { |x|rand }
 
       it "should have the correct size after adding lots of things with colliding keys and such" do
@@ -29,12 +24,11 @@ describe Hamster::Hash do
         random_things.each do |thing|
           h = h.put(thing, thing * 2)
         end
-        h.size.should == 10842
+        h.size.should == 10_842
       end
 
-      random_actions = (lots.map { |x|[:add, x] } + lots.map { |x|[:add, x] } + lots.map { |x|[:remove, x] }).
-        sort_by { |x|rand }
-      ending_size = random_actions.reduce({}) do |h, (act, ob)|
+      random_actions = (lots.map { |x|[:add, x] } + lots.map { |x|[:add, x] } + lots.map { |x|[:remove, x] }).sort_by { |x|rand }
+      ending_size = random_actions.inject({}) do |h, (act, ob)|
         if act == :add
           h[ob] = 1
         else
@@ -53,9 +47,6 @@ describe Hamster::Hash do
         end
         h.size.should == ending_size
       end
-
     end
-
   end
-
 end
