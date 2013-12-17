@@ -108,11 +108,11 @@ used to:
 ``` ruby
 friend = person.put(:name, "James")
   # => {:name => "James", :gender => :male}
-simon
+person
   # => {:name => "Simon", :gender => :male}
 friend[:name]
   # => "James"
-friend[:name]
+person[:name]
   # => "Simon"
 ```
 
