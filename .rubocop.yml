@@ -1,2 +1,20 @@
+AllCops:
+  Excludes:
+    - bench/**/*
+
 StringLiterals:
   EnforcedStyle: double_quotes
+LineLength:
+  Enabled: false
+SignalException:
+  Enabled: false
+Documentation:
+  Enabled: false
+CollectionMethods:
+  PreferredMethods:
+    collect: map
+    collect!: map!
+    reduce: inject
+    detect: find
+HashSyntax:
+  Enabled: false
