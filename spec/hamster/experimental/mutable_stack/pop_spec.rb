@@ -11,8 +11,8 @@ describe Hamster::MutableStack do
       [
         [[], nil, []],
         [["A"], "A", []],
-        [["A", "B"], "B", ["A"]],
-        [%w[A B C], "C", ["A", "B"]],
+        [%w[A B], "B", ["A"]],
+        [%w[A B C], "C", %w[A B]],
       ].each do |initial_state, return_value, resulting_state|
 
         describe "on #{initial_state.inspect}" do

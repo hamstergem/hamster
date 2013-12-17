@@ -9,9 +9,9 @@ describe Hamster::Vector do
 
       [
         [[], "A", ["A"]],
-        [["A"], "B", ["A", "B"]],
-        [["A"], "A", ["A", "A"]],
-        [%w[A B C], "D", ["A", "B", "C", "D"]],
+        [["A"], "B", %w[A B]],
+        [["A"], "A", %w[A A]],
+        [%w[A B C], "D", %w[A B C D]],
       ].each do |values, new_value, expected|
 
         describe "on #{values.inspect} with #{new_value.inspect}" do

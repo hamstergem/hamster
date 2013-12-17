@@ -31,7 +31,7 @@ describe Hamster::List do
         func do |a, b, *c|
           a.should == "A"
           b.should == "B"
-          c.should == ["C", "D"]
+          c.should == %w[C D]
         end
       end
 
@@ -39,14 +39,14 @@ describe Hamster::List do
         def func(a, b, *c)
           a.should == "A"
           b.should == "B"
-          c.should == ["C", "D"]
+          c.should == %w[C D]
         end
         func(*@list)
       end
 
       it "works with splat" do
         array = *@list
-        array.should == ["A", "B", "C", "D"]
+        array.should == %w[A B C D]
       end
 
     end

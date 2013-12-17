@@ -33,7 +33,7 @@ describe Hamster::Queue do
         @list = Hamster.queue("A", "B", "C").dequeue.to_list
       end
 
-      it "returns a list containing #{["B", "C"].inspect}" do
+      it "returns a list containing #{%w[B C].inspect}" do
         @list.should == Hamster.list("B", "C")
       end
 

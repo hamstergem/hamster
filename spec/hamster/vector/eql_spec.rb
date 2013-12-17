@@ -33,9 +33,9 @@ describe Hamster::Vector do
         [["A"], [], false],
         [["A"], ["A"], true],
         [["A"], ["B"], false],
-        [["A", "B"], ["A"], false],
+        [%w[A B], ["A"], false],
         [%w[A B C], %w[A B C], true],
-        [["C", "A", "B"], %w[A B C], false],
+        [%w[C A B], %w[A B C], false],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do

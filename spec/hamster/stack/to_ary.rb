@@ -19,7 +19,7 @@ describe Hamster::Stack do
         func do |a, b, *c|
           a.should == "A"
           b.should == "B"
-          c.should == ["C", "D"]
+          c.should == %w[C D]
         end
       end
 
@@ -27,14 +27,14 @@ describe Hamster::Stack do
         def func(a, b, *c)
           a.should == "A"
           b.should == "B"
-          c.should == ["C", "D"]
+          c.should == %w[C D]
         end
         func(*@stack)
       end
 
       it "works with splat" do
         array = *@stack
-        array.should == ["A", "B", "C", "D"]
+        array.should == %w[A B C D]
       end
 
     end

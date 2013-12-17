@@ -13,7 +13,7 @@ describe Hamster::List do
     [
       [[], [[]]],
       [["A"], [[], ["A"]]],
-      [%w[A B C], [[], ["A"], ["A", "B"], %w[A B C]]],
+      [%w[A B C], [[], ["A"], %w[A B], %w[A B C]]],
     ].each do |values, expected|
 
       expected = expected.map { |x| Hamster.list(*x) }

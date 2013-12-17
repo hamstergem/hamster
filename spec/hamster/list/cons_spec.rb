@@ -10,8 +10,8 @@ describe Hamster::List do
 
       [
         [[], "A", ["A"]],
-        [["A"], "B", ["B", "A"]],
-        [["A"], "A", ["A", "A"]],
+        [["A"], "B", %w[B A]],
+        [["A"], "A", %w[A A]],
         [%w[A B C], "D", ["D", "A", "B", "C"]],
       ].each do |values, new_value, expected|
 
