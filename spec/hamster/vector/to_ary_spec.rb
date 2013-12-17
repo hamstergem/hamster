@@ -2,40 +2,34 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
+  let(:vector) { Hamster.vector(*values) }
 
   describe "#to_ary" do
+    let(:values) { %w[A B C D] }
 
-    describe "enables implicit conversion to" do
-
-      before do
-        @vector = Hamster.vector("A", "B", "C", "D")
+    it "converts using block parameters" do
+      def expectations(&block)
+        yield(vector)
       end
-
-      it "block parameters" do
-        def func(&block)
-          yield(@vector)
-        end
-        func do |a, b, *c|
-          a.should == "A"
-          b.should == "B"
-          c.should == ["C", "D"]
-        end
-      end
-
-      it "method arguments" do
-        def func(a, b, *c)
-          a.should == "A"
-          b.should == "B"
-          c.should == ["C", "D"]
-        end
-        func(*@vector)
-      end
-
-      it "works with splat" do
-        array = *@vector
-        array.should == ["A", "B", "C", "D"]
+      expectations do |a, b, *c|
+        expect(a).to eq("A")
+        expect(b).to eq("B")
+        expect(c).to eq(%w[C D])
       end
     end
 
+    it "converts using method arguments" do
+      def expectations(a, b, *c)
+        expect(a).to eq("A")
+        expect(b).to eq("B")
+        expect(c).to eq(%w[C D])
+      end
+      expectations(*vector)
+    end
+
+    it "converts using splat" do
+      array = *vector
+      expect(array).to eq(%w[A B C D])
+    end
   end
 end

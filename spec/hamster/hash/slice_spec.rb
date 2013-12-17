@@ -2,25 +2,24 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
+  let(:hash) { described_class.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL") }
 
   describe "#slice" do
+    let(:slice) { hash.slice(*values) }
 
-    before do
-      @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
-    end
+    context "with all keys present in the Hash" do
+      let(:values) { ["B", nil] }
 
-    describe "with only keys that the Hash has" do
-
-      it "returns a Hash with only those values" do
-        @hash.slice("B", nil).should == Hamster.hash("B" => "bee", nil => "NIL")
+      it "returns the sliced values" do
+        expect(slice).to eq(described_class.new("B" => "bee", nil => "NIL"))
       end
-
     end
 
-    describe "with keys that the Hash doesn't have" do
+    context "with keys aren't present in the Hash" do
+      let(:values) { ["B", "A", 3] }
 
-      it "returns a Hash with only the values that have matching keys" do
-        @hash.slice("B", "A", 3).should == Hamster.hash("A" => "aye", "B" => "bee")
+      it "returns the sliced values of the matching keys" do
+        expect(slice).to eq(described_class.new("A" => "aye", "B" => "bee"))
       end
     end
   end

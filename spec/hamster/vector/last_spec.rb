@@ -2,30 +2,36 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
+  let(:vector) { Hamster.vector(*values) }
 
   describe "#last" do
+    let(:last) { vector.last }
 
-    [
-      [[], nil],
-      [["A"], "A"],
-      [["A", "B", "C"], "C"],
-    ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-
-        before do
-          original = Hamster.vector(*values)
-          @result = original.last
-        end
-
-        it "returns #{expected.inspect}" do
-          @result.should == expected
-        end
-
+    shared_examples "checking values" do
+      it "returns the last item" do
+        expect(last).to eq(last_item)
       end
-
     end
 
-  end
+    context "with an empty array" do
+      let(:last_item) { nil }
+      let(:values) { [] }
 
+      include_examples "checking values"
+    end
+
+    context "with a single item array" do
+      let(:last_item) { "A" }
+      let(:values) { %w[A] }
+
+      include_examples "checking values"
+    end
+
+    context "with a multi-item array" do
+      let(:last_item) { "B" }
+      let(:values) { %w[A B] }
+
+      include_examples "checking values"
+    end
+  end
 end

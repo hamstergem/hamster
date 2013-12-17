@@ -7,13 +7,13 @@ describe Hamster::Set do
   let(:comparison) { Hamster.set(*comparison_values) }
 
   describe "#==" do
-    let(:eql?) { set.eql?(comparison) }
+    let(:eqeq) { set == comparison }
 
     shared_examples "comparing non-sets" do
       let(:values) { %w[A B C] }
 
       it "returns false" do
-        expect(eql?).to eq(false)
+        expect(eqeq).to eq(false)
       end
     end
 
@@ -34,7 +34,7 @@ describe Hamster::Set do
       let(:comparison_values) { [] }
 
       it "returns true" do
-        expect(eql?).to eq(true)
+        expect(eqeq).to eq(true)
       end
     end
 
@@ -43,7 +43,7 @@ describe Hamster::Set do
       let(:comparison_values) { [nil] }
 
       it "returns false" do
-        expect(eql?).to eq(false)
+        expect(eqeq).to eq(false)
       end
     end
 
@@ -52,7 +52,7 @@ describe Hamster::Set do
       let(:comparison_values) { [] }
 
       it "returns false" do
-        expect(eql?).to eq(false)
+        expect(eqeq).to eq(false)
       end
     end
 
@@ -61,7 +61,7 @@ describe Hamster::Set do
       let(:comparison_values) { ["A"] }
 
       it "returns true" do
-        expect(eql?).to eq(true)
+        expect(eqeq).to eq(true)
       end
     end
 
@@ -70,7 +70,7 @@ describe Hamster::Set do
       let(:comparison_values) { ["B"] }
 
       it "returns false" do
-        expect(eql?).to eq(false)
+        expect(eqeq).to eq(false)
       end
     end
 
@@ -79,7 +79,7 @@ describe Hamster::Set do
       let(:comparison_values) { ["A"] }
 
       it "returns false" do
-        expect(eql?).to eq(false)
+        expect(eqeq).to eq(false)
       end
     end
 
@@ -88,7 +88,7 @@ describe Hamster::Set do
       let(:comparison_values) { %w[A B] }
 
       it "returns true" do
-        expect(eql?).to eq(true)
+        expect(eqeq).to eq(true)
       end
     end
 
@@ -97,7 +97,7 @@ describe Hamster::Set do
       let(:comparison_values) { %w[B A] }
 
       it "returns true" do
-        expect(eql?).to eq(true)
+        expect(eqeq).to eq(true)
       end
     end
   end

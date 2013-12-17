@@ -5,14 +5,14 @@ require "hamster/set"
 describe Hamster::Set do
   let(:set) { Hamster.set("A", "B", "C") }
 
-  describe "#each" do
-    let(:each) { set.each(&block) }
+  describe "#foreach" do
+    let(:foreach) { set.foreach(&block) }
 
     context "without a block" do
       let(:block) { nil }
 
       it "returns self" do
-        expect(each).to eq(set)
+        expect(foreach).to eq(set)
       end
     end
 
@@ -20,7 +20,7 @@ describe Hamster::Set do
       let(:block) { ->(item) {} }
 
       it "returns nil" do
-        expect(each).to be(nil)
+        expect(foreach).to be(nil)
       end
     end
 
@@ -28,7 +28,8 @@ describe Hamster::Set do
       let(:items) { ::Set.new }
       let(:values) { ::Set.new(%w[A B C]) }
       let(:block) { ->(item) { items << item } }
-      before(:each) { each }
+
+      before(:each) { foreach }
 
       it "yields all values" do
         expect(items).to eq(values)

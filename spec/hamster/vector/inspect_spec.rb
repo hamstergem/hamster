@@ -2,27 +2,32 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
+  let(:vector) { Hamster.vector(*values) }
 
   describe "#inspect" do
+    let(:inspect) { vector.inspect }
 
-    [
-      [[], "[]"],
-      [["A"], "[\"A\"]"],
-      [["A", "B", "C"], "[\"A\", \"B\", \"C\"]"]
-    ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-
-        before do
-          @vector = Hamster.vector(*values)
-        end
-
-        it "returns #{expected.inspect}" do
-          @vector.inspect.should == expected
-        end
-
+    shared_examples "checking output" do
+      it "returns the array as a inspected string" do
+        expect(inspect).to eq(output)
       end
+    end
 
+    context "with an empty array" do
+      let(:output) { "[]" }
+      let(:values) { [] }
+    end
+
+    context "with a single item array" do
+      let(:output) { "[\"A\"]" }
+      let(:values) { %w[A] }
+    end
+
+    context "with a mulit-item array" do
+      let(:output) { "[\"A\", \"B\"]" }
+      let(:values) { %w[A B] }
+
+      include_examples "checking output"
     end
   end
 end
