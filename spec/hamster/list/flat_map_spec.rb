@@ -1,29 +1,52 @@
-require 'spec_helper'
+require "spec_helper"
+require "hamster/list"
 
-require 'hamster/list'
+describe Hamster::List do
+  let(:list) { Hamster.list(*values) }
 
-describe Hamster::List, '#flat_map' do
-  subject { list.flat_map(&block) }
-  let(:block) { ->(i) { [i, i+1, i*i]} }
+  describe "#flat_map" do
+    let(:block) { ->(item) { [item, item + 1, item * item] } }
+    let(:flat_map) { list.flat_map(&block) }
+    let(:flattened_list) { Hamster.list(*flattened_values) }
 
-  context 'with an empty list' do
-    let(:list) { Hamster.list }
-    it { should eq Hamster.list }
-  end
+    shared_examples "checking flattened result" do
 
-  context 'with a block that returns an empty list' do
-    let(:list) { Hamster.list(1,2,3) }
-    let(:block) { ->(i){ [] } }
-    it { should eq Hamster.list }
-  end
+      it "returns the flattened values as a Hamster::List" do
+        expect(flat_map).to eq(flattened_list)
+      end
 
-  context 'with a list of one item' do
-    let(:list) { Hamster.list(7) }
-    it { should eq Hamster.list(7,8,49) }
-  end
+      it "returns a Hamster::List" do
+        expect(flat_map).to be_a(Hamster::List)
+      end
+    end
 
-  context 'with a list of multiple items' do
-    let(:list) { Hamster.list(1,2,3) }
-    it { should eq Hamster.list(1,2,1, 2,3,4, 3,4,9) }
+    context "with an empty list" do
+      let(:values) { [] }
+      let(:flattened_values) { [] }
+
+      include_examples "checking flattened result"
+    end
+
+    context "with a block that returns an empty list" do
+      let(:block) { ->(item) { [] } }
+      let(:values) { [1, 2, 3] }
+      let(:flattened_values) { [] }
+
+      include_examples "checking flattened result"
+    end
+
+    context "with a list of one item" do
+      let(:values) { [7] }
+      let(:flattened_values) { [7, 8, 49] }
+
+      include_examples "checking flattened result"
+    end
+
+    context "with a list of multiple items" do
+      let(:values) { [1, 2, 3] }
+      let(:flattened_values) { [1, 2, 1, 2, 3, 4, 3, 4, 9] }
+
+      include_examples "checking flattened result"
+    end
   end
 end
