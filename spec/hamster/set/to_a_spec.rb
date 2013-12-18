@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/set'
+require "hamster/set"
 
 describe Hamster::Set do
 
@@ -11,7 +11,7 @@ describe Hamster::Set do
       [
         [],
         ["A"],
-        ["A", "B", "C"],
+        %w[A B C],
       ].each do |values|
 
         describe "on #{values.inspect}" do
@@ -26,7 +26,7 @@ describe Hamster::Set do
           end
 
           it "returns a mutable array" do
-            @result.last.should_not == "The End"
+            expect(@result.last).to_not eq("The End")
             @result << "The End"
             @result.last.should == "The End"
           end

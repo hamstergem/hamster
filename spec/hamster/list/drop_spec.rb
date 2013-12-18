@@ -1,21 +1,21 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
   describe "#drop" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.drop(1) }.should_not raise_error
+      -> { Hamster.stream { fail }.drop(1) }.should_not raise_error
     end
 
     [
       [[], 10, []],
       [["A"], 10, []],
       [["A"], -1, ["A"]],
-      [["A", "B", "C"], 0, ["A", "B", "C"]],
-      [["A", "B", "C"], 2, ["C"]],
+      [%w[A B C], 0, %w[A B C]],
+      [%w[A B C], 2, ["C"]],
     ].each do |values, number, expected|
 
       describe "#{number} from #{values.inspect}" do

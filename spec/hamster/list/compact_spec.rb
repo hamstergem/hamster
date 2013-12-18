@@ -1,24 +1,24 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
   describe "#compact" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.compact }.should_not raise_error
+      -> { Hamster.stream { fail }.compact }.should_not raise_error
     end
 
     [
       [[], []],
       [["A"], ["A"]],
-      [["A", "B", "C"], ["A", "B", "C"]],
+      [%w[A B C], %w[A B C]],
       [[nil], []],
       [[nil, "B"], ["B"]],
       [["A", nil], ["A"]],
       [[nil, nil], []],
-      [["A", nil, "C"], ["A", "C"]],
+      [["A", nil, "C"], %w[A C]],
       [[nil, "B", nil], ["B"]],
     ].each do |values, expected|
 

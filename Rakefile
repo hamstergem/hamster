@@ -8,20 +8,19 @@ require "pathname"
 ENV["COVERALLS_NOISY"] = "true"
 
 HAMSTER_ROOT = Pathname.new(__FILE__).dirname
+
 desc "Check all files for style guidelines"
 Rubocop::RakeTask.new
 
 desc "Run all the tests in spec/"
-RSpec::Core::RakeTask.new(:spec)
+RSpec::Core::RakeTask.new(:spec) do |config|
+  config.verbose = false
+end
 
 desc "Generate all of the docs"
 YARD::Rake::YardocTask.new do |config|
   config.files = Dir["lib/**/*.rb"]
 end
-
-desc "Default: run tests and generate docs"
-task default: [ :spec, :yard ]
-
 
 def bench_suites
   Dir[ HAMSTER_ROOT.join('bench/*') ]
@@ -55,7 +54,7 @@ bench_suites.each do |suite|
         else
           $stderr.puts e
         end
-        exit 69 # EX_UNAVAILABLE
+        exit 69
       end
     end
   end
@@ -66,5 +65,6 @@ end
 
 desc "Run all benchmarks"
 task bench: bench_suites.map(&method(:bench_task_name))
+
 desc "Default: run tests and generate docs"
 task default: [ :spec, :yard, :rubocop ]

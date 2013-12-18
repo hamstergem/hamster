@@ -1,13 +1,13 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
   describe "#grep" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.grep(Object) { |item| item } }.should_not raise_error
+      -> { Hamster.stream { fail }.grep(Object) { |item| item } }.should_not raise_error
     end
 
     describe "without a block" do
@@ -16,7 +16,7 @@ describe Hamster::List do
         [[], []],
         [["A"], ["A"]],
         [[1], []],
-        [["A", 2, "C"], ["A", "C"]],
+        [["A", 2, "C"], %w[A C]],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
@@ -41,7 +41,7 @@ describe Hamster::List do
         [[], []],
         [["A"], ["a"]],
         [[1], []],
-        [["A", 2, "C"], ["a", "c"]],
+        [["A", 2, "C"], %w[a c]],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

@@ -1,16 +1,14 @@
-# gem install benchmark_suite
-require 'benchmark/ips'
-
-require 'hamster/list'
+require "benchmark/ips"
+require "hamster/list"
 
 Benchmark.ips do |b|
   sml_list = Hamster.list(1)
   # med_list = Hamster.iterate(1, &:next).take(100)
   # lrg_list = Hamster.iterate(1, &:next).take(10000)
   med_list = Hamster.list
-  100.times {|i| med_list = med_list.cons(i)}
+  100.times { |i| med_list = med_list.cons(i) }
   lrg_list = Hamster.list
-  10000.times {|i| lrg_list = lrg_list.cons(i)}
+  10000.times { |i| lrg_list = lrg_list.cons(i) }
 
   b.report "at small" do |n|
     a = 0

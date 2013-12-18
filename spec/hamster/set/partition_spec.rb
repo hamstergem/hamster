@@ -1,7 +1,7 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/tuple'
-require 'hamster/set'
+require "hamster/tuple"
+require "hamster/set"
 
 describe Hamster::Set do
 

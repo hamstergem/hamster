@@ -1,24 +1,24 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
   [
-    [:sort, lambda { |left, right| left.length <=> right.length }],
-    [:sort_by, lambda { |item| item.length }],
+    [:sort, ->(left, right) { left.length <=> right.length }],
+    [:sort_by, ->(item) { item.length }],
   ].each do |method, comparator|
 
     describe "##{method}" do
 
       it "is lazy" do
-        lambda { Hamster.stream { fail }.send(method, &comparator) }.should_not raise_error
+        -> { Hamster.stream { fail }.send(method, &comparator) }.should_not raise_error
       end
 
       [
         [[], []],
         [["A"], ["A"]],
-        [["Ichi", "Ni", "San"], ["Ni", "San", "Ichi"]],
+        [%w[Ichi Ni San], %w[Ni San Ichi]],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

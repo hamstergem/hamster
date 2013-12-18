@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
@@ -9,16 +9,16 @@ describe Hamster::List do
     describe "##{method}" do
 
       it "is lazy" do
-        lambda { Hamster.stream { fail }.combinations(2) }.should_not raise_error
+        -> { Hamster.stream { fail }.combinations(2) }.should_not raise_error
       end
 
       [
-        [["A", "B", "C", "D"], 1, [["A"], ["B"], ["C"], ["D"]]],
-        [["A", "B", "C", "D"], 2, [["A", "B"], ["A", "C"], ["A", "D"], ["B", "C"], ["B", "D"], ["C", "D"]]],
-        [["A", "B", "C", "D"], 3, [["A", "B", "C"], ["A", "B", "D"], ["A", "C", "D"], ["B", "C", "D"]]],
-        [["A", "B", "C", "D"], 4, [["A", "B", "C", "D"]]],
-        [["A", "B", "C", "D"], 0, [[]]],
-        [["A", "B", "C", "D"], 5, []],
+        [%w[A B C D], 1, [["A"], ["B"], ["C"], ["D"]]],
+        [%w[A B C D], 2, [%w[A B], %w[A C], %w[A D], %w[B C], %w[B D], %w[C D]]],
+        [%w[A B C D], 3, [%w[A B C], %w[A B D], %w[A C D], %w[B C D]]],
+        [%w[A B C D], 4, [%w[A B C D]]],
+        [%w[A B C D], 0, [[]]],
+        [%w[A B C D], 5, []],
         [[], 0, [[]]],
         [[], 1, []],
       ].each do |values, number, expected|

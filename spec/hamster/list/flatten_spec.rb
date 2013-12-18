@@ -1,21 +1,21 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster do
 
   describe "#flatten" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.flatten }.should_not raise_error
+      -> { Hamster.stream { fail }.flatten }.should_not raise_error
     end
 
     [
       [[], []],
       [["A"], ["A"]],
-      [["A", "B", "C"], ["A", "B", "C"]],
-      [["A", Hamster.list("B"), "C"], ["A", "B", "C"]],
-      [[Hamster.list("A"), Hamster.list("B"), Hamster.list("C")], ["A", "B", "C"]],
+      [%w[A B C], %w[A B C]],
+      [["A", Hamster.list("B"), "C"], %w[A B C]],
+      [[Hamster.list("A"), Hamster.list("B"), Hamster.list("C")], %w[A B C]],
     ].each do |values, expected|
 
       describe "on #{values}" do

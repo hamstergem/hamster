@@ -1,21 +1,17 @@
-require 'forwardable'
+require "forwardable"
 
 module Hamster
-
   class Trie
-
     extend Forwardable
+
+    # Returns the number of key-value pairs in the trie.
+    attr_reader :size
 
     def initialize(significant_bits, size = 0, entries = [], children = [])
       @significant_bits = significant_bits
       @entries = entries
       @children = children
       @size = size
-    end
-
-    # Returns the number of key-value pairs in the trie.
-    def size
-      @size
     end
 
     # Returns <tt>true</tt> if the trie contains no key-value pairs.
@@ -25,7 +21,7 @@ module Hamster
 
     # Returns <tt>true</tt> if the given key is present in the trie.
     def has_key?(key)
-      !! get(key)
+      !!get(key)
     end
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
@@ -63,10 +59,10 @@ module Hamster
         children = @children.dup
         child = children[index]
         child_size = child ? child.size : 0
-        children[index] = if child
-          child.put(key, value)
+        if child
+          children[index] = child.put(key, value)
         else
-          self.class.new(@significant_bits + 5).put!(key, value)
+          children[index] = self.class.new(@significant_bits + 5).put!(key, value)
         end
         new_child_size = children[index].size
         new_self_size = @size + (new_child_size - child_size)
@@ -82,9 +78,7 @@ module Hamster
         entry
       else
         child = @children[index]
-        if child
-          child.get(key)
-        end
+        child.get(key) if child
       end
     end
 
@@ -131,11 +125,10 @@ module Hamster
         child = @children[index]
         if child
           copy = child.find_and_delete(key)
-          if !copy.equal?(child)
+          unless copy.equal?(child)
             children = @children.dup
             children[index] = copy
-            copy_size = copy ? copy.size : 0
-            new_size = @size - (child.size - copy_size)
+            new_size = @size - (child.size - copy_size(copy))
             return self.class.new(@significant_bits, new_size, @entries, children)
           end
         end
@@ -167,19 +160,19 @@ module Hamster
       (key.hash.abs >> @significant_bits) & 31
     end
 
-    class Entry
+    def copy_size(copy)
+      copy ? copy.size : 0
+    end
 
+    class Entry
       attr_reader :key, :value
 
       def initialize(key, value)
         @key = key
         @value = value
       end
-
     end
-
   end
 
-  EmptyTrie = Trie.new(0)
-
+  EmptyTrie = Hamster::Trie.new(0)
 end

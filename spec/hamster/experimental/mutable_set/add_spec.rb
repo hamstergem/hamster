@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/experimental/mutable_set'
+require "hamster/experimental/mutable_set"
 
 describe Hamster::MutableSet do
 

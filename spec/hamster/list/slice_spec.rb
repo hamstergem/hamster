@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
@@ -9,7 +9,7 @@ describe Hamster::List do
     describe "#slice" do
 
       it "is lazy" do
-        lambda { Hamster.stream { fail }.send(method, 1, 5) }.should_not raise_error
+        -> { Hamster.stream { fail }.send(method, 1, 5) }.should_not raise_error
       end
 
       [
@@ -20,8 +20,8 @@ describe Hamster::List do
         [["A"], 1, 10, []],
         [["A"], 0, 1, ["A"]],
         [["A"], 0, 10, ["A"]],
-        [["A", "B", "C"], 0, 3, ["A", "B", "C"]],
-        [["A", "B", "C"], 2, 1, ["C"]],
+        [%w[A B C], 0, 3, %w[A B C]],
+        [%w[A B C], 2, 1, ["C"]],
       ].each do |values, from, length, expected|
 
         describe "#{values.inspect} from #{from} for a length of #{length}" do

@@ -1,19 +1,19 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
   describe "#intersperse" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.intersperse("") }.should_not raise_error
+      -> { Hamster.stream { fail }.intersperse("") }.should_not raise_error
     end
 
     [
       [[], []],
       [["A"], ["A"]],
-      [["A", "B", "C"], ["A", "|", "B", "|", "C"]]
+      [%w[A B C], ["A", "|", "B", "|", "C"]]
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do

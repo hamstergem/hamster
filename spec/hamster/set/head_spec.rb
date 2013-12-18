@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/set'
+require "hamster/set"
 
 describe Hamster::Set do
 
@@ -27,7 +27,7 @@ describe Hamster::Set do
         end
 
         it "returns an arbitrary value from the set" do
-          ["A", "B", "C"].should include(@result)
+          %w[A B C].should include(@result)
         end
 
       end

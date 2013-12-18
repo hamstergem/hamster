@@ -1,7 +1,5 @@
 module Hamster
-
   module Immutable
-
     def self.included(klass)
       klass.extend(ClassMethods)
       klass.instance_eval do
@@ -10,7 +8,6 @@ module Hamster
     end
 
     module ClassMethods
-
       def new(*args)
         super.immutable!
       end
@@ -31,20 +28,16 @@ module Hamster
           METHOD
         end
       end
-
     end
 
     module MemoizeMethods
-
       def immutable!
         @__hamster_immutable_memory__ = Object.new
         freeze
       end
-
     end
 
     module InstanceMethods
-
       def immutable!
         freeze
       end
@@ -73,9 +66,6 @@ module Hamster
       def transform(&block)
         __hamster_immutable_dup__.tap { |copy| copy.instance_eval(&block) }.immutable!
       end
-
     end
-
   end
-
 end

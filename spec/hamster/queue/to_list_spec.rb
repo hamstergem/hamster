@@ -1,7 +1,7 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/queue'
-require 'hamster/list'
+require "hamster/queue"
+require "hamster/list"
 
 describe Hamster::Queue do
 
@@ -10,7 +10,7 @@ describe Hamster::Queue do
     [
       [],
       ["A"],
-      ["A", "B", "C"],
+      %w[A B C],
     ].each do |values|
 
       describe "on #{values.inspect}" do
@@ -27,13 +27,13 @@ describe Hamster::Queue do
 
     end
 
-    describe "after dequeueing an item from #{["A", "B", "C"].inspect}" do
+    describe "after dequeueing an item from #{%w[A B C].inspect}" do
 
       before do
         @list = Hamster.queue("A", "B", "C").dequeue.to_list
       end
 
-      it "returns a list containing #{["B", "C"].inspect}" do
+      it "returns a list containing #{%w[B C].inspect}" do
         @list.should == Hamster.list("B", "C")
       end
 

@@ -1,12 +1,10 @@
-require 'hamster/list'
+require "hamster/list"
+require "english"
 
 module Hamster
-
   module CoreExt
-
     module IO
-
-      def to_list(sep = $/)
+      def to_list(sep = $INPUT_RECORD_SEPARATOR)
         Stream.new do
           line = gets(sep)
           if line
@@ -16,15 +14,10 @@ module Hamster
           end
         end
       end
-
     end
-
   end
-
 end
 
 class IO
-
   include Hamster::CoreExt::IO
-
 end

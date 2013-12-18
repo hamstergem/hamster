@@ -1,17 +1,14 @@
-require 'forwardable'
-require 'hamster/set'
-require 'hamster/read_copy_update'
+require "forwardable"
+require "hamster/set"
+require "hamster/read_copy_update"
 
 module Hamster
-
   def self.mutable_set(*items)
     MutableSet.new(set(*items))
   end
 
   class MutableSet
-
     extend Forwardable
-
     include ReadCopyUpdate
 
     def add(item)
@@ -40,7 +37,5 @@ module Hamster
       end
       deleted
     end
-
   end
-
 end

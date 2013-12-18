@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/hash'
+require "hamster/hash"
 
 describe Hamster::Hash do
 
@@ -31,11 +31,10 @@ describe Hamster::Hash do
         end
 
         describe "with a block" do
-
           [
-            ["A", "aye"],
-            ["B", "bee"],
-            ["C", "see"],
+            %w[A aye],
+            %w[B bee],
+            %w[C see],
             [nil, "NIL"],
           ].each do |pair|
 

@@ -1,15 +1,14 @@
-# gem install benchmark_suite
-require 'benchmark/ips'
+require "benchmark/ips"
 
-require 'hamster/hash'
+require "hamster/hash"
 
 Benchmark.ips do |b|
   sml_hash = Hamster.hash(1 => 1)
   med_hash = Hamster.hash
-  1_000.times {|i| med_hash = med_hash.put(i, i)}
+  1_000.times { |i| med_hash = med_hash.put(i, i) }
   lrg_hash = Hamster.hash
-  1_000_000.times {|i| lrg_hash = lrg_hash.put(i, i)}
-  
+  1_000_000.times { |i| lrg_hash = lrg_hash.put(i, i) }
+
   b.report "get existing small" do |n|
     a = 0
     x = 0
@@ -18,7 +17,7 @@ Benchmark.ips do |b|
       a += 1
     end
   end
-  
+
   b.report "get existing medium" do |n|
     a = 0
     x = nil
@@ -27,7 +26,7 @@ Benchmark.ips do |b|
       a += 1
     end
   end
-  
+
   b.report "get existing large" do |n|
     a = 0
     x = nil
@@ -36,7 +35,7 @@ Benchmark.ips do |b|
       a += 1
     end
   end
-  
+
   b.report "get missing small" do |n|
     a = 0
     x = 0
@@ -45,7 +44,7 @@ Benchmark.ips do |b|
       a += 1
     end
   end
-  
+
   b.report "get existing medium" do |n|
     a = 0
     x = nil
@@ -54,7 +53,7 @@ Benchmark.ips do |b|
       a += 1
     end
   end
-  
+
   b.report "get existing large" do |n|
     a = 0
     x = nil
@@ -64,4 +63,3 @@ Benchmark.ips do |b|
     end
   end
 end
-   

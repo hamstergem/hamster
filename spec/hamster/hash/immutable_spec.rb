@@ -1,7 +1,7 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/immutable'
-require 'hamster/hash'
+require "hamster/immutable"
+require "hamster/hash"
 
 describe Hamster::Hash do
 

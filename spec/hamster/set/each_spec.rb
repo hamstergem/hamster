@@ -1,42 +1,38 @@
-require 'spec_helper'
-
-require 'set'
-require 'hamster/set'
+require "spec_helper"
+require "set"
+require "hamster/set"
 
 describe Hamster::Set do
+  let(:set) { Hamster.set("A", "B", "C") }
 
-  [:each, :foreach].each do |method|
+  describe "#each" do
+    let(:each) { set.each(&block) }
 
-    describe "##{method}" do
+    context "without a block" do
+      let(:block) { nil }
 
-      before do
-        @set = Hamster.set("A", "B", "C")
+      it "returns self" do
+        expect(each).to eq(set)
       end
-
-      describe "with a block (internal iteration)" do
-
-        it "returns nil" do
-          @set.send(method) {}.should be_nil
-        end
-
-        it "yields all values" do
-          actual_values = Set[]
-          @set.send(method) { |value| actual_values << value }
-          actual_values.should == Set["A", "B", "C"]
-        end
-
-      end
-
-      describe "with no block" do
-
-        it "returns self" do
-          @set.send(method).should equal(@set)
-        end
-
-      end
-
     end
 
-  end
+    context "with an empty block" do
+      let(:block) { ->(item) {} }
 
+      it "returns nil" do
+        expect(each).to be(nil)
+      end
+    end
+
+    context "with a block" do
+      let(:items) { ::Set.new }
+      let(:values) { ::Set.new(%w[A B C]) }
+      let(:block) { ->(item) { items << item } }
+      before(:each) { each }
+
+      it "yields all values" do
+        expect(items).to eq(values)
+      end
+    end
+  end
 end

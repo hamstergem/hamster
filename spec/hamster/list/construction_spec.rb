@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster do
 
@@ -138,7 +138,10 @@ describe Hamster do
   end
 
   describe ".enumerate" do
-    let(:counter) { i = 0 ; -> { i+=1 } }
+    let(:counter) do
+      i = 0
+      -> { i += 1 }
+    end
 
     let(:enum) do
       Enumerator.new do |yielder|
@@ -151,11 +154,11 @@ describe Hamster do
 
     let(:list) { Hamster.enumerate(enum) }
 
-    it 'should return a list based on the values yielded from the enumerator' do
-      expect(list.take(2)).to eq Hamster.list(1,2)
+    it "should return a list based on the values yielded from the enumerator" do
+      expect(list.take(2)).to eq Hamster.list(1, 2)
     end
 
-    it 'should realize values as they are needed' do
+    it "should realize values as they are needed" do
       expect { list.take(3).to_a }.to raise_exception
     end
   end

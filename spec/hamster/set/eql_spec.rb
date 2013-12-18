@@ -1,62 +1,104 @@
-require 'spec_helper'
-
-require 'set'
-require 'hamster/set'
+require "spec_helper"
+require "set"
+require "hamster/set"
 
 describe Hamster::Set do
+  let(:set) { Hamster.set(*values) }
+  let(:comparison) { Hamster.set(*comparison_values) }
 
-  [:eql?, :==].each do |method|
+  describe "#==" do
+    let(:eql?) { set.eql?(comparison) }
 
-    describe "##{method}" do
+    shared_examples "comparing non-sets" do
+      let(:values) { %w[A B C] }
 
-      describe "returns false when comparing with" do
-
-        before do
-          @set = Hamster.set("A", "B", "C")
-        end
-
-        it "a standard set" do
-          @set.send(method, Set["A", "B", "C"]).should == false
-        end
-
-        it "an aribtrary object" do
-          @set.send(method, Object.new).should == false
-        end
-
+      it "returns false" do
+        expect(eql?).to eq(false)
       end
-
-      [
-        [[], [], true],
-        [[], [nil], false],
-        [["A"], [], false],
-        [["A"], ["A"], true],
-        [["A"], ["B"], false],
-        [["A", "B"], ["A"], false],
-        [["A", "B", "C"], ["A", "B", "C"], true],
-        [["C", "A", "B"], ["A", "B", "C"], true],
-      ].each do |a, b, expected|
-
-        describe "returns #{expected.inspect}" do
-
-          before do
-            @a = Hamster.set(*a)
-            @b = Hamster.set(*b)
-          end
-
-          it "for #{a.inspect} and #{b.inspect}" do
-            @a.send(method, @b).should == expected
-          end
-
-          it "for #{b.inspect} and #{a.inspect}" do
-            @b.send(method, @a).should == expected
-          end
-
-        end
-
-      end
-
     end
 
-  end
+    context "when comparing to a standard set" do
+      let(:comparison) { Set.new(%w[A B C]) }
 
+      include_examples "comparing non-sets"
+    end
+
+    context "when comparing to a arbitrary object" do
+      let(:comparison) { Object.new }
+
+      include_examples "comparing non-sets"
+    end
+
+    context "with an empty set for each comparison" do
+      let(:values) { [] }
+      let(:comparison_values) { [] }
+
+      it "returns true" do
+        expect(eql?).to eq(true)
+      end
+    end
+
+    context "with an empty set and a set with nil" do
+      let(:values) { [] }
+      let(:comparison_values) { [nil] }
+
+      it "returns false" do
+        expect(eql?).to eq(false)
+      end
+    end
+
+    context "with a single item array and empty array" do
+      let(:values) { ["A"] }
+      let(:comparison_values) { [] }
+
+      it "returns false" do
+        expect(eql?).to eq(false)
+      end
+    end
+
+    context "with matching single item array" do
+      let(:values) { ["A"] }
+      let(:comparison_values) { ["A"] }
+
+      it "returns true" do
+        expect(eql?).to eq(true)
+      end
+    end
+
+    context "with mismatching single item array" do
+      let(:values) { ["A"] }
+      let(:comparison_values) { ["B"] }
+
+      it "returns false" do
+        expect(eql?).to eq(false)
+      end
+    end
+
+    context "with a multi-item array and single item array" do
+      let(:values) { %w[A B] }
+      let(:comparison_values) { ["A"] }
+
+      it "returns false" do
+        expect(eql?).to eq(false)
+      end
+    end
+
+    context "with matching multi-item array" do
+      let(:values) { %w[A B] }
+      let(:comparison_values) { %w[A B] }
+
+      it "returns true" do
+        expect(eql?).to eq(true)
+      end
+    end
+
+    context "with a mismatching multi-item array" do
+      let(:values) { %w[A B] }
+      let(:comparison_values) { %w[B A] }
+
+      it "returns true" do
+        expect(eql?).to eq(true)
+      end
+    end
+  end
 end

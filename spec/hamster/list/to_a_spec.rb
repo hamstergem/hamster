@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
@@ -15,7 +15,7 @@ describe Hamster::List do
         end
 
         it "doesn't run out of stack" do
-          lambda { @list.to_a }.should_not raise_error
+          -> { @list.to_a }.should_not raise_error
         end
 
       end
@@ -23,7 +23,7 @@ describe Hamster::List do
       [
         [],
         ["A"],
-        ["A", "B", "C"],
+        %w[A B C],
       ].each do |values|
 
         describe "on #{values.inspect}" do
@@ -38,7 +38,7 @@ describe Hamster::List do
           end
 
           it "returns a mutable array" do
-            @result.last.should_not == "The End"
+            expect(@result.last).to_not eq("The End")
             @result << "The End"
             @result.last.should == "The End"
           end

@@ -1,18 +1,16 @@
-require 'forwardable'
-require 'thread'
+require "forwardable"
+require "thread"
 
-require 'hamster/core_ext/enumerable'
-require 'hamster/undefined'
-require 'hamster/enumerable'
-require 'hamster/tuple'
-require 'hamster/sorter'
-require 'hamster/hash'
-require 'hamster/set'
+require "hamster/core_ext/enumerable"
+require "hamster/undefined"
+require "hamster/enumerable"
+require "hamster/tuple"
+require "hamster/sorter"
+require "hamster/hash"
+require "hamster/set"
 
 module Hamster
-
   class << self
-
     extend Forwardable
 
     # Create a list containing the given items
@@ -51,7 +49,7 @@ module Hamster
     #   # => [5, 6, 7, 8, 9]
     #
     # @param from [Integer] Start value, inclusive
-    # @param from [Integer] End value, inclusive
+    # @param to [Integer] End value, inclusive
     # @return [Hamster::List]
     #
     # @api public
@@ -127,7 +125,6 @@ module Hamster
       return EmptyList if from == to
       Stream.new { Sequence.new(from, interval_exclusive(from.next, to)) }
     end
-
   end
 
   # Common behavior for lists
@@ -145,15 +142,12 @@ module Hamster
   # the basic blocks that are linked, {Stream} for providing laziness, and
   # {EmptyList} as a terminator.
   module List
-
     extend Forwardable
-
     include Enumerable
 
     CADR = /^c([ad]+)r$/
 
     def_delegator :self, :head, :first
-
     def_delegator :self, :empty?, :null?
 
     def size
@@ -167,14 +161,14 @@ module Hamster
     def_delegator :self, :cons, :>>
 
     def add(item)
-      self.append(Hamster.list(item))
+      append(Hamster.list(item))
     end
     def_delegator :self, :add, :<<
 
     def each
       return self unless block_given?
       list = self
-      while !list.empty?
+      until list.empty?
         yield(list.head)
         list = list.tail
       end
@@ -221,9 +215,7 @@ module Hamster
       return self unless block_given?
       Stream.new do
         list = self
-        while !list.empty? && yield(list.head)
-          list = list.tail
-        end
+        list = list.tail while !list.empty? && yield(list.head)
         list
       end
     end
@@ -280,7 +272,7 @@ module Hamster
     def cycle
       Stream.new do
         next self if empty?
-        Sequence.new(head, tail.append(self.cycle))
+        Sequence.new(head, tail.append(cycle))
       end
     end
 
@@ -335,7 +327,7 @@ module Hamster
     def_delegator :self, :uniq, :remove_duplicates
 
     def union(other)
-      self.append(other).uniq
+      append(other).uniq
     end
     def_delegator :self, :union, :|
 
@@ -346,9 +338,7 @@ module Hamster
 
     def last
       list = self
-      while !list.tail.empty?
-        list = list.tail
-      end
+      list = list.tail until list.tail.empty?
       list.head
     end
 
@@ -512,13 +502,13 @@ module Hamster
     end
 
     def respond_to?(name, include_private = false)
-      super || CADR === name.to_s
+      super || !!name.to_s.match(CADR)
     end
 
     private
 
     def method_missing(name, *args, &block)
-      return accessor($1) if CADR === name.to_s
+      return accessor(Regexp.last_match[1]) if name.to_s.match(CADR)
       super
     end
 
@@ -534,7 +524,6 @@ module Hamster
         end
       end
     end
-
   end
 
   # The basic building block for constructing lists
@@ -548,7 +537,6 @@ module Hamster
   # The last +Sequence+ instance in the chain has the {EmptyList} as its tail.
   #
   class Sequence
-
     include List
 
     attr_reader :head, :tail
@@ -561,7 +549,6 @@ module Hamster
     def empty?
       false
     end
-
   end
 
   # Lazy list stream
@@ -576,7 +563,6 @@ module Hamster
   # The recommended interface for using this is through {Hamster.stream Hamster.stream}
   #
   class Stream
-
     extend Forwardable
 
     include List
@@ -606,12 +592,9 @@ module Hamster
 
     def target
       list = vivify
-      while list.is_a?(Stream)
-        list = list.vivify
-      end
+      list = list.vivify while list.is_a?(Stream)
       list
     end
-
   end
 
   # A list without any elements
@@ -619,9 +602,7 @@ module Hamster
   # This is a singleton, since all empty lists are equivalent. It is used
   # as a terminating element in a chain of +Sequence+ instances.
   module EmptyList
-
     class << self
-
       include List
 
       def head
@@ -635,9 +616,6 @@ module Hamster
       def empty?
         true
       end
-
     end
-
   end
-
 end

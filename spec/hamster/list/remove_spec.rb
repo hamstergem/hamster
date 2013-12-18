@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
@@ -9,15 +9,15 @@ describe Hamster::List do
     describe "##{method}" do
 
       it "is lazy" do
-        lambda { Hamster.stream { fail }.send(method) { |item| false } }.should_not raise_error
+        -> { Hamster.stream { fail }.send(method) { |item| false } }.should_not raise_error
       end
 
       [
         [[], []],
         [["A"], ["A"]],
-        [["A", "B", "C"], ["A", "B", "C"]],
-        [["A", "b", "C"], ["A", "C"]],
-        [["a", "b", "c"], []],
+        [%w[A B C], %w[A B C]],
+        [%w[A b C], %w[A C]],
+        [%w[a b c], []],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
@@ -38,7 +38,10 @@ describe Hamster::List do
 
             it "is lazy" do
               count = 0
-              @original.send(method) { |item| count += 1; false }
+              @original.send(method) do |item|
+                count += 1
+                false
+              end
               count.should <= 1
             end
 

@@ -1,20 +1,17 @@
-require 'forwardable'
+require "forwardable"
 
-require 'hamster/immutable'
-require 'hamster/undefined'
-require 'hamster/trie'
-require 'hamster/list'
+require "hamster/immutable"
+require "hamster/undefined"
+require "hamster/trie"
+require "hamster/list"
 
 module Hamster
-
   def self.hash(pairs = {}, &block)
     Hash.new(pairs, &block)
   end
 
   class Hash
-
     extend Forwardable
-
     include Immutable
 
     class << self
@@ -67,7 +64,7 @@ module Hamster
       elsif block_given?
         yield
       else
-        raise KeyError.new("key not found: #{key.inspect}")
+        raise KeyError, "key not found: #{key.inspect}"
       end
     end
 
@@ -94,9 +91,9 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
-    def reduce(memo)
-      return memo unless block_given?
-      @trie.reduce(memo) { |memo, entry| yield(memo, entry.key, entry.value) }
+    def reduce(memoization)
+      return memoization unless block_given?
+      @trie.reduce(memoization) { |memo, entry| yield(memo, entry.key, entry.value) }
     end
     def_delegator :self, :reduce, :inject
     def_delegator :self, :reduce, :fold
@@ -154,8 +151,8 @@ module Hamster
       keys.reduce(self) { |hash, key| hash.delete(key) }
     end
 
-    def slice(*keys)
-      except(*self.keys - keys)
+    def slice(*wanted)
+      except(*keys - wanted)
     end
 
     def keys
@@ -197,14 +194,12 @@ module Hamster
       output
     end
 
-    def marshal_load dictionary
+    def marshal_load(dictionary)
       @trie = dictionary.reduce EmptyTrie do |trie, key_value|
         trie.put(key_value.first, key_value.last)
       end
     end
-
   end
 
-  EmptyHash = Hash.new
-
+  EmptyHash = Hamster::Hash.new
 end

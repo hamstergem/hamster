@@ -1,19 +1,19 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
   describe "#inits" do
 
     it "is lazy" do
-      lambda { Hamster.stream { fail }.inits }.should_not raise_error
+      -> { Hamster.stream { fail }.inits }.should_not raise_error
     end
 
     [
       [[], [[]]],
       [["A"], [[], ["A"]]],
-      [["A", "B", "C"], [[], ["A"], ["A", "B"], ["A", "B", "C"]]],
+      [%w[A B C], [[], ["A"], %w[A B], %w[A B C]]],
     ].each do |values, expected|
 
       expected = expected.map { |x| Hamster.list(*x) }

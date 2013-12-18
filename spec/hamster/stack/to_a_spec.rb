@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/stack'
+require "hamster/stack"
 
 describe Hamster::Stack do
 
@@ -11,7 +11,7 @@ describe Hamster::Stack do
       [
         [[], []],
         [["A"], ["A"]],
-        [["A", "B", "C"], ["C", "B", "A"]],
+        [%w[A B C], %w[C B A]],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
@@ -26,7 +26,7 @@ describe Hamster::Stack do
           end
 
           it "returns a mutable array" do
-            @result.last.should_not == "The End"
+            expect(@result.last).to_not eq("The End")
             @result << "The End"
             @result.last.should == "The End"
           end

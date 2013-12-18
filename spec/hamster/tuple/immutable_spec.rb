@@ -1,7 +1,7 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/immutable'
-require 'hamster/tuple'
+require "hamster/immutable"
+require "hamster/tuple"
 
 describe Hamster::Tuple do
 

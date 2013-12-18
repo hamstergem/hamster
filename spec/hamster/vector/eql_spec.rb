@@ -1,6 +1,5 @@
-require 'spec_helper'
-
-require 'hamster/vector'
+require "spec_helper"
+require "hamster/vector"
 
 describe Hamster::Vector do
 
@@ -15,7 +14,7 @@ describe Hamster::Vector do
         end
 
         it "an array with the same contents" do
-          @vector.send(method, ["A", "B", "C"]).should == false
+          @vector.send(method, %w[A B C]).should == false
         end
 
         it "an aribtrary object" do
@@ -34,9 +33,9 @@ describe Hamster::Vector do
         [["A"], [], false],
         [["A"], ["A"], true],
         [["A"], ["B"], false],
-        [["A", "B"], ["A"], false],
-        [["A", "B", "C"], ["A", "B", "C"], true],
-        [["C", "A", "B"], ["A", "B", "C"], false],
+        [%w[A B], ["A"], false],
+        [%w[A B C], %w[A B C], true],
+        [%w[C A B], %w[A B C], false],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do

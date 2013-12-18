@@ -1,11 +1,11 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe "Hamster.list#span" do
 
   it "is lazy" do
-    lambda { Hamster.stream { |item| fail }.span { true } }.should_not raise_error
+    -> { Hamster.stream { |item| fail }.span { true } }.should_not raise_error
   end
 
   describe <<-DESC do

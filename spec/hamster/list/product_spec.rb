@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
@@ -13,7 +13,7 @@ describe Hamster::List do
       end
 
       it "doesn't run out of stack" do
-        lambda { @list.product }.should_not raise_error
+        -> { @list.product }.should_not raise_error
       end
 
     end

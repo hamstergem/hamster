@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/stack'
+require "hamster/stack"
 
 describe Hamster::Stack do
 
@@ -11,7 +11,7 @@ describe Hamster::Stack do
       [
         [[], nil],
         [["A"], "A"],
-        [["A", "B", "C"], "C"],
+        [%w[A B C], "C"],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

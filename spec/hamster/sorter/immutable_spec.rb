@@ -1,7 +1,7 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/immutable'
-require 'hamster/sorter'
+require "hamster/immutable"
+require "hamster/sorter"
 
 describe Hamster::Sorter do
 

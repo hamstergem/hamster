@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/list'
+require "hamster/list"
 
 describe Hamster::List do
 
@@ -15,7 +15,7 @@ describe Hamster::List do
         end
 
         it "doesn't run out of stack" do
-          lambda { @list.filter(&:nil?).empty? }.should_not raise_error
+          -> { @list.filter(&:nil?).empty? }.should_not raise_error
         end
 
       end
@@ -23,7 +23,7 @@ describe Hamster::List do
       [
         [[], true],
         [["A"], false],
-        [["A", "B", "C"], false],
+        [%w[A B C], false],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do

@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/tuple'
+require "hamster/tuple"
 
 describe Hamster::Tuple do
 
@@ -15,7 +15,7 @@ describe Hamster::Tuple do
         end
 
         it "an array with the same values" do
-          @tuple.send(method, ["A", "B", "C"]).should == false
+          @tuple.send(method, %w[A B C]).should == false
         end
 
         it "an aribtrary object" do
@@ -30,9 +30,9 @@ describe Hamster::Tuple do
         [["A"], [], false],
         [["A"], ["A"], true],
         [["A"], ["B"], false],
-        [["A", "B"], ["A"], false],
-        [["A", "B", "C"], ["A", "B", "C"], true],
-        [["C", "A", "B"], ["A", "B", "C"], false],
+        [%w[A B], ["A"], false],
+        [%w[A B C], %w[A B C], true],
+        [%w[C A B], %w[A B C], false],
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do

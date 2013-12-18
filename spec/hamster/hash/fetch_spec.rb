@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'hamster/hash'
+require "hamster/hash"
 
 describe Hamster::Hash do
 
@@ -27,7 +27,7 @@ describe Hamster::Hash do
         end
 
         it "raises a KeyError" do
-          lambda { @hash.fetch("B") }.should raise_error(KeyError)
+          -> { @hash.fetch("B") }.should raise_error(KeyError)
         end
 
       end

@@ -1,21 +1,18 @@
-require 'forwardable'
-
-require 'hamster/undefined'
-require 'hamster/tuple'
+require "forwardable"
+require "hamster/undefined"
+require "hamster/tuple"
 
 module Hamster
-
   module Enumerable
-
     extend Forwardable
 
     def each
-      raise NoMethodError, "undefined method `each' for #{self.class.name}"
+      fail NoMethodError, "undefined method `each' for #{self.class.name}"
     end
     def_delegator :self, :each, :foreach
 
     def filter
-      raise NoMethodError, "undefined method `filter' for #{self.class.name}"
+      fail NoMethodError, "undefined method `filter' for #{self.class.name}"
     end
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all
@@ -79,7 +76,7 @@ module Hamster
     end
 
     def one?
-      return one? { |item| !! item } unless block_given?
+      return one? { |item| !!item } unless block_given?
       reduce(false) do |previously_matched, item|
         if yield(item)
           return false if previously_matched
@@ -103,7 +100,7 @@ module Hamster
     def_delegator :self, :maximum, :max
 
     def grep(pattern, &block)
-      filter { |item| pattern === item }.map(&block)
+      filter { |item| pattern === item  }.map(&block)
     end
 
     def count(&block)
@@ -135,7 +132,5 @@ module Hamster
     end
     def_delegator :self, :to_a, :entries
     def_delegator :self, :to_a, :to_ary
-
   end
-
 end
