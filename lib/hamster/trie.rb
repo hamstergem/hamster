@@ -128,8 +128,7 @@ module Hamster
           unless copy.equal?(child)
             children = @children.dup
             children[index] = copy
-            copy_size = copy ? copy.size : 0
-            new_size = @size - (child.size - copy_size)
+            new_size = @size - (child.size - copy_size(copy))
             return self.class.new(@significant_bits, new_size, @entries, children)
           end
         end
@@ -161,6 +160,10 @@ module Hamster
       (key.hash.abs >> @significant_bits) & 31
     end
 
+    def copy_size(copy)
+      copy ? copy.size : 0
+    end
+
     class Entry
       attr_reader :key, :value
 
@@ -171,5 +174,5 @@ module Hamster
     end
   end
 
-  EmptyTrie = Trie.new(0)
+  EmptyTrie = Hamster::Trie.new(0)
 end

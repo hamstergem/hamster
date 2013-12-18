@@ -49,7 +49,7 @@ module Hamster
     #   # => [5, 6, 7, 8, 9]
     #
     # @param from [Integer] Start value, inclusive
-    # @param from [Integer] End value, inclusive
+    # @param to [Integer] End value, inclusive
     # @return [Hamster::List]
     #
     # @api public
@@ -502,13 +502,13 @@ module Hamster
     end
 
     def respond_to?(name, include_private = false)
-      super || CADR === name.to_s
+      super || !!name.to_s.match(CADR)
     end
 
     private
 
     def method_missing(name, *args, &block)
-      return accessor(Regexp.last_match[1]) if CADR === name.to_s
+      return accessor(Regexp.last_match[1]) if name.to_s.match(CADR)
       super
     end
 

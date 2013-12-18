@@ -163,5 +163,5 @@ module Hamster
     end
   end
 
-  EmptySet = Set.new
+  EmptySet = Hamster::Set.new
 end

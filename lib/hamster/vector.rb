@@ -5,7 +5,7 @@ require "hamster/enumerable"
 
 module Hamster
   def self.vector(*items)
-    items.reduce(EmptyVector) { |a, element| a.add(element) }
+    items.reduce(EmptyVector) { |vector, item| vector.add(item) }
   end
 
   class Vector
@@ -151,5 +151,5 @@ module Hamster
     end
   end
 
-  EmptyVector = Vector.new
+  EmptyVector = Hamster::Vector.new
 end

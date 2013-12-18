@@ -83,5 +83,5 @@ module Hamster
     end
   end
 
-  EmptyQueue = Queue.new
+  EmptyQueue = Hamster::Queue.new
 end

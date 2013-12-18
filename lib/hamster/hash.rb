@@ -91,9 +91,9 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
-    def reduce(memo)
-      return memo unless block_given?
-      @trie.reduce(memo) { |memo, entry| yield(memo, entry.key, entry.value) }
+    def reduce(memoization)
+      return memoization unless block_given?
+      @trie.reduce(memoization) { |memo, entry| yield(memo, entry.key, entry.value) }
     end
     def_delegator :self, :reduce, :inject
     def_delegator :self, :reduce, :fold
@@ -201,5 +201,5 @@ module Hamster
     end
   end
 
-  EmptyHash = Hash.new
+  EmptyHash = Hamster::Hash.new
 end
