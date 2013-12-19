@@ -4,20 +4,20 @@ require "hamster/vector"
 describe Hamster::Vector do
   let(:vector) { Hamster.vector(*values) }
 
-  describe "#add" do
-    let(:add) { vector.add(added_value) }
+  describe "#<<" do
+    let(:ltlt) { vector << added_value }
 
     shared_examples "checking adding values" do
       let(:added_vector) { Hamster.vector(*added_values) }
 
       it "preserves the original" do
         orignal = vector
-        vector.add(added_value)
+        vector << added_value
         expect(orignal).to eq(vector)
       end
 
-      it "adds the item to the vector" do
-        expect(add).to eq(added_vector)
+      it "ltlts the item to the vector" do
+        expect(ltlt).to eq(added_vector)
       end
     end
 
