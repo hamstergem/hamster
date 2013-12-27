@@ -2,6 +2,7 @@ require "forwardable"
 require "hamster/immutable"
 require "hamster/undefined"
 require "hamster/enumerable"
+require "hamster/groupable"
 require "hamster/sorter"
 require "hamster/trie"
 require "hamster/list"
@@ -15,6 +16,7 @@ module Hamster
     extend Forwardable
     include Immutable
     include Enumerable
+    include Groupable
 
     def initialize(trie = EmptyTrie)
       @trie = trie
@@ -34,6 +36,7 @@ module Hamster
       transform_unless(include?(item)) { @trie = @trie.put(item, nil) }
     end
     def_delegator :self, :add, :<<
+    def_delegator :self, :add, :conj
 
     def delete(item)
       trie = @trie.delete(item)
@@ -128,11 +131,7 @@ module Hamster
     end
 
     def group_by(&block)
-      return group_by { |item| item } unless block_given?
-      reduce(EmptyHash) do |hash, item|
-        key = yield(item)
-        hash.put(key, (hash.get(key) || EmptySet).add(item))
-      end
+      group_by_with(EmptySet, &block)
     end
     def_delegator :self, :group_by, :group
 

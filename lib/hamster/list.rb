@@ -4,6 +4,7 @@ require "thread"
 require "hamster/core_ext/enumerable"
 require "hamster/undefined"
 require "hamster/enumerable"
+require "hamster/groupable"
 require "hamster/tuple"
 require "hamster/sorter"
 require "hamster/hash"
@@ -144,6 +145,7 @@ module Hamster
   module List
     extend Forwardable
     include Enumerable
+    include Groupable
 
     CADR = /^c([ad]+)r$/
 
@@ -159,6 +161,7 @@ module Hamster
       Sequence.new(item, self)
     end
     def_delegator :self, :cons, :>>
+    def_delegator :self, :cons, :conj
 
     def add(item)
       append(Hamster.list(item))
@@ -387,11 +390,7 @@ module Hamster
     end
 
     def group_by(&block)
-      return group_by { |item| item } unless block_given?
-      reduce(EmptyHash) do |hash, item|
-        key = yield(item)
-        hash.put(key, (hash.get(key) || EmptyList).cons(item))
-      end
+      group_by_with(EmptyList, &block)
     end
     def_delegator :self, :group_by, :group
 
