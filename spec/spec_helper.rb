@@ -1,6 +1,8 @@
-require "coveralls"
-Coveralls.wear! do
-  add_filter "/spec/"
+if ENV['TRAVIS']
+  require "coveralls"
+  Coveralls.wear! do
+    add_filter "/spec/"
+  end
 end
 
 require "pry"
