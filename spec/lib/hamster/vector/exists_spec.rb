@@ -4,8 +4,8 @@ require "hamster/vector"
 describe Hamster::Vector do
   let(:vector) { Hamster.vector(*values) }
 
-  describe "#any?" do
-    let(:any?) { vector.any?(&block) }
+  describe "#exists?" do
+    let(:exists?) { vector.exists?(&block) }
 
     context "when created with no values" do
       let(:values) { [] }
@@ -14,7 +14,7 @@ describe Hamster::Vector do
         let(:block) { ->(item) { item + 1 } }
 
         it "returns false" do
-          expect(any?).to be(false)
+          expect(exists?).to be(false)
         end
       end
 
@@ -22,7 +22,7 @@ describe Hamster::Vector do
         let(:block) { nil }
 
         it "returns false" do
-          expect(any?).to be(false)
+          expect(exists?).to be(false)
         end
       end
     end
@@ -34,7 +34,7 @@ describe Hamster::Vector do
         let(:block) { ->(item) { item == 3 } }
 
         it "returns true" do
-          expect(any?).to be(true)
+          expect(exists?).to be(true)
         end
       end
 
@@ -42,7 +42,7 @@ describe Hamster::Vector do
         let(:block) { ->(item) { item == "D" } }
 
         it "returns false" do
-          expect(any?).to be(false)
+          expect(exists?).to be(false)
         end
       end
 
@@ -53,7 +53,7 @@ describe Hamster::Vector do
           let(:values) { [nil, false, "B"] }
 
           it "returns true" do
-            expect(any?).to be(true)
+            expect(exists?).to be(true)
           end
         end
 
@@ -61,7 +61,7 @@ describe Hamster::Vector do
           let(:values) { [nil, false] }
 
           it "returns false" do
-            expect(any?).to be(false)
+            expect(exists?).to be(false)
           end
         end
       end
