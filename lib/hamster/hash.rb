@@ -183,7 +183,7 @@ module Hamster
     def_delegator :self, :dup, :remove_duplicates
 
     def inspect
-      "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}"}.join(", ")}}"
+      "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}" }.join(", ")}}"
     end
 
     def marshal_dump
