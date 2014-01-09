@@ -39,7 +39,7 @@ LineLength:
   Enabled: false
 
 # This is a really dumb style checker, who the hell uses |a, e|?
-ReduceArguments:
+SingleLineBlockParams:
   Enabled: false
 
 # Our usecase is pretty standard, not sure why we have to block this
