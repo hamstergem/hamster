@@ -20,9 +20,10 @@ module Hamster
     end
 
     # Returns <tt>true</tt> if the given key is present in the trie.
-    def has_key?(key)
+    def key?(key)
       !!get(key)
     end
+    def_delegator :self, :key?, :has_key?
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
     def each

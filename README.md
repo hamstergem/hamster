@@ -125,9 +125,9 @@ male = person.delete(:name)
   # => {:gender => :male}
 person
   # => {:name => "Simon", :gender => :male}
-male.has_key?(:name)
+male.key?(:name)
   # => false
-person.has_key?(:name)
+person.key?(:name)
   # => true
 ```
 
