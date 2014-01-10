@@ -38,6 +38,8 @@ module Hamster
     end
     def_delegator :self, :enqueue, :<<
     def_delegator :self, :enqueue, :add
+    def_delegator :self, :enqueue, :conj
+    def_delegator :self, :enqueue, :conjoin
 
     def dequeue
       front = @front

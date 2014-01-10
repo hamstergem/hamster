@@ -162,6 +162,7 @@ module Hamster
     end
     def_delegator :self, :cons, :>>
     def_delegator :self, :cons, :conj
+    def_delegator :self, :cons, :conjoin
 
     def add(item)
       append(Hamster.list(item))
