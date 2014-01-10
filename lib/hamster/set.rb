@@ -83,7 +83,7 @@ module Hamster
 
     def union(other)
       trie = other.reduce(@trie) do |a, element|
-        next a if a.has_key?(element)
+        next a if a.key?(element)
         a.put(element, nil)
       end
       transform_unless(trie.equal?(@trie)) { @trie = trie }

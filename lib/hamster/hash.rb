@@ -38,12 +38,12 @@ module Hamster
     end
     def_delegator :self, :empty?, :null?
 
-    def has_key?(key)
-      @trie.has_key?(key)
+    def key?(key)
+      @trie.key?(key)
     end
-    def_delegator :self, :has_key?, :key?
-    def_delegator :self, :has_key?, :include?
-    def_delegator :self, :has_key?, :member?
+    def_delegator :self, :key?, :has_key?
+    def_delegator :self, :key?, :include?
+    def_delegator :self, :key?, :member?
 
     def get(key)
       entry = @trie.get(key)
@@ -183,7 +183,7 @@ module Hamster
     def_delegator :self, :dup, :remove_duplicates
 
     def inspect
-      "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}"}.join(", ")}}"
+      "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}" }.join(", ")}}"
     end
 
     def marshal_dump
