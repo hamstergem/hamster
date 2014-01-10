@@ -22,3 +22,4 @@
 # Ignores that should be in the global gitignore
 /coverage
 /doc
+.yardoc
