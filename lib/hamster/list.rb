@@ -466,6 +466,7 @@ module Hamster
       end
     end
 
+    # Value-and-type equality
     def eql?(other)
       list = self
       loop do
@@ -478,7 +479,12 @@ module Hamster
         other = other.tail
       end
     end
-    def_delegator :self, :eql?, :==
+
+    # Value equality, will do type coercion on arrays and array-like objects
+    def ==(other)
+      self.eql?(other) ||
+        other.respond_to?(:to_ary) && to_ary.eql?(other.to_ary)
+    end
 
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }

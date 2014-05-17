@@ -4,75 +4,71 @@ require "hamster/list"
 
 describe Hamster::List do
 
-  [:eql?, :==].each do |method|
+  describe "#eql?" do
 
-    describe "##{method}" do
+    describe "on a really big list" do
 
-      describe "on a really big list" do
-
-        before do
-          @a = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-          @b = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        end
-
-        it "doesn't run out of stack" do
-          -> { @a.send(method, @b) }.should_not raise_error
-        end
-
+      before do
+        @a = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
+        @b = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
       end
 
-      describe "returns false when comparing with" do
-
-        before do
-          @list = Hamster.list("A", "B", "C")
-        end
-
-        it "an array with the same contents" do
-          @list.send(method, %w[A B C]).should == false
-        end
-
-        it "an aribtrary object" do
-          @list.send(method, Object.new).should == false
-        end
-
-      end
-
-      it "returns false when comparing an empty list with an empty array" do
-        Hamster.list.send(method, []).should == false
-      end
-
-      [
-        [[], [], true],
-        [[], [nil], false],
-        [["A"], [], false],
-        [["A"], ["A"], true],
-        [["A"], ["B"], false],
-        [%w[A B], ["A"], false],
-        [%w[A B C], %w[A B C], true],
-        [%w[C A B], %w[A B C], false],
-      ].each do |a, b, expected|
-
-        describe "returns #{expected.inspect}" do
-
-          before do
-            @a = Hamster.list(*a)
-            @b = Hamster.list(*b)
-          end
-
-          it "for lists #{a.inspect} and #{b.inspect}" do
-            @a.send(method, @b).should == expected
-          end
-
-          it "for lists #{b.inspect} and #{a.inspect}" do
-            @b.send(method, @a).should == expected
-          end
-
-        end
-
+      it "doesn't run out of stack" do
+        -> { @a.eql?(@b) }.should_not raise_error
       end
 
     end
 
   end
+
+  shared_examples 'equal using eql?' do |a, b|
+    specify "#{a.inspect} should eql? #{b.inspect}" do
+      expect(a).to eql b
+    end
+
+    specify "#{a.inspect} should == #{b.inspect}" do
+      expect(a).to eq b
+    end
+  end
+
+  shared_examples 'not equal using eql?' do |a, b|
+    specify "#{a.inspect} should not eql? #{b.inspect}" do
+      expect(a).to_not eql b
+    end
+  end
+
+  shared_examples 'equal using ==' do |a, b|
+    specify "#{a.inspect} should == #{b.inspect}" do
+      expect(a).to eq b
+    end
+  end
+
+  shared_examples 'not equal using ==' do |a, b|
+    specify "#{a.inspect} should not == #{b.inspect}" do
+      expect(a).to_not eq b
+    end
+  end
+
+  include_examples 'equal using =='       , Hamster.list("A", "B", "C"), %w[A B C]
+  include_examples 'not equal using eql?' , Hamster.list("A", "B", "C"), %w[A B C]
+  include_examples 'not equal using =='   , Hamster.list("A", "B", "C"), Object.new
+  include_examples 'not equal using eql?' , Hamster.list("A", "B", "C"), Object.new
+  include_examples 'equal using =='       , Hamster.list, []
+  include_examples 'not equal using eql?' , Hamster.list, []
+
+  include_examples 'equal using eql?'     , Hamster.list, Hamster.list
+  include_examples 'not equal using eql?' , Hamster.list, Hamster.list(nil)
+  include_examples 'not equal using eql?' , Hamster.list("A"), Hamster.list
+  include_examples 'equal using eql?'     , Hamster.list("A"), Hamster.list("A")
+  include_examples 'not equal using eql?' , Hamster.list("A"), Hamster.list("B")
+  include_examples 'not equal using eql?' , Hamster.list(%w[A B]), Hamster.list("A")
+  include_examples 'equal using eql?'     , Hamster.list(*%w[A B C]), Hamster.list(*%w[A B C])
+  include_examples 'not equal using eql?' , Hamster.list(*%w[C A B]), Hamster.list(*%w[A B C])
+
+  include_examples 'equal using =='       , Hamster.list('A'), ['A']
+  include_examples 'equal using =='       , ['A'], Hamster.list('A')
+
+  include_examples 'not equal using eql?' , Hamster.list('A'), ['A']
+  include_examples 'not equal using eql?' , ['A'], Hamster.list('A')
 
 end
