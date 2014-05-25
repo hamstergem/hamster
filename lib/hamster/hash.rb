@@ -156,7 +156,7 @@ module Hamster
     end
 
     def keys
-      reduce(Hamster.set) { |keys, key, value| keys.add(key) }
+      Hamster::Set.new(@trie)
     end
 
     def values
