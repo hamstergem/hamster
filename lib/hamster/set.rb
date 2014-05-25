@@ -60,7 +60,7 @@ module Hamster
     end
 
     def include?(object)
-      any? { |item| item.eql?(object) }
+      @trie.key?(object)
     end
 
     def head
