@@ -60,7 +60,7 @@ module Hamster
     end
 
     def include?(object)
-      any? { |item| item.eql?(object) }
+      @trie.key?(object)
     end
 
     def head
@@ -141,7 +141,13 @@ module Hamster
     end
 
     def eql?(other)
-      instance_of?(other.class) && @trie.eql?(other.instance_variable_get(:@trie))
+      return false if not instance_of?(other.class)
+      other_trie = other.instance_variable_get(:@trie)
+      return false if @trie.size != other_trie.size
+      @trie.each do |entry|
+        return false if !other_trie.key?(entry.key)
+      end
+      true
     end
     def_delegator :self, :eql?, :==
 
