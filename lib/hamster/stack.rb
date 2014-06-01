@@ -37,6 +37,8 @@ module Hamster
     end
     def_delegator :self, :push, :<<
     def_delegator :self, :push, :enqueue
+    def_delegator :self, :push, :conj
+    def_delegator :self, :push, :conjoin
 
     def pop
       list = @list.tail

@@ -48,6 +48,8 @@ module Hamster
     end
     def_delegator :self, :add, :<<
     def_delegator :self, :add, :cons
+    def_delegator :self, :add, :conj
+    def_delegator :self, :add, :conjoin
 
     # def delete(index)
     # end
