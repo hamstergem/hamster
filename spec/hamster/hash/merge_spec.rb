@@ -21,10 +21,13 @@ describe Hamster::Hash do
             @result = Hamster.hash(*a).send(method, Hamster.hash(*b))
           end
 
-          it "returns #{expected.inspect}"  do
+          it "returns #{expected.inspect} when passed a Hamster::Hash"  do
             @result.should == Hamster.hash(*expected)
           end
 
+          it "returns #{expected.inspect} when passed a Ruby Hash" do
+            Hamster.hash(*a).send(method, Hash[*b]).should == Hamster.hash(*expected)
+          end
         end
 
       end
