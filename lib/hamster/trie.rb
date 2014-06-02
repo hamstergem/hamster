@@ -4,6 +4,12 @@ module Hamster
   class Trie
     extend Forwardable
 
+    def self.[](pairs)
+      result = self.new(0)
+      pairs.each { |key, val| result.send(:put!, key, val) }
+      result
+    end
+
     # Returns the number of key-value pairs in the trie.
     attr_reader :size
 
@@ -109,8 +115,23 @@ module Hamster
     # Returns <tt>self</tt> after overwriting the element associated with the specified key.
     def put!(key, value)
       index = index_for(key)
-      @size += 1 unless @entries[index]
-      @entries[index] = Entry.new(key, value)
+      entry = @entries[index]
+      if !entry
+        @size += 1
+        @entries[index] = Entry.new(key, value)
+      elsif entry.key.eql?(key)
+        @entries[index] = Entry.new(key, value)
+      else
+        child = @children[index]
+        if child
+          old_child_size = child.size
+          @children[index] = child.put!(key, value)
+          @size += child.size - old_child_size
+        else
+          @children[index] = self.class.new(@significant_bits + 5).put!(key, value)
+          @size += 1
+        end
+      end
       self
     end
 

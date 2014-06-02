@@ -6,7 +6,7 @@ require "hamster/trie"
 require "hamster/list"
 
 module Hamster
-  def self.hash(pairs = {}, &block)
+  def self.hash(pairs = nil, &block)
     Hash.new(pairs, &block)
   end
 
@@ -15,16 +15,16 @@ module Hamster
     include Immutable
 
     class << self
-      def new(pairs = {}, &block)
+      def new(pairs = nil, &block)
         @empty ||= super()
-        pairs.reduce(block_given? ? super(&block) : @empty) { |hash, pair| hash.put(pair.first, pair.last) }
+        (pairs.nil? && block.nil?) ? @empty : super
       end
 
       attr_reader :empty
     end
 
-    def initialize(&block)
-      @trie = EmptyTrie
+    def initialize(pairs = nil, &block)
+      @trie = pairs ? Trie[pairs] : EmptyTrie
       @default = block
     end
 
