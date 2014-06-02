@@ -597,12 +597,21 @@ module Hamster
 
     def initialize(&block)
       @block = block
-      @lock = Mutex.new
+      @lock  = Mutex.new
+      @size  = nil
     end
 
     def_delegator :target, :head
     def_delegator :target, :tail
     def_delegator :target, :empty?
+
+    def size
+      @size ||= super
+    end
+
+    def cached_size?
+      @size != nil
+    end
 
     protected
 
