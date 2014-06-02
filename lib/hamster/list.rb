@@ -153,7 +153,16 @@ module Hamster
     def_delegator :self, :empty?, :null?
 
     def size
-      reduce(0) { |memo, item| memo.next }
+      result, list = 0, self
+      until list.empty?
+        if list.cached_size?
+          return result + list.size
+        else
+          result += 1
+        end
+        list = list.tail
+      end
+      result
     end
     def_delegator :self, :size, :length
 
@@ -511,6 +520,10 @@ module Hamster
       super || !!name.to_s.match(CADR)
     end
 
+    def cached_size?
+      false
+    end
+
     private
 
     def method_missing(name, *args, &block)
@@ -550,10 +563,19 @@ module Hamster
     def initialize(head, tail = EmptyList)
       @head = head
       @tail = tail
+      @size = tail.cached_size? ? tail.size + 1 : nil
     end
 
     def empty?
       false
+    end
+
+    def size
+      @size || super
+    end
+
+    def cached_size?
+      @size != nil
     end
   end
 
@@ -575,12 +597,21 @@ module Hamster
 
     def initialize(&block)
       @block = block
-      @lock = Mutex.new
+      @lock  = Mutex.new
+      @size  = nil
     end
 
     def_delegator :target, :head
     def_delegator :target, :tail
     def_delegator :target, :empty?
+
+    def size
+      @size ||= super
+    end
+
+    def cached_size?
+      @size != nil
+    end
 
     protected
 
@@ -620,6 +651,14 @@ module Hamster
       end
 
       def empty?
+        true
+      end
+
+      def size
+        0
+      end
+
+      def cached_size?
         true
       end
     end
