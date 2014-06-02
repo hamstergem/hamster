@@ -28,7 +28,7 @@ will return an instance of the same class wherever possible.
 
 And lastly, Hamster lists are lazy -- where Ruby"s language constructs permit
 -- making it possible to, among other things, process "infinitely large" lists.
-(Note: Ruby 1.9 supports a form of laziness using Enumerator. However, they"re
+(Note: Ruby 1.9 supports a form of laziness using `Enumerator`. However, they"re
 implemented using Fibers which unfortunately can"t be shared across threads.)
 
 Hamster started out as a spike to prove a point and has since
