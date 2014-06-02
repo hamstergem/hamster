@@ -167,10 +167,15 @@ module Hamster
       self.class.empty
     end
 
+    # Value-and-type equality
     def eql?(other)
       instance_of?(other.class) && @trie.eql?(other.instance_variable_get(:@trie))
     end
-    def_delegator :self, :eql?, :==
+
+    # Value equality, will do type coercion
+    def ==(other)
+      self.eql?(other) || (other.respond_to?(:to_hash) && to_hash.eql?(other.to_hash))
+    end
 
     def hash
       keys.sort.reduce(0) do |hash, key|
@@ -186,12 +191,16 @@ module Hamster
       "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}" }.join(", ")}}"
     end
 
-    def marshal_dump
+    def to_hash
       output = {}
       each do |key, value|
         output[key] = value
       end
       output
+    end
+
+    def marshal_dump
+      to_hash
     end
 
     def marshal_load(dictionary)

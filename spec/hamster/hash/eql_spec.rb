@@ -4,25 +4,53 @@ require "hamster/hash"
 
 describe Hamster::Hash do
 
+  describe "#eql?" do
+
+    describe "returns false when comparing with" do
+
+      before do
+        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+      end
+
+      it "a standard hash" do
+        @hash.eql?("A" => "aye", "B" => "bee", "C" => "see").should == false
+      end
+
+      it "an arbitrary object" do
+        @hash.eql?(Object.new).should == false
+      end
+
+    end
+
+  end
+
+  describe "#==" do
+
+    describe "returns true when comparing with" do
+
+      before do
+        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+      end
+
+      it "a standard hash" do
+        (@hash == {"A" => "aye", "B" => "bee", "C" => "see"}).should == true
+      end
+
+    end
+
+    describe "returns false when comparing with" do
+
+      it "an arbitrary object" do
+        (@hash == Object.new).should == false
+      end
+
+    end
+
+  end
+
   [:eql?, :==].each do |method|
 
     describe "##{method}" do
-
-      describe "returns false when comparing with" do
-
-        before do
-          @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-        end
-
-        it "a standard hash" do
-          @hash.send(method, "A" => "aye", "B" => "bee", "C" => "see").should == false
-        end
-
-        it "an aribtrary object" do
-          @hash.send(method, Object.new).should == false
-        end
-
-      end
 
       [
         [{}, {}, true],
