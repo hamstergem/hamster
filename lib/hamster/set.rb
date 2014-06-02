@@ -167,6 +167,20 @@ module Hamster
     def inspect
       "{#{to_a.inspect[1..-2]}}"
     end
+
+    def marshal_dump
+      output = {}
+      each do |key|
+        output[key] = nil
+      end
+      output
+    end
+
+    def marshal_load(dictionary)
+      @trie = dictionary.reduce(EmptyTrie) do |trie, key_value|
+        trie.put(key_value.first, nil)
+      end
+    end
   end
 
   EmptySet = Hamster::Set.new
