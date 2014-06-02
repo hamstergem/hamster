@@ -1,51 +1,37 @@
 require "spec_helper"
-
 require "hamster/experimental/mutable_set"
 
 describe Hamster::MutableSet do
+  let(:mutable) { Hamster.mutable_set(*values) }
 
-  [:add, :<<].each do |method|
+  describe "#add" do
+    let(:values) { %w[A B C] }
+    let(:add) { mutable.add(value) }
 
-    describe "##{method}" do
+    context "with a unique value" do
+      let(:value) { "D" }
 
-      before do
-        @set = Hamster.mutable_set("A", "B", "C")
+      it "returns self" do
+        expect(add).to eq(mutable)
       end
 
-      describe "with a unique value" do
-
-        before do
-          @result = @set.send(method, "D")
-        end
-
-        it "returns self" do
-          @result.should equal(@set)
-        end
-
-        it "modifies the set to include the new value" do
-          @set.should == Hamster.mutable_set("A", "B", "C", "D")
-        end
-
+      it "modifies the original set to include new value" do
+        add
+        expect(mutable).to eq(Hamster.mutable_set("A", "B", "C", "D"))
       end
-
-      describe "with a duplicate value" do
-
-        before do
-          @result = @set.send(method, "C")
-        end
-
-        it "preserves the original values" do
-          @set.should == Hamster.mutable_set("A", "B", "C")
-        end
-
-        it "returns self" do
-          @result.should equal(@set)
-        end
-
-      end
-
     end
 
-  end
+    context "with a duplicate value" do
+      let(:value) { "C" }
 
+      it "returns self" do
+        expect(add).to eq(mutable)
+      end
+
+      it "preserves the original values" do
+        add
+        expect(mutable).to eq(Hamster.mutable_set("A", "B", "C"))
+      end
+    end
+  end
 end

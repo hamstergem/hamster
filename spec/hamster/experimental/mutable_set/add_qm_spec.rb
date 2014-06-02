@@ -3,45 +3,37 @@ require "spec_helper"
 require "hamster/experimental/mutable_set"
 
 describe Hamster::MutableSet do
+  let(:mutable) { Hamster.mutable_set(*values) }
 
   describe "#add?" do
+    let(:values) { %w[A B C] }
+    let(:add?) { mutable.add?(value) }
 
-    before do
-      @set = Hamster.mutable_set("A", "B", "C")
-    end
-
-    describe "with a unique value" do
-
-      before do
-        @result = @set.add?("D")
-      end
+    context "with a unique value" do
+      let(:value) { "D" }
 
       it "returns true" do
-        @result.should == true
+        expect(add?).to be true
       end
 
       it "modifies the set to include the new value" do
-        @set.should == Hamster.mutable_set("A", "B", "C", "D")
+        add?
+        expect(mutable).to eq(Hamster.mutable_set("A", "B", "C", "D"))
       end
 
     end
 
-    describe "with a duplicate value" do
+    context "with a duplicate value" do
+      let(:value) { "C" }
 
-      before do
-        @result = @set.add?("C")
+      it "returns false" do
+        expect(add?).to be(false)
       end
 
       it "preserves the original values" do
-        @set.should == Hamster.mutable_set("A", "B", "C")
+        add?
+        expect(mutable).to eq(Hamster.mutable_set("A", "B", "C"))
       end
-
-      it "returns false" do
-        @result.should == false
-      end
-
     end
-
   end
-
 end
