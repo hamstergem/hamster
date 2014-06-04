@@ -17,9 +17,7 @@ YARD::Rake::YardocTask.new do |config|
 end
 
 def bench_suites
-  Dir[ HAMSTER_ROOT.join('bench/*') ]
-    .map(&method(:Pathname))
-    .select(&:directory?)
+  Dir[HAMSTER_ROOT.join('bench/*')].map(&method(:Pathname)).select(&:directory?)
 end
 
 def bench_files(suite)
@@ -27,10 +25,7 @@ def bench_files(suite)
 end
 
 def bench_task_name(file_name)
-  file_name.relative_path_from(HAMSTER_ROOT)
-           .sub(/\_bench.rb$/, '')
-           .to_s
-           .tr('/', ':')
+  file_name.relative_path_from(HAMSTER_ROOT).sub(/\_bench.rb$/, '').to_s.tr('/', ':')
 end
 
 bench_suites.each do |suite|
