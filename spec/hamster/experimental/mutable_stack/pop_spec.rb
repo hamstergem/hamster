@@ -1,41 +1,35 @@
 require "spec_helper"
-
 require "hamster/experimental/mutable_stack"
 
 describe Hamster::MutableStack do
+  let(:mutable_stack) { Hamster.mutable_stack(*values) }
 
-  [:pop, :dequeue].each do |method|
+  describe "#pop" do
+    let(:pop) { mutable_stack.pop }
 
-    describe "##{method}" do
-
-      [
-        [[], nil, []],
-        [["A"], "A", []],
-        [%w[A B], "B", ["A"]],
-        [%w[A B C], "C", %w[A B]],
-      ].each do |initial_state, return_value, resulting_state|
-
-        describe "on #{initial_state.inspect}" do
-
-          before do
-            @stack = Hamster.mutable_stack(*initial_state)
-            @result = @stack.send(method)
-          end
-
-          it "returns #{return_value.inspect}" do
-            @result.should == return_value
-          end
-
-          it "modifies the stack to #{resulting_state.inspect}" do
-            @stack.should == Hamster.mutable_stack(*resulting_state)
-          end
-
-        end
-
+    context "with values" do
+      let(:values) { %w[A B C] }
+      it "returns the last value" do
+        expect(pop).to eq("C")
       end
 
+      it "modifies the original collection" do
+        pop
+        expect(mutable_stack).to eq(Hamster.mutable_stack("A", "B"))
+      end
     end
 
-  end
+    context "without values" do
+      let(:values) { [] }
 
+      it "returns nil" do
+        expect(pop).to be(nil)
+      end
+
+      it "doesn't change the original stack" do
+        pop
+        expect(mutable_stack).to eq(Hamster.mutable_stack(*values))
+      end
+    end
+  end
 end

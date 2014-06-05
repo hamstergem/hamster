@@ -1,47 +1,37 @@
 require "spec_helper"
-
 require "hamster/experimental/mutable_set"
 
-describe Hamster::Set do
+describe Hamster::MutableSet do
+  let(:mutable) { Hamster.mutable_set(*values) }
 
   describe "#delete" do
+    let(:values) { %w[A B C] }
+    let(:delete) { mutable.delete(value) }
 
-    before do
-      @set = Hamster.mutable_set("A", "B", "C")
-    end
-
-    describe "with an existing value" do
-
-      before do
-        @result = @set.delete("B")
-      end
+    context "with an existing value" do
+      let(:value) { "B" }
 
       it "returns self" do
-        @result.should equal(@set)
+        expect(delete).to eq(mutable)
       end
 
       it "modifies the set to remove the value" do
-        @set.should == Hamster.mutable_set("A", "C")
+        delete
+        expect(mutable).to eq(Hamster.mutable_set("A", "C"))
       end
-
     end
 
-    describe "with a non-existing value" do
+    context "with a non-existing value" do
+      let(:value) { "D" }
 
-      before do
-        @result = @set.delete("D")
+      it "returns self" do
+        expect(delete).to eq(mutable)
       end
 
       it "preserves the original values" do
-        @set.should == Hamster.mutable_set("A", "B", "C")
+        delete
+        expect(mutable).to eq(Hamster.mutable_set("A", "B", "C"))
       end
-
-      it "returns self" do
-        @result.should equal(@set)
-      end
-
     end
-
   end
-
 end
