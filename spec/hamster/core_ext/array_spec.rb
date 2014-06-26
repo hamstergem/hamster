@@ -10,9 +10,5 @@ describe Array do
     it "should be an equivalent hamster list" do
       expect(to_list).to eq(Hamster.list("A", "B", "C"))
     end
-
-    it "should be an unequivalent list" do
-      expect(to_list).to eq(Hamster.list("A", "B", "C"))
-    end
   end
 end
