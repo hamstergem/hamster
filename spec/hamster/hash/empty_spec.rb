@@ -18,7 +18,7 @@ describe Hamster::Hash do
           Hamster.hash(*pairs).send(method).should == result
         end
 
-        describe "from a subclass" do
+        context "from a subclass" do
 
           it "returns an instance of the subclass" do
             @subclass = Class.new(Hamster::Hash)
