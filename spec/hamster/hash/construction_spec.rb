@@ -12,8 +12,9 @@ describe Hamster::Hash do
         @hash = Hamster.hash
       end
 
-      it "returns an empty hash" do
+      it "returns the canonical empty hash" do
         @hash.should be_empty
+        @hash.should equal(Hamster::EmptyHash)
       end
 
     end
