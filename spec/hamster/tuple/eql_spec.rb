@@ -4,52 +4,84 @@ require "hamster/tuple"
 
 describe Hamster::Tuple do
 
-  [:eql?, :==].each do |method|
+  before do
+    @tuple = Hamster::Tuple.new("A", "B", "C")
+  end
 
-    describe "##{method}" do
+  describe "#==" do
 
-      describe "returns false when comparing with" do
+    describe "returns true when comparing with" do
 
-        before do
-          @tuple = Hamster::Tuple.new("A", "B", "C")
-        end
-
-        it "an array with the same values" do
-          @tuple.send(method, %w[A B C]).should == false
-        end
-
-        it "an aribtrary object" do
-          @tuple.send(method, Object.new).should == false
-        end
-
+      it "an array with the same values" do
+        @tuple.should == ["A", "B", "C"]
       end
 
-      [
-        [[], [], true],
-        [[], [nil], false],
-        [["A"], [], false],
-        [["A"], ["A"], true],
-        [["A"], ["B"], false],
-        [%w[A B], ["A"], false],
-        [%w[A B C], %w[A B C], true],
-        [%w[C A B], %w[A B C], false],
-      ].each do |a, b, expected|
+      it "a List with the same values" do
+        @tuple.should == Hamster.list("A", "B", "C")
+      end
 
-        describe "returns #{expected.inspect}" do
+      it "a Tuple with the same values" do
+        @tuple.should == Hamster::Tuple.new("A", "B", "C")
+      end
 
-          before do
-            @a = Hamster::Tuple.new(*a)
-            @b = Hamster::Tuple.new(*b)
-          end
+    end
 
-          it "for #{a.inspect} and #{b.inspect}" do
-            @a.send(method, @b).should == expected
-          end
+    describe "returns false when comparing with" do
 
-          it "for #{b.inspect} and #{a.inspect}" do
-            @b.send(method, @a).should == expected
-          end
+      it "an array with different values" do
+        @tuple.should_not == ["A", "B"]
+      end
 
+      it "a Tuple with different values" do
+        @tuple.should_not == Hamster::Tuple.new("A")
+      end
+
+      it "an arbitrary object" do
+        @tuple.should_not == Object.new
+      end
+
+    end
+
+  end
+
+  describe "#eql?" do
+
+    describe "returns false when comparing with" do
+
+      it "an array with the same values" do
+        @tuple.should_not eql(%w[A B C])
+      end
+
+      it "an arbitrary object" do
+        @tuple.should_not eql(Object.new)
+      end
+
+    end
+
+    [
+      [[], [], true],
+      [[], [nil], false],
+      [["A"], [], false],
+      [["A"], ["A"], true],
+      [["A"], ["B"], false],
+      [%w[A B], ["A"], false],
+      [%w[A B C], %w[A B C], true],
+      [%w[C A B], %w[A B C], false],
+    ].each do |a, b, expected|
+
+      describe "returns #{expected.inspect}" do
+
+        before do
+          @a = Hamster::Tuple.new(*a)
+          @b = Hamster::Tuple.new(*b)
+        end
+
+        it "for #{a.inspect} and #{b.inspect}" do
+          @a.eql?(@b).should == expected
+        end
+
+        it "for #{b.inspect} and #{a.inspect}" do
+          @b.eql?(@a).should == expected
         end
 
       end

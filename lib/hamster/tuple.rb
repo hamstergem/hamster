@@ -11,7 +11,6 @@ module Hamster
     def eql?(other)
       other.is_a?(Tuple) && super
     end
-    alias :== :eql?
 
     def inspect
       "(#{super[1..-2]})"
