@@ -63,12 +63,12 @@ module Hamster
 
     def each
       return to_enum if not block_given?
-      @trie.each { |entry| yield entry.key }
+      @trie.each { |key, _| yield(key) }
     end
 
     def filter
       return enum_for(:filter) unless block_given?
-      trie = @trie.filter { |entry| yield(entry.key) }
+      trie = @trie.filter { |entry| yield(entry[0]) }
       return self.class.empty if trie.empty?
       trie.equal?(@trie) ? self : self.class.alloc(trie)
     end
@@ -113,7 +113,7 @@ module Hamster
     def_delegator :self, :union, :merge
 
     def intersection(other)
-      trie = @trie.filter { |entry| other.include?(entry.key) }
+      trie = @trie.filter { |key, _| other.include?(key) }
       trie.equal?(@trie) ? self : self.class.alloc(trie)
     end
     def_delegator :self, :intersection, :intersect
@@ -121,7 +121,7 @@ module Hamster
 
     def difference(other)
       trie = if (@trie.size <= other.size) && (other.is_a?(Hamster::Set) || (defined?(::Set) && other.is_a?(::Set)))
-        @trie.filter { |entry| !other.include?(entry.key) }
+        @trie.filter { |key, _| !other.include?(key) }
       else
         other.reduce(@trie) { |trie, item| trie.delete(item) }
       end
@@ -164,8 +164,8 @@ module Hamster
       return false if not instance_of?(other.class)
       other_trie = other.instance_variable_get(:@trie)
       return false if @trie.size != other_trie.size
-      @trie.each do |entry|
-        return false if !other_trie.key?(entry.key)
+      @trie.each do |key, _|
+        return false if !other_trie.key?(key)
       end
       true
     end

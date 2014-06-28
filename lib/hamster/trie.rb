@@ -27,10 +27,10 @@ module Hamster
     end
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
-    def each
+    def each(&block)
       @entries.each { |entry| yield(entry) if entry }
       @children.each do |child|
-        child.each { |entry| yield(entry) } if child
+        child.each(&block) if child
       end
       nil
     end
@@ -41,7 +41,7 @@ module Hamster
     end
 
     def filter
-      reduce(self) { |trie, entry| yield(entry) ? trie : trie.delete(entry.key) }
+      reduce(self) { |trie, entry| yield(entry) ? trie : trie.delete(entry[0]) }
     end
 
     # Returns a copy of <tt>self</tt> with the given value associated with the key.
@@ -52,12 +52,12 @@ module Hamster
       if !entry
         entries = @entries.dup
         key = key.dup.freeze if key.is_a?(String)
-        entries[index] = Entry.new(key, value)
+        entries[index] = [key, value].freeze
         Trie.new(@significant_bits, @size + 1, entries, @children)
-      elsif entry.key.eql?(key)
+      elsif entry[0].eql?(key)
         entries = @entries.dup
         key = key.dup.freeze if key.is_a?(String)
-        entries[index] = Entry.new(key, value)
+        entries[index] = [key, value].freeze
         Trie.new(@significant_bits, @size, entries, @children)
       else
         children = @children.dup
@@ -78,7 +78,7 @@ module Hamster
     def get(key)
       index = index_for(key)
       entry = @entries[index]
-      if entry && entry.key.eql?(key)
+      if entry && entry[0].eql?(key)
         entry
       else
         child = @children[index]
@@ -93,7 +93,7 @@ module Hamster
 
     def include?(key, value)
       entry = get(key)
-      entry && value.eql?(entry.value)
+      entry && value.eql?(entry[1])
     end
 
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
@@ -101,7 +101,7 @@ module Hamster
       return true if equal?(other)
       return false unless instance_of?(other.class) && size == other.size
       each do |entry|
-        return false unless other.include?(entry.key, entry.value)
+        return false unless other.include?(entry[0], entry[1])
       end
       true
     end
@@ -116,10 +116,10 @@ module Hamster
       if !entry
         @size += 1
         key = key.dup.freeze if key.is_a?(String)
-        @entries[index] = Entry.new(key, value)
-      elsif entry.key.eql?(key)
+        @entries[index] = [key, value].freeze
+      elsif entry[1].eql?(key)
         key = key.dup.freeze if key.is_a?(String)
-        @entries[index] = Entry.new(key, value)
+        @entries[index] = [key, value].freeze
       else
         child = @children[index]
         if child
@@ -140,7 +140,7 @@ module Hamster
     def find_and_delete(key)
       index = index_for(key)
       entry = @entries[index]
-      if entry && entry.key.eql?(key)
+      if entry && entry[0].eql?(key)
         return delete_at(index)
       else
         child = @children[index]
@@ -183,15 +183,6 @@ module Hamster
 
     def copy_size(copy)
       copy ? copy.size : 0
-    end
-
-    class Entry
-      attr_reader :key, :value
-
-      def initialize(key, value)
-        @key = key
-        @value = value
-      end
     end
   end
 
