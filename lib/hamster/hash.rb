@@ -15,12 +15,15 @@ module Hamster
     include Immutable
 
     class << self
+      alias :alloc :new
+
       def new(pairs = nil, &block)
-        @empty ||= super()
-        (pairs.nil? && block.nil?) ? @empty : super
+        (pairs.nil? && block.nil?) ? empty : alloc(pairs, &block)
       end
 
-      attr_reader :empty
+      def empty
+        @empty ||= self.alloc
+      end
     end
 
     def initialize(pairs = nil, &block)
@@ -212,5 +215,5 @@ module Hamster
     end
   end
 
-  EmptyHash = Hamster::Hash.new
+  EmptyHash = Hamster::Hash.empty
 end
