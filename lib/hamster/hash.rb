@@ -144,6 +144,11 @@ module Hamster
       reduce(Hamster.list) { |values, (key, value)| values.cons(value) }
     end
 
+    def partition
+      a,b = super
+      [self.class.new(a), self.class.new(b)]
+    end
+
     def clear
       self.class.empty
     end
