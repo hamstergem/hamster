@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.platform      = Gem::Platform::RUBY
-  spec.required_ruby_version = ">= 1.8.7"
+  spec.required_ruby_version = ">= 1.9.3"
 
   spec.files         = Dir["lib/**/*"]
   spec.executables   = Dir["bin/**/*"].map! { |f| f.gsub(/bin\//, '') }
