@@ -82,9 +82,9 @@ module Hamster
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
 
-    def each
+    def each(&block)
       return self unless block_given?
-      @trie.each { |entry| yield entry }
+      @trie.each(&block)
     end
     def_delegator :self, :each, :foreach
 
