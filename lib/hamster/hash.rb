@@ -175,6 +175,12 @@ module Hamster
       [self.class.new(a), self.class.new(b)]
     end
 
+    def invert
+      pairs = []
+      each { |k,v| pairs << [v, k] }
+      self.class.alloc(pairs, @default)
+    end
+
     def clear
       self.class.empty
     end
