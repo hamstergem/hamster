@@ -104,6 +104,18 @@ module Hamster
     def_delegator :self, :each, :foreach
     def_delegator :self, :each, :each_pair
 
+    def each_key
+      return enum_for(:each_key) if not block_given?
+      @trie.each { |k,v| yield k }
+      self
+    end
+
+    def each_value
+      return enum_for(:each_value) if not block_given?
+      @trie.each { |k,v| yield v }
+      self
+    end
+
     def map
       return enum_for(:map) unless block_given?
       return self if empty?
