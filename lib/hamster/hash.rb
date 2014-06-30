@@ -33,7 +33,7 @@ module Hamster
     end
 
     def initialize(pairs = nil, &block)
-      @trie = pairs.empty? ? EmptyTrie : Trie[pairs]
+      @trie = pairs ? Trie[pairs] : EmptyTrie
       @default = block
     end
 
@@ -116,7 +116,9 @@ module Hamster
     def filter(&block)
       return enum_for(:filter) unless block_given?
       trie = @trie.filter(&block)
-      return self.class.empty if trie.empty?
+      if trie.empty?
+        return @default ? self.class.alloc(EmptyTrie, @default) : self.class.empty
+      end
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
 
