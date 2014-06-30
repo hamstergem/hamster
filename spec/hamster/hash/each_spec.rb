@@ -9,8 +9,8 @@ describe Hamster::Hash do
       end
 
       describe "with a block (internal iteration)" do
-        it "returns nil" do
-          @hash.send(method) {}.should be_nil
+        it "returns self" do
+          @hash.send(method) {}.should be(@hash)
         end
 
         it "yields all key/value pairs" do

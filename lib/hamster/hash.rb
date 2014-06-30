@@ -89,6 +89,7 @@ module Hamster
     def each(&block)
       return self unless block_given?
       @trie.each(&block)
+      self
     end
     def_delegator :self, :each, :foreach
 
