@@ -28,8 +28,10 @@ describe Hamster::Hash do
 
       describe "with no block" do
 
-        it "returns self" do
-          @hash.send(method).should equal(@hash)
+        it "returns an Enumerator" do
+          @result = @hash.send(method)
+          @result.class.should be(Enumerator)
+          @result.to_a.should == @hash.to_a
         end
 
       end

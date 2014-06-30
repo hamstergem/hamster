@@ -48,8 +48,8 @@ describe Hamster::Hash do
             @result = @original.send(method)
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          it "returns an Enumerator" do
+            @result.class.should be(Enumerator)
           end
 
         end

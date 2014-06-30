@@ -83,14 +83,14 @@ module Hamster
     end
 
     def each(&block)
-      return self if not block_given?
+      return to_enum if not block_given?
       @trie.each(&block)
       self
     end
     def_delegator :self, :each, :foreach
 
     def map
-      return self unless block_given?
+      return enum_for(:map) unless block_given?
       return self if empty?
       transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(*yield(entry)) } }
     end
@@ -101,7 +101,7 @@ module Hamster
     def_delegator :self, :reduce, :foldr
 
     def filter(&block)
-      return self unless block_given?
+      return enum_for(:filter) unless block_given?
       trie = @trie.filter(&block)
       return self.class.empty if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }
@@ -110,7 +110,7 @@ module Hamster
     def_delegator :self, :filter, :find_all
 
     def remove
-      return self unless block_given?
+      return enum_for(:remove) unless block_given?
       filter { |entry| !yield(entry) }
     end
     def_delegator :self, :remove, :reject
