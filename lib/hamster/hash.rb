@@ -112,6 +112,7 @@ module Hamster
     end
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all
+    def_delegator :self, :filter, :keep_if
 
     def remove
       return enum_for(:remove) unless block_given?
