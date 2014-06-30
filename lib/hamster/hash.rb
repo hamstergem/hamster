@@ -37,6 +37,10 @@ module Hamster
       @default = block
     end
 
+    def default_proc
+      @default
+    end
+
     def size
       @trie.size
     end
