@@ -19,7 +19,7 @@ module Hamster
       alias :alloc :new
 
       def new(pairs = nil, &block)
-        (pairs.nil? && block.nil?) ? empty : alloc(pairs, &block)
+        (pairs.nil? && block.nil?) ? empty : alloc(pairs, block)
       end
 
       def empty
@@ -27,7 +27,7 @@ module Hamster
       end
     end
 
-    def initialize(pairs = nil, &block)
+    def initialize(pairs = nil, block = nil)
       @trie = pairs ? Trie[pairs] : EmptyTrie
       @default = block
     end
@@ -114,7 +114,9 @@ module Hamster
     def filter(&block)
       return enum_for(:filter) unless block_given?
       trie = @trie.filter(&block)
-      return self.class.empty if trie.empty?
+      if trie.empty?
+        return @default ? self.class.alloc(EmptyTrie, @default) : self.class.empty
+      end
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :filter, :select
