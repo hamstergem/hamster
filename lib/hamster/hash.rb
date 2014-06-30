@@ -13,6 +13,7 @@ module Hamster
   class Hash
     extend Forwardable
     include Immutable
+    include Enumerable
 
     class << self
       def [](pairs = nil)
@@ -98,12 +99,6 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
-    def reduce(memoization, &block)
-      return memoization unless block_given?
-      @trie.reduce(memoization, &block)
-    end
-    def_delegator :self, :reduce, :inject
-    def_delegator :self, :reduce, :fold
     def_delegator :self, :reduce, :foldr
 
     def filter(&block)
@@ -111,35 +106,6 @@ module Hamster
       trie = @trie.filter(&block)
       return self.class.empty if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }
-    end
-    def_delegator :self, :filter, :select
-    def_delegator :self, :filter, :find_all
-
-    def remove
-      return enum_for(:remove) unless block_given?
-      filter { |entry| !yield(entry) }
-    end
-    def_delegator :self, :remove, :reject
-    def_delegator :self, :remove, :delete_if
-
-    def any?
-      return !empty? unless block_given?
-      each { |entry| return true if yield(entry) }
-      false
-    end
-    def_delegator :self, :any?, :exist?
-    def_delegator :self, :any?, :exists?
-
-    def all?
-      each { |entry| return false unless yield(entry) } if block_given?
-      true
-    end
-    def_delegator :self, :all?, :forall?
-
-    def none?
-      return empty? unless block_given?
-      each { |entry| return false if yield(entry) }
-      true
     end
 
     def find
