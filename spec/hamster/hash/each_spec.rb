@@ -4,7 +4,7 @@ require "hamster/hash"
 
 describe Hamster::Hash do
 
-  [:each, :foreach].each do |method|
+  [:each, :foreach, :each_pair].each do |method|
 
     describe "##{method}" do
 

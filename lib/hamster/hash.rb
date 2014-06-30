@@ -98,6 +98,7 @@ module Hamster
       self
     end
     def_delegator :self, :each, :foreach
+    def_delegator :self, :each, :each_pair
 
     def map
       return enum_for(:map) unless block_given?
