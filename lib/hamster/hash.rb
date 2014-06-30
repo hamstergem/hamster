@@ -58,6 +58,12 @@ module Hamster
     def_delegator :self, :key?, :include?
     def_delegator :self, :key?, :member?
 
+    def value?(value)
+      each { |k,v| return true if value.eql?(v) }
+      false
+    end
+    def_delegator :self, :value?, :has_value?
+
     def get(key)
       entry = @trie.get(key)
       if entry
