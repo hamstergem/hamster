@@ -42,11 +42,15 @@ describe Hamster::Hash do
         describe "with no block" do
 
           before do
-            @result = @original.send(method, "ABC")
+            @original = Hamster.hash(a: 1, b: 2)
           end
 
-          it "returns the memo" do
-            @result.should == "ABC"
+          it "uses a passed string as the name of a method to use instead" do
+            [[:a, 1, :b, 2], [:b, 2, :a, 1]].should include(@original.send(method, "concat"))
+          end
+
+          it "uses a passed symbol as the name of a method to use instead" do
+            [[:a, 1, :b, 2], [:b, 2, :a, 1]].should include(@original.send(method, :concat))
           end
 
         end

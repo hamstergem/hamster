@@ -13,6 +13,7 @@ module Hamster
   class Hash
     extend Forwardable
     include Immutable
+    include ::Enumerable
 
     class << self
       alias :alloc :new
@@ -94,10 +95,6 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
-    def reduce(memoization, &block)
-      return memoization unless block_given?
-      @trie.reduce(memoization, &block)
-    end
     def_delegator :self, :reduce, :inject
     def_delegator :self, :reduce, :fold
     def_delegator :self, :reduce, :foldr
@@ -118,25 +115,10 @@ module Hamster
     def_delegator :self, :remove, :reject
     def_delegator :self, :remove, :delete_if
 
-    def any?
-      return !empty? unless block_given?
-      each { |entry| return true if yield(entry) }
-      false
-    end
     def_delegator :self, :any?, :exist?
     def_delegator :self, :any?, :exists?
 
-    def all?
-      each { |entry| return false unless yield(entry) } if block_given?
-      true
-    end
     def_delegator :self, :all?, :forall?
-
-    def none?
-      return empty? unless block_given?
-      each { |entry| return false if yield(entry) }
-      true
-    end
 
     def find
       return nil unless block_given?
