@@ -60,6 +60,21 @@ describe Hamster::Hash do
 
     end
 
+    context "when a String is inserted as key and then mutated" do
+
+      before do
+        @string = "a string!"
+        @hash = Hamster.hash(@string => 'a value!')
+        @string.upcase!
+      end
+
+      it "is not affected" do
+        @hash['a string!'].should == 'a value!'
+        @hash['A STRING!'].should be_nil
+      end
+
+    end
+
   end
 
 end

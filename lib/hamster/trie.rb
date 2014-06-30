@@ -56,10 +56,12 @@ module Hamster
 
       if !entry
         entries = @entries.dup
+        key = key.dup.freeze if key.is_a?(String)
         entries[index] = Entry.new(key, value)
         self.class.new(@significant_bits, @size + 1, entries, @children)
       elsif entry.key.eql?(key)
         entries = @entries.dup
+        key = key.dup.freeze if key.is_a?(String)
         entries[index] = Entry.new(key, value)
         self.class.new(@significant_bits, @size, entries, @children)
       else
@@ -118,8 +120,10 @@ module Hamster
       entry = @entries[index]
       if !entry
         @size += 1
+        key = key.dup.freeze if key.is_a?(String)
         @entries[index] = Entry.new(key, value)
       elsif entry.key.eql?(key)
+        key = key.dup.freeze if key.is_a?(String)
         @entries[index] = Entry.new(key, value)
       else
         child = @children[index]

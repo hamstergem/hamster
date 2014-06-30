@@ -16,6 +16,10 @@ describe Hamster::Hash do
       @result.should == Hamster.set("A", "B", "C")
     end
 
+    it "returns frozen String keys" do
+      @result.each { |s| s.should be_frozen }
+    end
+
   end
 
 end
