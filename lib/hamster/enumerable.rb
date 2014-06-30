@@ -73,6 +73,7 @@ module Hamster
     def_delegator :self, :to_a, :to_ary
     def_delegator :self, :filter, :find_all
     def_delegator :self, :filter, :select # make it return a Hamster collection (and possibly make it lazy)
+    def_delegator :self, :filter, :keep_if
     def_delegator :self, :include?, :contains?
     def_delegator :self, :include?, :elem?
     def_delegator :self, :max, :maximum
