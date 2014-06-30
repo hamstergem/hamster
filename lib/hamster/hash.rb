@@ -168,6 +168,15 @@ module Hamster
       self.class.alloc(pairs, @default)
     end
 
+    def assoc(obj)
+      @trie.get(obj)
+    end
+
+    def rassoc(obj)
+      each { |entry| return entry if obj == entry[1] }
+      nil
+    end
+
     def clear
       self.class.empty
     end
