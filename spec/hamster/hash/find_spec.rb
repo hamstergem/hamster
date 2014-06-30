@@ -33,8 +33,10 @@ describe Hamster::Hash do
           end
 
           describe "without a block" do
-            it "returns nil" do
-              @hash.send(method).should be_nil
+            it "returns an Enumerator" do
+              @result = @hash.send(method)
+              @result.should be_kind_of(Enumerator)
+              @result.each { |k,v| k == key }.should == expected
             end
           end
         end

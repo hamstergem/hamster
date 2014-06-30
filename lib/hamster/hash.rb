@@ -109,7 +109,7 @@ module Hamster
     end
 
     def find
-      return nil unless block_given?
+      return enum_for(:find) unless block_given?
       each { |entry| return entry if yield entry }
       nil
     end
