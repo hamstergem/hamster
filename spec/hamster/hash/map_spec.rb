@@ -39,8 +39,9 @@ describe Hamster::Hash do
             @result = @original.send(method)
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          it "returns an Enumerator" do
+            @result.class.should be(Enumerator)
+            @result.each { |k,v| [k.downcase, v] }.should == @original.map { |k,v| [k.downcase, v] }
           end
         end
       end
