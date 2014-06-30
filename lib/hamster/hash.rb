@@ -162,6 +162,12 @@ module Hamster
       reduce(Hamster.list) { |values, (key, value)| values.cons(value) }
     end
 
+    def invert
+      pairs = []
+      each { |k,v| pairs << [v, k] }
+      self.class.alloc(pairs, @default)
+    end
+
     def clear
       self.class.empty
     end
