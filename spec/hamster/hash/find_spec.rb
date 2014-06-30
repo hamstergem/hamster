@@ -41,8 +41,8 @@ describe Hamster::Hash do
 
           describe "without a block" do
 
-            it "returns nil" do
-              @hash.send(method).should be_nil
+            it "returns an Enumerator" do
+              @hash.send(method).should be_kind_of(Enumerator)
             end
 
           end

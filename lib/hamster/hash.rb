@@ -120,11 +120,6 @@ module Hamster
 
     def_delegator :self, :all?, :forall?
 
-    def find
-      return nil unless block_given?
-      each { |entry| return Tuple.new(*entry) if yield(entry) }
-      nil
-    end
     def_delegator :self, :find, :detect
 
     def merge(other)
