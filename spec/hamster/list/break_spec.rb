@@ -1,12 +1,9 @@
 require "spec_helper"
-
 require "hamster/tuple"
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#break" do
-
     it "is lazy" do
       -> { Hamster.stream { fail }.break { |item| false } }.should_not raise_error
     end
@@ -23,13 +20,11 @@ describe Hamster::List do
     ].each do |values, expected_prefix, expected_remainder|
 
       describe "on #{values.inspect}" do
-
         before do
           @original = Hamster.list(*values)
         end
 
         describe "with a block" do
-
           before do
             @result = @original.break { |item| item > 2 }
             @prefix = @result.first
@@ -51,11 +46,9 @@ describe Hamster::List do
           it "correctly identifies the remainder" do
             @remainder.should == Hamster.list(*expected_remainder)
           end
-
         end
 
         describe "without a block" do
-
           before do
             @result = @original.break
             @prefix = @result.first
@@ -73,13 +66,8 @@ describe Hamster::List do
           it "leaves the remainder empty" do
             @remainder.should be_empty
           end
-
         end
-
       end
-
     end
-
   end
-
 end

@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   [:empty?, :null?].each do |method|
-
     describe "##{method}" do
-
       [
         [[], true],
         [["A" => "aye"], false],
@@ -19,19 +15,13 @@ describe Hamster::Hash do
         end
 
         context "from a subclass" do
-
           it "returns an instance of the subclass" do
             @subclass = Class.new(Hamster::Hash)
             @subclass.empty.class.should be @subclass
             @subclass.empty.should be_empty
           end
-
         end
-
       end
-
     end
-
   end
-
 end

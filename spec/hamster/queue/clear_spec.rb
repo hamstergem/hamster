@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/queue"
 
 describe Hamster::Queue do
-
   describe "#clear" do
-
     [
       [],
       ["A"],
@@ -13,7 +10,6 @@ describe Hamster::Queue do
     ].each do |values|
 
       describe "on #{values}" do
-
         before do
           @original = Hamster.queue(*values)
           @result = @original.clear
@@ -26,11 +22,7 @@ describe Hamster::Queue do
         it "returns an empty queue" do
           @result.should equal(Hamster.queue)
         end
-
       end
-
     end
-
   end
-
 end

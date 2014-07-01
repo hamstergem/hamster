@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   [:merge, :+].each do |method|
-
     describe "##{method}" do
-
       [
         [[], [], []],
         [["A" => "aye"], [], ["A" => "aye"]],
@@ -16,7 +12,6 @@ describe Hamster::Hash do
       ].each do |a, b, expected|
 
         describe "for #{a.inspect} and #{b.inspect}" do
-
           before do
             @result = Hamster.hash(*a).send(method, Hamster.hash(*b))
           end
@@ -29,11 +24,7 @@ describe Hamster::Hash do
             Hamster.hash(*a).send(method, Hash[*b]).should == Hamster.hash(*expected)
           end
         end
-
       end
-
     end
-
   end
-
 end

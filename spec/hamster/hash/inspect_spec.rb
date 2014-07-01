@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   describe "#inspect" do
-
     [
       [[], "{}"],
       [["A" => "aye"], "{\"A\" => \"aye\"}"],
@@ -13,7 +10,6 @@ describe Hamster::Hash do
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
-
         before do
           original = Hamster.hash(*values)
           @result = original.inspect
@@ -22,11 +18,7 @@ describe Hamster::Hash do
         it "returns #{expected.inspect}" do
           @result.should == expected
         end
-
       end
-
     end
-
   end
-
 end

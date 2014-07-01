@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   [:slice, :[]].each do |method|
-
     describe "#slice" do
-
       it "is lazy" do
         -> { Hamster.stream { fail }.send(method, 1, 5) }.should_not raise_error
       end
@@ -25,7 +21,6 @@ describe Hamster::List do
       ].each do |values, from, length, expected|
 
         describe "#{values.inspect} from #{from} for a length of #{length}" do
-
           before do
             @original = Hamster.list(*values)
             @result = @original.send(method, from, length)
@@ -38,13 +33,8 @@ describe Hamster::List do
           it "returns #{expected.inspect}" do
             @result.should == Hamster.list(*expected)
           end
-
         end
-
       end
-
     end
-
   end
-
 end

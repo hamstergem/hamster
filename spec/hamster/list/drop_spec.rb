@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#drop" do
-
     it "is lazy" do
       -> { Hamster.stream { fail }.drop(1) }.should_not raise_error
     end
@@ -19,7 +16,6 @@ describe Hamster::List do
     ].each do |values, number, expected|
 
       describe "#{number} from #{values.inspect}" do
-
         before do
           @original = Hamster.list(*values)
           @result = @original.drop(number)
@@ -32,11 +28,7 @@ describe Hamster::List do
         it "returns #{expected.inspect}" do
           @result.should == Hamster.list(*expected)
         end
-
       end
-
     end
-
   end
-
 end

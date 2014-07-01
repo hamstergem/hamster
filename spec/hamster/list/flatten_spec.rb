@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster do
-
   describe "#flatten" do
-
     it "is lazy" do
       -> { Hamster.stream { fail }.flatten }.should_not raise_error
     end
@@ -19,7 +16,6 @@ describe Hamster do
     ].each do |values, expected|
 
       describe "on #{values}" do
-
         before do
           @original = Hamster.list(*values)
           @result = @original.flatten
@@ -32,11 +28,7 @@ describe Hamster do
         it "returns an empty list" do
           @result.should == Hamster.list(*expected)
         end
-
       end
-
     end
-
   end
-
 end

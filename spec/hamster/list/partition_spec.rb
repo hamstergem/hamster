@@ -1,12 +1,9 @@
 require "spec_helper"
-
 require "hamster/tuple"
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#partition" do
-
     it "is lazy" do
       -> { Hamster.stream { fail }.partition }.should_not raise_error
     end
@@ -23,13 +20,11 @@ describe Hamster::List do
     ].each do |values, expected_matches, expected_remainder|
 
       describe "on #{values.inspect}" do
-
         before do
           @original = Hamster.list(*values)
         end
 
         describe "with a block" do
-
           before do
             @result = @original.partition(&:odd?)
             @matches = @result.first
@@ -51,11 +46,9 @@ describe Hamster::List do
           it "correctly identifies the remainder" do
             @remainder.should == Hamster.list(*expected_remainder)
           end
-
         end
 
         describe "without a block" do
-
           before do
             @result = @original.partition
           end
@@ -63,13 +56,8 @@ describe Hamster::List do
           it "returns self" do
             @result.should equal(@original)
           end
-
         end
-
       end
-
     end
-
   end
-
 end

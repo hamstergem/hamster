@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   [:union, :|].each do |method|
-
     describe "##{method}" do
-
       it "is lazy" do
         -> { Hamster.stream { fail }.union(Hamster.stream { fail }) }.should_not raise_error
       end
@@ -20,7 +16,6 @@ describe Hamster::List do
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do
-
           before do
             @a = Hamster.list(*a)
             @b = Hamster.list(*b)
@@ -37,13 +32,8 @@ describe Hamster::List do
           after  do
             @result.should == Hamster.list(*expected)
           end
-
         end
-
       end
-
     end
-
   end
-
 end

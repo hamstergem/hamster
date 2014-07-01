@@ -1,9 +1,7 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#init" do
 
     it "is lazy" do
@@ -17,7 +15,6 @@ describe Hamster::List do
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
-
         before do
           @original = Hamster.list(*values)
           @result = @original.init
@@ -30,11 +27,7 @@ describe Hamster::List do
         it "returns the list without the last element: #{expected.inspect}" do
           @result.should == Hamster.list(*expected)
         end
-
       end
-
     end
-
   end
-
 end

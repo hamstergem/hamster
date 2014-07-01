@@ -1,12 +1,9 @@
 require "spec_helper"
-
 require "hamster/tuple"
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#split_at" do
-
     it "is lazy" do
       -> { Hamster.stream { fail }.split_at(1) }.should_not raise_error
     end
@@ -20,7 +17,6 @@ describe Hamster::List do
     ].each do |values, expected_prefix, expected_remainder|
 
       describe "on #{values.inspect}" do
-
         before do
           @original = Hamster.list(*values)
           @result = @original.split_at(2)
@@ -43,11 +39,7 @@ describe Hamster::List do
         it "correctly identifies the remainder" do
           @remainder.should == Hamster.list(*expected_remainder)
         end
-
       end
-
     end
-
   end
-
 end

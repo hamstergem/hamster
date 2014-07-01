@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   describe "#eql?" do
-
     describe "returns false when comparing with" do
-
       before do
         @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
       end
@@ -19,15 +15,11 @@ describe Hamster::Hash do
       it "an arbitrary object" do
         @hash.eql?(Object.new).should == false
       end
-
     end
-
   end
 
   describe "#==" do
-
     describe "returns true when comparing with" do
-
       before do
         @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
       end
@@ -35,23 +27,17 @@ describe Hamster::Hash do
       it "a standard hash" do
         (@hash == {"A" => "aye", "B" => "bee", "C" => "see"}).should == true
       end
-
     end
 
     describe "returns false when comparing with" do
-
       it "an arbitrary object" do
         (@hash == Object.new).should == false
       end
-
     end
-
   end
 
   [:eql?, :==].each do |method|
-
     describe "##{method}" do
-
       [
         [{}, {}, true],
         [{ "A" => "aye" }, {}, false],
@@ -65,7 +51,6 @@ describe Hamster::Hash do
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do
-
           before do
             @a = Hamster.hash(a)
             @b = Hamster.hash(b)
@@ -78,13 +63,8 @@ describe Hamster::Hash do
           it "for #{b.inspect} and #{a.inspect}" do
             @b.send(method, @a).should == expected
           end
-
         end
-
       end
-
     end
-
   end
-
 end

@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#clear" do
-
     [
       [],
       ["A"],
@@ -13,7 +10,6 @@ describe Hamster::List do
     ].each do |values|
 
       describe "on #{values}" do
-
         before do
           @original = Hamster.list(*values)
           @result = @original.clear
@@ -26,11 +22,7 @@ describe Hamster::List do
         it "returns an empty list" do
           @result.should equal(Hamster.list)
         end
-
       end
-
     end
-
   end
-
 end

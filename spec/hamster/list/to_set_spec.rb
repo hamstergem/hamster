@@ -1,10 +1,8 @@
 require "spec_helper"
-
 require "hamster/list"
 require "hamster/set"
 
 describe Hamster::List do
-
   describe "#to_set" do
 
     [
@@ -20,14 +18,10 @@ describe Hamster::List do
           @result = original.to_set
         end
 
-        it "returns self" do
+        it "returns a set with the same values" do
           @result.should == Hamster.set(*values)
         end
-
       end
-
     end
-
   end
-
 end

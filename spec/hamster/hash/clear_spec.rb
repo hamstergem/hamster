@@ -1,9 +1,7 @@
 require "spec_helper"
-
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   describe "#clear" do
 
     [
@@ -13,7 +11,6 @@ describe Hamster::Hash do
     ].each do |values|
 
       describe "on #{values}" do
-
         before do
           @original = Hamster.hash(*values)
           @result = @original.clear
@@ -26,11 +23,7 @@ describe Hamster::Hash do
         it "returns an empty hash" do
           @result.should equal(Hamster.hash)
         end
-
       end
-
     end
-
   end
-
 end

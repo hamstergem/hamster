@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/queue"
 
 describe Hamster::Queue do
-
   [:dequeue, :tail].each do |method|
-
     describe "##{method}" do
-
       [
         [[], []],
         [["A"], []],
@@ -15,7 +11,6 @@ describe Hamster::Queue do
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @original = Hamster.queue(*values)
             @result = @original.send(method)
@@ -28,13 +23,8 @@ describe Hamster::Queue do
           it "returns #{expected.inspect}" do
             @result.should == Hamster.queue(*expected)
           end
-
         end
-
       end
-
     end
-
   end
-
 end

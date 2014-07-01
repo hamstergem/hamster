@@ -1,12 +1,9 @@
 require "spec_helper"
-
 require "hamster/tuple"
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   [:find, :detect].each do |method|
-
     describe "##{method}" do
 
       [
@@ -22,13 +19,11 @@ describe Hamster::Hash do
       ].each do |values, key, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @hash = Hamster.hash(*values)
           end
 
           describe "with a block" do
-
             before do
               @result = @hash.send(method) { |k, v| k == key }
             end
@@ -36,23 +31,15 @@ describe Hamster::Hash do
             it "returns #{expected.inspect}" do
               @result.should == expected
             end
-
           end
 
           describe "without a block" do
-
             it "returns nil" do
               @hash.send(method).should be_nil
             end
-
           end
-
         end
-
       end
-
     end
-
   end
-
 end

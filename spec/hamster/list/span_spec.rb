@@ -1,9 +1,7 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe "Hamster.list#span" do
-
   it "is lazy" do
     -> { Hamster.stream { |item| fail }.span { true } }.should_not raise_error
   end
@@ -28,13 +26,11 @@ DESC
     ].each do |values, expected_prefix, expected_remainder|
 
       describe "given the list #{values.inspect}" do
-
         before do
           @original = Hamster.list(*values)
         end
 
         describe "and a predicate that returns true for values <= 2" do
-
           before do
             @result = @original.span { |item| item <= 2 }
             @prefix = @result.first
@@ -52,11 +48,9 @@ DESC
           it "returns the remainder as #{expected_remainder.inspect}" do
             @remainder.should == Hamster.list(*expected_remainder)
           end
-
         end
 
         describe "without a predicate" do
-
           before do
             @result = @original.span
             @prefix = @result.first
@@ -74,13 +68,8 @@ DESC
           it "returns an empty list as the remainder" do
             @remainder.should be_empty
           end
-
         end
-
       end
-
     end
-
   end
-
 end

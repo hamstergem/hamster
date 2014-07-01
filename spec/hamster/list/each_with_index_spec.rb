@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#each_with_index" do
-
     describe "with no block" do
-
       before do
         @list = Hamster.list("A", "B", "C")
         @result = @list.each_with_index
@@ -16,11 +12,9 @@ describe Hamster::List do
       it "returns self" do
         @result.should equal(@list)
       end
-
     end
 
     describe "with a block" do
-
       before do
         @list = Hamster.interval(1, 1025)
         @pairs = []
@@ -34,9 +28,6 @@ describe Hamster::List do
       it "iterates over the items in order" do
         @pairs.should == (1..@list.size).zip(0..@list.size.pred)
       end
-
     end
-
   end
-
 end

@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#reverse" do
-
     describe "on a really big list" do
-
       before do
         @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
       end
@@ -15,7 +11,6 @@ describe Hamster::List do
       it "doesn't run out of stack" do
         -> { @list.reverse }.should_not raise_error
       end
-
     end
 
     it "is lazy" do
@@ -29,7 +24,6 @@ describe Hamster::List do
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
-
         before do
           @original = Hamster.list(*values)
           @result = @original.reverse { |item| item.downcase }
@@ -42,11 +36,7 @@ describe Hamster::List do
         it "returns #{expected.inspect}" do
           @result.should == Hamster.list(*expected)
         end
-
       end
-
     end
-
   end
-
 end

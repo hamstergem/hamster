@@ -13,6 +13,7 @@ describe Enumerable do
       @values.each(&block)
     end
   end
+
   let(:enumerable) { TestEnumerable.new("A", "B", "C") }
 
   describe "#to_list" do

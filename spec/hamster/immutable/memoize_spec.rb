@@ -22,7 +22,6 @@ describe Hamster::Immutable do
   let(:immutable) { Fixture.new { @count += 1 } }
 
   describe "#memoize" do
-
     before(:each) do
       @count = 0
       immutable.call

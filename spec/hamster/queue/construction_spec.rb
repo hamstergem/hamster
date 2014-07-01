@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/queue"
 
 describe Hamster do
-
   describe ".queue" do
-
     describe "with no arguments" do
-
       before do
         @queue = Hamster.queue
       end
@@ -19,11 +15,9 @@ describe Hamster do
       it "returns an empty queue" do
         @queue.should be_empty
       end
-
     end
 
     describe "with a number of items" do
-
       before do
         @queue = Hamster.queue("A", "B", "C")
       end
@@ -35,9 +29,6 @@ describe Hamster do
       it "is the same as repeatedly using #enqueue" do
         @queue.should == Hamster.queue.enqueue("A").enqueue("B").enqueue("C")
       end
-
     end
-
   end
-
 end

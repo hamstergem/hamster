@@ -1,15 +1,10 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   [:each_chunk, :each_slice].each do |method|
-
     describe "##{method}" do
-
       describe "on a really big list" do
-
         before do
           @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
         end
@@ -17,7 +12,6 @@ describe Hamster::List do
         it "doesn't run out of stack" do
           -> { @list.send(method, 1) { |item| } }.should_not raise_error
         end
-
       end
 
       [
@@ -27,13 +21,11 @@ describe Hamster::List do
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @original = Hamster.list(*values)
           end
 
           describe "with a block" do
-
             before do
               @items = []
               @result = @original.send(method, 2) { |item| @items << item }
@@ -50,11 +42,9 @@ describe Hamster::List do
             it "returns nil" do
               @result.should be_nil
             end
-
           end
 
           describe "without a block" do
-
             before do
               @result = @original.send(method, 2)
             end
@@ -66,15 +56,9 @@ describe Hamster::List do
             it "returns the expected items" do
               @result.should == Hamster.list(*expected)
             end
-
           end
-
         end
-
       end
-
     end
-
   end
-
 end

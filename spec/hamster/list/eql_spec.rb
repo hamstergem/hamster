@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#eql?" do
-
     describe "on a really big list" do
 
       before do
@@ -16,9 +13,7 @@ describe Hamster::List do
       it "doesn't run out of stack" do
         -> { @a.eql?(@b) }.should_not raise_error
       end
-
     end
-
   end
 
   shared_examples 'equal using eql?' do |a, b|
@@ -70,5 +65,4 @@ describe Hamster::List do
 
   include_examples 'not equal using eql?' , Hamster.list('A'), ['A']
   include_examples 'not equal using eql?' , ['A'], Hamster.list('A')
-
 end

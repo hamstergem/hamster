@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   [:combinations, :combination].each do |method|
-
     describe "##{method}" do
-
       it "is lazy" do
         -> { Hamster.stream { fail }.combinations(2) }.should_not raise_error
       end
@@ -26,7 +22,6 @@ describe Hamster::List do
         expected = expected.map { |x| Hamster.list(*x) }
 
         describe "on #{values.inspect} in groups of #{number}" do
-
           before do
             @original = Hamster.list(*values)
             @result = @original.send(method, number)
@@ -39,13 +34,8 @@ describe Hamster::List do
           it "returns #{expected.inspect}" do
             @result.should == Hamster.list(*expected)
           end
-
         end
-
       end
-
     end
-
   end
-
 end

@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   [:cons, :>>].each do |method|
-
     describe "##{method}" do
 
       [
@@ -16,7 +13,6 @@ describe Hamster::List do
       ].each do |values, new_value, expected|
 
         describe "on #{values.inspect} with #{new_value.inspect}" do
-
           before do
             @original = Hamster.list(*values)
             @result = @original.send(method, new_value)
@@ -29,13 +25,8 @@ describe Hamster::List do
           it "returns #{expected.inspect}" do
             @result.should == Hamster.list(*expected)
           end
-
         end
-
       end
-
     end
-
   end
-
 end

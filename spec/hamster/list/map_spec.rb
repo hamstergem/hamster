@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   [:map, :collect].each do |method|
-
     describe "##{method}" do
-
       it "is lazy" do
         -> { Hamster.stream { fail }.map { |item| item } }.should_not raise_error
       end
@@ -19,13 +15,11 @@ describe Hamster::List do
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @original = Hamster.list(*values)
           end
 
           describe "with a block" do
-
             before do
               @result = @original.send(method, &:downcase)
             end
@@ -43,11 +37,9 @@ describe Hamster::List do
               @original.send(method) { |item| count += 1 }
               count.should <= 1
             end
-
           end
 
           describe "without a block" do
-
             before do
               @result = @original.send(method)
             end
@@ -55,15 +47,9 @@ describe Hamster::List do
             it "returns self" do
               @result.should equal(@original)
             end
-
           end
-
         end
-
       end
-
     end
-
   end
-
 end

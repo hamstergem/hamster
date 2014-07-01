@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/list"
 
 describe Hamster::List do
-
   describe "#join" do
-
     describe "on a really big list" do
-
       before do
         @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
       end
@@ -15,11 +11,9 @@ describe Hamster::List do
       it "doesn't run out of stack" do
         -> { @list.join }.should_not raise_error
       end
-
     end
 
     describe "with a separator" do
-
       [
         [[], ""],
         [["A"], "A"],
@@ -27,7 +21,6 @@ describe Hamster::List do
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @original = Hamster.list(*values)
             @result = @original.join("|")
@@ -40,15 +33,11 @@ describe Hamster::List do
           it "returns #{expected.inspect}" do
             @result.should == expected
           end
-
         end
-
       end
-
     end
 
     describe "without a separator" do
-
       [
         [[], ""],
         [["A"], "A"],
@@ -56,7 +45,6 @@ describe Hamster::List do
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @original = Hamster.list(*values)
             @result = @original.join
@@ -69,13 +57,8 @@ describe Hamster::List do
           it "returns #{expected.inspect}" do
             @result.should == expected
           end
-
         end
-
       end
-
     end
-
   end
-
 end
