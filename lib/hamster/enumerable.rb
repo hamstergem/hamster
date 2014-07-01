@@ -81,5 +81,16 @@ module Hamster
     def_delegator :self, :remove, :reject # make it return a Hamster collection (and possibly make it lazy)
     def_delegator :self, :remove, :delete_if
     def_delegator :self, :reduce, :fold
+
+    ## Compatibility fixes
+
+    if RUBY_ENGINE == 'rbx'
+      # Rubinius implements Enumerable#sort_by using Enumerable#map
+      # Because we do our own, custom implementations of #map, that doesn't work well
+      def sort_by(&block)
+        result = to_a
+        result.frozen? ? result.sort_by(&block) : result.sort_by!(&block)
+      end
+    end
   end
 end
