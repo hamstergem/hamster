@@ -13,12 +13,13 @@ module Hamster
   class Hash
     extend Forwardable
     include Immutable
+    include ::Enumerable
 
     class << self
       alias :alloc :new
 
       def new(pairs = nil, &block)
-        (pairs.nil? && block.nil?) ? empty : alloc(pairs, &block)
+        (pairs.nil? && block.nil?) ? empty : alloc(pairs, block)
       end
 
       def empty
@@ -26,9 +27,13 @@ module Hamster
       end
     end
 
-    def initialize(pairs = nil, &block)
+    def initialize(pairs = nil, block = nil)
       @trie = pairs ? Trie[pairs] : EmptyTrie
       @default = block
+    end
+
+    def default_proc
+      @default
     end
 
     def size
@@ -48,10 +53,16 @@ module Hamster
     def_delegator :self, :key?, :include?
     def_delegator :self, :key?, :member?
 
+    def value?(value)
+      each { |k,v| return true if value.eql?(v) }
+      false
+    end
+    def_delegator :self, :value?, :has_value?
+
     def get(key)
       entry = @trie.get(key)
       if entry
-        entry.value
+        entry[1]
       elsif @default
         @default.call(key)
       end
@@ -61,7 +72,7 @@ module Hamster
     def fetch(key, default = Undefined)
       entry = @trie.get(key)
       if entry
-        entry.value
+        entry[1]
       elsif default != Undefined
         default
       elsif block_given?
@@ -81,74 +92,65 @@ module Hamster
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
 
-    def each
-      return self unless block_given?
-      @trie.each { |entry| yield(entry.key, entry.value) }
+    def each(&block)
+      return to_enum if not block_given?
+      @trie.each(&block)
+      self
     end
     def_delegator :self, :each, :foreach
+    def_delegator :self, :each, :each_pair
+
+    def each_key
+      return enum_for(:each_key) if not block_given?
+      @trie.each { |k,v| yield k }
+      self
+    end
+
+    def each_value
+      return enum_for(:each_value) if not block_given?
+      @trie.each { |k,v| yield v }
+      self
+    end
 
     def map
-      return self unless block_given?
+      return enum_for(:map) unless block_given?
       return self if empty?
-      transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(*yield(entry.key, entry.value)) } }
+      transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(*yield(entry)) } }
     end
     def_delegator :self, :map, :collect
 
-    def reduce(memoization)
-      return memoization unless block_given?
-      @trie.reduce(memoization) { |memo, entry| yield(memo, entry.key, entry.value) }
-    end
     def_delegator :self, :reduce, :inject
     def_delegator :self, :reduce, :fold
     def_delegator :self, :reduce, :foldr
 
-    def filter
-      return self unless block_given?
-      trie = @trie.filter { |entry| yield(entry.key, entry.value) }
-      return self.class.empty if trie.empty?
+    def filter(&block)
+      return enum_for(:filter) unless block_given?
+      trie = @trie.filter(&block)
+      if trie.empty?
+        return @default ? self.class.alloc(EmptyTrie, @default) : self.class.empty
+      end
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :filter, :select
     def_delegator :self, :filter, :find_all
+    def_delegator :self, :filter, :keep_if
 
     def remove
-      return self unless block_given?
-      filter { |key, value| !yield(key, value) }
+      return enum_for(:remove) unless block_given?
+      filter { |entry| !yield(entry) }
     end
     def_delegator :self, :remove, :reject
     def_delegator :self, :remove, :delete_if
 
-    def any?
-      return !empty? unless block_given?
-      each { |key, value| return true if yield(key, value) }
-      false
-    end
     def_delegator :self, :any?, :exist?
     def_delegator :self, :any?, :exists?
 
-    def all?
-      each { |key, value| return false unless yield(key, value) } if block_given?
-      true
-    end
     def_delegator :self, :all?, :forall?
 
-    def none?
-      return empty? unless block_given?
-      each { |key, value| return false if yield(key, value) }
-      true
-    end
-
-    def find
-      return nil unless block_given?
-      each { |key, value| return Tuple.new(key, value) if yield(key, value) }
-      nil
-    end
     def_delegator :self, :find, :detect
 
     def merge(other)
-      transform do
-        other.each { |key, value| @trie = @trie.put(key, value) }
-      end
+      transform { other.each { |key, value| @trie = @trie.put(key, value) } }
     end
     def_delegator :self, :merge, :+
 
@@ -165,7 +167,27 @@ module Hamster
     end
 
     def values
-      reduce(Hamster.list) { |values, key, value| values.cons(value) }
+      reduce(Hamster.list) { |values, (key, value)| values.cons(value) }
+    end
+
+    def partition
+      a,b = super
+      [self.class.new(a), self.class.new(b)]
+    end
+
+    def invert
+      pairs = []
+      each { |k,v| pairs << [v, k] }
+      self.class.alloc(pairs, @default)
+    end
+
+    def assoc(obj)
+      @trie.get(obj)
+    end
+
+    def rassoc(obj)
+      each { |entry| return entry if obj == entry[1] }
+      nil
     end
 
     def clear
@@ -193,7 +215,7 @@ module Hamster
     def_delegator :self, :dup, :remove_duplicates
 
     def inspect
-      "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}" }.join(", ")}}"
+      "{#{reduce([]) { |memo, (key, value)| memo << "#{key.inspect} => #{value.inspect}" }.join(", ")}}"
     end
 
     def to_hash
@@ -211,6 +233,14 @@ module Hamster
     def marshal_load(dictionary)
       @trie = dictionary.reduce EmptyTrie do |trie, key_value|
         trie.put(key_value.first, key_value.last)
+      end
+    end
+
+    ## Compatibility fixes
+
+    if RUBY_ENGINE == 'rbx'
+      def sort_by(&block)
+        to_a.sort_by!(&block)
       end
     end
   end

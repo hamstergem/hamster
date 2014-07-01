@@ -4,7 +4,7 @@ require "hamster/hash"
 
 describe Hamster::Hash do
 
-  [:filter, :select, :find_all].each do |method|
+  [:filter, :select, :find_all, :keep_if].each do |method|
 
     describe "##{method}" do
 
@@ -48,8 +48,8 @@ describe Hamster::Hash do
             @result = @original.send(method)
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          it "returns an Enumerator" do
+            @result.class.should be(Enumerator)
           end
 
         end

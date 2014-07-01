@@ -46,19 +46,19 @@ module Hamster
 
     def each
       return self unless block_given?
-      @trie.each { |entry| yield(entry.key) }
+      @trie.each { |key, _| yield(key) }
     end
 
     def map
       return self unless block_given?
       return self if empty?
-      transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(yield(entry.key), nil) } }
+      transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(yield(entry[0]), nil) } }
     end
     def_delegator :self, :map, :collect
 
     def filter
       return self unless block_given?
-      trie = @trie.filter { |entry| yield(entry.key) }
+      trie = @trie.filter { |key, _| yield(key) }
       return EmptySet if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
@@ -97,14 +97,14 @@ module Hamster
     def_delegator :self, :union, :merge
 
     def intersection(other)
-      trie = @trie.filter { |entry| other.include?(entry.key) }
+      trie = @trie.filter { |key, _| other.include?(key) }
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :intersection, :intersect
     def_delegator :self, :intersection, :&
 
     def difference(other)
-      trie = @trie.filter { |entry| !other.include?(entry.key) }
+      trie = @trie.filter { |key, _| !other.include?(key) }
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
     def_delegator :self, :difference, :diff
@@ -144,8 +144,8 @@ module Hamster
       return false if not instance_of?(other.class)
       other_trie = other.instance_variable_get(:@trie)
       return false if @trie.size != other_trie.size
-      @trie.each do |entry|
-        return false if !other_trie.key?(entry.key)
+      @trie.each do |key, _|
+        return false if !other_trie.key?(key)
       end
       true
     end
