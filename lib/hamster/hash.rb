@@ -235,6 +235,14 @@ module Hamster
         trie.put(key_value.first, key_value.last)
       end
     end
+
+    ## Compatibility fixes
+
+    if RUBY_ENGINE == 'rbx'
+      def sort_by(&block)
+        to_a.sort_by!(&block)
+      end
+    end
   end
 
   EmptyHash = Hamster::Hash.empty
