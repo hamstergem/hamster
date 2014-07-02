@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/stack"
 
 describe Hamster::Stack do
-
   [:peek, :top].each do |method|
-
     describe "##{method}" do
-
       [
         [[], nil],
         [["A"], "A"],
@@ -15,7 +11,6 @@ describe Hamster::Stack do
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @original = Hamster.stack(*values)
             @result = @original.send(method)
@@ -28,13 +23,8 @@ describe Hamster::Stack do
           it "returns #{expected.inspect}" do
             @result.should == expected
           end
-
         end
-
       end
-
     end
-
   end
-
 end

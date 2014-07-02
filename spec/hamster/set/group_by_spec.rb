@@ -1,15 +1,10 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   [:group_by, :group].each do |method|
-
     describe "##{method}" do
-
       describe "with a block" do
-
         [
           [[], []],
           [[1], [true => Hamster.set(1)]],
@@ -17,7 +12,6 @@ describe Hamster::Set do
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
-
             before do
               original = Hamster.set(*values)
               @result = original.send(method, &:odd?)
@@ -26,15 +20,11 @@ describe Hamster::Set do
             it "returns #{expected.inspect}" do
               @result.should == Hamster.hash(*expected)
             end
-
           end
-
         end
-
       end
 
       describe "without a block" do
-
         [
           [[], []],
           [[1], [1 => Hamster.set(1)]],
@@ -42,7 +32,6 @@ describe Hamster::Set do
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
-
             before do
               original = Hamster.set(*values)
               @result = original.group_by
@@ -51,15 +40,9 @@ describe Hamster::Set do
             it "returns #{expected.inspect}" do
               @result.should == Hamster.hash(*expected)
             end
-
           end
-
         end
-
       end
-
     end
-
   end
-
 end

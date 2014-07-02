@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster do
-
   describe "#flatten" do
-
     [
       [["A"], ["A"]],
       [%w[A B C], %w[A B C]],
@@ -14,7 +11,6 @@ describe Hamster do
     ].each do |values, expected|
 
       describe "on #{values}" do
-
         before do
           @original = Hamster.set(*values)
           @result = @original.flatten
@@ -27,13 +23,10 @@ describe Hamster do
         it "returns the inlined values" do
           @result.should == Hamster.set(*expected)
         end
-
       end
-
     end
 
     describe "on an empty set" do
-
       before do
         @result = Hamster.set.flatten
       end
@@ -41,9 +34,6 @@ describe Hamster do
       it "returns an empty set" do
         @result.should equal(Hamster.set)
       end
-
     end
-
   end
-
 end

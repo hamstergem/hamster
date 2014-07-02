@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   [:minimum, :min].each do |method|
-
     describe "##{method}" do
-
       describe "with a block" do
 
         [
@@ -17,7 +13,6 @@ describe Hamster::Set do
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
-
             before do
               original = Hamster.set(*values)
               @result = original.send(method) { |minimum, item| item.length <=> minimum.length }
@@ -26,15 +21,11 @@ describe Hamster::Set do
             it "returns #{expected.inspect}" do
               @result.should == expected
             end
-
           end
-
         end
-
       end
 
       describe "without a block" do
-
         [
           [[], nil],
           [["A"], "A"],
@@ -42,7 +33,6 @@ describe Hamster::Set do
         ].each do |values, expected|
 
           describe "on #{values.inspect}" do
-
             before do
               original = Hamster.set(*values)
               @result = original.send(method)
@@ -51,15 +41,9 @@ describe Hamster::Set do
             it "returns #{expected.inspect}" do
               @result.should == expected
             end
-
           end
-
         end
-
       end
-
     end
-
   end
-
 end

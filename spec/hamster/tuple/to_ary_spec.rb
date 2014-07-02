@@ -1,5 +1,4 @@
 require "spec_helper"
-
 require "hamster/tuple"
 
 describe Hamster::Tuple do

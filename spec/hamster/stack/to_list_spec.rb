@@ -1,12 +1,9 @@
 require "spec_helper"
-
 require "hamster/stack"
 require "hamster/list"
 
 describe Hamster::Stack do
-
   describe "#to_list" do
-
     [
       [[], []],
       [["A"], ["A"]],
@@ -14,7 +11,6 @@ describe Hamster::Stack do
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
-
         before do
           @stack = Hamster.stack(*values)
           @result = @stack.to_list
@@ -23,11 +19,7 @@ describe Hamster::Stack do
         it "returns #{expected.inspect}" do
           @result.should == Hamster.list(*expected)
         end
-
       end
-
     end
-
   end
-
 end

@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/tuple"
 
 describe Hamster::Tuple do
-
   describe "#to_a" do
-
     [
       [],
       ["A"],
@@ -13,7 +10,6 @@ describe Hamster::Tuple do
     ].each do |values|
 
       describe "on #{values.inspect}" do
-
         before do
           @tuple = Hamster::Tuple.new(*values)
           @result = @tuple.to_a
@@ -28,11 +24,7 @@ describe Hamster::Tuple do
           @result << "The End"
           @result.last.should == "The End"
         end
-
       end
-
     end
-
   end
-
 end

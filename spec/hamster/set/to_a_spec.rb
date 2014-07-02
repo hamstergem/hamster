@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   [:to_a, :entries].each do |method|
-
     describe "##{method}" do
-
       [
         [],
         ["A"],
@@ -15,7 +11,6 @@ describe Hamster::Set do
       ].each do |values|
 
         describe "on #{values.inspect}" do
-
           before do
             @set = Hamster.set(*values)
             @result = @set.send(method)
@@ -30,13 +25,8 @@ describe Hamster::Set do
             @result << "The End"
             @result.last.should == "The End"
           end
-
         end
-
       end
-
     end
-
   end
-
 end

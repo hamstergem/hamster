@@ -1,12 +1,9 @@
 require "spec_helper"
-
 require "hamster/set"
 require "hamster/list"
 
 describe Hamster::Set do
-
   describe "#to_list" do
-
     [
       [],
       ["A"],
@@ -14,7 +11,6 @@ describe Hamster::Set do
     ].each do |values|
 
       describe "on #{values.inspect}" do
-
         before do
           set = Hamster.set(*values)
           @list = set.to_list
@@ -25,7 +21,6 @@ describe Hamster::Set do
         end
 
         describe "the returned list" do
-
           it "has the correct length" do
             @list.size.should == values.size
           end
@@ -35,13 +30,8 @@ describe Hamster::Set do
               @list.should include(value)
             end
           end
-
         end
-
       end
-
     end
-
   end
-
 end

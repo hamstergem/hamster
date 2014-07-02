@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   describe "#subset?" do
-
     [
       [[], [], true],
       [["A"], [], false],
@@ -21,7 +18,6 @@ describe Hamster::Set do
     ].each do |a, b, expected|
 
       describe "for #{a.inspect} and #{b.inspect}" do
-
         before do
           @result = Hamster.set(*a).subset?(Hamster.set(*b))
         end
@@ -29,11 +25,7 @@ describe Hamster::Set do
         it "returns #{expected}"  do
           @result.should == expected
         end
-
       end
-
     end
-
   end
-
 end

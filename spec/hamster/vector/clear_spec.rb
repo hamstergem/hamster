@@ -2,9 +2,7 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-
   describe "#clear" do
-
     [
       [],
       ["A"],
@@ -12,7 +10,6 @@ describe Hamster::Vector do
     ].each do |values|
 
       describe "on #{values}" do
-
         before do
           @original = Hamster.vector(*values)
           @result = @original.clear
@@ -25,11 +22,7 @@ describe Hamster::Vector do
         it "returns an empty vector" do
           @result.should equal(Hamster.vector)
         end
-
       end
-
     end
-
   end
-
 end

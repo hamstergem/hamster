@@ -1,15 +1,10 @@
 require "spec_helper"
-
 require "hamster/stack"
 
 describe Hamster::Stack do
-
   [:eql?, :==].each do |method|
-
     describe "##{method}" do
-
       describe "returns false when comparing with" do
-
         before do
           @stack = Hamster.stack("A", "B", "C")
         end
@@ -21,7 +16,6 @@ describe Hamster::Stack do
         it "an aribtrary object" do
           @stack.send(method, Object.new).should == false
         end
-
       end
 
       [
@@ -35,7 +29,6 @@ describe Hamster::Stack do
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do
-
           before do
             @a = Hamster.stack(*a)
             @b = Hamster.stack(*b)
@@ -48,13 +41,8 @@ describe Hamster::Stack do
           it "for #{b.inspect} and #{a.inspect}" do
             @b.send(method, @a).should == expected
           end
-
         end
-
       end
-
     end
-
   end
-
 end

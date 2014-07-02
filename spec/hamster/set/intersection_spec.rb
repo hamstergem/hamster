@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   [:intersection, :intersect, :&].each do |method|
-
     describe "##{method}" do
-
       [
         [[], [], []],
         [["A"], [], []],
@@ -17,7 +13,6 @@ describe Hamster::Set do
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do
-
           before do
             @a = Hamster.set(*a)
             @b = Hamster.set(*b)
@@ -34,13 +29,8 @@ describe Hamster::Set do
           after  do
             @result.should == Hamster.set(*expected)
           end
-
         end
-
       end
-
     end
-
   end
-
 end

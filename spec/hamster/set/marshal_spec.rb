@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   describe "#marshal_dump/#marshal_load" do
-
     let(:ruby) { File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"]) }
 
     let(:child_cmd) do
@@ -28,7 +25,5 @@ describe Hamster::Set do
       reloaded_hash.should include :one
       reloaded_hash.should include :two
     end
-
   end
-
 end

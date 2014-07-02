@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/stack"
 
 describe Hamster do
-
   describe ".stack" do
-
     describe "with no arguments" do
-
       before do
         @stack = Hamster.stack
       end
@@ -19,11 +15,9 @@ describe Hamster do
       it "returns an empty stack" do
         @stack.should be_empty
       end
-
     end
 
     describe "with a number of items" do
-
       before do
         @stack = Hamster.stack("A", "B", "C")
       end
@@ -35,9 +29,6 @@ describe Hamster do
       it "is the same as repeatedly using #push" do
         @stack.should == Hamster.stack.push("A").push("B").push("C")
       end
-
     end
-
   end
-
 end

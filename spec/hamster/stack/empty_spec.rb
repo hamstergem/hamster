@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/stack"
 
 describe Hamster::Stack do
-
   describe "#empty?" do
-
     [
       [[], true],
       [["A"], false],
@@ -13,7 +10,6 @@ describe Hamster::Stack do
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
-
         before do
           @stack = Hamster.stack(*values)
         end
@@ -21,11 +17,7 @@ describe Hamster::Stack do
         it "returns #{expected.inspect}" do
           @stack.empty?.should == expected
         end
-
       end
-
     end
-
   end
-
 end

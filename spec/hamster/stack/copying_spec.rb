@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/stack"
 
 describe Hamster::Stack do
-
   [:dup, :clone].each do |method|
-
     [
       [],
       ["A"],
@@ -13,7 +10,6 @@ describe Hamster::Stack do
     ].each do |values|
 
       describe "on #{values.inspect}" do
-
         before do
           @stack = Hamster.stack(*values)
         end
@@ -21,11 +17,7 @@ describe Hamster::Stack do
         it "returns self" do
           @stack.send(method).should equal(@stack)
         end
-
       end
-
     end
-
   end
-
 end

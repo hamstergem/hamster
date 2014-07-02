@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   [:find, :detect].each do |method|
-
     describe "##{method}" do
-
       [
         [[], "A", nil],
         [[], nil, nil],
@@ -21,7 +17,6 @@ describe Hamster::Set do
       ].each do |values, item, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @set = Hamster.set(*values)
           end
@@ -31,23 +26,15 @@ describe Hamster::Set do
             it "returns #{expected.inspect}" do
               @set.send(method) { |x| x == item }.should == expected
             end
-
           end
 
           describe "without a block" do
-
             it "returns nil" do
               @set.send(method).should be_nil
             end
-
           end
-
         end
-
       end
-
     end
-
   end
-
 end

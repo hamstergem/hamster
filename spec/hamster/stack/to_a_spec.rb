@@ -1,13 +1,9 @@
 require "spec_helper"
-
 require "hamster/stack"
 
 describe Hamster::Stack do
-
   [:to_a, :entries].each do |method|
-
     describe "##{method}" do
-
       [
         [[], []],
         [["A"], ["A"]],
@@ -15,7 +11,6 @@ describe Hamster::Stack do
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
-
           before do
             @stack = Hamster.stack(*values)
             @result = @stack.send(method)
@@ -30,13 +25,8 @@ describe Hamster::Stack do
             @result << "The End"
             @result.last.should == "The End"
           end
-
         end
-
       end
-
     end
-
   end
-
 end

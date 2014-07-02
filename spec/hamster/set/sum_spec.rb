@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   describe "#sum" do
-
     [
       [[], 0],
       [[2], 2],
@@ -13,7 +10,6 @@ describe Hamster::Set do
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
-
         before do
           original = Hamster.set(*values)
           @result = original.sum
@@ -22,11 +18,7 @@ describe Hamster::Set do
         it "returns #{expected.inspect}" do
           @result.should == expected
         end
-
       end
-
     end
-
   end
-
 end

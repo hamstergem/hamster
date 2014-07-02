@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   describe "#clear" do
-
     [
       [],
       ["A"],
@@ -13,7 +10,6 @@ describe Hamster::Set do
     ].each do |values|
 
       describe "on #{values}" do
-
         before do
           @original = Hamster.set(*values)
           @result = @original.clear
@@ -26,11 +22,7 @@ describe Hamster::Set do
         it "returns an empty set" do
           @result.should equal(Hamster.set)
         end
-
       end
-
     end
-
   end
-
 end

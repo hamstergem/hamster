@@ -2,13 +2,9 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-
   [:eql?, :==].each do |method|
-
     describe "##{method}" do
-
       describe "returns false when comparing with" do
-
         before do
           @vector = Hamster.vector("A", "B", "C")
         end
@@ -20,7 +16,6 @@ describe Hamster::Vector do
         it "an aribtrary object" do
           @vector.send(method, Object.new).should == false
         end
-
       end
 
       it "returns false when comparing an empty vector with an empty array" do
@@ -39,7 +34,6 @@ describe Hamster::Vector do
       ].each do |a, b, expected|
 
         describe "returns #{expected.inspect}" do
-
           before do
             @a = Hamster.vector(*a)
             @b = Hamster.vector(*b)
@@ -52,13 +46,8 @@ describe Hamster::Vector do
           it "for vectors #{b.inspect} and #{a.inspect}" do
             @b.send(method, @a).should == expected
           end
-
         end
-
       end
-
     end
-
   end
-
 end

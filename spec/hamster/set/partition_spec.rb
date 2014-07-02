@@ -1,12 +1,9 @@
 require "spec_helper"
-
 require "hamster/tuple"
 require "hamster/set"
 
 describe Hamster::Set do
-
   describe "#partition" do
-
     [
       [[], [], []],
       [[1], [1], []],
@@ -19,13 +16,11 @@ describe Hamster::Set do
     ].each do |values, expected_matches, expected_remainder|
 
       describe "on #{values.inspect}" do
-
         before do
           @original = Hamster.set(*values)
         end
 
         describe "with a block" do
-
           before do
             @result = @original.partition(&:odd?)
             @matches = @result.first
@@ -47,11 +42,9 @@ describe Hamster::Set do
           it "correctly identifies the remainder" do
             @remainder.should == Hamster.set(*expected_remainder)
           end
-
         end
 
         describe "without a block" do
-
           before do
             @result = @original.partition
           end
@@ -59,13 +52,8 @@ describe Hamster::Set do
           it "returns self" do
             @result.should equal(@original)
           end
-
         end
-
       end
-
     end
-
   end
-
 end

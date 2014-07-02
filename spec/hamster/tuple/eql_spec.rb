@@ -1,15 +1,12 @@
 require "spec_helper"
-
 require "hamster/tuple"
 
 describe Hamster::Tuple do
-
   before do
     @tuple = Hamster::Tuple.new("A", "B", "C")
   end
 
   describe "#==" do
-
     describe "returns true when comparing with" do
 
       it "an array with the same values" do
@@ -23,11 +20,9 @@ describe Hamster::Tuple do
       it "a Tuple with the same values" do
         @tuple.should == Hamster::Tuple.new("A", "B", "C")
       end
-
     end
 
     describe "returns false when comparing with" do
-
       it "an array with different values" do
         @tuple.should_not == ["A", "B"]
       end
@@ -39,15 +34,11 @@ describe Hamster::Tuple do
       it "an arbitrary object" do
         @tuple.should_not == Object.new
       end
-
     end
-
   end
 
   describe "#eql?" do
-
     describe "returns false when comparing with" do
-
       it "an array with the same values" do
         @tuple.should_not eql(%w[A B C])
       end
@@ -55,7 +46,6 @@ describe Hamster::Tuple do
       it "an arbitrary object" do
         @tuple.should_not eql(Object.new)
       end
-
     end
 
     [
@@ -70,7 +60,6 @@ describe Hamster::Tuple do
     ].each do |a, b, expected|
 
       describe "returns #{expected.inspect}" do
-
         before do
           @a = Hamster::Tuple.new(*a)
           @b = Hamster::Tuple.new(*b)
@@ -83,11 +72,7 @@ describe Hamster::Tuple do
         it "for #{b.inspect} and #{a.inspect}" do
           @b.eql?(@a).should == expected
         end
-
       end
-
     end
-
   end
-
 end

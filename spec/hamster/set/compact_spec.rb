@@ -1,11 +1,8 @@
 require "spec_helper"
-
 require "hamster/set"
 
 describe Hamster::Set do
-
   describe "#compact" do
-
     [
       [[], []],
       [["A"], ["A"]],
@@ -19,7 +16,6 @@ describe Hamster::Set do
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
-
         before do
           @original = Hamster.set(*values)
           @result = @original.compact
@@ -32,11 +28,7 @@ describe Hamster::Set do
         it "returns #{expected.inspect}" do
           @result.should == Hamster.set(*expected)
         end
-
       end
-
     end
-
   end
-
 end
