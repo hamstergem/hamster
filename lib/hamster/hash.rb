@@ -149,6 +149,9 @@ module Hamster
 
     def_delegator :self, :find, :detect
 
+    def_delegator :self, :max, :maximum
+    def_delegator :self, :min, :minimum
+
     def merge(other)
       transform { other.each { |key, value| @trie = @trie.put(key, value) } }
     end
