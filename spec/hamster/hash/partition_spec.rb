@@ -2,14 +2,12 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-
   before do
     @hash = Hamster.hash("a" => 1, "b" => 2, "c" => 3, "d" => 4)
     @part = @hash.partition { |k,v| v % 2 == 0 }
   end
 
   describe "#partition" do
-
     it "returns a pair of Hamster::Hashes" do
       @part.each { |h| h.class.should be(Hamster::Hash) }
     end
@@ -23,7 +21,6 @@ describe Hamster::Hash do
     end
 
     context "from a subclass" do
-
       before do
         @subclass = Class.new(Hamster::Hash)
         @hash = @subclass.new("a" => 1, "b" => 2, "c" => 3, "d" => 4)
@@ -33,9 +30,6 @@ describe Hamster::Hash do
       it "should return instances of the subclass" do
         @part.each { |h| h.class.should be(@subclass) }
       end
-
     end
-
   end
-
 end
