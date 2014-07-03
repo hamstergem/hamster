@@ -35,5 +35,13 @@ describe Hamster do
         @result.should equal(Hamster.set)
       end
     end
+
+    context "from a subclass" do
+      it "returns an instance of the subclass" do
+        @subclass = Class.new(Hamster::Set)
+        @subclass.new.flatten.class.should be(@subclass)
+        @subclass.new(Hamster.set(1), Hamster.set(2)).class.should be(@subclass)
+      end
+    end
   end
 end

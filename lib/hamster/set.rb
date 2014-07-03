@@ -9,7 +9,7 @@ require "hamster/list"
 
 module Hamster
   def self.set(*items)
-    items.reduce(EmptySet) { |set, item| set.add(item) }
+    Set.new(*items)
   end
 
   class Set
@@ -17,6 +17,18 @@ module Hamster
     include Immutable
     include Enumerable
     include Groupable
+
+    class << self
+      alias :alloc :new
+
+      def new(*items)
+        items.empty? ? self.empty : self.alloc(Trie[items.map! { |x| [x, nil] }])
+      end
+
+      def empty
+        @empty ||= self.alloc
+      end
+    end
 
     def initialize(trie = EmptyTrie)
       @trie = trie
@@ -59,7 +71,7 @@ module Hamster
     def filter
       return self unless block_given?
       trie = @trie.filter { |entry| yield(entry.key) }
-      return EmptySet if trie.empty?
+      return self.class.empty if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
 
@@ -125,19 +137,19 @@ module Hamster
     end
 
     def flatten
-      reduce(EmptySet) do |set, item|
+      reduce(self.class.empty) do |set, item|
         next set.union(item.flatten) if item.is_a?(Set)
         set.add(item)
       end
     end
 
     def group_by(&block)
-      group_by_with(EmptySet, &block)
+      group_by_with(self.class.empty, &block)
     end
     def_delegator :self, :group_by, :group
 
     def clear
-      EmptySet
+      self.class.empty
     end
 
     def eql?(other)
@@ -183,5 +195,5 @@ module Hamster
     end
   end
 
-  EmptySet = Hamster::Set.new
+  EmptySet = Hamster::Set.empty
 end
