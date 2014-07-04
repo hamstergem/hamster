@@ -1,9 +1,5 @@
-require "forwardable"
-
 module Hamster
   class Trie
-    extend Forwardable
-
     def self.[](pairs)
       result = self.new(0)
       pairs.each { |key, val| result.send(:put!, key, val) }
@@ -29,7 +25,6 @@ module Hamster
     def key?(key)
       !!get(key)
     end
-    def_delegator :self, :key?, :has_key?
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
     def each
@@ -110,7 +105,7 @@ module Hamster
       end
       true
     end
-    def_delegator :self, :eql?, :==
+    alias :== :eql?
 
     protected
 
