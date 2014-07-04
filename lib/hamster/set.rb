@@ -104,8 +104,13 @@ module Hamster
     def_delegator :self, :intersection, :&
 
     def difference(other)
-      trie = @trie.filter { |entry| !other.include?(entry.key) }
-      transform_unless(trie.equal?(@trie)) { @trie = trie }
+      if (@trie.size <= other.size) && (other.is_a?(Hamster::Set) || (defined?(::Set) && other.is_a?(::Set)))
+        Set.new(@trie.filter { |entry| !other.include?(entry.key) })
+      else
+        trie = @trie
+        other.each { |item| trie = trie.delete(item) }
+        Set.new(trie)
+      end
     end
     def_delegator :self, :difference, :diff
     def_delegator :self, :difference, :subtract
