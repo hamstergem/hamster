@@ -58,12 +58,12 @@ module Hamster
         entries = @entries.dup
         key = key.dup.freeze if key.is_a?(String)
         entries[index] = Entry.new(key, value)
-        self.class.new(@significant_bits, @size + 1, entries, @children)
+        Trie.new(@significant_bits, @size + 1, entries, @children)
       elsif entry.key.eql?(key)
         entries = @entries.dup
         key = key.dup.freeze if key.is_a?(String)
         entries[index] = Entry.new(key, value)
-        self.class.new(@significant_bits, @size, entries, @children)
+        Trie.new(@significant_bits, @size, entries, @children)
       else
         children = @children.dup
         child = children[index]
@@ -71,11 +71,11 @@ module Hamster
         if child
           children[index] = child.put(key, value)
         else
-          children[index] = self.class.new(@significant_bits + 5).put!(key, value)
+          children[index] = Trie.new(@significant_bits + 5).put!(key, value)
         end
         new_child_size = children[index].size
         new_self_size = @size + (new_child_size - child_size)
-        self.class.new(@significant_bits, new_self_size, @entries, children)
+        Trie.new(@significant_bits, new_self_size, @entries, children)
       end
     end
 
@@ -93,7 +93,7 @@ module Hamster
 
     # Returns a copy of <tt>self</tt> with the given key (and associated value) deleted. If not found, returns <tt>self</tt>.
     def delete(key)
-      find_and_delete(key) || self.class.new(@significant_bits)
+      find_and_delete(key) || Trie.new(@significant_bits)
     end
 
     def include?(key, value)
@@ -132,7 +132,7 @@ module Hamster
           @children[index] = child.put!(key, value)
           @size += child.size - old_child_size
         else
-          @children[index] = self.class.new(@significant_bits + 5).put!(key, value)
+          @children[index] = Trie.new(@significant_bits + 5).put!(key, value)
           @size += 1
         end
       end
@@ -155,7 +155,7 @@ module Hamster
             children = @children.dup
             children[index] = copy
             new_size = @size - (child.size - copy_size(copy))
-            return self.class.new(@significant_bits, new_size, @entries, children)
+            return Trie.new(@significant_bits, new_size, @entries, children)
           end
         end
       end
@@ -176,7 +176,7 @@ module Hamster
         else
           entries[index] = nil
         end
-        self.class.new(@significant_bits, @size - 1, entries, children || @children)
+        Trie.new(@significant_bits, @size - 1, entries, children || @children)
       end
     end
 
