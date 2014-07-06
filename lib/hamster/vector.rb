@@ -145,7 +145,7 @@ module Hamster
     end
 
     def full?
-      (@size >> root_index_bits) > 0
+      (@size >> root_index_bits) > 31
     end
 
     def root_index_bits
