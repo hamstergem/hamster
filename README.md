@@ -259,7 +259,7 @@ Besides `Hamster.list` there are other ways to construct lists:
     Hamster.iterate(1, &:next)
     ```
 
-You also get `Enumerable#to_list`> so you can slowly
+You also get `Enumerable#to_list` so you can slowly
 transition from built-in collection classes to Hamster.
 
 And finally, you get `IO#to_list` allowing you to lazily
