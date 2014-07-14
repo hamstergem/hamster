@@ -36,10 +36,6 @@ morphed into something I actually use. My primary concern has
 been to round out the functionality with good test coverage
 and clean, readable code.
 
-Performance is pretty good -- especially with lazy lists --
-but there are some things which may blow the stack due to a
-lack of Tail-Call-Optimisation in Ruby.
-
 Documentation is sparse but I've tried as best I can to write
 specs that read as documentation. I've also tried to alias
 methods as their `Enumerable` equivalents where
