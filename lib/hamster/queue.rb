@@ -68,13 +68,10 @@ module Hamster
     def_delegator :self, :eql?, :==
 
     def to_a
-      to_list.to_a
+      @front.to_a.concat(@rear.to_a.tap { |a| a.reverse! })
     end
     def_delegator :self, :to_a, :entries
-
-    def to_ary
-      to_list.to_ary
-    end
+    def_delegator :self, :to_a, :to_ary
 
     def to_list
       @front.append(@rear.reverse)
