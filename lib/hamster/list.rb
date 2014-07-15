@@ -527,20 +527,21 @@ module Hamster
     private
 
     def method_missing(name, *args, &block)
-      return accessor(Regexp.last_match[1]) if name.to_s.match(CADR)
-      super
-    end
-
-    # Perform compositions of <tt>car</tt> and <tt>cdr</tt> operations. Their names consist of a 'c', followed by at
-    # least one 'a' or 'd', and finally an 'r'. The series of 'a's and 'd's in each function's name is chosen to
-    # identify the series of car and cdr operations that is performed by the function. The order in which the 'a's and
-    # 'd's appear is the inverse of the order in which the corresponding operations are performed.
-    def accessor(sequence)
-      sequence.reverse.each_char.reduce(self) do |memo, char|
-        case char
-        when "a" then memo.head
-        when "d" then memo.tail
-        end
+      if name.to_s.match(CADR)
+        # Perform compositions of car and cdr operations. Their names consist of a 'c',
+        # followed by at least one 'a' or 'd', and finally an 'r'. The series of 'a's and
+        # 'd's in the method name identify the series of car and cdr operations performed.
+        # The order in which the 'a's and 'd's appear is the inverse of the order in which
+        # the corresponding operations are performed.
+        code = "def #{name}; self."
+        code << Regexp.last_match[1].reverse.chars.map do |char|
+          {'a' => 'head', 'd' => 'tail'}[char]
+        end.join('.')
+        code << '; end'
+        List.class_eval(code)
+        send(name, *args, &block)
+      else
+        super
       end
     end
   end
