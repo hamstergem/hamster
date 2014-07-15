@@ -1,5 +1,5 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/tuple"
 
 describe Hamster do
   describe ".tuple" do
