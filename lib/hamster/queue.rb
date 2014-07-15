@@ -78,7 +78,7 @@ module Hamster
     end
 
     def inspect
-      to_list.inspect
+      to_a.inspect
     end
   end
 
