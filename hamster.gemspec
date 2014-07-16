@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["haruki_zaemon@mac.com"]
   spec.summary       = %q{Efficient, immutable, thread-safe collection classes for Ruby}
   spec.description   = spec.summary
-  spec.homepage      = "http://harukizaemon.github.io/hamster"
+  spec.homepage      = "https://github.com/hamstergem/hamster"
   spec.license       = "MIT"
 
   spec.platform      = Gem::Platform::RUBY
