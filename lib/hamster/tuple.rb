@@ -1,6 +1,9 @@
 require "hamster/immutable"
 
 module Hamster
+  def self.tuple(*items)
+    Hamster::Tuple.new(*items)
+  end
   class Tuple < Array
     include Immutable
 
