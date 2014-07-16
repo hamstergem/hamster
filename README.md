@@ -15,7 +15,7 @@ Structures][PDS] like `Set`, `List`, `Stack`, `Queue`, and `Vector`.
 
 Hamster collections are **immutable**. Whenever you modify a Hamster
 collection, the original is preserved and a modified copy is returned. This
-makes them inherently thread-safe and sharable. For an interesting
+makes them inherently thread-safe and shareable. For an interesting
 perspective on why immutability itself is inherently a good thing, you might
 like to take a look at Matthias Felleisen's [Function Objects presentation][FO].
 
