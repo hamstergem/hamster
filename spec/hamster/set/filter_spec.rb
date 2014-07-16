@@ -9,7 +9,6 @@ describe Hamster::Set do
       end
 
       describe "when everything matches" do
-
         before do
           @result = @original.send(method) { |item| true }
         end
@@ -56,6 +55,16 @@ describe Hamster::Set do
 
         it "returns an empty set" do
           @result.should equal(Hamster.set)
+        end
+      end
+
+      context "from a subclass" do
+        it "returns an instance of the same class" do
+          @subclass = Class.new(Hamster::Set)
+          @instance = @subclass.new('A', 'B', 'C')
+          @instance.filter { true }.class.should be(@subclass)
+          @instance.filter { false }.class.should be(@subclass)
+          @instance.filter { rand(2) == 0 }.class.should be(@subclass)
         end
       end
     end

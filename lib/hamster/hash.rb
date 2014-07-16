@@ -161,7 +161,7 @@ module Hamster
     end
 
     def keys
-      Hamster::Set.new(@trie)
+      Hamster::Set.alloc(@trie)
     end
 
     def values

@@ -24,5 +24,14 @@ describe Hamster::Set do
         end
       end
     end
+
+    context "from a subclass" do
+      it "returns an empty instance of the subclass" do
+        @subclass = Class.new(Hamster::Set)
+        @instance = @subclass.new(:a, :b, :c, :d)
+        @instance.clear.class.should be(@subclass)
+        @instance.clear.should be_empty
+      end
+    end
   end
 end
