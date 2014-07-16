@@ -17,19 +17,19 @@ Hamster collections are **immutable**. Whenever you modify a Hamster
 collection, the original is preserved and a modified copy is returned. This
 makes them inherently thread-safe and sharable. For an interesting
 perspective on why immutability itself is inherently a good thing, you might
-like to take a look at Matthias Felleisen"s [Function Objects presentation][FO].
+like to take a look at Matthias Felleisen's [Function Objects presentation][FO].
 
 Hamster collection classes remain space efficient by making use of some very
 well understood and very simple techniques that enable sharing between copies.
 
 Hamster collections are almost always closed under a given operation. That is,
-whereas Ruby"s collection methods always return arrays, Hamster collections
+whereas Ruby's collection methods always return arrays, Hamster collections
 will return an instance of the same class wherever possible.
 
-And lastly, Hamster lists are lazy -- where Ruby"s language constructs permit
+And lastly, Hamster lists are lazy -- where Ruby's language constructs permit
 -- making it possible to, among other things, process "infinitely large" lists.
-(Note: Ruby 1.9 supports a form of laziness using `Enumerator`. However, they"re
-implemented using Fibers which unfortunately can"t be shared across threads.)
+(Note: Ruby 1.9 supports a form of laziness using `Enumerator`. However, they're
+implemented using Fibers which unfortunately can't be shared across threads.)
 
 Hamster started out as a spike to prove a point and has since
 morphed into something I actually use. My primary concern has
@@ -303,7 +303,7 @@ example without all the syntactic, imperative, noise.
 Installing
 ==========
 
-Add this line to your application"s Gemfile:
+Add this line to your application's Gemfile:
 
     gem "hamster", "~> 1.0"
 
