@@ -39,13 +39,6 @@ built-in `Hash`, `Array`, and `Enumerable`, to ease code migration.
 [FO]: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf
 
 
-Contact
-=======
-
-  - GitHub:   http://github.com/harukizaemon/hamster
-  - RubyGems: https://rubygems.org/gems/hamster
-
-
 Using
 =====
 
