@@ -5,7 +5,7 @@ require "hamster/enumerable"
 
 module Hamster
   def self.vector(*items)
-    Vector.new(*items)
+    Vector.new(items)
   end
 
   class Vector
@@ -23,7 +23,7 @@ module Hamster
     class << self
       alias :alloc :new
 
-      def new(*items)
+      def new(items=[])
         items.empty? ? empty : items.reduce(empty) { |vector, item| vector.add(item) }
       end
 

@@ -4,7 +4,7 @@ require "hamster/vector"
 describe Hamster::Vector do
   describe "new" do
     it "creates a new vector" do
-      vector = Hamster::Vector.new(1,2,3)
+      vector = Hamster::Vector.new([1,2,3])
       vector.size.should be(3)
       vector[0].should be(1)
       vector[1].should be(2)
@@ -19,7 +19,7 @@ describe Hamster::Vector do
     describe "from a subclass" do
       before do
         @subclass = Class.new(Hamster::Vector)
-        @instance = @subclass.new("some", "values")
+        @instance = @subclass.new(["some", "values"])
       end
 
       it "should return an instance of the subclass" do
