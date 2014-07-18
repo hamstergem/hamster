@@ -27,6 +27,10 @@ module Hamster
         items.empty? ? empty : items.reduce(empty) { |vector, item| vector.add(item) }
       end
 
+      def [](*items)
+        new(items)
+      end
+
       def empty
         @empty ||= self.alloc
       end

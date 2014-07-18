@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "new" do
-    it "creates a new vector" do
+    it "accepts a single enumerable argument and creates a new vector" do
       vector = Hamster::Vector.new([1,2,3])
       vector.size.should be(3)
       vector[0].should be(1)
@@ -29,6 +29,20 @@ describe Hamster::Vector do
       it "should return a frozen instance" do
         @instance.frozen?.should be true
       end
+    end
+  end
+
+  describe "[]" do
+    it "accepts a variable number of items and creates a new vector" do
+      vector = Hamster::Vector['a', 'b']
+      vector.size.should be(2)
+      vector[0].should == 'a'
+      vector[1].should == 'b'
+    end
+
+    it "returns the canonical empty vector if called with no arguments" do
+      Hamster::Vector[].should be(Hamster::Vector.empty)
+      Hamster::Vector[].size.should be(0)
     end
   end
 end
