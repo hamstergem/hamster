@@ -31,34 +31,16 @@ And lastly, Hamster lists are lazy -- where Ruby's language constructs permit
 (Note: Ruby 1.9 supports a form of laziness using `Enumerator`. However, they're
 implemented using Fibers which unfortunately can't be shared across threads.)
 
-Hamster started out as a spike to prove a point and has since
-morphed into something I actually use. My primary concern has
-been to round out the functionality with good test coverage
-and clean, readable code.
-
-Documentation is sparse but I've tried as best I can to write
-specs that read as documentation. I've also tried to alias
-methods as their `Enumerable` equivalents where
-possible to ease code migration.
+Where possible, Hamster collections offer an interface compatible with Ruby's
+built-in `Hash`, `Array`, and `Enumerable`, to ease code migration.
 
 [HAMT]: http://lampwww.epfl.ch/papers/idealhashtrees.pdf
 [PDS]: http://en.wikipedia.org/wiki/Persistent_data_structure
 [FO]: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf
 
 
-Contact
-=======
-
-  - GitHub:   http://github.com/harukizaemon/hamster
-  - RubyGems: https://rubygems.org/gems/hamster
-
-
 Using
 =====
-
-Most Hamster classes support an API that resembles their
-standard library counterpart with the caveat that any
-modification returns a new instance.
 
 Once installed, all that remains is to make the
 collection classes available in your code:
