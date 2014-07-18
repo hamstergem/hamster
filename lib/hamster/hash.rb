@@ -18,7 +18,13 @@ module Hamster
       alias :alloc :new
 
       def new(pairs = nil, &block)
-        (pairs.nil? && block.nil?) ? empty : alloc(pairs, &block)
+        if pairs.nil? && block.nil?
+          empty
+        elsif pairs.empty?
+          alloc(EmptyTrie, block)
+        else
+          alloc(Trie[pairs], block)
+        end
       end
 
       def empty
@@ -26,8 +32,8 @@ module Hamster
       end
     end
 
-    def initialize(pairs = nil, &block)
-      @trie = pairs ? Trie[pairs] : EmptyTrie
+    def initialize(trie = EmptyTrie, block = nil)
+      @trie    = trie
       @default = block
     end
 

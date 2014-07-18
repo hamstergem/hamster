@@ -22,7 +22,7 @@ module Hamster
       alias :alloc :new
 
       def new(*items)
-        items.empty? ? self.empty : self.alloc(Trie[items.map! { |x| [x, nil] }])
+        items.empty? ? empty : alloc(Trie[items.map! { |x| [x, nil] }])
       end
 
       def empty
