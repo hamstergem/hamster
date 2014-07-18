@@ -5,7 +5,7 @@ require "hamster/enumerable"
 
 module Hamster
   def self.vector(*items)
-    items.reduce(EmptyVector) { |vector, item| vector.add(item) }
+    Vector.new(*items)
   end
 
   class Vector
@@ -19,6 +19,18 @@ module Hamster
 
     attr_reader :size
     def_delegator :self, :size, :length
+
+    class << self
+      alias :alloc :new
+
+      def new(*items)
+        items.empty? ? empty : items.reduce(empty) { |vector, item| vector.add(item) }
+      end
+
+      def empty
+        @empty ||= self.alloc
+      end
+    end
 
     def initialize
       @levels = 0
