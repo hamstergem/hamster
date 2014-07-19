@@ -117,5 +117,22 @@ describe Hamster::Vector do
         @instance.set(1, 2.5).class.should be(@subclass)
       end
     end
+
+    context "on a large vector" do
+      it "sets the new value at the specified index" do
+        vector = Hamster.vector(*(1..2000).to_a).set(0, 100).set(1500, 200)
+        vector[0].should be(100)
+        vector[1500].should be(200)
+        vector[1999].should be(2000)
+      end
+    end
+
+    context "at indexes which are likely to exercise edge-case behavior" do
+      it "still sets the new value at the specified index" do
+        vector = Hamster.vector(*(1..33).to_a).set(31, 'a').set(32, 'b')
+        vector[31].should == 'a'
+        vector[32].should == 'b'
+      end
+    end
   end
 end
