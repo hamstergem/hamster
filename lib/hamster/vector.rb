@@ -158,5 +158,5 @@ module Hamster
     end
   end
 
-  EmptyVector = Hamster::Vector.new
+  EmptyVector = Hamster::Vector.empty
 end
