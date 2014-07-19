@@ -24,7 +24,16 @@ module Hamster
       alias :alloc :new
 
       def new(items=[])
-        items.empty? ? empty : alloc(items)
+        if items.empty?
+          empty
+        else
+          root, size, levels = items, items.size, 0
+          while root.size > 32
+            root = root.each_slice(32).to_a
+            levels += 1
+          end
+          alloc(root, size, levels)
+        end
       end
 
       def [](*items)
@@ -36,14 +45,10 @@ module Hamster
       end
     end
 
-    def initialize(items=[])
-      @root   = items
-      @size   = items.size
-      @levels = 0
-      while @root.size > 32
-        @root = @root.each_slice(32).to_a
-        @levels += 1
-      end
+    def initialize(root=[], size=0, levels=0)
+      @root   = root.freeze
+      @size   = size
+      @levels = levels
     end
 
     def empty?
@@ -61,10 +66,7 @@ module Hamster
     end
 
     def add(item)
-      transform do
-        update_leaf_node(@size, item)
-        @size += 1
-      end
+      update_root(@size, item)
     end
     def_delegator :self, :add, :<<
     def_delegator :self, :add, :cons
@@ -79,16 +81,14 @@ module Hamster
       raise IndexError if empty? || index == @size
       raise IndexError if index.abs > @size
       return set(@size + index, item) if index < 0
-      transform do
-        update_leaf_node(index, item)
-      end
+      update_root(index, item)
     end
 
     def get(index)
       return nil if empty? || index == @size
       return nil if index.abs > @size
       return get(@size + index) if index < 0
-      leaf_node_for(@root, root_index_bits, index)[index & INDEX_MASK]
+      leaf_node_for(@root, @levels * BITS_PER_LEVEL, index)[index & INDEX_MASK]
     end
     def_delegator :self, :get, :[]
     def_delegator :self, :get, :at
@@ -138,38 +138,23 @@ module Hamster
       leaf_node_for(node[child_index], child_index_bits - BITS_PER_LEVEL, index)
     end
 
-    def update_leaf_node(index, item)
-      copy_leaf_node_for(new_root, root_index_bits, index)[index & INDEX_MASK] = item
-    end
-
-    def copy_leaf_node_for(node, child_index_bits, index)
-      return node if child_index_bits == 0
-      child_index = (index >> child_index_bits) & INDEX_MASK
-      child_node = node[child_index]
-      if child_node
-        child_node = child_node.dup
-      else
-        child_node = []
+    def update_root(index, item)
+      root, levels = @root, @levels
+      while index >= (1 << (BLOCK_SIZE * (levels + 1)))
+        root = [root].freeze
+        levels += 1
       end
-      node[child_index] = child_node
-      copy_leaf_node_for(child_node, child_index_bits - BITS_PER_LEVEL, index)
+      root = update_leaf_node(root, levels, 0, index, item)
+      self.class.alloc(root, @size > index ? @size : index + 1, levels)
     end
 
-    def new_root
-      if full?
-        @levels += 1
-        @root = [@root]
-      else
-        @root = @root.dup
+    def update_leaf_node(node, levels, depth, index, item)
+      slot_index = (index >> ((levels - depth) * BITS_PER_LEVEL)) & INDEX_MASK
+      if levels > depth
+        old_child = node[slot_index] || []
+        item = update_leaf_node(old_child, levels, depth+1, index, item)
       end
-    end
-
-    def full?
-      (@size >> root_index_bits) > 31
-    end
-
-    def root_index_bits
-      @levels * BITS_PER_LEVEL
+      node.dup.tap { |n| n[slot_index] = item }.freeze
     end
   end
 
