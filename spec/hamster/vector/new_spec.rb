@@ -16,6 +16,13 @@ describe Hamster::Vector do
       Hamster::Vector.new.size.should be(0)
     end
 
+    it "makes a defensive copy of a non-frozen mutable Array passed in" do
+      array = [1,2,3]
+      vector = Hamster::Vector.new(array)
+      array[0] = 'changed'
+      vector[0].should be(1)
+    end
+
     describe "from a subclass" do
       before do
         @subclass = Class.new(Hamster::Vector)

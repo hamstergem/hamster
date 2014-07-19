@@ -5,7 +5,7 @@ require "hamster/enumerable"
 
 module Hamster
   def self.vector(*items)
-    Vector.new(items)
+    Vector.new(items.freeze)
   end
 
   class Vector
@@ -26,27 +26,30 @@ module Hamster
       def new(items=[])
         if items.empty?
           empty
+        elsif items.size <= 32
+          items = items.dup.freeze if !items.frozen?
+          alloc(items, items.size, 0)
         else
           root, size, levels = items, items.size, 0
           while root.size > 32
             root = root.each_slice(32).to_a
             levels += 1
           end
-          alloc(root, size, levels)
+          alloc(root.freeze, size, levels)
         end
       end
 
       def [](*items)
-        new(items)
+        new(items.freeze)
       end
 
       def empty
-        @empty ||= self.alloc
+        @empty ||= self.alloc([].freeze, 0, 0)
       end
     end
 
-    def initialize(root=[], size=0, levels=0)
-      @root   = root.freeze
+    def initialize(root, size, levels)
+      @root   = root
       @size   = size
       @levels = levels
     end
