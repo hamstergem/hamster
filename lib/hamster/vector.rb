@@ -123,7 +123,10 @@ module Hamster
       return false unless instance_of?(other.class) && @size == other.size
       @root.eql?(other.instance_variable_get(:@root))
     end
-    def_delegator :self, :eql?, :==
+
+    def ==(other)
+      self.eql?(other) || other.respond_to?(:to_ary) && to_ary.eql?(other.to_ary)
+    end
 
     private
 
