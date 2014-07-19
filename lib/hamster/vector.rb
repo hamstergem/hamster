@@ -24,7 +24,7 @@ module Hamster
       alias :alloc :new
 
       def new(items=[])
-        items.empty? ? empty : items.reduce(empty) { |vector, item| vector.add(item) }
+        items.empty? ? empty : alloc(items)
       end
 
       def [](*items)
@@ -36,10 +36,14 @@ module Hamster
       end
     end
 
-    def initialize
+    def initialize(items=[])
+      @root   = items
+      @size   = items.size
       @levels = 0
-      @root = []
-      @size = 0
+      while @root.size > 32
+        @root = @root.each_slice(32).to_a
+        @levels += 1
+      end
     end
 
     def empty?
