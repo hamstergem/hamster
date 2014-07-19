@@ -45,6 +45,14 @@ describe Hamster::Vector do
           @result.should equal(Hamster.vector)
         end
       end
+
+      context "from a subclass" do
+        it "returns an instance of the subclass" do
+          @subclass = Class.new(Hamster::Vector)
+          @instance = @subclass[1,2,3]
+          @instance.filter { |x| x > 1 }.class.should be(@subclass)
+        end
+      end
     end
   end
 end
