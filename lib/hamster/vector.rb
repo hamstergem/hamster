@@ -111,7 +111,7 @@ module Hamster
     end
 
     def clear
-      EmptyVector
+      self.class.empty
     end
 
     def inspect
