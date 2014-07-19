@@ -121,6 +121,22 @@ module Hamster
       to_a.inspect
     end
 
+    def to_a
+      if @levels == 0
+        @root
+      else
+        flatten = lambda do |result, node, distance_from_leaf|
+          if distance_from_leaf == 1
+            node.each { |a| result.concat(a) }
+          else
+            node.each { |a| flatten[result, a, distance_from_leaf-1] }
+          end
+          result
+        end
+        flatten[[], @root, @levels]
+      end
+    end
+
     def eql?(other)
       return true if other.equal?(self)
       return false unless instance_of?(other.class) && @size == other.size

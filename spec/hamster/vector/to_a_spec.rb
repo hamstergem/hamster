@@ -11,15 +11,6 @@ describe Hamster::Vector do
       it "returns the values" do
         expect(to_a).to eq(values)
       end
-
-      it "doesn't end with 'The End'" do
-        expect(to_a).to_not include("The End")
-      end
-
-      it "returns a mutable array" do
-        to_a << "The End"
-        expect(to_a).to include("The End")
-      end
     end
 
     context "with an empty array" do
