@@ -61,7 +61,7 @@ describe Hamster::Set do
       context "from a subclass" do
         it "returns an instance of the same class" do
           @subclass = Class.new(Hamster::Set)
-          @instance = @subclass.new('A', 'B', 'C')
+          @instance = @subclass.new(['A', 'B', 'C'])
           @instance.filter { true }.class.should be(@subclass)
           @instance.filter { false }.class.should be(@subclass)
           @instance.filter { rand(2) == 0 }.class.should be(@subclass)

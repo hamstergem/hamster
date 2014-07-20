@@ -40,13 +40,6 @@ describe Hamster::Hash do
           end
         end
       end
-
-      context "from a subclass" do
-        it "returns an instance of the subclass" do
-          @subclass = Class.new(Hamster::Set)
-          @instance = @subclass.new(*(1..100).to_a)
-        end
-      end
     end
   end
 end

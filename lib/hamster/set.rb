@@ -9,7 +9,7 @@ require "hamster/list"
 
 module Hamster
   def self.set(*items)
-    Set.new(*items)
+    Set.new(items)
   end
 
   class Set
@@ -21,8 +21,12 @@ module Hamster
     class << self
       alias :alloc :new
 
-      def new(*items)
+      def new(items=[])
         items.empty? ? empty : alloc(Trie[items.map! { |x| [x, nil] }])
+      end
+
+      def [](*items)
+        new(items)
       end
 
       def empty
