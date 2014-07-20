@@ -7,7 +7,7 @@ require "hamster/list"
 
 module Hamster
   def self.hash(pairs = nil, &block)
-    Hash.new(pairs, &block)
+    (pairs.nil? && block.nil?) ? EmptyHash : Hash.new(pairs, &block)
   end
 
   class Hash
@@ -15,25 +15,20 @@ module Hamster
     include Immutable
 
     class << self
-      alias :alloc :new
-
-      def new(pairs = nil, &block)
-        if pairs.nil? && block.nil?
-          empty
-        elsif pairs.empty?
-          alloc(EmptyTrie, block)
-        else
-          alloc(Trie[pairs], block)
-        end
-      end
-
       def empty
         @empty ||= self.alloc
       end
+
+      def alloc(trie = EmptyTrie, block = nil)
+        obj = allocate
+        obj.instance_variable_set(:@trie, trie)
+        obj.instance_variable_set(:@default, block)
+        obj
+      end
     end
 
-    def initialize(trie = EmptyTrie, block = nil)
-      @trie    = trie
+    def initialize(pairs = nil, &block)
+      @trie = pairs.empty? ? EmptyTrie : Trie[pairs]
       @default = block
     end
 
