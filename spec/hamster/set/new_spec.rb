@@ -23,6 +23,18 @@ describe Hamster::Set do
         @instance.frozen?.should be true
       end
     end
+
+    it "should be amenable to overriding of #initialize" do
+      class SnazzySet < Hamster::Set
+        def initialize
+          super(['SNAZZY!!!'])
+        end
+      end
+
+      set = SnazzySet.new
+      set.size.should be(1)
+      set.should include('SNAZZY!!!')
+    end
   end
 
   describe "[]" do

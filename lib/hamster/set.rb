@@ -9,7 +9,7 @@ require "hamster/list"
 
 module Hamster
   def self.set(*items)
-    Set.new(items)
+    items.empty? ? Set.empty : Set.new(items)
   end
 
   class Set
@@ -19,12 +19,6 @@ module Hamster
     include Groupable
 
     class << self
-      alias :alloc :new
-
-      def new(items=[])
-        items.empty? ? empty : alloc(Trie[items.map! { |x| [x, nil] }])
-      end
-
       def [](*items)
         new(items)
       end
@@ -32,10 +26,14 @@ module Hamster
       def empty
         @empty ||= self.alloc
       end
+
+      def alloc(trie = EmptyTrie)
+        allocate.tap { |s| s.instance_variable_set(:@trie, trie) }
+      end
     end
 
-    def initialize(trie = EmptyTrie)
-      @trie = trie
+    def initialize(items=[])
+      @trie = Trie[items.map! { |x| [x, nil] }]
     end
 
     def empty?
