@@ -183,7 +183,9 @@ module Hamster
     end
 
     def inspect
-      "{#{to_a.inspect[1..-2]}}"
+      result = "#{self.class}["
+      each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
+      result << "]"
     end
 
     def marshal_dump
