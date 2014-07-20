@@ -116,7 +116,9 @@ module Hamster
     end
 
     def inspect
-      to_a.inspect
+      result = "#{self.class}["
+      each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
+      result << "]"
     end
 
     def to_a
