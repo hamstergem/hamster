@@ -15,16 +15,16 @@ describe Hamster::Set do
         @instance = @subclass.new(["some", "values"])
       end
 
-      it "should return an instance of the subclass" do
+      it "returns an instance of the subclass" do
         @instance.class.should be @subclass
       end
 
-      it "should return a frozen instance" do
+      it "returns a frozen instance" do
         @instance.frozen?.should be true
       end
     end
 
-    it "should be amenable to overriding of #initialize" do
+    it "is amenable to overriding of #initialize" do
       class SnazzySet < Hamster::Set
         def initialize
           super(['SNAZZY!!!'])

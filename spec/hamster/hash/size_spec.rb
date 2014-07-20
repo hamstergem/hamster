@@ -19,7 +19,7 @@ describe Hamster::Hash do
       srand 89_533_474
       random_things = (lots + lots).sort_by { |x|rand }
 
-      it "should have the correct size after adding lots of things with colliding keys and such" do
+      it "has the correct size after adding lots of things with colliding keys and such" do
         h = Hamster.hash
         random_things.each do |thing|
           h = h.put(thing, thing * 2)
@@ -36,7 +36,7 @@ describe Hamster::Hash do
         end
         h
       end.size
-      it "should have the correct size after lots of addings and removings" do
+      it "has the correct size after lots of addings and removings" do
         h = Hamster.hash
         random_actions.each do |(act, ob)|
           if act == :add

@@ -18,7 +18,7 @@ describe Hamster::List do
     context "with a list with a few items" do
       let(:values) { %w[a b c] }
 
-      it "should remove the last item" do
+      it "removes the last item" do
         expect(pop).to eq(Hamster.list("a", "b"))
       end
     end

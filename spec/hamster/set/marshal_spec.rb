@@ -17,11 +17,11 @@ describe Hamster::Set do
       end
     end
 
-    it "should survive dumping and loading into a new process" do
+    it "can survive dumping and loading into a new process" do
       reloaded_hash.should == Hamster.set(:one, :two)
     end
 
-    it "should still be possible to test items by key" do
+    it "is still possible to test items by key after loading" do
       reloaded_hash.should include :one
       reloaded_hash.should include :two
     end

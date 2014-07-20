@@ -126,11 +126,11 @@ describe Hamster do
 
     let(:list) { Hamster.enumerate(enum) }
 
-    it "should return a list based on the values yielded from the enumerator" do
+    it "returns a list based on the values yielded from the enumerator" do
       expect(list.take(2)).to eq Hamster.list(1, 2)
     end
 
-    it "should realize values as they are needed" do
+    it "realizes values as they are needed" do
       expect { list.take(3).to_a }.to raise_exception
     end
   end

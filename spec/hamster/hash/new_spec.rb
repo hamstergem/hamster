@@ -9,11 +9,11 @@ describe Hamster::Hash do
         @instance = @subclass.new("some" => "values")
       end
 
-      it "should return an instance of the subclass" do
+      it "returns an instance of the subclass" do
         @instance.class.should be @subclass
       end
 
-      it "should return a frozen instance" do
+      it "returns a frozen instance" do
         @instance.frozen?.should be true
       end
     end

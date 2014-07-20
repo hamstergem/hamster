@@ -7,7 +7,7 @@ describe Array do
   describe "#to_list" do
     let(:to_list) { array.to_list }
 
-    it "should be an equivalent hamster list" do
+    it "returns an equivalent hamster list" do
       expect(to_list).to eq(Hamster.list("A", "B", "C"))
     end
   end

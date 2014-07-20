@@ -27,7 +27,7 @@ describe Hamster::Immutable do
       immutable.call
     end
 
-    it "should still freezes be immutable" do
+    it "keeps the receiver frozen and immutable" do
       expect(immutable).to be_immutable
     end
 
@@ -48,7 +48,7 @@ describe Hamster::Immutable do
         copy.call
       end
 
-      it "should clear all memory" do
+      it "clears all memory" do
         expect(@count).to eq(2)
       end
     end

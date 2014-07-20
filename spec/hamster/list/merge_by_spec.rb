@@ -27,7 +27,6 @@ describe Hamster::List do
       it "merges the lists based on natural sort order" do
         subject.merge_by.should == Hamster.list(1, 2, 3, 4, 5, 6, 7, 8, 9)
       end
-
     end
   end
 
