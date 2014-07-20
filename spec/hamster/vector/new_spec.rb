@@ -11,16 +11,23 @@ describe Hamster::Vector do
       vector[2].should be(3)
     end
 
-    it "returns the canonical empty vector if called with no arguments" do
-      Hamster::Vector.new.object_id.should be(Hamster::Vector.new.object_id)
-      Hamster::Vector.new.size.should be(0)
-    end
-
     it "makes a defensive copy of a non-frozen mutable Array passed in" do
       array = [1,2,3]
       vector = Hamster::Vector.new(array)
       array[0] = 'changed'
       vector[0].should be(1)
+    end
+
+    it "is amenable to overriding of #initialize" do
+      class SnazzyVector < Hamster::Vector
+        def initialize
+          super(['SNAZZY!!!'])
+        end
+      end
+
+      vector = SnazzyVector.new
+      vector.size.should be(1)
+      vector.should == ['SNAZZY!!!']
     end
 
     describe "from a subclass" do
@@ -45,11 +52,6 @@ describe Hamster::Vector do
       vector.size.should be(2)
       vector[0].should == 'a'
       vector[1].should == 'b'
-    end
-
-    it "returns the canonical empty vector if called with no arguments" do
-      Hamster::Vector[].should be(Hamster::Vector.empty)
-      Hamster::Vector[].size.should be(0)
     end
   end
 end

@@ -5,7 +5,7 @@ require "hamster/enumerable"
 
 module Hamster
   def self.vector(*items)
-    Vector.new(items.freeze)
+    items.empty? ? Vector.empty : Vector.new(items.freeze)
   end
 
   class Vector
@@ -21,24 +21,6 @@ module Hamster
     def_delegator :self, :size, :length
 
     class << self
-      alias :alloc :new
-
-      def new(items=[])
-        if items.empty?
-          empty
-        elsif items.size <= 32
-          items = items.dup.freeze if !items.frozen?
-          alloc(items, items.size, 0)
-        else
-          root, size, levels = items, items.size, 0
-          while root.size > 32
-            root = root.each_slice(32).to_a
-            levels += 1
-          end
-          alloc(root.freeze, size, levels)
-        end
-      end
-
       def [](*items)
         new(items.freeze)
       end
@@ -46,12 +28,28 @@ module Hamster
       def empty
         @empty ||= self.alloc([].freeze, 0, 0)
       end
+
+      def alloc(root, size, levels)
+        obj = allocate
+        obj.instance_variable_set(:@root, root)
+        obj.instance_variable_set(:@size, size)
+        obj.instance_variable_set(:@levels, levels)
+        obj
+      end
     end
 
-    def initialize(root, size, levels)
-      @root   = root
-      @size   = size
-      @levels = levels
+    def initialize(items=[].freeze)
+      if items.size <= 32
+        items = items.dup.freeze if !items.frozen?
+        @root, @size, @levels = items, items.size, 0
+      else
+        root, size, levels = items, items.size, 0
+        while root.size > 32
+          root = root.each_slice(32).to_a
+          levels += 1
+        end
+        @root, @size, @levels = root.freeze, size, levels
+      end
     end
 
     def empty?
