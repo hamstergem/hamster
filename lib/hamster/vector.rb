@@ -5,7 +5,7 @@ require "hamster/enumerable"
 
 module Hamster
   def self.vector(*items)
-    items.empty? ? Vector.empty : Vector.new(items.freeze)
+    items.empty? ? EmptyVector : Vector.new(items.freeze)
   end
 
   class Vector

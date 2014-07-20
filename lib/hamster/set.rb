@@ -9,7 +9,7 @@ require "hamster/list"
 
 module Hamster
   def self.set(*items)
-    items.empty? ? Set.empty : Set.new(items)
+    items.empty? ? EmptySet : Set.new(items)
   end
 
   class Set
