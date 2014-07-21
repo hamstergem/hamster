@@ -63,10 +63,7 @@ module Hamster
       @list.to_a
     end
     def_delegator :self, :to_a, :entries
-
-    def to_ary
-      @list.to_ary
-    end
+    def_delegator :self, :to_a, :to_ary
 
     def inspect
       @list.inspect
