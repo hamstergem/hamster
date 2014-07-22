@@ -39,6 +39,7 @@ module Hamster
     end
 
     def initialize(items=[].freeze)
+      items = items.to_a
       if items.size <= 32
         items = items.dup.freeze if !items.frozen?
         @root, @size, @levels = items, items.size, 0
