@@ -9,8 +9,9 @@ describe Hamster::List do
         @result = @list.each_with_index
       end
 
-      it "returns self" do
-        @result.should equal(@list)
+      it "returns an Enumerator" do
+        @result.class.should be(Enumerator)
+        @result.to_a.should == [['A', 0], ['B', 1], ['C', 2]]
       end
     end
 
@@ -21,8 +22,8 @@ describe Hamster::List do
         @result = @list.each_with_index { |item, index| @pairs << [item, index] }
       end
 
-      it "returns nil" do
-        @result.should be_nil
+      it "returns self" do
+        @result.should be(@list)
       end
 
       it "iterates over the items in order" do
