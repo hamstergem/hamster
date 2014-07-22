@@ -88,12 +88,12 @@ module Hamster
     def_delegator :self, :head, :first
 
     def sort(&comparator)
-      Stream.new { Sorter.new(self).sort(&comparator) }
+      Stream.new { super(&comparator).to_enum.to_list }
     end
 
     def sort_by(&transformer)
       return sort unless block_given?
-      Stream.new { Sorter.new(self).sort_by(&transformer) }
+      Stream.new { super(&transformer).to_enum.to_list }
     end
 
     def join(sep = nil)
