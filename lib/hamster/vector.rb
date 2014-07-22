@@ -116,6 +116,10 @@ module Hamster
       self.class.empty
     end
 
+    def reverse
+      self.class.new(to_a.reverse)
+    end
+
     def inspect
       result = "#{self.class}["
       each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
