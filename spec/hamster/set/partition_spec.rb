@@ -49,8 +49,9 @@ describe Hamster::Set do
             @result = @original.partition
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          it "returns an Enumerator" do
+            @result.class.should be(Enumerator)
+            @result.each(&:odd?).should == [Hamster::Set.new(expected_matches), Hamster::Set.new(expected_remainder)]
           end
         end
       end
