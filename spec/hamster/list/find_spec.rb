@@ -38,8 +38,8 @@ describe Hamster::List do
           end
 
           describe "without a block" do
-            it "returns nil" do
-              @list.send(method).should be_nil
+            it "returns an Enumerator" do
+              @list.send(method).class.should be(Enumerator)
             end
           end
         end

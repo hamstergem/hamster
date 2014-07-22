@@ -29,8 +29,8 @@ describe Hamster::Set do
           end
 
           describe "without a block" do
-            it "returns nil" do
-              @set.send(method).should be_nil
+            it "returns an Enumerator" do
+              @set.send(method).class.should be(Enumerator)
             end
           end
         end
