@@ -21,12 +21,6 @@ describe Hamster::Vector do
                 @vector.send(method, initial) { |memo, item| memo - item }.should == expected
               end
             end
-
-            describe "and no block" do
-              it "returns the memo" do
-                @vector.send(method, initial).should == initial
-              end
-            end
           end
         end
       end
@@ -48,13 +42,19 @@ describe Hamster::Vector do
                 @vector.send(method) { |memo, item| memo - item }.should == expected
               end
             end
-
-            describe "and no block" do
-              it "returns nil" do
-                @vector.send(method).should be_nil
-              end
-            end
           end
+        end
+      end
+
+      describe "with no block and a symbol argument" do
+        it "uses the symbol as the name of a method to reduce with" do
+          Hamster.vector(1, 2, 3).reduce(:+).should == 6
+        end
+      end
+
+      describe "with no block and a string argument" do
+        it "uses the string as the name of a method to reduce with" do
+          Hamster.vector(1, 2, 3).reduce('+').should == 6
         end
       end
     end
