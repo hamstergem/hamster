@@ -4,7 +4,7 @@ require "hamster/core_ext/enumerator"
 
 module Hamster
   class Sorter
-    include ::Enumerable
+    include Enumerable
     extend Forwardable
     include Immutable
 
