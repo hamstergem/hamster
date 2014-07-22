@@ -80,6 +80,7 @@ module Hamster
     def include?(object)
       @trie.key?(object)
     end
+    def_delegator :self, :include?, :member?
 
     def head
       find { true }
