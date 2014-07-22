@@ -38,8 +38,9 @@ describe Hamster::Set do
             @result = @original.send(method)
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          it "returns an Enumerator" do
+            @result.class.should be(Enumerator)
+            @result.each { |item| item == "A" }.should == Hamster.set("A")
           end
         end
       end

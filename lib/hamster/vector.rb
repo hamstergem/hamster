@@ -107,7 +107,7 @@ module Hamster
     def_delegator :self, :map, :collect
 
     def filter
-      return self unless block_given?
+      return enum_for(:filter) unless block_given?
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
     end
 

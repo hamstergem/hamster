@@ -26,8 +26,9 @@ describe Hamster::List do
       context "without a block" do
         let(:select) { list.select }
 
-        it "returns itself" do
-          expect(select).to eq(list)
+        it "returns an Enumerator" do
+          expect(select.class).to be(Enumerator)
+          expect(select.each { |item| item == item.upcase }).to eq(selected_list)
         end
       end
     end

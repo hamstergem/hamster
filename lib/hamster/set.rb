@@ -71,7 +71,7 @@ module Hamster
     def_delegator :self, :map, :collect
 
     def filter
-      return self unless block_given?
+      return enum_for(:filter) unless block_given?
       trie = @trie.filter { |entry| yield(entry.key) }
       return self.class.empty if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }

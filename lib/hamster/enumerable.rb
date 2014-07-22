@@ -7,7 +7,7 @@ module Hamster
     include ::Enumerable
 
     def remove
-      return self unless block_given?
+      return enum_for(:remove) if not block_given?
       filter { |item| !yield(item) }
     end
 

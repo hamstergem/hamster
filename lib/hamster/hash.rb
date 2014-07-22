@@ -104,7 +104,7 @@ module Hamster
     def_delegator :self, :reduce, :foldr
 
     def filter
-      return self unless block_given?
+      return enum_for(:filter) unless block_given?
       trie = @trie.filter { |entry| yield(entry.key, entry.value) }
       return self.class.empty if trie.empty?
       transform_unless(trie.equal?(@trie)) { @trie = trie }
@@ -113,7 +113,7 @@ module Hamster
     def_delegator :self, :filter, :find_all
 
     def remove
-      return self unless block_given?
+      return enum_for(:remove) unless block_given?
       filter { |key, value| !yield(key, value) }
     end
     def_delegator :self, :remove, :reject

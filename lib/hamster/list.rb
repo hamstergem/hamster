@@ -207,7 +207,7 @@ module Hamster
     end
 
     def filter(&block)
-      return self unless block_given?
+      return enum_for(:filter) unless block_given?
       Stream.new do
         next self if empty?
         next Sequence.new(head, tail.filter(&block)) if yield(head)
