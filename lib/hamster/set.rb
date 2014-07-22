@@ -77,6 +77,8 @@ module Hamster
       transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
 
+    def_delegator :self, :reduce, :foldr # set is not ordered, so foldr is same as reduce
+
     def include?(object)
       @trie.key?(object)
     end

@@ -33,6 +33,10 @@ module Hamster
       Hamster.tuple(self.class.new(a), self.class.new(b))
     end
 
+    def foldr(*args, &block)
+      reverse.reduce(*args, &block)
+    end
+
     def_delegator :self, :each, :foreach
     def_delegator :self, :all?, :forall?
     def_delegator :self, :any?, :exist?
@@ -47,6 +51,5 @@ module Hamster
     def_delegator :self, :remove, :reject # make it return a Hamster collection (and possibly make it lazy)
     def_delegator :self, :remove, :delete_if
     def_delegator :self, :reduce, :fold
-    def_delegator :self, :reduce, :foldr
   end
 end
