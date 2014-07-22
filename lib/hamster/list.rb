@@ -610,7 +610,7 @@ module Hamster
     end
 
     def size
-      @size || super
+      @size ||= super
     end
 
     def cached_size?
