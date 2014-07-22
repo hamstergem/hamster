@@ -24,7 +24,7 @@ describe Hamster::List do
           describe "on #{values.inspect}" do
             before do
               original = Hamster.list(*values)
-              @result = original.send(method) { |maximum, item| item.length <=> maximum.length }
+              @result = original.send(method) { |maximum, item| maximum.length <=> item.length }
             end
 
             it "returns #{expected.inspect}" do
