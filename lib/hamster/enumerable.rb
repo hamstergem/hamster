@@ -27,6 +27,12 @@ module Hamster
       reduce(0, &:+)
     end
 
+    def partition
+      return enum_for(:partition) if not block_given?
+      a,b = super
+      Tuple.new(self.class.new(a), self.class.new(b))
+    end
+
     def_delegator :self, :each, :foreach
     def_delegator :self, :all?, :forall?
     def_delegator :self, :any?, :exist?

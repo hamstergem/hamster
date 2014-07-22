@@ -475,6 +475,44 @@ module Hamster
       end
     end
 
+    class Partitioner
+      # this class is an implementation detail and should not be documented
+      # it makes it possible to divide a collection into 2 lazy streams, one of items
+      #   for which the block returns true, and another for false
+      # at the same time, it guarantees the block will only be called ONCE for each item
+
+      def initialize(collection, block)
+        @enum, @block, @left, @right, @done = collection.to_enum, block, [], [], false
+      end
+
+      def left
+        Stream.new do
+          next_item while !@done && @left.empty?
+          @left.empty? ? EmptyList : Sequence.new(@left.shift, self.left)
+        end
+      end
+
+      def right
+        Stream.new do
+          next_item while !@done && @right.empty?
+          @right.empty? ? EmptyList : Sequence.new(@right.shift, self.right)
+        end
+      end
+
+      def next_item
+        item = @enum.next
+        (@block.call(item) ? @left : @right) << item
+      rescue StopIteration
+        @done = true
+      end
+    end
+
+    def partition(&block)
+      return enum_for(:partition) if not block_given?
+      partitioner = Partitioner.new(self, block)
+      Tuple.new(partitioner.left, partitioner.right)
+    end
+
     # Value-and-type equality
     def eql?(other)
       list = self

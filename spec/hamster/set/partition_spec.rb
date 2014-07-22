@@ -28,19 +28,20 @@ describe Hamster::Set do
           end
 
           it "preserves the original" do
-            @original.should == Hamster.set(*values)
+            @original.should eql(Hamster.set(*values))
           end
 
           it "returns a tuple with two items" do
             @result.is_a?(Hamster::Tuple).should == true
+            @result.size.should be(2)
           end
 
           it "correctly identifies the matches" do
-            @matches.should == Hamster.set(*expected_matches)
+            @matches.should eql(Hamster.set(*expected_matches))
           end
 
           it "correctly identifies the remainder" do
-            @remainder.should == Hamster.set(*expected_remainder)
+            @remainder.should eql(Hamster.set(*expected_remainder))
           end
         end
 
@@ -51,7 +52,7 @@ describe Hamster::Set do
 
           it "returns an Enumerator" do
             @result.class.should be(Enumerator)
-            @result.each(&:odd?).should == [Hamster::Set.new(expected_matches), Hamster::Set.new(expected_remainder)]
+            @result.each(&:odd?).should eql(Hamster::Tuple.new(Hamster::Set.new(expected_matches), Hamster::Set.new(expected_remainder)))
           end
         end
       end
