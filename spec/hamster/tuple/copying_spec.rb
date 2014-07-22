@@ -5,7 +5,7 @@ describe Hamster::Tuple do
   [:dup, :clone].each do |method|
     describe "#{method}" do
       before do
-        @original = Hamster::Tuple.new("A", "B")
+        @original = Hamster.tuple("A", "B")
         @result = @original.send(method)
       end
 

@@ -3,7 +3,7 @@ require "hamster/tuple"
 
 describe Hamster::Tuple do
   before do
-    @tuple = Hamster::Tuple.new("A", "B", "C")
+    @tuple = Hamster.tuple("A", "B", "C")
   end
 
   describe "#==" do
@@ -18,7 +18,7 @@ describe Hamster::Tuple do
       end
 
       it "a Tuple with the same values" do
-        @tuple.should == Hamster::Tuple.new("A", "B", "C")
+        @tuple.should == Hamster.tuple("A", "B", "C")
       end
     end
 
@@ -28,7 +28,7 @@ describe Hamster::Tuple do
       end
 
       it "a Tuple with different values" do
-        @tuple.should_not == Hamster::Tuple.new("A")
+        @tuple.should_not == Hamster.tuple("A")
       end
 
       it "an arbitrary object" do
@@ -61,8 +61,8 @@ describe Hamster::Tuple do
 
       describe "returns #{expected.inspect}" do
         before do
-          @a = Hamster::Tuple.new(*a)
-          @b = Hamster::Tuple.new(*b)
+          @a = Hamster::Tuple.new(a)
+          @b = Hamster::Tuple.new(b)
         end
 
         it "for #{a.inspect} and #{b.inspect}" do

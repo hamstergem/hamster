@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/tuple"
 
 describe Hamster::Tuple do
-  let(:tuple) { Hamster::Tuple.new("A", "B", "C", "D") }
+  let(:tuple) { Hamster.tuple("A", "B", "C", "D") }
 
   describe "#to_ary" do
     context "enables implicit conversion to" do

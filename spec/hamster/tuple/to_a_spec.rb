@@ -11,7 +11,7 @@ describe Hamster::Tuple do
 
       describe "on #{values.inspect}" do
         before do
-          @tuple = Hamster::Tuple.new(*values)
+          @tuple = Hamster::Tuple.new(values)
           @result = @tuple.to_a
         end
 

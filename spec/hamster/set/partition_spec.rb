@@ -52,7 +52,7 @@ describe Hamster::Set do
 
           it "returns an Enumerator" do
             @result.class.should be(Enumerator)
-            @result.each(&:odd?).should eql(Hamster::Tuple.new(Hamster::Set.new(expected_matches), Hamster::Set.new(expected_remainder)))
+            @result.each(&:odd?).should eql(Hamster.tuple(Hamster::Set.new(expected_matches), Hamster::Set.new(expected_remainder)))
           end
         end
       end

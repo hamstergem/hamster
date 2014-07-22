@@ -4,7 +4,7 @@ require "hamster/tuple"
 describe Hamster::Tuple do
   describe "#first" do
     before do
-      @tuple = Hamster::Tuple.new("A", "B")
+      @tuple = Hamster.tuple("A", "B")
     end
 
     it "returns the first value" do

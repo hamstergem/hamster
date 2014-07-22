@@ -9,12 +9,12 @@ describe Hamster::Hash do
       [
         [[], "A", nil],
         [[], nil, nil],
-        [["A" => "aye"], "A", Hamster::Tuple.new("A", "aye")],
+        [["A" => "aye"], "A", Hamster.tuple("A", "aye")],
         [["A" => "aye"], "B", nil],
         [["A" => "aye"], nil, nil],
-        [["A" => "aye", "B" => "bee", nil => "NIL"], "A", Hamster::Tuple.new("A", "aye")],
-        [["A" => "aye", "B" => "bee", nil => "NIL"], "B", Hamster::Tuple.new("B", "bee")],
-        [["A" => "aye", "B" => "bee", nil => "NIL"], nil, Hamster::Tuple.new(nil, "NIL")],
+        [["A" => "aye", "B" => "bee", nil => "NIL"], "A", Hamster.tuple("A", "aye")],
+        [["A" => "aye", "B" => "bee", nil => "NIL"], "B", Hamster.tuple("B", "bee")],
+        [["A" => "aye", "B" => "bee", nil => "NIL"], nil, Hamster.tuple(nil, "NIL")],
         [["A" => "aye", "B" => "bee", nil => "NIL"], "C", nil],
       ].each do |values, key, expected|
 

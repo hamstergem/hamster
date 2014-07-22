@@ -290,12 +290,12 @@ module Hamster
     end
 
     def split_at(number)
-      Tuple.new(take(number), drop(number))
+      Hamster.tuple(take(number), drop(number))
     end
 
     def span(&block)
-      return Tuple.new(self, EmptyList) unless block_given?
-      Tuple.new(take_while(&block), drop_while(&block))
+      return Hamster.tuple(self, EmptyList) unless block_given?
+      Hamster.tuple(take_while(&block), drop_while(&block))
     end
 
     def break(&block)
@@ -510,7 +510,7 @@ module Hamster
     def partition(&block)
       return enum_for(:partition) if not block_given?
       partitioner = Partitioner.new(self, block)
-      Tuple.new(partitioner.left, partitioner.right)
+      Hamster.tuple(partitioner.left, partitioner.right)
     end
 
     # Value-and-type equality

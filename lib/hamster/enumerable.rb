@@ -30,7 +30,7 @@ module Hamster
     def partition
       return enum_for(:partition) if not block_given?
       a,b = super
-      Tuple.new(self.class.new(a), self.class.new(b))
+      Hamster.tuple(self.class.new(a), self.class.new(b))
     end
 
     def_delegator :self, :each, :foreach

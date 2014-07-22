@@ -84,7 +84,7 @@ describe Hamster::List do
 
           it "returns an Enumerator" do
             @result.class.should be(Enumerator)
-            @result.each(&:odd?).should eql(Hamster::Tuple.new(Hamster.list(*expected_matches), Hamster.list(*expected_remainder)))
+            @result.each(&:odd?).should eql(Hamster.tuple(Hamster.list(*expected_matches), Hamster.list(*expected_remainder)))
           end
         end
       end
