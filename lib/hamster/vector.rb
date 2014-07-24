@@ -117,7 +117,7 @@ module Hamster
     end
 
     def reverse
-      self.class.new(to_a.reverse!)
+      self.class.new((a = to_a).frozen? ? a.reverse : a.reverse!)
     end
 
     def inspect
