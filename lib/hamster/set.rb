@@ -3,7 +3,6 @@ require "hamster/immutable"
 require "hamster/undefined"
 require "hamster/enumerable"
 require "hamster/groupable"
-require "hamster/sorter"
 require "hamster/trie"
 require "hamster/list"
 

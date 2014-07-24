@@ -6,7 +6,6 @@ require "hamster/undefined"
 require "hamster/enumerable"
 require "hamster/groupable"
 require "hamster/tuple"
-require "hamster/sorter"
 require "hamster/hash"
 require "hamster/set"
 
