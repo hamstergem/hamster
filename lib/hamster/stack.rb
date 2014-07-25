@@ -4,7 +4,7 @@ require "hamster/list"
 
 module Hamster
   def self.stack(*items)
-    items.reduce(EmptyStack) { |stack, item| stack.push(item) }
+    items.empty? ? EmptyStack : Stack.new(items.reverse!)
   end
 
   class Stack
