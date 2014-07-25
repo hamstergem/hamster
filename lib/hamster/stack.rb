@@ -86,5 +86,5 @@ module Hamster
     end
   end
 
-  EmptyStack = Hamster::Stack.new
+  EmptyStack = Hamster::Stack.empty
 end
