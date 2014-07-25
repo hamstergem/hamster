@@ -554,7 +554,9 @@ module Hamster
     end
 
     def inspect
-      to_a.inspect
+      result = "Hamster::List["
+      each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
+      result << "]"
     end
 
     def respond_to?(name, include_private = false)

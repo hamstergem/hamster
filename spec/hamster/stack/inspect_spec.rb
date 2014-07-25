@@ -4,9 +4,9 @@ require "hamster/stack"
 describe Hamster::Stack do
   describe "#inspect" do
     [
-      [[], "[]"],
-      [["A"], "[\"A\"]"],
-      [%w[A B C], "[\"C\", \"B\", \"A\"]"]
+      [[], 'Hamster::Stack[]'],
+      [["A"], 'Hamster::Stack["A"]'],
+      [%w[A B C], 'Hamster::Stack["C", "B", "A"]']
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
@@ -16,6 +16,10 @@ describe Hamster::Stack do
 
         it "returns #{expected.inspect}" do
           @stack.inspect.should == expected
+        end
+
+        it "returns a string which can be eval'd to get an equivalent object" do
+          eval(@stack.inspect).should eql(@stack)
         end
       end
     end

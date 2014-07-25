@@ -80,7 +80,9 @@ module Hamster
     def_delegator :self, :to_a, :to_ary
 
     def inspect
-      @list.inspect
+      result = "#{self.class}["
+      @list.each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
+      result << "]"
     end
   end
 

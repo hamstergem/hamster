@@ -14,9 +14,9 @@ describe Hamster::List do
     end
 
     [
-      [[], "[]"],
-      [["A"], "[\"A\"]"],
-      [%w[A B C], "[\"A\", \"B\", \"C\"]"]
+      [[], 'Hamster::List[]'],
+      [["A"], 'Hamster::List["A"]'],
+      [%w[A B C], 'Hamster::List["A", "B", "C"]']
     ].each do |values, expected|
 
       describe "on #{values.inspect}" do
@@ -26,6 +26,10 @@ describe Hamster::List do
 
         it "returns #{expected.inspect}" do
           @list.inspect.should == expected
+        end
+
+        it "returns a string which can be eval'd to get an equivalent object" do
+          eval(@list.inspect).should eql(@list)
         end
       end
     end
