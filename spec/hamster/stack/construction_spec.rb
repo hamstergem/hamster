@@ -31,4 +31,13 @@ describe Hamster do
       end
     end
   end
+
+  describe "[]" do
+    it "takes a variable number of items and returns a new stack" do
+      stack = Hamster::Stack[1,2,3]
+      stack.class.should be(Hamster::Stack)
+      stack.size.should be(3)
+      stack.to_a.should == [1,2,3]
+    end
+  end
 end

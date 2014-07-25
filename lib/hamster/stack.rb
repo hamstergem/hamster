@@ -14,8 +14,22 @@ module Hamster
     attr_reader :list
     def_delegator :self, :list, :to_list
 
-    def initialize
-      @list = EmptyList
+    class << self
+      def [](*items)
+        new(items)
+      end
+
+      def empty
+        @empty ||= self.alloc
+      end
+
+      def alloc(list = EmptyList)
+        allocate.tap { |obj| obj.instance_variable_set(:@list, list) }
+      end
+    end
+
+    def initialize(items)
+      @list = items.to_list
     end
 
     def empty?
@@ -33,7 +47,7 @@ module Hamster
     def_delegator :self, :peek, :top
 
     def push(item)
-      transform { @list = @list.cons(item) }
+      self.class.alloc(@list.cons(item))
     end
     def_delegator :self, :push, :<<
     def_delegator :self, :push, :enqueue
@@ -43,15 +57,15 @@ module Hamster
     def pop
       list = @list.tail
       if list.empty?
-        EmptyStack
+        self.class.empty
       else
-        transform { @list = list }
+        self.class.alloc(list)
       end
     end
     def_delegator :self, :pop, :dequeue
 
     def clear
-      EmptyStack
+      self.class.empty
     end
 
     def eql?(other)

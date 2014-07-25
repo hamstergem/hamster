@@ -20,4 +20,12 @@ describe Hamster::Stack do
       end
     end
   end
+
+  describe "empty" do
+    it "returns the canonical empty stack object" do
+      Hamster::Stack.empty.should be_empty
+      Hamster::Stack.empty.class.should be(Hamster::Stack)
+      Hamster::Stack.empty.object_id.should == Hamster::Stack.empty.object_id
+    end
+  end
 end
