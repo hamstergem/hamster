@@ -151,6 +151,10 @@ module Hamster
     def_delegator :self, :head, :first
     def_delegator :self, :empty?, :null?
 
+    def self.[](*items)
+      items.to_list
+    end
+
     def size
       result, list = 0, self
       until list.empty?

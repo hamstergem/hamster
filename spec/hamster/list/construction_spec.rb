@@ -134,4 +134,13 @@ describe Hamster do
       expect { list.take(3).to_a }.to raise_exception
     end
   end
+
+  describe "[]" do
+    it "takes a variable number of items and returns a list" do
+      list = Hamster::List[1,2,3]
+      list.should be_kind_of(Hamster::List)
+      list.size.should be(3)
+      list.to_a.should == [1,2,3]
+    end
+  end
 end
