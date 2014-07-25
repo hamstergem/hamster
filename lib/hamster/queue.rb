@@ -11,6 +11,12 @@ module Hamster
     extend Forwardable
     include Immutable
 
+    class << self
+      def [](*items)
+        Hamster.queue(*items)
+      end
+    end
+
     def initialize
       @front = @rear = EmptyList
     end
@@ -78,7 +84,11 @@ module Hamster
     end
 
     def inspect
-      to_a.inspect
+      result = "#{self.class}["
+      i = 0
+      @front.each { |obj| result << ', ' if i > 0; result << obj.inspect; i += 1 }
+      @rear.to_a.tap { |a| a.reverse! }.each { |obj| result << ', ' if i > 0; result << obj.inspect; i += 1 }
+      result << "]"
     end
   end
 
