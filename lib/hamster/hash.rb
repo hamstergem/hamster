@@ -15,6 +15,10 @@ module Hamster
     include Immutable
 
     class << self
+      def [](pairs = nil)
+        (pairs.nil? || pairs.empty?) ? empty : new(pairs)
+      end
+
       def empty
         @empty ||= self.alloc
       end
@@ -194,7 +198,14 @@ module Hamster
     def_delegator :self, :dup, :remove_duplicates
 
     def inspect
-      "{#{reduce([]) { |memo, key, value| memo << "#{key.inspect} => #{value.inspect}" }.join(", ")}}"
+      result = "#{self.class}["
+      i = 0
+      each do |key, val|
+        result << ', ' if i > 0
+        result << key.inspect << ' => ' << val.inspect
+        i += 1
+      end
+      result << "]"
     end
 
     def to_hash
