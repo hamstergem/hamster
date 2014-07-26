@@ -68,8 +68,7 @@ module Hamster
     end
 
     def eql?(other)
-      instance_of?(other.class) &&
-        to_list.eql?(other.to_list)
+      instance_of?(other.class) && to_ary.eql?(other.to_ary)
     end
     def_delegator :self, :eql?, :==
 
