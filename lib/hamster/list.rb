@@ -477,6 +477,10 @@ module Hamster
       end
     end
 
+    def sample
+      at(rand(size))
+    end
+
     class Partitioner
       # this class is an implementation detail and should not be documented
       # it makes it possible to divide a collection into 2 lazy streams, one of items

@@ -120,6 +120,10 @@ module Hamster
       self.class.new((a = to_a).frozen? ? a.reverse : a.reverse!)
     end
 
+    def sample
+      get(rand(@size))
+    end
+
     def inspect
       result = "#{self.class}["
       each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
