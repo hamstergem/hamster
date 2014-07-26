@@ -481,6 +481,19 @@ module Hamster
       at(rand(size))
     end
 
+    def insert(index, *items)
+      if index == 0
+        return items.to_list.append(self)
+      elsif index < 0
+        raise IndexError if index < -size
+        index = index + size
+      end
+
+      Stream.new do
+        Sequence.new(head, tail.insert(index-1, *items))
+      end
+    end
+
     class Partitioner
       # this class is an implementation detail and should not be documented
       # it makes it possible to divide a collection into 2 lazy streams, one of items
