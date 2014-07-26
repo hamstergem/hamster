@@ -1,5 +1,4 @@
 require "spec_helper"
-require "hamster/tuple"
 require "hamster/list"
 
 describe Hamster::List do
@@ -35,8 +34,10 @@ describe Hamster::List do
             @original.should == Hamster.list(*values)
           end
 
-          it "returns a tuple with two items" do
-            @result.is_a?(Hamster::Tuple).should == true
+          it "returns a frozen array with two items" do
+            @result.class.should be(Array)
+            @result.should be_frozen
+            @result.size.should be(2)
           end
 
           it "correctly identifies the prefix" do
@@ -55,8 +56,10 @@ describe Hamster::List do
             @remainder = @result.last
           end
 
-          it "returns a tuple with two items" do
-            @result.is_a?(Hamster::Tuple).should == true
+          it "returns a frozen array with two items" do
+            @result.class.should be(Array)
+            @result.should be_frozen
+            @result.size.should be(2)
           end
 
           it "returns self as the prefix" do

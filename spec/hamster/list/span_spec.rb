@@ -8,7 +8,7 @@ describe "Hamster.list#span" do
 
   describe <<-DESC do
 given a predicate (in the form of a block), splits the list into two lists
-  (returned as a tuple) such that elements in the first list (the prefix) are
+  (returned as an array) such that elements in the first list (the prefix) are
   taken from the head of the list while the predicate is satisfied, and elements
   in the second list (the remainder) are the remaining elements from the list
   once the predicate is not satisfied. For example:
@@ -57,8 +57,9 @@ DESC
             @remainder = @result.last
           end
 
-          it "returns a tuple" do
-            @result.is_a?(Hamster::Tuple).should == true
+          it "returns a frozen array" do
+            @result.class.should be(Array)
+            @result.should be_frozen
           end
 
           it "returns self as the prefix" do

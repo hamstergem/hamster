@@ -145,7 +145,7 @@ module Hamster
 
     def find
       return nil unless block_given?
-      each { |key, value| return Tuple[key, value] if yield(key, value) }
+      each { |key, value| return [key, value].freeze if yield(key, value) }
       nil
     end
     def_delegator :self, :find, :detect

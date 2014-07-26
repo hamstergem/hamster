@@ -1,5 +1,4 @@
 require "spec_helper"
-require "hamster/tuple"
 require "hamster/vector"
 
 describe Hamster::Vector do
@@ -31,8 +30,9 @@ describe Hamster::Vector do
             @original.should eql(Hamster.vector(*values))
           end
 
-          it "returns a tuple with two items" do
-            @result.is_a?(Hamster::Tuple).should == true
+          it "returns a frozen array with two items" do
+            @result.class.should be(Array)
+            @result.should be_frozen
             @result.size.should be(2)
           end
 
@@ -52,7 +52,7 @@ describe Hamster::Vector do
 
           it "returns an Enumerator" do
             @result.class.should be(Enumerator)
-            @result.each(&:odd?).should eql(Hamster.tuple(Hamster::Vector.new(expected_matches), Hamster::Vector.new(expected_remainder)))
+            @result.each(&:odd?).should eql([Hamster::Vector.new(expected_matches), Hamster::Vector.new(expected_remainder)])
           end
         end
       end

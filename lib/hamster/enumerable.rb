@@ -1,5 +1,4 @@
 require "forwardable"
-require "hamster/tuple"
 
 module Hamster
   module Enumerable
@@ -30,7 +29,7 @@ module Hamster
     def partition
       return enum_for(:partition) if not block_given?
       a,b = super
-      Hamster.tuple(self.class.new(a), self.class.new(b))
+      [self.class.new(a), self.class.new(b)].freeze
     end
 
     def foldr(*args, &block)

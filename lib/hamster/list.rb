@@ -5,7 +5,6 @@ require "hamster/core_ext/enumerable"
 require "hamster/undefined"
 require "hamster/enumerable"
 require "hamster/groupable"
-require "hamster/tuple"
 require "hamster/hash"
 require "hamster/set"
 
@@ -293,12 +292,12 @@ module Hamster
     end
 
     def split_at(number)
-      Hamster.tuple(take(number), drop(number))
+      [take(number), drop(number)].freeze
     end
 
     def span(&block)
-      return Hamster.tuple(self, EmptyList) unless block_given?
-      Hamster.tuple(take_while(&block), drop_while(&block))
+      return [self, EmptyList].freeze unless block_given?
+      [take_while(&block), drop_while(&block)].freeze
     end
 
     def break(&block)
@@ -513,7 +512,7 @@ module Hamster
     def partition(&block)
       return enum_for(:partition) if not block_given?
       partitioner = Partitioner.new(self, block)
-      Hamster.tuple(partitioner.left, partitioner.right)
+      [partitioner.left, partitioner.right].freeze
     end
 
     # Value-and-type equality
