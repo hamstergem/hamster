@@ -15,7 +15,7 @@ describe Hamster::Hash do
         end
 
         context "from a subclass" do
-          it "returns an instance of the subclass" do
+          it "returns an empty instance of the subclass" do
             @subclass = Class.new(Hamster::Hash)
             @subclass.empty.class.should be @subclass
             @subclass.empty.should be_empty
