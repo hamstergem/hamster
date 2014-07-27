@@ -4,7 +4,7 @@ require "hamster/list"
 
 module Hamster
   def self.queue(*items)
-    items.reduce(EmptyQueue) { |queue, item| queue.enqueue(item) }
+    items.empty? ? EmptyQueue : Queue.new(items)
   end
 
   class Queue
@@ -13,12 +13,24 @@ module Hamster
 
     class << self
       def [](*items)
-        Hamster.queue(*items)
+        items.empty? ? empty : new(items)
+      end
+
+      def empty
+        @empty ||= self.new
+      end
+
+      def alloc(front, rear)
+        result = allocate
+        result.instance_variable_set(:@front, front)
+        result.instance_variable_set(:@rear,  rear)
+        result
       end
     end
 
-    def initialize
-      @front = @rear = EmptyList
+    def initialize(items=[])
+      @front = items.to_list
+      @rear  = EmptyList
     end
 
     def empty?
@@ -40,7 +52,7 @@ module Hamster
     def_delegator :self, :head, :front
 
     def enqueue(item)
-      transform { @rear = @rear.cons(item) }
+      self.class.alloc(@front, @rear.cons(item))
     end
     def_delegator :self, :enqueue, :<<
     def_delegator :self, :enqueue, :add
@@ -56,15 +68,12 @@ module Hamster
         rear = EmptyList
       end
 
-      transform do
-        @front = front.tail
-        @rear = rear
-      end
+      self.class.alloc(front.tail, rear)
     end
     def_delegator :self, :dequeue, :tail
 
     def clear
-      EmptyQueue
+      self.class.empty
     end
 
     def eql?(other)
@@ -91,5 +100,5 @@ module Hamster
     end
   end
 
-  EmptyQueue = Hamster::Queue.new
+  EmptyQueue = Hamster::Queue.empty
 end
