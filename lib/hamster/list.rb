@@ -494,6 +494,26 @@ module Hamster
       end
     end
 
+    def fill(obj, index = 0, length = nil)
+      if index == 0
+        length ||= size
+        if length > 0
+          Stream.new do
+            Sequence.new(obj, tail.fill(obj, 0, length-1))
+          end
+        else
+          self
+        end
+      elsif index > 0
+        Stream.new do
+          Sequence.new(head, tail.fill(obj, index-1, length))
+        end
+      else
+        raise IndexError if index < -size
+        fill(obj, index + size, length)
+      end
+    end
+
     class Partitioner
       # this class is an implementation detail and should not be documented
       # it makes it possible to divide a collection into 2 lazy streams, one of items
