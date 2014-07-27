@@ -36,6 +36,20 @@ module Hamster
       reverse.reduce(*args, &block)
     end
 
+    def <=>(other)
+      return 0 if self.equal?(other)
+      enum1, enum2 = self.to_enum, other.to_enum
+      loop do
+        item1 = enum1.next
+        item2 = enum2.next
+        comp  = (item1 <=> item2)
+        return comp if comp != 0
+      end
+      size1, size2 = self.size, other.size
+      return 0 if size1 == size2
+      size1 > size2 ? 1 : -1
+    end
+
     def_delegator :self, :each, :foreach
     def_delegator :self, :all?, :forall?
     def_delegator :self, :any?, :exist?
