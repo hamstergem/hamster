@@ -514,6 +514,28 @@ module Hamster
       end
     end
 
+    def permutation(length = size, &block)
+      return enum_for(:permutation, length) if not block_given?
+      if length == 0
+        yield EmptyList
+      elsif length == 1
+        each { |obj| yield Sequence.new(obj, EmptyList) }
+      elsif not empty?
+        if length < size
+          tail.permutation(length, &block)
+        end
+
+        tail.permutation(length-1) do |p|
+          0.upto(length-1) do |i|
+            left,right = p.split_at(i)
+            yield left.append(right.cons(head))
+          end
+        end
+      end
+      self
+    end
+    def_delegator :self, :permutation, :permutations
+
     class Partitioner
       # this class is an implementation detail and should not be documented
       # it makes it possible to divide a collection into 2 lazy streams, one of items
