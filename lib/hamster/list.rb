@@ -608,7 +608,7 @@ module Hamster
     end
 
     def to_set
-      reduce(EmptySet) { |set, item| set.add(item) }
+      Hamster::Set.new(self.to_a)
     end
 
     def inspect
