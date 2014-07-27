@@ -27,16 +27,22 @@ describe Hamster::List do
       @original.fill(:a, 3, 6).should eql(Hamster.list(1, 2, 3, :a, :a, :a, :a, :a, :a))
     end
 
-    it "(with 1 arg) replaces all the items in the list by default" do
-      @original.fill(:a).should eql(Hamster.list(:a, :a, :a, :a, :a, :a))
+    context "with 1 argument" do
+      it "replaces all the items in the list by default" do
+        @original.fill(:a).should eql(Hamster.list(:a, :a, :a, :a, :a, :a))
+      end
     end
 
-    it "(with 2 args) replaces up to the end of the list by default" do
-      @original.fill(:a, 4).should eql(Hamster.list(1, 2, 3, 4, :a, :a))
+    context "with 2 arguments" do
+      it "replaces up to the end of the list by default" do
+        @original.fill(:a, 4).should eql(Hamster.list(1, 2, 3, 4, :a, :a))
+      end
     end
 
-    it "(if index and length are 0) can leave a list unmodified" do
-      @original.fill(:a, 0, 0).should eql(@original)
+    context "when index and length are 0" do
+      it "leaves the list unmodified" do
+        @original.fill(:a, 0, 0).should eql(@original)
+      end
     end
 
     it "is lazy" do
