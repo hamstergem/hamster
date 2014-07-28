@@ -536,6 +536,17 @@ module Hamster
     end
     def_delegator :self, :permutation, :permutations
 
+    def subsequences(&block)
+      return enum_for(:subsequences) if not block_given?
+      if not empty?
+        1.upto(size) do |n|
+          yield take(n)
+        end
+        tail.subsequences(&block)
+      end
+      self
+    end
+
     class Partitioner
       # this class is an implementation detail and should not be documented
       # it makes it possible to divide a collection into 2 lazy streams, one of items
