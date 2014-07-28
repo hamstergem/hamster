@@ -628,6 +628,12 @@ module Hamster
       result << "]"
     end
 
+    def pretty_print(pp)
+      pp.group(1, "Hamster::List[", "]") do
+        pp.seplist(self) { |obj| obj.pretty_print(pp) }
+      end
+    end
+
     def respond_to?(name, include_private = false)
       super || !!name.to_s.match(CADR)
     end

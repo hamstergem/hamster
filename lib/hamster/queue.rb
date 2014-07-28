@@ -98,6 +98,12 @@ module Hamster
       @rear.to_a.tap { |a| a.reverse! }.each { |obj| result << ', ' if i > 0; result << obj.inspect; i += 1 }
       result << "]"
     end
+
+    def pretty_print(pp)
+      pp.group(1, "#{self.class}[", "]") do
+        pp.seplist(self.to_a) { |obj| obj.pretty_print(pp) }
+      end
+    end
   end
 
   EmptyQueue = Hamster::Queue.empty

@@ -68,6 +68,10 @@ module Hamster
       self.class.empty
     end
 
+    def each(&block)
+      @list.each(&block)
+    end
+
     def eql?(other)
       instance_of?(other.class) && @list.eql?(other.instance_variable_get(:@list))
     end
@@ -83,6 +87,12 @@ module Hamster
       result = "#{self.class}["
       @list.each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
       result << "]"
+    end
+
+    def pretty_print(pp)
+      pp.group(1, "#{self.class}[", "]") do
+        pp.seplist(self) { |obj| obj.pretty_print(pp) }
+      end
     end
   end
 

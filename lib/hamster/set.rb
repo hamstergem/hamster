@@ -190,6 +190,12 @@ module Hamster
       result << "]"
     end
 
+    def pretty_print(pp)
+      pp.group(1, "#{self.class}[", "]") do
+        pp.seplist(self) { |obj| obj.pretty_print(pp) }
+      end
+    end
+
     def marshal_dump
       output = {}
       each do |key|
