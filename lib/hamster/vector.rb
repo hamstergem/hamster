@@ -1,5 +1,4 @@
 require "forwardable"
-require "hamster/undefined"
 require "hamster/immutable"
 require "hamster/enumerable"
 
@@ -78,8 +77,7 @@ module Hamster
     # def delete(index)
     # end
 
-    def set(index, item = Undefined)
-      return set(index, yield(get(index))) if item.equal?(Undefined)
+    def set(index, item = yield(get(index)))
       raise IndexError if empty? || index == @size
       raise IndexError if index.abs > @size
       return set(@size + index, item) if index < 0
