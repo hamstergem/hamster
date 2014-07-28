@@ -76,8 +76,7 @@ module Hamster
       end
     end
 
-    def put(key, value = Undefined)
-      return put(key, yield(get(key))) if value.equal?(Undefined)
+    def put(key, value = yield(get(key)))
       transform { @trie = @trie.put(key, value) }
     end
 
