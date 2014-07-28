@@ -208,6 +208,21 @@ module Hamster
       result << "]"
     end
 
+    def pretty_print(pp)
+      pp.group(1, "#{self.class}[", "]") do
+        pp.seplist(self, nil) do |key, val|
+          pp.group do
+            key.pretty_print(pp)
+            pp.text ' => '
+            pp.group(1) do
+              pp.breakable ''
+              val.pretty_print(pp)
+            end
+          end
+        end
+      end
+    end
+
     def to_hash
       output = {}
       each do |key, value|
