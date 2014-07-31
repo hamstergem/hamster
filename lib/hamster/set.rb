@@ -62,13 +62,6 @@ module Hamster
       @trie.each { |entry| yield(entry.key) }
     end
 
-    def map
-      return self unless block_given?
-      return self if empty?
-      transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(yield(entry.key), nil) } }
-    end
-    def_delegator :self, :map, :collect
-
     def filter
       return enum_for(:filter) unless block_given?
       trie = @trie.filter { |entry| yield(entry.key) }
