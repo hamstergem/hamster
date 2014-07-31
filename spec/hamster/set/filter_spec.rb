@@ -54,8 +54,8 @@ describe Hamster::Set do
           @original.should == Hamster.set("A", "B", "C")
         end
 
-        it "returns an empty set" do
-          @result.should equal(Hamster.set)
+        it "returns the canonical empty set" do
+          @result.should equal(Hamster::EmptySet)
         end
       end
 
