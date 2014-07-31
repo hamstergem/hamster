@@ -25,7 +25,8 @@ describe Hamster::Set do
             end
 
             it "returns #{expected.inspect}" do
-              @result.should == Hamster.list(*expected)
+              @result.should eql(Hamster.sorted_set(*expected, &comparator))
+              @result.to_a.should == expected
             end
           end
 
@@ -35,7 +36,8 @@ describe Hamster::Set do
             end
 
             it "returns #{expected.sort.inspect}" do
-              @result.should == Hamster.list(*expected.sort)
+              @result.should eql(Hamster.sorted_set(*expected))
+              @result.to_a.should == expected.sort
             end
           end
         end

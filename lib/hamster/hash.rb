@@ -187,7 +187,7 @@ module Hamster
     end
 
     def hash
-      keys.sort.reduce(0) do |hash, key|
+      keys.to_a.sort.reduce(0) do |hash, key|
         (hash << 32) - hash + key.hash + get(key).hash
       end
     end
