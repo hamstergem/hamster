@@ -7,7 +7,7 @@ describe Hamster::Set do
       @original = Hamster.set("A", "B", "C")
     end
 
-    describe "with an existing value" do
+    context "with an existing value" do
       before do
         @result = @original.delete("B")
       end
@@ -21,7 +21,7 @@ describe Hamster::Set do
       end
     end
 
-    describe "with a non-existing value" do
+    context "with a non-existing value" do
       before do
         @result = @original.delete("D")
       end
@@ -32,6 +32,16 @@ describe Hamster::Set do
 
       it "returns self" do
         @result.should equal(@original)
+      end
+    end
+
+    context "when removing the last value in a set" do
+      before do
+        @result = @original.delete("B").delete("C").delete("A")
+      end
+
+      it "returns the canonical empty set" do
+        @result.should be(Hamster::EmptySet)
       end
     end
   end
