@@ -39,8 +39,9 @@ describe Hamster::Vector do
             @result = @original.send(method)
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          it "returns an Enumerator" do
+            @result.class.should be(Enumerator)
+            @result.each(&:downcase).should == Hamster.vector('a', 'b', 'c')
           end
         end
       end
