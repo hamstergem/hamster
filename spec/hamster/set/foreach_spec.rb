@@ -11,8 +11,9 @@ describe Hamster::Set do
     context "without a block" do
       let(:block) { nil }
 
-      it "returns self" do
-        expect(foreach).to eq(set)
+      it "returns an Enumerator" do
+        expect(foreach.class).to be(Enumerator)
+        expect(foreach.to_a).to eq(set.to_a)
       end
     end
 
