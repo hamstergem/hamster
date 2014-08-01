@@ -89,6 +89,12 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
+    def sort(&block)
+      block ||= lambda { |a,b| a <=> b }
+      self.class.new(self.to_a, &block)
+    end
+    alias :sort_by :sort
+
     def include?(item)
       @node.include?(item, @comparator)
     end
