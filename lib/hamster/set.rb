@@ -44,7 +44,7 @@ module Hamster
     def_delegator :self, :size, :length
 
     def add(item)
-      transform_unless(include?(item)) { @trie = @trie.put(item, nil) }
+      include?(item) ? self : self.class.alloc(@trie.put(item, nil))
     end
     def_delegator :self, :add, :<<
     def_delegator :self, :add, :conj
@@ -70,7 +70,7 @@ module Hamster
       return enum_for(:filter) unless block_given?
       trie = @trie.filter { |entry| yield(entry.key) }
       return self.class.empty if trie.empty?
-      transform_unless(trie.equal?(@trie)) { @trie = trie }
+      trie.equal?(@trie) ? self : self.class.alloc(trie)
     end
 
     def_delegator :self, :reduce, :foldr # set is not ordered, so foldr is same as reduce
@@ -106,7 +106,7 @@ module Hamster
         next a if a.key?(element)
         a.put(element, nil)
       end
-      transform_unless(trie.equal?(@trie)) { @trie = trie }
+      trie.equal?(@trie) ? self : self.class.alloc(trie)
     end
     def_delegator :self, :union, :|
     def_delegator :self, :union, :+
@@ -114,7 +114,7 @@ module Hamster
 
     def intersection(other)
       trie = @trie.filter { |entry| other.include?(entry.key) }
-      transform_unless(trie.equal?(@trie)) { @trie = trie }
+      trie.equal?(@trie) ? self : self.class.alloc(trie)
     end
     def_delegator :self, :intersection, :intersect
     def_delegator :self, :intersection, :&
