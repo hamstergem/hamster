@@ -27,7 +27,7 @@ describe Hamster::List do
             end
 
             it "returns #{expected.inspect}" do
-              @result.should == Hamster.list(*expected)
+              @result.should eql(Hamster.list(*expected))
             end
 
             it "is lazy" do
@@ -47,7 +47,7 @@ describe Hamster::List do
 
             it "returns an Enumerator" do
               @result.class.should be(Enumerator)
-              @result.each { |item| item == item.downcase }.should eq(Hamster.list(*expected))
+              @result.each { |item| item == item.downcase }.should eql(Hamster.list(*expected))
             end
           end
         end
