@@ -4,7 +4,6 @@ require "thread"
 require "hamster/core_ext/enumerable"
 require "hamster/undefined"
 require "hamster/enumerable"
-require "hamster/groupable"
 require "hamster/hash"
 require "hamster/set"
 
@@ -143,7 +142,6 @@ module Hamster
   module List
     extend Forwardable
     include Enumerable
-    include Groupable
 
     CADR = /^c([ad]+)r$/
 

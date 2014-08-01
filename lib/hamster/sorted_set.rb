@@ -1,7 +1,6 @@
 require "forwardable"
 require "hamster/immutable"
 require "hamster/enumerable"
-require "hamster/groupable"
 
 module Hamster
   def self.sorted_set(*items, &block)
@@ -12,7 +11,6 @@ module Hamster
     extend Forwardable
     include Immutable
     include Enumerable
-    include Groupable
 
     class << self
       def [](*items)

@@ -2,7 +2,6 @@ require "forwardable"
 require "hamster/immutable"
 require "hamster/undefined"
 require "hamster/enumerable"
-require "hamster/groupable"
 require "hamster/trie"
 require "hamster/list"
 
@@ -15,7 +14,6 @@ module Hamster
     extend Forwardable
     include Immutable
     include Enumerable
-    include Groupable
 
     class << self
       def [](*items)
