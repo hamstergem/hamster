@@ -104,6 +104,13 @@ module Hamster
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
     end
 
+    def sort
+      self.class.new(super)
+    end
+    def sort_by
+      self.class.new(super)
+    end
+
     def clear
       self.class.empty
     end
