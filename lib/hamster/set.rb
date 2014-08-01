@@ -75,6 +75,13 @@ module Hamster
 
     def_delegator :self, :reduce, :foldr # set is not ordered, so foldr is same as reduce
 
+    def map
+      return enum_for(:map) if not block_given?
+      return self if empty?
+      self.class.new(super)
+    end
+    def_delegator :self, :map, :collect
+
     def include?(object)
       @trie.key?(object)
     end

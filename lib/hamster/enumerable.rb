@@ -17,13 +17,6 @@ module Hamster
       filter { |item| !yield(item) }
     end
 
-    def map
-      return enum_for(:map) if not block_given?
-      return self if empty?
-      self.class.new(super)
-    end
-    def_delegator :self, :map, :collect
-
     def compact
       filter { |item| !item.nil? }
     end

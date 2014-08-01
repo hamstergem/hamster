@@ -104,6 +104,13 @@ module Hamster
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
     end
 
+    def map
+      return enum_for(:map) if not block_given?
+      return self if empty?
+      self.class.new(super)
+    end
+    def_delegator :self, :map, :collect
+
     def sort
       self.class.new(super)
     end

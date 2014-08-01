@@ -87,6 +87,7 @@ module Hamster
       return self if empty?
       self.class.new(super, &@comparator)
     end
+    def_delegator :self, :map, :collect
 
     def include?(item)
       @node.include?(item, @comparator)
