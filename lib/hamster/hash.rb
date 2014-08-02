@@ -187,6 +187,10 @@ module Hamster
       nil
     end
 
+    def sample
+      @trie.at(rand(size))
+    end
+
     def clear
       self.class.empty
     end

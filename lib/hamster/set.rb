@@ -157,6 +157,10 @@ module Hamster
     end
     def_delegator :self, :group_by, :group
 
+    def sample
+      empty? ? nil : @trie.at(rand(size))[0]
+    end
+
     def clear
       self.class.empty
     end

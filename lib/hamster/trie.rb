@@ -96,6 +96,25 @@ module Hamster
       entry && value.eql?(entry[1])
     end
 
+    def at(index)
+      @entries.each do |entry|
+        if entry
+          return entry if index == 0
+          index -= 1
+        end
+      end
+      @children.each do |child|
+        if child
+          if child.size >= index+1
+            return child.at(index)
+          else
+            index -= child.size
+          end
+        end
+      end
+      nil
+    end
+
     # Returns <tt>true</tt> if . <tt>eql?</tt> is synonymous with <tt>==</tt>
     def eql?(other)
       return true if equal?(other)
