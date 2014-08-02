@@ -101,7 +101,6 @@ module Hamster
       @trie.each(&block)
       self
     end
-    def_delegator :self, :each, :foreach
     def_delegator :self, :each, :each_pair
 
     def each_key
