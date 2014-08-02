@@ -7,7 +7,7 @@ describe Hamster::Hash do
       @original = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
     end
 
-    describe "with an existing key" do
+    context "with an existing key" do
       before do
         @result = @original.delete("B")
       end
@@ -21,7 +21,7 @@ describe Hamster::Hash do
       end
     end
 
-    describe "with a non-existing key" do
+    context "with a non-existing key" do
       before do
         @result = @original.delete("D")
       end
@@ -32,6 +32,14 @@ describe Hamster::Hash do
 
       it "returns self" do
         @result.should equal(@original)
+      end
+    end
+
+    context "when removing the last key" do
+      context "from a Hash with no default block" do
+        it "returns the canonical empty Hash" do
+          @original.delete('A').delete('B').delete('C').should be(Hamster::EmptyHash)
+        end
       end
     end
   end

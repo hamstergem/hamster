@@ -93,7 +93,17 @@ module Hamster
 
     def delete(key)
       trie = @trie.delete(key)
-      transform_unless(trie.equal?(@trie)) { @trie = trie }
+      if trie.equal?(@trie)
+        self
+      elsif trie.empty?
+        if @default
+          self.class.alloc(EmptyTrie, @default)
+        else
+          self.class.empty
+        end
+      else
+        self.class.alloc(trie, @default)
+      end
     end
 
     def each(&block)
