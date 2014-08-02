@@ -149,6 +149,14 @@ module Hamster
     end
     def_delegator :self, :merge, :+
 
+    def sort
+      Vector.new(super)
+    end
+
+    def sort_by
+      Vector.new(super)
+    end
+
     def except(*keys)
       keys.reduce(self) { |hash, key| hash.delete(key) }
     end
