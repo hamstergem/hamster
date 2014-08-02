@@ -30,6 +30,7 @@ module Hamster
     end
 
     def initialize(items=[])
+      items = items.to_a if !items.is_a?(Array)
       @trie = Trie[items.map! { |x| [x, nil] }]
     end
 

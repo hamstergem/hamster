@@ -9,6 +9,12 @@ describe Hamster::Set do
       [1,2,3].each { |n| set.should include(n) }
     end
 
+    it "accepts a Range" do
+      set = Hamster::Set.new(1..3)
+      set.size.should be(3)
+      [1,2,3].each { |n| set.should include(n) }
+    end
+
     context "from a subclass" do
       before do
         @subclass = Class.new(Hamster::Set)
