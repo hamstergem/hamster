@@ -26,5 +26,12 @@ describe Hamster::Hash do
         end
       end
     end
+
+    context "when merging with an empty Hash" do
+      it "returns self" do
+        @hash = Hamster.hash(a: 1, b: 2)
+        @hash.merge(Hamster.hash).should be(@hash)
+      end
+    end
   end
 end

@@ -154,7 +154,12 @@ module Hamster
     def_delegator :self, :min, :minimum
 
     def merge(other)
-      transform { other.each { |key, value| @trie = @trie.put(key, value) } }
+      trie = other.reduce(@trie) { |trie, (key, value)| trie.put(key, value) }
+      if trie.equal?(@trie)
+        self
+      else
+        self.class.alloc(trie, @default)
+      end
     end
     def_delegator :self, :merge, :+
 
