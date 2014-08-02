@@ -88,7 +88,7 @@ module Hamster
     end
 
     def put(key, value = yield(get(key)))
-      transform { @trie = @trie.put(key, value) }
+      self.class.alloc(@trie.put(key, value), @default)
     end
 
     def delete(key)
@@ -128,7 +128,7 @@ module Hamster
     def map
       return enum_for(:map) unless block_given?
       return self if empty?
-      transform { @trie = @trie.reduce(EmptyTrie) { |trie, entry| trie.put(*yield(entry)) } }
+      self.class.new(super, &@default)
     end
     def_delegator :self, :map, :collect
 
@@ -137,10 +137,17 @@ module Hamster
     def filter(&block)
       return enum_for(:filter) unless block_given?
       trie = @trie.filter(&block)
-      if trie.empty?
-        return @default ? self.class.alloc(EmptyTrie, @default) : self.class.empty
+      if trie.equal?(@trie)
+        self
+      elsif trie.empty?
+        if @default
+          self.class.alloc(EmptyTrie, @default)
+        else
+          self.class.empty
+        end
+      else
+        self.class.alloc(trie, @default)
       end
-      transform_unless(trie.equal?(@trie)) { @trie = trie }
     end
 
     def find
