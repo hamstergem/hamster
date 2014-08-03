@@ -316,12 +316,6 @@ module Hamster
       Stream.new { super(&transformer).to_enum.to_list }
     end
 
-    def join(sep = "")
-      return "" if empty?
-      sep = sep.to_s
-      tail.reduce(head.to_s.dup) { |result, item| result << sep << item.to_s }
-    end
-
     def intersperse(sep)
       Stream.new do
         next self if tail.empty?

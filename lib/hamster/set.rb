@@ -109,10 +109,6 @@ module Hamster
     end
     alias :sort_by :sort
 
-    def join(sep = nil)
-      to_a.join(sep)
-    end
-
     def union(other)
       trie = other.reduce(@trie) do |a, element|
         next a if a.key?(element)

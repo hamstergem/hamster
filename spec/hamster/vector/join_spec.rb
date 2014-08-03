@@ -1,33 +1,23 @@
 require "spec_helper"
-require "hamster/list"
+require "hamster/vector"
 
-describe Hamster::List do
+describe Hamster::Vector do
   describe "#join" do
-    context "on a really big list" do
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
-      it "doesn't run out of stack" do
-        -> { @list.join }.should_not raise_error
-      end
-    end
-
     context "with a separator" do
       [
         [[], ""],
         [["A"], "A"],
-        [%w[A B C], "A|B|C"]
+        [[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)], "A|B|C"]
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
           before do
-            @original = Hamster.list(*values)
+            @original = Hamster.vector(*values)
             @result = @original.join("|")
           end
 
           it "preserves the original" do
-            @original.should == Hamster.list(*values)
+            @original.should eql(Hamster.vector(*values))
           end
 
           it "returns #{expected.inspect}" do
@@ -41,17 +31,17 @@ describe Hamster::List do
       [
         [[], ""],
         [["A"], "A"],
-        [%w[A B C], "ABC"]
+        [[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)], "ABC"]
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
           before do
-            @original = Hamster.list(*values)
+            @original = Hamster.vector(*values)
             @result = @original.join
           end
 
           it "preserves the original" do
-            @original.should == Hamster.list(*values)
+            @original.should eql(Hamster.vector(*values))
           end
 
           it "returns #{expected.inspect}" do
@@ -64,14 +54,14 @@ describe Hamster::List do
     context "without a separator (with global default separator set)" do
       before do
         $, = '**'
-        @list = Hamster.list(DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3))
+        @vector = Hamster::Vector[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)]
         @expected = "A**B**C"
       end
       after  { $, = nil }
 
-      describe "on #{@list.inspect}" do
+      describe "on #{@set.inspect}" do
         it "returns #{@expected.inspect}" do
-          @list.join.should == @expected
+          @vector.join.should == @expected
         end
       end
     end

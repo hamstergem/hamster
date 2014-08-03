@@ -66,6 +66,16 @@ module Hamster
       size1 > size2 ? 1 : -1
     end
 
+    def join(separator = $,)
+      result = ""
+      if separator
+        each_with_index { |obj, i| result << separator if i > 0; result << obj.to_s }
+      else
+        each { |obj| result << obj.to_s }
+      end
+      result
+    end
+
     def_delegator :self, :each, :foreach
     def_delegator :self, :all?, :forall?
     def_delegator :self, :any?, :exist?
