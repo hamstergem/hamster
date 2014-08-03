@@ -94,9 +94,9 @@ module Hamster
     def_delegator :self, :get, :at
 
     def each(&block)
-      return self unless block_given?
+      return to_enum unless block_given?
       traverse_depth_first(&block)
-      nil
+      self
     end
 
     def filter

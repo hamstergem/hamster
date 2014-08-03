@@ -10,8 +10,9 @@ describe Hamster::Vector do
           @result = @vector.send(method)
         end
 
-        it "returns self" do
-          @result.should equal(@vector)
+        it "returns an Enumerator" do
+          @result.class.should be(Enumerator)
+          @result.to_a.should == @vector
         end
       end
 
@@ -22,8 +23,8 @@ describe Hamster::Vector do
           @result = @vector.send(method) { |item| @items << item }
         end
 
-        it "returns nil" do
-          @result.should be_nil
+        it "returns self" do
+          @result.should be(@vector)
         end
 
         it "iterates over the items in order" do
