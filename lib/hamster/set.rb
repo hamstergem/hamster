@@ -51,6 +51,10 @@ module Hamster
     def_delegator :self, :add, :conj
     def_delegator :self, :add, :conjoin
 
+    def add?(item)
+      !include?(item) && add(item)
+    end
+
     def delete(item)
       trie = @trie.delete(item)
       if trie.equal?(@trie)

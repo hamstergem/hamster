@@ -63,6 +63,10 @@ module Hamster
     def_delegator :self, :add, :conj
     def_delegator :self, :add, :conjoin
 
+    def add?(item)
+      !include?(item) && add(item)
+    end
+
     def delete(item)
       return self if not include?(item)
       node = @node.delete(item, @comparator)

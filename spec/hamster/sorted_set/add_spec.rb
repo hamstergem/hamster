@@ -2,12 +2,12 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
+  before do
+    @original = Hamster.sorted_set("B", "C", "D")
+  end
+
   [:add, :<<].each do |method|
     describe "##{method}" do
-      before do
-        @original = Hamster.sorted_set("B", "C", "D")
-      end
-
       context "with a unique value" do
         before do
           @result = @original.send(method, "A")
@@ -45,6 +45,36 @@ describe Hamster::SortedSet do
         it "inserts the new item in the correct place" do
           @result.to_a.should == ['pig', 'tick', 'giraffe', 'hippopotamus']
         end
+      end
+    end
+  end
+
+  describe "#add?" do
+    context "with a unique value" do
+      before do
+        @result = @original.add?("A")
+      end
+
+      it "preserves the original" do
+        @original.should eql(Hamster.sorted_set("B", "C", "D"))
+      end
+
+      it "returns a copy with the superset of values" do
+        @result.should eql(Hamster.sorted_set("A", "B", "C", "D"))
+      end
+    end
+
+    context "with a duplicate value" do
+      before do
+        @result = @original.add?("C")
+      end
+
+      it "preserves the original values" do
+        @original.should eql(Hamster.sorted_set("B", "C", "D"))
+      end
+
+      it "returns false" do
+        @result.should equal(false)
       end
     end
   end
