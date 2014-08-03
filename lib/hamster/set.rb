@@ -138,6 +138,7 @@ module Hamster
     def_delegator :self, :exclusion, :^
 
     def subset?(other)
+      return false if other.size < size
       all? { |item| other.include?(item) }
     end
 
