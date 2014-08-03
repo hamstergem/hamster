@@ -74,9 +74,6 @@ module Hamster
     def_delegator :self, :add, :conj
     def_delegator :self, :add, :conjoin
 
-    # def delete(index)
-    # end
-
     def set(index, item = yield(get(index)))
       raise IndexError if empty? || index == @size
       raise IndexError if index.abs > @size
