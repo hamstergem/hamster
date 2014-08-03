@@ -3,7 +3,7 @@ require "forwardable"
 require "hamster/immutable"
 require "hamster/undefined"
 require "hamster/trie"
-require "hamster/list"
+require "hamster/vector"
 
 module Hamster
   def self.hash(pairs = nil, &block)
@@ -199,7 +199,7 @@ module Hamster
     end
 
     def values
-      reduce(Hamster.list) { |values, (key, value)| values.cons(value) }
+      Vector.new(each_value.to_a.freeze)
     end
 
     def invert

@@ -9,8 +9,8 @@ describe Hamster::Hash do
       @result = hash.values
     end
 
-    it "returns the keys as a list" do
-      @result.should be_a Hamster::List
+    it "returns the keys as a Vector" do
+      @result.should be_a Hamster::Vector
       @result.to_a.sort.should == %w(aye bee see)
     end
   end
@@ -22,7 +22,7 @@ describe Hamster::Hash do
     end
 
     it "returns the keys as a list" do
-      @result.should be_a Hamster::List
+      @result.should be_a Hamster::Vector
       @result.to_a.sort.should == [15, 15, 19]
     end
   end
