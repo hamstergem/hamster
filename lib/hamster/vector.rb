@@ -102,6 +102,12 @@ module Hamster
       self
     end
 
+    def each_index(&block)
+      return enum_for(:each_index) unless block_given?
+      0.upto(@size-1, &block)
+      self
+    end
+
     def filter
       return enum_for(:filter) unless block_given?
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
