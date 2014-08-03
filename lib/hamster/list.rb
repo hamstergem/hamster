@@ -414,27 +414,6 @@ module Hamster
     end
     def_delegator :self, :slice, :[]
 
-    def find_index
-      return nil unless block_given?
-      i = 0
-      list = self
-      loop do
-        return nil if list.empty?
-        return i if yield(list.head)
-        i += 1
-        list = list.tail
-      end
-    end
-
-    def elem_index(object)
-      find_index { |item| item == object }
-    end
-
-    def index(object = Undefined, &block)
-      return elem_index(object) unless object.equal?(Undefined)
-      find_index(&block)
-    end
-
     def find_indices(i = 0, &block)
       return EmptyList unless block_given?
       Stream.new do

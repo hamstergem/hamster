@@ -81,6 +81,8 @@ module Hamster
     def_delegator :self, :remove, :reject # make it return a Hamster collection (and possibly make it lazy)
     def_delegator :self, :remove, :delete_if
     def_delegator :self, :reduce, :fold
+    def_delegator :self, :find_index, :index
+    def_delegator :self, :find_index, :elem_index
 
     ## Compatibility fixes
 
