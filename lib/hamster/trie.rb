@@ -35,6 +35,14 @@ module Hamster
       nil
     end
 
+    def reverse_each(&block)
+      @children.reverse_each do |child|
+        child.reverse_each(&block) if child
+      end
+      @entries.reverse_each { |entry| yield(entry) if entry }
+      nil
+    end
+
     def reduce(memo)
       each { |entry| memo = yield(memo, entry) }
       memo

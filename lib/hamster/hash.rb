@@ -113,6 +113,12 @@ module Hamster
     end
     def_delegator :self, :each, :each_pair
 
+    def reverse_each(&block)
+      return enum_for(:reverse_each) if not block_given?
+      @trie.reverse_each(&block)
+      self
+    end
+
     def each_key
       return enum_for(:each_key) if not block_given?
       @trie.each { |k,v| yield k }
