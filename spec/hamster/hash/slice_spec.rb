@@ -22,5 +22,14 @@ describe Hamster::Hash do
         expect(slice).to eq(described_class.new("A" => "aye", "B" => "bee"))
       end
     end
+
+    context "on a Hash with a default block" do
+      let(:hash) { Hamster.hash('A' => 'aye', 'B' => 'bee') { 'nothing' }}
+      let(:values) { ["B", nil] }
+
+      it "maintains the default block" do
+        expect(slice['C']).to eq('nothing')
+      end
+    end
   end
 end

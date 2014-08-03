@@ -134,8 +134,6 @@ module Hamster
     end
     alias :== :eql?
 
-    protected
-
     # Returns <tt>self</tt> after overwriting the element associated with the specified key.
     def put!(key, value)
       index = index_for(key)
@@ -160,6 +158,8 @@ module Hamster
       end
       self
     end
+
+    protected
 
     # Returns a replacement instance after removing the specified key.
     # If not found, returns <tt>self</tt>.

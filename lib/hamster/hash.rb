@@ -189,7 +189,9 @@ module Hamster
     end
 
     def slice(*wanted)
-      except(*keys - wanted)
+      trie = Trie.new(0)
+      wanted.each { |key| trie.put!(key, get(key)) if key?(key) }
+      self.class.alloc(trie, @default)
     end
 
     def keys
