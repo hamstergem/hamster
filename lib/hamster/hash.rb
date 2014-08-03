@@ -207,7 +207,8 @@ module Hamster
     end
 
     def assoc(obj)
-      @trie.get(obj)
+      each { |entry| return entry if obj == entry[0] }
+      nil
     end
 
     def rassoc(obj)
