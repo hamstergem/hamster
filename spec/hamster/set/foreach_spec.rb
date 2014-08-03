@@ -20,8 +20,8 @@ describe Hamster::Set do
     context "with an empty block" do
       let(:block) { ->(item) {} }
 
-      it "returns nil" do
-        expect(foreach).to be(nil)
+      it "returns self" do
+        expect(foreach).to be(set)
       end
     end
 

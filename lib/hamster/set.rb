@@ -69,6 +69,7 @@ module Hamster
     def each
       return to_enum if not block_given?
       @trie.each { |key, _| yield(key) }
+      self
     end
 
     def filter
