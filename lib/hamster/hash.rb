@@ -209,6 +209,14 @@ module Hamster
       self.class.alloc(pairs, @default)
     end
 
+    def flatten(level = 1)
+      return self if level == 0
+      array = []
+      each { |k,v| array << k; array << v }
+      array.flatten!(level-1) if level > 1
+      Vector.new(array.freeze)
+    end
+
     def assoc(obj)
       each { |entry| return entry if obj == entry[0] }
       nil
