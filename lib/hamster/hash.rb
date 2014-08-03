@@ -3,6 +3,7 @@ require "forwardable"
 require "hamster/immutable"
 require "hamster/undefined"
 require "hamster/trie"
+require "hamster/set"
 require "hamster/vector"
 
 module Hamster
