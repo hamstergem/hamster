@@ -72,6 +72,12 @@ module Hamster
       self
     end
 
+    def reverse_each
+      return enum_for(:reverse_each) if not block_given?
+      @trie.reverse_each { |key, _| yield(key) }
+      self
+    end
+
     def filter
       return enum_for(:filter) unless block_given?
       trie = @trie.filter { |entry| yield(entry[0]) }
