@@ -99,6 +99,12 @@ module Hamster
       self
     end
 
+    def reverse_each(&block)
+      return enum_for(:reverse_each) unless block_given?
+      reverse_traverse_depth_first(&block)
+      self
+    end
+
     def filter
       return enum_for(:filter) unless block_given?
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
@@ -173,6 +179,11 @@ module Hamster
     def traverse_depth_first(node = @root, level = @levels, &block)
       return node.each(&block) if level == 0
       node.each { |child| traverse_depth_first(child, level - 1, &block) }
+    end
+
+    def reverse_traverse_depth_first(node = @root, level = @levels, &block)
+      return node.reverse_each(&block) if level == 0
+      node.reverse_each { |child| reverse_traverse_depth_first(child, level - 1, &block) }
     end
 
     def leaf_node_for(node, child_index_bits, index)
