@@ -4,6 +4,7 @@ require "hamster/undefined"
 require "hamster/enumerable"
 require "hamster/trie"
 require "hamster/list"
+require "hamster/sorted_set"
 
 module Hamster
   def self.set(*items)
