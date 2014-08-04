@@ -219,6 +219,8 @@ module Hamster
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
+    undef :"<=>" # Sets are not ordered, so Enumerable#<=> will give a meaningless result
+
     def_delegator :self, :dup, :uniq
     def_delegator :self, :dup, :nub
     def_delegator :self, :dup, :to_set
