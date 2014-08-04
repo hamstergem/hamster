@@ -158,6 +158,33 @@ module Hamster
       self.class.new(super)
     end
 
+    def combination(n)
+      return enum_for(:combination, n) if not block_given?
+      return self if n < 0 || @size < n
+      if n == 0
+        yield []
+      elsif n == 1
+        each { |item| yield [item] }
+      elsif n == @size
+        yield self
+      else
+        combos = lambda do |result,next_index,remaining|
+          if remaining == 0
+            yield result
+          elsif @size - next_index > remaining
+            copy = result.dup
+            combos[result << get(next_index), next_index+1, remaining-1]
+            combos[copy, next_index+1, remaining]
+          elsif @size - next_index == remaining
+            next_index.upto(@size-1) { |i| result << get(i) }
+            yield result
+          end
+        end
+        combos[[], 0, n]
+      end
+      self
+    end
+
     def clear
       self.class.empty
     end
