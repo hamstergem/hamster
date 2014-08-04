@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  [:group_by, :group].each do |method|
+  [:group_by, :group, :classify].each do |method|
     describe "##{method}" do
       describe "with a block" do
         [

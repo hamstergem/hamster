@@ -190,6 +190,7 @@ module Hamster
       group_by_with(self.class.empty, &block)
     end
     def_delegator :self, :group_by, :group
+    def_delegator :self, :group_by, :classify
 
     def sample
       empty? ? nil : @trie.at(rand(size))[0]
