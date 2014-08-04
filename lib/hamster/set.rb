@@ -66,6 +66,10 @@ module Hamster
       end
     end
 
+    def delete?(item)
+      include?(item) && delete(item)
+    end
+
     def each
       return to_enum if not block_given?
       @trie.each { |key, _| yield(key) }
