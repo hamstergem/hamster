@@ -82,6 +82,31 @@ module Hamster
       end
     end
 
+    # Returns <tt>self</tt> after overwriting the element associated with the specified key.
+    def put!(key, value)
+      index = index_for(key)
+      entry = @entries[index]
+      if !entry
+        @size += 1
+        key = key.dup.freeze if key.is_a?(String)
+        @entries[index] = [key, value].freeze
+      elsif entry[0].eql?(key)
+        key = key.dup.freeze if key.is_a?(String)
+        @entries[index] = [key, value].freeze
+      else
+        child = @children[index]
+        if child
+          old_child_size = child.size
+          @children[index] = child.put!(key, value)
+          @size += child.size - old_child_size
+        else
+          @children[index] = Trie.new(@significant_bits + 5).put!(key, value)
+          @size += 1
+        end
+      end
+      self
+    end
+
     # Retrieves the entry corresponding to the given key. If not found, returns <tt>nil</tt>.
     def get(key)
       index = index_for(key)
@@ -133,31 +158,6 @@ module Hamster
       true
     end
     alias :== :eql?
-
-    # Returns <tt>self</tt> after overwriting the element associated with the specified key.
-    def put!(key, value)
-      index = index_for(key)
-      entry = @entries[index]
-      if !entry
-        @size += 1
-        key = key.dup.freeze if key.is_a?(String)
-        @entries[index] = [key, value].freeze
-      elsif entry[1].eql?(key)
-        key = key.dup.freeze if key.is_a?(String)
-        @entries[index] = [key, value].freeze
-      else
-        child = @children[index]
-        if child
-          old_child_size = child.size
-          @children[index] = child.put!(key, value)
-          @size += child.size - old_child_size
-        else
-          @children[index] = Trie.new(@significant_bits + 5).put!(key, value)
-          @size += 1
-        end
-      end
-      self
-    end
 
     protected
 
