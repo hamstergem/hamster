@@ -90,6 +90,19 @@ module Hamster
     def_delegator :self, :get, :[]
     def_delegator :self, :get, :at
 
+    def fetch(index, default = (missing_default = true))
+      index += @size if index < 0
+      if index >= 0 && index < size
+        get(index)
+      elsif !missing_default
+        default
+      elsif block_given?
+        yield
+      else
+        raise IndexError, "index #{index} outside of vector bounds"
+      end
+    end
+
     def each(&block)
       return to_enum unless block_given?
       traverse_depth_first(&block)
