@@ -162,6 +162,10 @@ module Hamster
       all? { |item| other.include?(item) }
     end
 
+    def proper_superset?(other)
+      other.proper_subset?(self)
+    end
+
     def flatten
       reduce(self.class.empty) do |set, item|
         next set.union(item.flatten) if item.is_a?(Set)
