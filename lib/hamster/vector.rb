@@ -133,6 +133,10 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
+    def shuffle
+      self.class.new(((array = to_a).frozen? ? array.shuffle : array.shuffle!).freeze)
+    end
+
     def sort
       self.class.new(super)
     end
