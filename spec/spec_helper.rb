@@ -36,3 +36,12 @@ class DeterministicHash
     @value.inspect
   end
 end
+
+class EqualNotEql
+  def ==(other)
+    true
+  end
+  def eql?(other)
+    false
+  end
+end

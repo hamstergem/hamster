@@ -139,6 +139,16 @@ module Hamster
       get(rand(@size))
     end
 
+    def assoc(obj)
+      each { |array| return array if obj == array[0] }
+      nil
+    end
+
+    def rassoc(obj)
+      each { |array| return array if obj == array[1] }
+      nil
+    end
+
     def inspect
       result = "#{self.class}["
       each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
