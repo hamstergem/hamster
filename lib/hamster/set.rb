@@ -166,6 +166,15 @@ module Hamster
       other.proper_subset?(self)
     end
 
+    def disjoint?(other)
+      if size < other.size
+        each { |item| return false if other.include?(item) }
+      else
+        other.each { |item| return false if include?(item) }
+      end
+      true
+    end
+
     def flatten
       reduce(self.class.empty) do |set, item|
         next set.union(item.flatten) if item.is_a?(Set)
