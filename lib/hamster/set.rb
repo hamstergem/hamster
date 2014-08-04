@@ -152,19 +152,23 @@ module Hamster
       return false if other.size < size
       all? { |item| other.include?(item) }
     end
+    alias :<= :subset?
 
     def superset?(other)
       other.subset?(self)
     end
+    alias :>= :superset?
 
     def proper_subset?(other)
       return false if other.size <= size
       all? { |item| other.include?(item) }
     end
+    alias :< :proper_subset?
 
     def proper_superset?(other)
       other.proper_subset?(self)
     end
+    alias :> :proper_superset?
 
     def disjoint?(other)
       if size < other.size
