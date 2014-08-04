@@ -152,6 +152,21 @@ module Hamster
       get(rand(@size))
     end
 
+    def rindex(obj = (missing_arg = true))
+      i = @size - 1
+      if missing_arg
+        if block_given?
+          reverse_each { |item| return i if yield item; i -= 1 }
+          nil
+        else
+          enum_for(:rindex)
+        end
+      else
+        reverse_each { |item| return i if item == obj; i -= 1 }
+        nil
+      end
+    end
+
     def assoc(obj)
       each { |array| return array if obj == array[0] }
       nil
