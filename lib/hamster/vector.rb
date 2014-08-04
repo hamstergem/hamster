@@ -140,6 +140,11 @@ module Hamster
       self.class.new(super)
     end
 
+    def drop_while
+      return enum_for(:drop_while) if not block_given?
+      self.class.new(super)
+    end
+
     def clear
       self.class.empty
     end
