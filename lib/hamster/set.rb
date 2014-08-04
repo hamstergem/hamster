@@ -175,6 +175,10 @@ module Hamster
       true
     end
 
+    def intersect?(other)
+      !disjoint?(other)
+    end
+
     def flatten
       reduce(self.class.empty) do |set, item|
         next set.union(item.flatten) if item.is_a?(Set)
