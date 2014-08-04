@@ -137,6 +137,10 @@ module Hamster
       self.class.new(((array = to_a).frozen? ? array.shuffle : array.shuffle!).freeze)
     end
 
+    def uniq
+      self.class.new(((array = to_a).frozen? ? array.uniq : array.uniq!).freeze)
+    end
+
     def sort
       self.class.new(super)
     end
