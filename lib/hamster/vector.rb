@@ -215,6 +215,32 @@ module Hamster
       self
     end
 
+    def bsearch
+      low, high, result = 0, @size, nil
+      while low < high
+        mid = (low + ((high - low) >> 1))
+        val = get(mid)
+        v   = yield val
+        if v.is_a? Numeric
+          if v == 0
+            return val
+          elsif v > 0
+            high = mid
+          else
+            low = mid + 1
+          end
+        elsif v == true
+          result = val
+          high = mid
+        elsif !v
+          low = mid + 1
+        else
+          raise TypeError, "wrong argument type #{v.class} (must be numeric, true, false, or nil)"
+        end
+      end
+      result
+    end
+
     def clear
       self.class.empty
     end
