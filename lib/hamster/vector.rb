@@ -141,6 +141,10 @@ module Hamster
       self.class.new(((array = to_a).frozen? ? array.uniq : array.uniq!).freeze)
     end
 
+    def reverse
+      self.class.new(((array = to_a).frozen? ? array.reverse : array.reverse!).freeze)
+    end
+
     def rotate(count = 1)
       return self if count == 0
       self.class.new(((array = to_a).frozen? ? array.rotate(count) : array.rotate!(count)).freeze)
@@ -251,10 +255,6 @@ module Hamster
 
     def clear
       self.class.empty
-    end
-
-    def reverse
-      self.class.new((a = to_a).frozen? ? a.reverse : a.reverse!)
     end
 
     def sample
