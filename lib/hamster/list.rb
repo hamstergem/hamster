@@ -590,7 +590,7 @@ module Hamster
     end
 
     def to_set
-      Hamster::Set.new(self.to_a)
+      Set.new(self)
     end
 
     def inspect
