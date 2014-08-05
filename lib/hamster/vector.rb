@@ -75,16 +75,16 @@ module Hamster
     def_delegator :self, :add, :conjoin
 
     def set(index, item = yield(get(index)))
-      raise IndexError if empty? || index == @size
-      raise IndexError if index.abs > @size
-      return set(@size + index, item) if index < 0
+      raise IndexError if @size == 0
+      index += @size if index < 0
+      raise IndexError if index >= @size || index < 0
       update_root(index, item)
     end
 
     def get(index)
-      return nil if empty? || index == @size
-      return nil if index.abs > @size
-      return get(@size + index) if index < 0
+      return nil if @size == 0
+      index += @size if index < 0
+      return nil if index >= @size || index < 0
       leaf_node_for(@root, @levels * BITS_PER_LEVEL, index)[index & INDEX_MASK]
     end
     def_delegator :self, :get, :[]
