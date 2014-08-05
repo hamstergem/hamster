@@ -146,6 +146,14 @@ module Hamster
       self.class.new(((array = to_a).frozen? ? array.rotate(count) : array.rotate!(count)).freeze)
     end
 
+    def zip(*others)
+      if block_given?
+        super
+      else
+        self.class.new(super)
+      end
+    end
+
     def sort
       self.class.new(super)
     end
