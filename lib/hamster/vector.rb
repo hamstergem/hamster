@@ -150,6 +150,11 @@ module Hamster
       self.class.new(((array = to_a).frozen? ? array.rotate(count) : array.rotate!(count)).freeze)
     end
 
+    def flatten(level = nil)
+      return self if level == 0
+      self.class.new(((array = to_a).frozen? ? array.flatten(level) : array.flatten!(level)).freeze)
+    end
+
     def zip(*others)
       if block_given?
         super
