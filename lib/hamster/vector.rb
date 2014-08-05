@@ -261,6 +261,10 @@ module Hamster
       get(rand(@size))
     end
 
+    def values_at(*indexes)
+      self.class.new(indexes.map { |i| get(i) }.freeze)
+    end
+
     def rindex(obj = (missing_arg = true))
       i = @size - 1
       if missing_arg
