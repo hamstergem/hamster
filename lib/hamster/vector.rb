@@ -185,6 +185,36 @@ module Hamster
       self
     end
 
+    def repeated_combination(n)
+      return enum_for(:repeated_combination, n) if not block_given?
+      if n < 0
+        # yield nothing
+      elsif n == 0
+        yield []
+      elsif n == 1
+        each { |item| yield [item] }
+      elsif @size == 0
+        # yield nothing
+      elsif n == @size
+        yield self
+      else
+        combos = lambda do |result,next_index,remaining|
+          if remaining == 0
+            yield result
+          elsif next_index < @size-1
+            copy = result.dup
+            combos[result << get(next_index), next_index, remaining-1]
+            combos[copy, next_index+1, remaining]
+          elsif next_index == @size-1
+            remaining.times { result << get(next_index) }
+            yield result
+          end
+        end
+        combos[[], 0, n]
+      end
+      self
+    end
+
     def clear
       self.class.empty
     end
