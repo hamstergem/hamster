@@ -227,6 +227,11 @@ module Hamster
       nil
     end
 
+    def key(value)
+      each { |entry| return entry[0] if value == entry[1] }
+      nil
+    end
+
     def sample
       @trie.at(rand(size))
     end

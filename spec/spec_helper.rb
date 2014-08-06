@@ -45,3 +45,12 @@ class EqualNotEql
     false
   end
 end
+
+class EqlNotEqual
+  def ==(other)
+    false
+  end
+  def eql?(other)
+    true
+  end
+end
