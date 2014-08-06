@@ -14,7 +14,7 @@ describe Hamster::Vector do
         shuffled.sort.should eql(@vector)
         different ||= (shuffled != @vector)
       end
-      different.should be_true
+      different.should be(true)
     end
 
     it "leaves the original unchanged" do
