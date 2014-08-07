@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  describe "#disjoint" do
+  describe "#disjoint?" do
     [
       [[], [], true],
       [["A"], [], true],
