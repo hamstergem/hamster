@@ -195,6 +195,12 @@ module Hamster
       self.class.alloc(trie, @default)
     end
 
+    def values_at(*wanted)
+      array = []
+      wanted.each { |key| array << get(key) if key?(key) }
+      Vector.new(array.freeze)
+    end
+
     def keys
       Set.alloc(@trie)
     end
