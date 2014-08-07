@@ -293,6 +293,7 @@ module Hamster
       end
       output
     end
+    def_delegator :self, :to_hash, :to_h
 
     def marshal_dump
       to_hash
