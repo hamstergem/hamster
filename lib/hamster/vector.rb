@@ -175,6 +175,13 @@ module Hamster
       self.class.new(super)
     end
 
+    def *(times)
+      return self.class.empty if times == 0
+      return self if times == 1
+      result = (to_a * times)
+      result.is_a?(Array) ? self.class.new(result) : result
+    end
+
     def combination(n)
       return enum_for(:combination, n) if not block_given?
       return self if n < 0 || @size < n
