@@ -220,17 +220,18 @@ module Hamster
       elsif @size == 0
         # yield nothing
       else
-        combos = lambda do |result,next_index,remaining|
-          if remaining == 0
-            yield result
-          elsif next_index < @size-1
-            copy = result.dup
-            combos[result << get(next_index), next_index, remaining-1]
-            combos[copy, next_index+1, remaining]
-          elsif next_index == @size-1
-            remaining.times { result << get(next_index) }
-            yield result
+        combos = lambda do |result,index,remaining|
+          while index < @size-1
+            if remaining == 1
+              yield result.dup << get(index)
+            else
+              combos[result.dup << get(index), index, remaining-1]
+            end
+            index += 1
           end
+          item = get(index)
+          remaining.times { result << item }
+          yield result
         end
         combos[[], 0, n]
       end
