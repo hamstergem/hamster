@@ -192,17 +192,17 @@ module Hamster
       elsif n == @size
         yield self.to_a
       else
-        combos = lambda do |result,next_index,remaining|
-          if remaining == 0
-            yield result
-          elsif @size - next_index > remaining
-            copy = result.dup
-            combos[result << get(next_index), next_index+1, remaining-1]
-            combos[copy, next_index+1, remaining]
-          elsif @size - next_index == remaining
-            next_index.upto(@size-1) { |i| result << get(i) }
-            yield result
+        combos = lambda do |result,index,remaining|
+          while @size - index > remaining
+            if remaining == 1
+              yield result.dup << get(index)
+            else
+              combos[result.dup << get(index), index+1, remaining-1]
+            end
+            index += 1
           end
+          index.upto(@size-1) { |i| result << get(i) }
+          yield result
         end
         combos[[], 0, n]
       end
