@@ -190,7 +190,7 @@ module Hamster
       elsif n == 1
         each { |item| yield [item] }
       elsif n == @size
-        yield self
+        yield self.to_a
       else
         combos = lambda do |result,next_index,remaining|
           if remaining == 0

@@ -35,10 +35,10 @@ describe Hamster::Vector do
     end
 
     context "when passed an argument equal to the vector's length" do
-      it "yields self" do
+      it "yields self as an array" do
         result = []
         @vector.combination(4) { |obj| result << obj }
-        result.should eql([@vector])
+        result.should eql([@vector.to_a])
       end
     end
 
