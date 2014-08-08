@@ -238,6 +238,35 @@ module Hamster
       self
     end
 
+    def permutation(n = @size)
+      return enum_for(:permutation, n) if not block_given?
+      if n < 0 || @size < n
+        # yield nothing
+      elsif n == 0
+        yield []
+      elsif n == 1
+        each { |item| yield [item] }
+      else
+        used, result = [], []
+        perms = lambda do |index|
+          0.upto(@size-1) do |i|
+            if !used[i]
+              result[index] = get(i)
+              if index < n-1
+                used[i] = true
+                perms[index+1]
+                used[i] = false
+              else
+                yield result.dup
+              end
+            end
+          end
+        end
+        perms[0]
+      end
+      self
+    end
+
     def bsearch
       low, high, result = 0, @size, nil
       while low < high
