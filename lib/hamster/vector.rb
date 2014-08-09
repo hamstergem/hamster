@@ -335,6 +335,25 @@ module Hamster
       end
     end
 
+    def transpose
+      return self.class.empty if empty?
+      result = Array.new(first.size) { [] }
+
+      0.upto(@size-1) do |i|
+        source = get(i)
+        if source.size != result.size
+          raise IndexError, "element size differs (#{source.size} should be #{result.size})"
+        end
+
+        0.upto(result.size-1) do |j|
+          result[j].push(source[j])
+        end
+      end
+
+      result.map! { |a| self.class.new(a) }
+      self.class.new(result)
+    end
+
     def bsearch
       low, high, result = 0, @size, nil
       while low < high
