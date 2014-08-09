@@ -53,8 +53,9 @@ describe Hamster::List do
               @original.should == Hamster.list(*values)
             end
 
-            it "returns the expected items" do
-              @result.should == Hamster.list(*expected)
+            it "returns an Enumerator" do
+              @result.class.should be(Enumerator)
+              @result.to_a.should eql(expected)
             end
           end
         end

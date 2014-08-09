@@ -180,7 +180,7 @@ module Hamster
     def_delegator :self, :add, :<<
 
     def each
-      return self unless block_given?
+      return to_enum unless block_given?
       list = self
       until list.empty?
         yield(list.head)
@@ -189,7 +189,7 @@ module Hamster
     end
 
     def map(&block)
-      return self unless block_given?
+      return enum_for(:map) unless block_given?
       Stream.new do
         next self if empty?
         Sequence.new(yield(head), tail.map(&block))
@@ -198,7 +198,7 @@ module Hamster
     def_delegator :self, :map, :collect
 
     def flat_map(&block)
-      return self unless block_given?
+      return enum_for(:flat_map) unless block_given?
       Stream.new do
         next self if empty?
         head_list = Hamster.list(*yield(head))
@@ -217,7 +217,7 @@ module Hamster
     end
 
     def take_while(&block)
-      return self unless block_given?
+      return enum_for(:take_while) unless block_given?
       Stream.new do
         next self if empty?
         next Sequence.new(head, tail.take_while(&block)) if yield(head)
@@ -226,7 +226,7 @@ module Hamster
     end
 
     def drop_while(&block)
-      return self unless block_given?
+      return enum_for(:drop_while) unless block_given?
       Stream.new do
         list = self
         list = list.tail while !list.empty? && yield(list.head)
@@ -382,6 +382,7 @@ module Hamster
     end
 
     def each_chunk(number, &block)
+      return enum_for(:each_chunk, number) unless block_given?
       chunk(number).each(&block)
     end
     def_delegator :self, :each_chunk, :each_slice

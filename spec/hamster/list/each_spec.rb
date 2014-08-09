@@ -45,8 +45,9 @@ describe Hamster::List do
               @result = @original.send(method)
             end
 
-            it "returns self" do
-              @result.should equal(@original)
+            it "returns an Enumerator" do
+              @result.class.should be(Enumerator)
+              @result.to_list.should eql(@original)
             end
           end
         end

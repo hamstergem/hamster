@@ -43,8 +43,9 @@ describe Hamster::List do
             @result = @original.take_while
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          it "returns an Enumerator" do
+            @result.class.should be(Enumerator)
+            @result.each { |item| item < "C" }.should eql(Hamster.list(*expected))
           end
         end
       end

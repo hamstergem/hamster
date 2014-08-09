@@ -22,7 +22,9 @@ module Hamster
     end
 
     def grep(pattern, &block)
-      filter { |item| pattern === item }.map(&block)
+      result = filter { |item| pattern === item }
+      result = result.map(&block) if block_given?
+      result
     end
 
     def product

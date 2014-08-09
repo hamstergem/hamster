@@ -37,8 +37,9 @@ describe Hamster::List do
             @result = @original.drop_while
           end
 
-          it "returns self" do
-            @result.should equal(@original)
+          it "returns an Enumerator" do
+            @result.class.should be(Enumerator)
+            @result.each { false }.should eql(@original)
           end
         end
       end
