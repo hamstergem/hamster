@@ -292,6 +292,49 @@ module Hamster
       self
     end
 
+    def product(*vectors)
+      # if no vectors passed, return "product" as in result of multiplying all items
+      return super if vectors.empty?
+
+      vectors.unshift(self)
+
+      if vectors.any?(&:empty?)
+        return block_given? ? self : []
+      end
+
+      counters = Array.new(vectors.size, 0)
+
+      bump_counters = lambda do
+        i = vectors.size-1
+        counters[i] += 1
+        while counters[i] == vectors[i].size
+          counters[i] = 0
+          i -= 1
+          return true if i == -1 # we are done
+          counters[i] += 1
+        end
+        false # not done yet
+      end
+      build_array = lambda do
+        array = []
+        counters.each_with_index { |index,i| array << vectors[i][index] }
+        array
+      end
+
+      if block_given?
+        while true
+          yield build_array[]
+          return self if bump_counters[]
+        end
+      else
+        result = []
+        while true
+          result << build_array[]
+          return result if bump_counters[]
+        end
+      end
+    end
+
     def bsearch
       low, high, result = 0, @size, nil
       while low < high
