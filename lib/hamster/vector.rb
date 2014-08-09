@@ -105,13 +105,13 @@ module Hamster
 
     def each(&block)
       return to_enum unless block_given?
-      traverse_depth_first(&block)
+      traverse_depth_first(@root, @levels, &block)
       self
     end
 
     def reverse_each(&block)
       return enum_for(:reverse_each) unless block_given?
-      reverse_traverse_depth_first(&block)
+      reverse_traverse_depth_first(@root, @levels, &block)
       self
     end
 
@@ -457,20 +457,22 @@ module Hamster
 
     private
 
-    def traverse_depth_first(node = @root, level = @levels, &block)
+    def traverse_depth_first(node, level, &block)
       return node.each(&block) if level == 0
       node.each { |child| traverse_depth_first(child, level - 1, &block) }
     end
 
-    def reverse_traverse_depth_first(node = @root, level = @levels, &block)
+    def reverse_traverse_depth_first(node, level, &block)
       return node.reverse_each(&block) if level == 0
       node.reverse_each { |child| reverse_traverse_depth_first(child, level - 1, &block) }
     end
 
-    def leaf_node_for(node, child_index_bits, index)
-      return node if child_index_bits == 0
-      child_index = (index >> child_index_bits) & INDEX_MASK
-      leaf_node_for(node[child_index], child_index_bits - BITS_PER_LEVEL, index)
+    def leaf_node_for(node, bitshift, index)
+      while bitshift > 0
+        node = node[(index >> bitshift) & INDEX_MASK]
+        bitshift -= BITS_PER_LEVEL
+      end
+      node
     end
 
     def update_root(index, item)
@@ -479,15 +481,15 @@ module Hamster
         root = [root].freeze
         levels += 1
       end
-      root = update_leaf_node(root, levels, 0, index, item)
+      root = update_leaf_node(root, levels * BITS_PER_LEVEL, index, item)
       self.class.alloc(root, @size > index ? @size : index + 1, levels)
     end
 
-    def update_leaf_node(node, levels, depth, index, item)
-      slot_index = (index >> ((levels - depth) * BITS_PER_LEVEL)) & INDEX_MASK
-      if levels > depth
+    def update_leaf_node(node, bitshift, index, item)
+      slot_index = (index >> bitshift) & INDEX_MASK
+      if bitshift > 0
         old_child = node[slot_index] || []
-        item = update_leaf_node(old_child, levels, depth+1, index, item)
+        item = update_leaf_node(old_child, bitshift - BITS_PER_LEVEL, index, item)
       end
       node.dup.tap { |n| n[slot_index] = item }.freeze
     end
