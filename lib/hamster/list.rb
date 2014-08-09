@@ -1,5 +1,5 @@
 require "forwardable"
-require "thread"
+require "atomic"
 
 require "hamster/core_ext/enumerable"
 require "hamster/undefined"
@@ -686,9 +686,9 @@ module Hamster
     include List
 
     def initialize(&block)
-      @block = block
-      @lock  = Mutex.new
-      @size  = nil
+      @target = block
+      @atomic = Atomic.new(0) # haven't yet run block
+      @size   = nil
     end
 
     def_delegator :target, :head
@@ -705,22 +705,26 @@ module Hamster
 
     protected
 
-    def vivify
-      @lock.synchronize do
-        unless @block.nil?
-          @target = @block.call
-          @block = nil
+    def target
+      if @atomic.get == 2 # target already realized?
+        @target
+      else
+        while true
+          # try to "claim" the right to run the block which realizes target
+          if @atomic.compare_and_swap(0,1) # full memory barrier here
+            @target = @target.call
+            @target = @target.target while @target.is_a?(Stream)
+            @atomic.compare_and_swap(1,2) # another memory barrier
+            return @target
+          end
+          # we failed to "claim" it, another thread must be running it
+          if @atomic.get == 1 # another thread is running the block
+            next # spin
+          elsif @atomic.get == 2 # another thread finished the block
+            return @target
+          end
         end
       end
-      @target
-    end
-
-    private
-
-    def target
-      list = vivify
-      list = list.vivify while list.is_a?(Stream)
-      list
     end
   end
 
