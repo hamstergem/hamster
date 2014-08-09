@@ -1,4 +1,5 @@
 require "forwardable"
+require "thread"
 require "atomic"
 
 require "hamster/core_ext/enumerable"
@@ -705,6 +706,9 @@ module Hamster
 
     protected
 
+    QUEUE = ConditionVariable.new
+    MUTEX = Mutex.new
+
     def target
       if @atomic.get == 2 # target already realized?
         @target
@@ -716,15 +720,23 @@ module Hamster
               @target = @target.call
               @target = @target.target while @target.is_a?(Stream)
             rescue
-              @atomic.set(0)
+              # CAS is here only because we need a memory barrier
+              # when Atomic#set is amended to provide a memory barrier, it can be used
+              @atomic.compare_and_swap(1,0)
+              MUTEX.synchronize { QUEUE.broadcast }
               raise
             end
-            @atomic.set(2)
+            # CAS is here only because we need a memory barrier
+            # when Atomic#set is amended to provide a memory barrier, it can be used
+            @atomic.compare_and_swap(1,2)
+            MUTEX.synchronize { QUEUE.broadcast }
             return @target
           end
           # we failed to "claim" it, another thread must be running it
           if @atomic.get == 1 # another thread is running the block
-            next # spin
+            MUTEX.synchronize do
+              QUEUE.wait(MUTEX) if @atomic.get == 1
+            end
           elsif @atomic.get == 2 # another thread finished the block
             return @target
           end
