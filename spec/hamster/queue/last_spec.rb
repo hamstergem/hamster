@@ -2,12 +2,12 @@ require "spec_helper"
 require "hamster/queue"
 
 describe Hamster::Queue do
-  [:head, :first, :front].each do |method|
+  [:last, :peek].each do |method|
     describe "##{method}" do
       [
         [[], nil],
         [["A"], "A"],
-        [%w[A B C], "A"],
+        [%w[A B C], "C"],
       ].each do |values, expected|
 
         describe "on #{values.inspect}" do
@@ -16,7 +16,7 @@ describe Hamster::Queue do
           end
 
           it "returns #{expected.inspect}" do
-            @queue.send(method).should == expected
+            @queue.send(method).should eql(expected)
           end
         end
       end

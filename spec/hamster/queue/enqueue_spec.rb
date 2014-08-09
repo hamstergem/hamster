@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/queue"
 
 describe Hamster::Queue do
-  [:enqueue, :<<, :add].each do |method|
+  [:enqueue, :<<, :add, :conj, :conjoin, :push].each do |method|
     describe "##{method}" do
       [
         [[], "A", ["A"]],

@@ -43,34 +43,55 @@ module Hamster
     end
     def_delegator :self, :size, :length
 
-    def head
+    def first
       return @front.head unless @front.empty?
       @rear.last
     end
-    def_delegator :self, :head, :first
-    def_delegator :self, :head, :peek
-    def_delegator :self, :head, :front
+    def_delegator :self, :first, :head
+    def_delegator :self, :first, :front
 
-    def enqueue(item)
+    def last
+      return @rear.head unless @rear.empty?
+      @front.last
+    end
+    def_delegator :self, :last, :peek
+
+    def push(item)
       self.class.alloc(@front, @rear.cons(item))
     end
-    def_delegator :self, :enqueue, :<<
-    def_delegator :self, :enqueue, :add
-    def_delegator :self, :enqueue, :conj
-    def_delegator :self, :enqueue, :conjoin
+    def_delegator :self, :push, :enqueue
+    def_delegator :self, :push, :<<
+    def_delegator :self, :push, :add
+    def_delegator :self, :push, :conj
+    def_delegator :self, :push, :conjoin
 
-    def dequeue
-      front = @front
-      rear = @rear
+    def pop
+      front, rear = @front, @rear
+
+      if rear.empty?
+        return EmptyQueue if front.empty?
+        front, rear = EmptyList, front.reverse
+      end
+
+      self.class.alloc(front, rear.tail)
+    end
+
+    def unshift(item)
+      self.class.alloc(@front.cons(item), @rear)
+    end
+
+    def shift
+      front, rear = @front, @rear
+
       if front.empty?
         return EmptyQueue if rear.empty?
-        front = rear.reverse
-        rear = EmptyList
+        front, rear = rear.reverse, EmptyList
       end
 
       self.class.alloc(front.tail, rear)
     end
-    def_delegator :self, :dequeue, :tail
+    def_delegator :self, :shift, :dequeue
+    def_delegator :self, :shift, :tail
 
     def clear
       self.class.empty
