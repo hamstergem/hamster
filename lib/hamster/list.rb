@@ -735,6 +735,8 @@ module Hamster
           # we failed to "claim" it, another thread must be running it
           if @atomic.get == 1 # another thread is running the block
             MUTEX.synchronize do
+              # check value of @atomic again, in case another thread already changed it
+              #   *and* went past the call to QUEUE.broadcast before we got here
               QUEUE.wait(MUTEX) if @atomic.get == 1
             end
           elsif @atomic.get == 2 # another thread finished the block
