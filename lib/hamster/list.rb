@@ -712,9 +712,14 @@ module Hamster
         while true
           # try to "claim" the right to run the block which realizes target
           if @atomic.compare_and_swap(0,1) # full memory barrier here
-            @target = @target.call
-            @target = @target.target while @target.is_a?(Stream)
-            @atomic.compare_and_swap(1,2) # another memory barrier
+            begin
+              @target = @target.call
+              @target = @target.target while @target.is_a?(Stream)
+            rescue
+              @atomic.set(0)
+              raise
+            end
+            @atomic.set(2)
             return @target
           end
           # we failed to "claim" it, another thread must be running it
