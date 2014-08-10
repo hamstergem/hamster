@@ -87,7 +87,6 @@ module Hamster
       return nil if index >= @size || index < 0
       leaf_node_for(@root, @levels * BITS_PER_LEVEL, index)[index & INDEX_MASK]
     end
-    def_delegator :self, :get, :[]
     def_delegator :self, :get, :at
 
     def fetch(index, default = (missing_default = true))
@@ -102,6 +101,27 @@ module Hamster
         raise IndexError, "index #{index} outside of vector bounds"
       end
     end
+
+    def [](arg, length = (missing_length = true))
+      if missing_length
+        if arg.is_a?(Range)
+          from, to = arg.begin, arg.end
+          from += @size if from < 0
+          to   += @size if to < 0
+          to   += 1     if !arg.exclude_end?
+          to    = @size if to > @size
+          length = to - from
+          length = 0 if length < 0
+          subsequence(from, length)
+        else
+          get(arg)
+        end
+      else
+        arg += @size if arg < 0
+        subsequence(arg, length)
+      end
+    end
+    def_delegator :self, :[], :slice
 
     def each(&block)
       return to_enum unless block_given?
@@ -433,15 +453,7 @@ module Hamster
       if @levels == 0
         @root
       else
-        flatten = lambda do |result, node, distance_from_leaf|
-          if distance_from_leaf == 1
-            node.each { |a| result.concat(a) }
-          else
-            node.each { |a| flatten[result, a, distance_from_leaf-1] }
-          end
-          result
-        end
-        flatten[[], @root, @levels]
+        flatten_node(@root, @levels * BITS_PER_LEVEL, [])
       end
     end
 
@@ -492,6 +504,61 @@ module Hamster
         item = update_leaf_node(old_child, bitshift - BITS_PER_LEVEL, index, item)
       end
       node.dup.tap { |n| n[slot_index] = item }.freeze
+    end
+
+    def flatten_range(node, bitshift, from, to)
+      from_slot = (from >> bitshift) & INDEX_MASK
+      to_slot   = (to   >> bitshift) & INDEX_MASK
+
+      if bitshift == 0 # are we at the bottom?
+        node.slice(from_slot, to_slot-from_slot+1)
+      else
+        if from_slot == to_slot
+          flatten_range(node[from_slot], bitshift - BITS_PER_LEVEL, from, to)
+        else
+          # the following bitmask can be used to pick out the part of the from/to indices
+          #   which will be used to direct path BELOW this node
+          mask   = ((1 << bitshift) - 1)
+          result = []
+
+          if from & mask == 0
+            flatten_node(node[from_slot], bitshift - BITS_PER_LEVEL, result)
+          else
+            result.concat(flatten_range(node[from_slot], bitshift - BITS_PER_LEVEL, from, from | mask))
+          end
+
+          (from_slot+1).upto(to_slot-1) do |slot_index|
+            flatten_node(node[slot_index], bitshift - BITS_PER_LEVEL, result)
+          end
+
+          if to & mask == mask
+            flatten_node(node[to_slot], bitshift - BITS_PER_LEVEL, result)
+          else
+            result.concat(flatten_range(node[to_slot], bitshift - BITS_PER_LEVEL, to & ~mask, to))
+          end
+
+          result
+        end
+      end
+    end
+
+    def flatten_node(node, bitshift, result)
+      if bitshift == 0
+        result.concat(node)
+      elsif bitshift == BITS_PER_LEVEL
+        node.each { |a| result.concat(a) }
+      else
+        bitshift -= BITS_PER_LEVEL
+        node.each { |a| flatten_node(a, bitshift, result) }
+      end
+      result
+    end
+
+    def subsequence(from, length)
+      return nil if from > @size || from < 0 || length < 0
+      length = @size - from if @size < from + length
+      return self.class.empty if length == 0
+      self.class.new(flatten_range(@root, @levels * BITS_PER_LEVEL, from, from + length - 1))
     end
   end
 

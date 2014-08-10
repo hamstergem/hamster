@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  [:get, :[], :at].each do |method|
+  [:get, :at].each do |method|
     describe "##{method}" do
       describe "when empty" do
         before do
