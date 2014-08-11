@@ -104,10 +104,10 @@ module Hamster
     end
     def_delegator :self, :include?, :member?
 
-    def head
-      find { true }
+    def first
+      (entry = @trie.at(0)) && entry[0]
     end
-    def_delegator :self, :head, :first
+    def_delegator :self, :first, :head
 
     def sort(&comparator)
       SortedSet.new(self.to_a, &comparator)
