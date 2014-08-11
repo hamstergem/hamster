@@ -31,8 +31,8 @@ module Hamster
     end
 
     def initialize(items=[])
-      items = items.to_a if !items.is_a?(Array)
-      @trie = Trie[items.map! { |x| [x, nil] }]
+      @trie = Trie.new(0)
+      items.each { |item| @trie.put!(item, nil) }
     end
 
     def empty?
