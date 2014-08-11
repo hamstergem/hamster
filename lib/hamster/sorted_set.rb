@@ -138,6 +138,15 @@ module Hamster
       other.proper_subset?(self)
     end
 
+    def disjoint?(other)
+      if size < other.size
+        each { |item| return false if other.include?(item) }
+      else
+        other.each { |item| return false if include?(item) }
+      end
+      true
+    end
+
     def sample
       @node.at(rand(@node.size))
     end
