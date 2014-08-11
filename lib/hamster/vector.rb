@@ -471,6 +471,10 @@ module Hamster
       self.eql?(other) || other.respond_to?(:to_ary) && to_ary.eql?(other.to_ary)
     end
 
+    def hash
+      reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
+    end
+
     private
 
     def traverse_depth_first(node, level, &block)
