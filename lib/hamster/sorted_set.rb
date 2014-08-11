@@ -92,10 +92,13 @@ module Hamster
     def min
       @node.min
     end
+    alias :first :min
+    def_delegator :self, :first, :head
 
     def max
       @node.max
     end
+    alias :last :max
 
     def filter
       return enum_for(:filter) unless block_given?
