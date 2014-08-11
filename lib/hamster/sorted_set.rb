@@ -89,6 +89,14 @@ module Hamster
       self
     end
 
+    def min
+      @node.min
+    end
+
+    def max
+      @node.max
+    end
+
     def filter
       return enum_for(:filter) unless block_given?
       reduce(self) { |set, item| yield(item) ? set : set.delete(item) }
@@ -101,36 +109,16 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
-    def sort(&block)
-      block ||= lambda { |a,b| a <=> b }
-      self.class.new(self.to_a, &block)
-    end
-    alias :sort_by :sort
-
     def include?(item)
       @node.include?(item, @comparator)
     end
     def_delegator :self, :include?, :member?
 
-    def min
-      @node.min
+    def sort(&block)
+      block ||= lambda { |a,b| a <=> b }
+      self.class.new(self.to_a, &block)
     end
-
-    def max
-      @node.max
-    end
-
-    def inspect
-      result = "#{self.class}["
-      each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
-      result << "]"
-    end
-
-    def pretty_print(pp)
-      pp.group(1, "#{self.class}[", "]") do
-        pp.seplist(self) { |obj| obj.pretty_print(pp) }
-      end
-    end
+    alias :sort_by :sort
 
     def eql?(other)
       return false if not instance_of?(other.class)
@@ -146,6 +134,18 @@ module Hamster
 
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
+    end
+
+    def inspect
+      result = "#{self.class}["
+      each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
+      result << "]"
+    end
+
+    def pretty_print(pp)
+      pp.group(1, "#{self.class}[", "]") do
+        pp.seplist(self) { |obj| obj.pretty_print(pp) }
+      end
     end
 
     class AVLNode
