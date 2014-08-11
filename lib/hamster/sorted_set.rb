@@ -78,7 +78,9 @@ module Hamster
     end
 
     def each(&block)
+      return @node.to_enum if not block_given?
       @node.each(&block)
+      self
     end
 
     def filter
