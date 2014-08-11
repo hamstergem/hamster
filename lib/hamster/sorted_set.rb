@@ -336,9 +336,11 @@ module Hamster
     EmptyAVLNode = Object.new.tap do |e|
       def e.left;  self; end
       def e.right; self; end
-      def e.height; 0; end
-      def e.size;   0; end
-      def e.each; end
+      def e.height;   0; end
+      def e.size;     0; end
+      def e.min;    nil; end
+      def e.max;    nil; end
+      def e.each;        end
       def e.reverse_each; end
       def e.at(index); nil; end
       def e.insert(item, comparator); AVLNode.new(item, self, self); end
