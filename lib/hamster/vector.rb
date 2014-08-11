@@ -146,6 +146,10 @@ module Hamster
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
     end
 
+    def delete(obj)
+      filter { |item| item != obj }
+    end
+
     def map
       return enum_for(:map) if not block_given?
       return self if empty?
