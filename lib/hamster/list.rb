@@ -210,9 +210,12 @@ module Hamster
     def filter(&block)
       return enum_for(:filter) unless block_given?
       Stream.new do
-        next self if empty?
-        next Sequence.new(head, tail.filter(&block)) if yield(head)
-        tail.filter(&block)
+        list = self
+        while true
+          break list if list.empty?
+          break Sequence.new(list.head, list.tail.filter(&block)) if yield(list.head)
+          list = list.tail
+        end
       end
     end
 
@@ -683,19 +686,29 @@ module Hamster
   # The recommended interface for using this is through {Hamster.stream Hamster.stream}
   #
   class Stream
-    extend Forwardable
-
     include List
 
     def initialize(&block)
-      @target = block
+      @head   = block # doubles as storage for block while yet unrealized
+      @tail   = nil
       @atomic = Atomic.new(0) # haven't yet run block
       @size   = nil
     end
 
-    def_delegator :target, :head
-    def_delegator :target, :tail
-    def_delegator :target, :empty?
+    def head
+      realize if @atomic.get != 2
+      @head
+    end
+
+    def tail
+      realize if @atomic.get != 2
+      @tail
+    end
+
+    def empty?
+      realize if @atomic.get != 2
+      @size == 0
+    end
 
     def size
       @size ||= super
@@ -710,39 +723,39 @@ module Hamster
     QUEUE = ConditionVariable.new
     MUTEX = Mutex.new
 
-    def target
-      if @atomic.get == 2 # target already realized?
-        @target
-      else
-        while true
-          # try to "claim" the right to run the block which realizes target
-          if @atomic.compare_and_swap(0,1) # full memory barrier here
-            begin
-              @target = @target.call
-              @target = @target.target while @target.is_a?(Stream)
-            rescue
-              # CAS is here only because we need a memory barrier
-              # when Atomic#set is amended to provide a memory barrier, it can be used
-              @atomic.compare_and_swap(1,0)
-              MUTEX.synchronize { QUEUE.broadcast }
-              raise
+    def realize
+      while true
+        # try to "claim" the right to run the block which realizes target
+        if @atomic.compare_and_swap(0,1) # full memory barrier here
+          begin
+            list = @head.call
+            if list.empty?
+              @head, @tail, @size = nil, self, 0
+            else
+              @head, @tail = list.head, list.tail
             end
+          rescue
             # CAS is here only because we need a memory barrier
             # when Atomic#set is amended to provide a memory barrier, it can be used
-            @atomic.compare_and_swap(1,2)
+            @atomic.compare_and_swap(1,0)
             MUTEX.synchronize { QUEUE.broadcast }
-            return @target
+            raise
           end
-          # we failed to "claim" it, another thread must be running it
-          if @atomic.get == 1 # another thread is running the block
-            MUTEX.synchronize do
-              # check value of @atomic again, in case another thread already changed it
-              #   *and* went past the call to QUEUE.broadcast before we got here
-              QUEUE.wait(MUTEX) if @atomic.get == 1
-            end
-          elsif @atomic.get == 2 # another thread finished the block
-            return @target
+          # CAS is here only because we need a memory barrier
+          # when Atomic#set is amended to provide a memory barrier, it can be used
+          @atomic.compare_and_swap(1,2)
+          MUTEX.synchronize { QUEUE.broadcast }
+          return
+        end
+        # we failed to "claim" it, another thread must be running it
+        if @atomic.get == 1 # another thread is running the block
+          MUTEX.synchronize do
+            # check value of @atomic again, in case another thread already changed it
+            #   *and* went past the call to QUEUE.broadcast before we got here
+            QUEUE.wait(MUTEX) if @atomic.get == 1
           end
+        elsif @atomic.get == 2 # another thread finished the block
+          return
         end
       end
     end
