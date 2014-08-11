@@ -147,6 +147,10 @@ module Hamster
       true
     end
 
+    def intersect?(other)
+      !disjoint?(other)
+    end
+
     def sample
       @node.at(rand(@node.size))
     end
