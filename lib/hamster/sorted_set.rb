@@ -151,6 +151,12 @@ module Hamster
       !disjoint?(other)
     end
 
+    def group_by(&block)
+      group_by_with(self.class.empty, &block)
+    end
+    def_delegator :self, :group_by, :group
+    def_delegator :self, :group_by, :classify
+
     def sample
       @node.at(rand(@node.size))
     end
