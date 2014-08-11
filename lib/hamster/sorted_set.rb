@@ -83,6 +83,12 @@ module Hamster
       self
     end
 
+    def reverse_each(&block)
+      return @node.enum_for(:reverse_each) if not block_given?
+      @node.reverse_each(&block)
+      self
+    end
+
     def filter
       return enum_for(:filter) unless block_given?
       reduce(self) { |set, item| yield(item) ? set : set.delete(item) }
@@ -210,6 +216,12 @@ module Hamster
         @right.each(&block)
       end
 
+      def reverse_each(&block)
+        @right.reverse_each(&block)
+        yield @item
+        @left.reverse_each(&block)
+      end
+
       def include?(item, comparator)
         direction = comparator.call(item, @item)
         if direction == 0
@@ -272,6 +284,7 @@ module Hamster
       def e.height; 0; end
       def e.size;   0; end
       def e.each; end
+      def e.reverse_each; end
       def e.insert(item, comparator); AVLNode.new(item, self, self); end
       def e.delete(item, comparator); self; end
       def e.include?(item, comparator); false; end
