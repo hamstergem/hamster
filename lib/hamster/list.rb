@@ -487,6 +487,13 @@ module Hamster
       end
     end
 
+    def delete(obj)
+      list = self
+      list = list.tail while list.head == obj && !list.empty?
+      return EmptyList if list.empty?
+      Stream.new { Sequence.new(list.head, list.tail.delete(obj)) }
+    end
+
     def delete_at(index)
       if index == 0
         tail
