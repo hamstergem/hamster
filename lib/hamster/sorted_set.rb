@@ -4,7 +4,7 @@ require "hamster/enumerable"
 
 module Hamster
   def self.sorted_set(*items, &block)
-    (items.empty? && block.nil?) ? EmptySortedSet : Hamster::SortedSet.new(items, &block)
+    (items.empty? && block.nil?) ? EmptySortedSet : SortedSet.new(items, &block)
   end
 
   class SortedSet
