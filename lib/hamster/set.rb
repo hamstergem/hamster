@@ -227,10 +227,6 @@ module Hamster
     def_delegator :self, :dup, :to_set
     def_delegator :self, :dup, :remove_duplicates
 
-    def to_list
-      reduce(EmptyList) { |list, item| list.cons(item) }
-    end
-
     def inspect
       result = "#{self.class}["
       each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
