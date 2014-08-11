@@ -309,12 +309,12 @@ module Hamster
     end
 
     def sort(&comparator)
-      Stream.new { super(&comparator).to_enum.to_list }
+      Stream.new { super(&comparator).to_list }
     end
 
     def sort_by(&transformer)
       return sort unless block_given?
-      Stream.new { super(&transformer).to_enum.to_list }
+      Stream.new { super(&transformer).to_list }
     end
 
     def intersperse(sep)
