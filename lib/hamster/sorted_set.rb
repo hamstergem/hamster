@@ -120,6 +120,10 @@ module Hamster
     end
     alias :sort_by :sort
 
+    def clear
+      self.class.empty
+    end
+
     def eql?(other)
       return false if not instance_of?(other.class)
       return false if size != other.size
