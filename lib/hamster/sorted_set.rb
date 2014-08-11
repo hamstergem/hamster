@@ -138,6 +138,10 @@ module Hamster
       other.proper_subset?(self)
     end
 
+    def sample
+      @node.at(rand(@node.size))
+    end
+
     def clear
       self.class.empty
     end
@@ -255,6 +259,16 @@ module Hamster
         end
       end
 
+      def at(index)
+        if index < @left.size
+          @left.at(index)
+        elsif index > @left.size
+          @right.at(index - @left.size - 1)
+        else
+          @item
+        end
+      end
+
       def max
         @right.empty? ? @item : @right.max
       end
@@ -307,6 +321,7 @@ module Hamster
       def e.size;   0; end
       def e.each; end
       def e.reverse_each; end
+      def e.at(index); nil; end
       def e.insert(item, comparator); AVLNode.new(item, self, self); end
       def e.delete(item, comparator); self; end
       def e.include?(item, comparator); false; end
