@@ -421,6 +421,8 @@ module Hamster
     def_delegator :self, :group_by, :group
 
     def at(index)
+      index += size if index < 0
+      return nil if index < 0
       drop(index).head
     end
 
