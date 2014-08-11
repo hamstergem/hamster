@@ -120,6 +120,24 @@ module Hamster
     end
     alias :sort_by :sort
 
+    def subset?(other)
+      return false if other.size < size
+      all? { |item| other.include?(item) }
+    end
+
+    def superset?(other)
+      other.subset?(self)
+    end
+
+    def proper_subset?(other)
+      return false if other.size <= size
+      all? { |item| other.include?(item) }
+    end
+
+    def proper_superset?(other)
+      other.proper_subset?(self)
+    end
+
     def clear
       self.class.empty
     end
