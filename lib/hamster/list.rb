@@ -487,6 +487,18 @@ module Hamster
       end
     end
 
+    def delete_at(index)
+      if index == 0
+        tail
+      elsif index < 0
+        index += size if index < 0
+        return self if index < 0
+        delete_at(index)
+      else
+        Stream.new { Sequence.new(head, tail.delete_at(index - 1)) }
+      end
+    end
+
     def fill(obj, index = 0, length = nil)
       if index == 0
         length ||= size
