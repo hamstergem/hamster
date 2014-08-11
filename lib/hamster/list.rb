@@ -286,6 +286,16 @@ module Hamster
       end
     end
 
+    def transpose
+      return EmptyList if empty?
+      Stream.new do
+        next EmptyList if any? { |list| list.empty? }
+        heads, tails = EmptyList, EmptyList
+        reverse_each { |list| heads, tails = heads.cons(list.head), tails.cons(list.tail) }
+        Sequence.new(heads, tails.transpose)
+      end
+    end
+
     def cycle
       Stream.new do
         next self if empty?
