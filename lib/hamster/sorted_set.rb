@@ -77,6 +77,10 @@ module Hamster
       end
     end
 
+    def delete?(item)
+      include?(item) && delete(item)
+    end
+
     def each(&block)
       return @node.to_enum if not block_given?
       @node.each(&block)

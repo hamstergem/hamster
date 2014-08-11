@@ -2,11 +2,11 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  describe "#delete" do
-    before do
-      @original = Hamster.sorted_set("A", "B", "C")
-    end
+  before do
+    @original = Hamster.sorted_set("A", "B", "C")
+  end
 
+  describe "#delete" do
     context "with an existing value" do
       before do
         @result = @original.delete("B")
@@ -42,6 +42,36 @@ describe Hamster::SortedSet do
 
       it "returns the canonical empty set" do
         @result.should be(Hamster::EmptySortedSet)
+      end
+    end
+  end
+
+  describe "#delete?" do
+    context "with an existing value" do
+      before do
+        @result = @original.delete?("B")
+      end
+
+      it "preserves the original" do
+        @original.should eql(Hamster.sorted_set("A", "B", "C"))
+      end
+
+      it "returns a copy with the remaining values" do
+        @result.should eql(Hamster.sorted_set("A", "C"))
+      end
+    end
+
+    context "with a non-existing value" do
+      before do
+        @result = @original.delete?("D")
+      end
+
+      it "preserves the original values" do
+        @original.should eql(Hamster.sorted_set("A", "B", "C"))
+      end
+
+      it "returns false" do
+        @result.should be(false)
       end
     end
   end
