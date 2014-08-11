@@ -2,7 +2,7 @@ module Hamster
   class Trie
     def self.[](pairs)
       result = self.new(0)
-      pairs.each { |key, val| result.send(:put!, key, val) }
+      pairs.each { |key, val| result.put!(key, val) }
       result
     end
 
