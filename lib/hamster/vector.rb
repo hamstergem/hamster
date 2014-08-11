@@ -512,33 +512,31 @@ module Hamster
 
       if bitshift == 0 # are we at the bottom?
         node.slice(from_slot, to_slot-from_slot+1)
+      elsif from_slot == to_slot
+        flatten_range(node[from_slot], bitshift - BITS_PER_LEVEL, from, to)
       else
-        if from_slot == to_slot
-          flatten_range(node[from_slot], bitshift - BITS_PER_LEVEL, from, to)
+        # the following bitmask can be used to pick out the part of the from/to indices
+        #   which will be used to direct path BELOW this node
+        mask   = ((1 << bitshift) - 1)
+        result = []
+
+        if from & mask == 0
+          flatten_node(node[from_slot], bitshift - BITS_PER_LEVEL, result)
         else
-          # the following bitmask can be used to pick out the part of the from/to indices
-          #   which will be used to direct path BELOW this node
-          mask   = ((1 << bitshift) - 1)
-          result = []
-
-          if from & mask == 0
-            flatten_node(node[from_slot], bitshift - BITS_PER_LEVEL, result)
-          else
-            result.concat(flatten_range(node[from_slot], bitshift - BITS_PER_LEVEL, from, from | mask))
-          end
-
-          (from_slot+1).upto(to_slot-1) do |slot_index|
-            flatten_node(node[slot_index], bitshift - BITS_PER_LEVEL, result)
-          end
-
-          if to & mask == mask
-            flatten_node(node[to_slot], bitshift - BITS_PER_LEVEL, result)
-          else
-            result.concat(flatten_range(node[to_slot], bitshift - BITS_PER_LEVEL, to & ~mask, to))
-          end
-
-          result
+          result.concat(flatten_range(node[from_slot], bitshift - BITS_PER_LEVEL, from, from | mask))
         end
+
+        (from_slot+1).upto(to_slot-1) do |slot_index|
+          flatten_node(node[slot_index], bitshift - BITS_PER_LEVEL, result)
+        end
+
+        if to & mask == mask
+          flatten_node(node[to_slot], bitshift - BITS_PER_LEVEL, result)
+        else
+          result.concat(flatten_range(node[to_slot], bitshift - BITS_PER_LEVEL, to & ~mask, to))
+        end
+
+        result
       end
     end
 
