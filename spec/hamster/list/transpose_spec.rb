@@ -1,8 +1,6 @@
 require "spec_helper"
 require "hamster/list"
 
-L = Hamster::List
-
 describe Hamster::List do
   describe "#transpose" do
     it "takes a list of lists and returns a list of all the first elements, all the 2nd elements, and so on" do

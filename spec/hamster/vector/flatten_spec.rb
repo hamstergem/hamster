@@ -3,8 +3,6 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#flatten" do
-    V = Hamster::Vector
-
     it "recursively flattens nested vectors into containing vector" do
       V[V[1], V[2]].flatten.should eql(V[1,2])
       V[V[V[V[V[V[1,2,3]]]]]].flatten.should eql(V[1,2,3])

@@ -1,8 +1,6 @@
 require "spec_helper"
 require "hamster/vector"
 
-V = Hamster::Vector
-
 describe Hamster::Vector do
   describe "#delete" do
     it "removes elements that are #== to the argument" do

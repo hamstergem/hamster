@@ -1,8 +1,6 @@
 require "spec_helper"
 require "hamster/vector"
 
-V = Hamster::Vector
-
 describe Hamster::Vector do
   describe "#transpose" do
     it "takes a vector of vectors and transposes rows and columns" do

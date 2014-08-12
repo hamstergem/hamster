@@ -1,5 +1,10 @@
 require "pry"
 require "rspec"
+require "hamster/vector"
+require "hamster/list"
+
+V = Hamster::Vector
+L = Hamster::List
 
 def fixture(name)
   File.read(fixture_path(name))
