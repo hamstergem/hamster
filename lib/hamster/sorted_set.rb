@@ -155,6 +155,30 @@ module Hamster
     end
     alias :sort_by :sort
 
+    def find_index(obj = (missing_obj = true), &block)
+      if !missing_obj
+        # Enumerable provides a default implementation, but this is more efficient
+        node = @node
+        index = node.left.size
+        while !node.empty?
+          direction = @comparator.call(obj, node.item)
+          if direction > 0
+            node = node.right
+            index += node.left.size
+          elsif direction < 0
+            node = node.left
+            index -= node.right.size
+          else
+            return index
+          end
+        end
+        nil
+      else
+        super(&block)
+      end
+    end
+    def_delegator :self, :find_index, :index
+
     def union(other)
       self.class.alloc(@node.bulk_insert(other, @comparator), @comparator)
     end
