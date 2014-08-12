@@ -179,6 +179,13 @@ module Hamster
     end
     def_delegator :self, :find_index, :index
 
+    def drop(n)
+      self.class.new(super)
+    end
+    def take(n)
+      self.class.new(super)
+    end
+
     def union(other)
       self.class.alloc(@node.bulk_insert(other, @comparator), @comparator)
     end
