@@ -213,6 +213,10 @@ module Hamster
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
+    def_delegator :self, :dup, :uniq
+    def_delegator :self, :dup, :nub
+    def_delegator :self, :dup, :remove_duplicates
+
     def inspect
       result = "#{self.class}["
       each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
