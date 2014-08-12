@@ -91,6 +91,19 @@ module Hamster
       @node.at(index)
     end
 
+    def fetch(index, default = (missing_default = true))
+      index += @node.size if index < 0
+      if index >= 0 && index < size
+        at(index)
+      elsif !missing_default
+        default
+      elsif block_given?
+        yield
+      else
+        raise IndexError, "index #{index} outside of sorted set bounds"
+      end
+    end
+
     def each(&block)
       return @node.to_enum if not block_given?
       @node.each(&block)
