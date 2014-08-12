@@ -81,6 +81,10 @@ module Hamster
       include?(item) && delete(item)
     end
 
+    def delete_at(index)
+      (item = at(index)) ? delete(item) : self
+    end
+
     def at(index)
       index += @node.size if index < 0
       return nil if index >= @node.size || index < 0
