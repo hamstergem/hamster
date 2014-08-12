@@ -85,6 +85,27 @@ module Hamster
       (item = at(index)) ? delete(item) : self
     end
 
+    def [](arg, length = (missing_length = true))
+      if missing_length
+        if arg.is_a?(Range)
+          from, to = arg.begin, arg.end
+          from += @node.size if from < 0
+          to   += @node.size if to < 0
+          to   += 1     if !arg.exclude_end?
+          to    = @node.size if to > @node.size
+          length = to - from
+          length = 0 if length < 0
+          subsequence(from, length)
+        else
+          at(arg)
+        end
+      else
+        arg += @node.size if arg < 0
+        subsequence(arg, length)
+      end
+    end
+    def_delegator :self, :[], :slice
+
     def at(index)
       index += @node.size if index < 0
       return nil if index >= @node.size || index < 0
@@ -297,6 +318,15 @@ module Hamster
       end
     end
 
+    private
+
+    def subsequence(from, length)
+      return nil if from > @node.size || from < 0 || length < 0
+      length = @node.size - from if @node.size < from + length
+      return self.class.empty if length == 0
+      self.class.alloc(@node.slice(from, length), @comparator)
+    end
+
     class AVLNode
       def self.from_items(items, from, to) # items must be sorted
         size = to - from + 1
@@ -496,6 +526,24 @@ module Hamster
         @left.height - @right.height
       end
 
+      def slice(from, length)
+        if length <= 0
+          EmptyAVLNode
+        elsif from + length <= @left.size
+          @left.slice(from, length)
+        elsif from > @left.size
+          @right.slice(from - @left.size - 1, length)
+        else
+          left  = @left.slice(from, @left.size - from)
+          right = @right.slice(0, from + length - @left.size - 1)
+          if left.height > right.height
+            rebalance_left(left, right)
+          else
+            rebalance_right(left, right)
+          end
+        end
+      end
+
       def partition(items, comparator)
         left, right = [], []
         items.each do |item|
@@ -562,6 +610,7 @@ module Hamster
       def e.delete(item, comparator); self; end
       def e.include?(item, comparator); false; end
       def e.empty?; true; end
+      def e.slice(from, length); self; end
     end.freeze
   end
 
