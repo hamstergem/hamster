@@ -81,6 +81,12 @@ module Hamster
       include?(item) && delete(item)
     end
 
+    def at(index)
+      index += @node.size if index < 0
+      return nil if index >= @node.size || index < 0
+      @node.at(index)
+    end
+
     def each(&block)
       return @node.to_enum if not block_given?
       @node.each(&block)
