@@ -126,7 +126,11 @@ module Hamster
     def_delegator :self, :union, :merge
 
     def intersection(other)
-      trie = @trie.filter { |key, _| other.include?(key) }
+      if (other.size < @trie.size) && other.is_a?(Hamster::Set)
+        trie = other.instance_variable_get(:@trie).filter { |key, _| include?(key) }
+      else
+        trie = @trie.filter { |key, _| other.include?(key) }
+      end
       trie.equal?(@trie) ? self : self.class.alloc(trie)
     end
     def_delegator :self, :intersection, :intersect
