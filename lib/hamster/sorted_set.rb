@@ -128,7 +128,7 @@ module Hamster
     alias :sort_by :sort
 
     def union(other)
-      self.class.alloc(@node.bulk_insert(other.to_a, @comparator), @comparator)
+      self.class.alloc(@node.bulk_insert(other, @comparator), @comparator)
     end
     def_delegator :self, :union, :|
     def_delegator :self, :union, :+
@@ -481,7 +481,10 @@ module Hamster
       def e.reverse_each; end
       def e.at(index); nil; end
       def e.insert(item, comparator); AVLNode.new(item, self, self); end
-      def e.bulk_insert(items, comparator); AVLNode.from_items(items.sort(&comparator), 0, items.size-1); end
+      def e.bulk_insert(items, comparator)
+        items = items.to_a if !items.is_a?(Array)
+        AVLNode.from_items(items.sort(&comparator), 0, items.size-1)
+      end
       def e.bulk_delete(items, comparator); self; end
       def e.keep_only(items, comparator); self; end
       def e.delete(item, comparator); self; end
