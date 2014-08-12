@@ -104,6 +104,11 @@ module Hamster
       end
     end
 
+    def values_at(*indexes)
+      indexes.select! { |i| i >= -@node.size && i < @node.size }
+      self.class.new(indexes.map! { |i| at(i) })
+    end
+
     def each(&block)
       return @node.to_enum if not block_given?
       @node.each(&block)
