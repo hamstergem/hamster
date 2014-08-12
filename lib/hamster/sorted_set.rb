@@ -186,6 +186,15 @@ module Hamster
       self.class.new(super)
     end
 
+    def drop_while
+      return enum_for(:drop_while) if not block_given?
+      self.class.new(super)
+    end
+    def take_while
+      return enum_for(:take_while) if not block_given?
+      self.class.new(super)
+    end
+
     def union(other)
       self.class.alloc(@node.bulk_insert(other, @comparator), @comparator)
     end
