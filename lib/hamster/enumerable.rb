@@ -27,6 +27,12 @@ module Hamster
       result
     end
 
+    def each_index(&block)
+      return enum_for(:each_index) unless block_given?
+      0.upto(size-1, &block)
+      self
+    end
+
     def product
       reduce(1, &:*)
     end

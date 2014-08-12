@@ -225,6 +225,7 @@ module Hamster
     end
 
     undef :"<=>" # Sets are not ordered, so Enumerable#<=> will give a meaningless result
+    undef :each_index # Set members cannot be accessed by 'index', so #each_index is not very meaningful
 
     def_delegator :self, :dup, :uniq
     def_delegator :self, :dup, :nub
