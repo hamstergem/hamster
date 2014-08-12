@@ -421,7 +421,7 @@ module Hamster
       end
 
       def min
-        @left.empty? ? @item : @left.max
+        @left.empty? ? @item : @left.min
       end
 
       def balance
