@@ -199,6 +199,10 @@ module Hamster
       return enum_for(:drop_while) if not block_given?
       self.class.new(super)
     end
+    def take_while
+      return enum_for(:take_while) if not block_given?
+      self.class.new(super)
+    end
 
     def *(times)
       return self.class.empty if times == 0
