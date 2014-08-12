@@ -290,11 +290,11 @@ module Hamster
 
           if balance > 0
             # tree is leaning to the left. replace with highest node on that side
-            replace_with = self.min
+            replace_with = @left.max
             AVLNode.new(replace_with, @left.delete(replace_with, comparator), @right)
           else
             # tree is leaning to the right. replace with lowest node on that side
-            replace_with = self.max
+            replace_with = @right.min
             AVLNode.new(replace_with, @left, @right.delete(replace_with, comparator))
           end
         elsif direction > 0
