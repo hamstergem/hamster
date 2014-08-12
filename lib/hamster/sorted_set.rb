@@ -134,6 +134,12 @@ module Hamster
     def_delegator :self, :union, :+
     def_delegator :self, :union, :merge
 
+    def intersection(other)
+      self.class.alloc(@node.keep_only(other, @comparator), @comparator)
+    end
+    def_delegator :self, :intersection, :intersect
+    def_delegator :self, :intersection, :&
+
     def subset?(other)
       return false if other.size < size
       all? { |item| other.include?(item) }
@@ -282,6 +288,45 @@ module Hamster
         end
       end
 
+      def keep_only(items, comparator)
+        return EmptyAVLNode if items.empty?
+
+        left, right, keep_item = [], [], false
+        items.each do |item|
+          direction = comparator.call(item, @item)
+          if direction > 0
+            right << item
+          elsif direction < 0
+            left << item
+          else
+            keep_item = true
+          end
+        end
+
+        left  = @left.keep_only(left, comparator)
+        right = @right.keep_only(right, comparator)
+
+        if keep_item
+          if left.height > right.height
+            rebalance_left(left, right)
+          else
+            rebalance_right(left, right)
+          end
+        elsif left.empty?
+          right
+        elsif right.empty?
+          left
+        else
+          if left.height > right.height
+            replace_with = left.max
+            AVLNode.new(replace_with, left.delete(replace_with, comparator), right)
+          else
+            replace_with = right.min
+            AVLNode.new(replace_with, left, right.delete(replace_with, comparator))
+          end
+        end
+      end
+
       def each(&block)
         @left.each(&block)
         yield @item
@@ -385,6 +430,7 @@ module Hamster
       def e.at(index); nil; end
       def e.insert(item, comparator); AVLNode.new(item, self, self); end
       def e.bulk_insert(items, comparator); AVLNode.from_items(items.sort(&comparator), 0, items.size-1); end
+      def e.keep_only(items, comparator); self; end
       def e.delete(item, comparator); self; end
       def e.include?(item, comparator); false; end
       def e.empty?; true; end
