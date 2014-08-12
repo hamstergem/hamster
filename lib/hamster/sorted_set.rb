@@ -127,6 +127,13 @@ module Hamster
     end
     alias :sort_by :sort
 
+    def union(other)
+      self.class.alloc(@node.bulk_insert(other.to_a, @comparator), @comparator)
+    end
+    def_delegator :self, :union, :|
+    def_delegator :self, :union, :+
+    def_delegator :self, :union, :merge
+
     def subset?(other)
       return false if other.size < size
       all? { |item| other.include?(item) }
@@ -237,6 +244,19 @@ module Hamster
         end
       end
 
+      def bulk_insert(items, comparator)
+        return self if items.empty?
+        return insert(items.first, comparator) if items.size == 1
+
+        left, right = partition(items, comparator)
+
+        if right.size > left.size
+          rebalance_right(@left.bulk_insert(left, comparator), @right.bulk_insert(right, comparator))
+        else
+          rebalance_left(@left.bulk_insert(left, comparator), @right.bulk_insert(right, comparator))
+        end
+      end
+
       def delete(item, comparator)
         direction = comparator.call(item, @item)
         if direction == 0
@@ -307,6 +327,19 @@ module Hamster
         @left.height - @right.height
       end
 
+      def partition(items, comparator)
+        left, right = [], []
+        items.each do |item|
+          direction = comparator.call(item, @item)
+          if direction > 0
+            right << item
+          elsif direction < 0
+            left << item
+          end
+        end
+        [left, right]
+      end
+
       def rebalance_left(left, right)
         # the tree might be unbalanced to the left (paths on the left too long)
         balance = left.height - right.height
@@ -351,6 +384,7 @@ module Hamster
       def e.reverse_each; end
       def e.at(index); nil; end
       def e.insert(item, comparator); AVLNode.new(item, self, self); end
+      def e.bulk_insert(items, comparator); AVLNode.from_items(items.sort(&comparator), 0, items.size-1); end
       def e.delete(item, comparator); self; end
       def e.include?(item, comparator); false; end
       def e.empty?; true; end
