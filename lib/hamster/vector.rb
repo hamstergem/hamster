@@ -255,6 +255,37 @@ module Hamster
       result.is_a?(Array) ? self.class.new(result) : result
     end
 
+    def fill(obj, index = 0, length = nil)
+      raise IndexError if index < -@size
+      index += @size if index < 0
+      length ||= @size - index # to the end of the array, if no length given
+
+      if index < @size
+        suffix = flatten_suffix(@root, @levels * BITS_PER_LEVEL, index, [])
+        suffix.fill(obj, 0, length)
+        new_size = index + length > @size ? index + length : @size
+      elsif index == @size
+        suffix = Array.new(length, obj)
+        new_size = index + length
+      else
+        suffix = Array.new(index - @size, nil).concat(Array.new(length, obj))
+        new_size = index + length
+        index = @size
+      end
+
+      root   = replace_suffix(@root, @levels * BITS_PER_LEVEL, index, suffix)
+      if !suffix.empty?
+        @levels.times { suffix = suffix.each_slice(32).to_a }
+        root.concat(suffix)
+      end
+      levels = @levels
+      while root.size > 32
+        root = root.each_slice(32).to_a
+        levels += 1
+      end
+      self.class.alloc(root.freeze, new_size, levels)
+    end
+
     def combination(n)
       return enum_for(:combination, n) if not block_given?
       return self if n < 0 || @size < n
@@ -631,8 +662,8 @@ module Hamster
           from_slot.upto(node.size-1) do |i|
             flatten_node(node[i], bitshift - BITS_PER_LEVEL, result)
           end
-        else
-          flatten_suffix(node[from_slot], bitshift - BITS_PER_LEVEL, from, result)
+        elsif child = node[from_slot]
+          flatten_suffix(child, bitshift - BITS_PER_LEVEL, from, result)
           (from_slot+1).upto(node.size-1) do |i|
             flatten_node(node[i], bitshift - BITS_PER_LEVEL, result)
           end
