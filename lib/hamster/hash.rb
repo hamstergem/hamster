@@ -60,7 +60,7 @@ module Hamster
     def_delegator :self, :key?, :member?
 
     def value?(value)
-      each { |k,v| return true if value.eql?(v) }
+      each { |k,v| return true if value == v }
       false
     end
     def_delegator :self, :value?, :has_value?

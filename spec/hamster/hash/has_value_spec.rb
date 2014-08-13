@@ -15,6 +15,11 @@ describe Hamster::Hash do
       it "returns false if no key/val pair in Hash has the same value" do
         @hash.send(method, 'marmalade').should == false
       end
+
+      it "uses #== to check equality" do
+        Hamster.hash(a: EqualNotEql.new).send(method, EqualNotEql.new).should == true
+        Hamster.hash(a: EqlNotEqual.new).send(method, EqlNotEqual.new).should == false
+      end
     end
   end
 end
