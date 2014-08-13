@@ -26,6 +26,12 @@ describe Hamster::List do
       list.to_a.should == [1, 2, 3, :a, :b, :c]
     end
 
+    it "can add items past the end of a list" do
+      list = @original.insert(6, :a, :b)
+      list.size.should be(8)
+      list.to_a.should == [1, 2, 3, nil, nil, nil, :a, :b]
+    end
+
     it "accepts a negative index, which counts back from the end of the list" do
       list = @original.insert(-2, :a)
       p list.inspect
