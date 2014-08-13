@@ -30,6 +30,7 @@ module Hamster
     end
 
     def initialize(items=[], &block)
+      items = items.to_a
       if block
         @comparator = if block.arity == 1
           lambda { |a,b| block.call(a) <=> block.call(b) }
