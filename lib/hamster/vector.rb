@@ -153,6 +153,20 @@ module Hamster
       self.class.alloc(root.freeze, new_size, levels)
     end
 
+    def delete_at(index)
+      return self if index >= @size || index < -@size
+      index += @size if index < 0
+
+      suffix = flatten_suffix(@root, @levels * BITS_PER_LEVEL, index, [])
+      root   = replace_suffix(@root, @levels * BITS_PER_LEVEL, index, suffix.tap { |a| a.shift })
+      levels = @levels
+      while root.size == 1
+        root = root[0]
+        levels -= 1
+      end
+      self.class.alloc(root.freeze, @size - 1, levels)
+    end
+
     def each(&block)
       return to_enum unless block_given?
       traverse_depth_first(@root, @levels, &block)
