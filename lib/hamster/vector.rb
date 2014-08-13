@@ -217,6 +217,24 @@ module Hamster
       self.class.new(((array = to_a).frozen? ? array.flatten(level) : array.flatten!(level)).freeze)
     end
 
+    def +(other)
+      other = other.to_a
+      other = other.dup if other.frozen?
+      new_size = @size + other.size
+      root  = replace_suffix(@root, @levels * BITS_PER_LEVEL, @size, other)
+      if !other.empty?
+        @levels.times { other = other.each_slice(32).to_a }
+        root.concat(other)
+      end
+      levels = @levels
+      while root.size > 32
+        root = root.each_slice(32).to_a.freeze
+        levels += 1
+      end
+      self.class.alloc(root.freeze, new_size, levels)
+    end
+    def_delegator :self, :+, :concat
+
     def zip(*others)
       if block_given?
         super
