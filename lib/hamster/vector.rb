@@ -123,6 +123,36 @@ module Hamster
     end
     def_delegator :self, :[], :slice
 
+    def insert(index, *items)
+      raise IndexError if index < -@size
+      index += @size if index < 0
+
+      if index < @size
+        suffix = flatten_suffix(@root, @levels * BITS_PER_LEVEL, index, [])
+        suffix.unshift(*items)
+        new_size = @size + items.size
+      elsif index == @size
+        suffix = items
+        new_size = @size + items.size
+      else
+        suffix = Array.new(index - @size, nil).concat(items)
+        new_size = index + items.size
+        index = @size
+      end
+
+      root   = replace_suffix(@root, @levels * BITS_PER_LEVEL, index, suffix)
+      if !suffix.empty?
+        @levels.times { suffix = suffix.each_slice(32).to_a }
+        root.concat(suffix)
+      end
+      levels = @levels
+      while root.size > 32
+        root = root.each_slice(32).to_a
+        levels += 1
+      end
+      self.class.alloc(root.freeze, new_size, levels)
+    end
+
     def each(&block)
       return to_enum unless block_given?
       traverse_depth_first(@root, @levels, &block)
@@ -570,6 +600,49 @@ module Hamster
       length = @size - from if @size < from + length
       return self.class.empty if length == 0
       self.class.new(flatten_range(@root, @levels * BITS_PER_LEVEL, from, from + length - 1))
+    end
+
+    def flatten_suffix(node, bitshift, from, result)
+      from_slot = (from >> bitshift) & INDEX_MASK
+
+      if bitshift == 0
+        if from_slot == 0
+          result.concat(node)
+        else
+          result.concat(node.slice(from_slot, 32)) # entire suffix of node. excess length is ignored by #slice
+        end
+      else
+        mask = ((1 << bitshift) - 1)
+        if from & mask == 0
+          from_slot.upto(node.size-1) do |i|
+            flatten_node(node[i], bitshift - BITS_PER_LEVEL, result)
+          end
+        else
+          flatten_suffix(node[from_slot], bitshift - BITS_PER_LEVEL, from, result)
+          (from_slot+1).upto(node.size-1) do |i|
+            flatten_node(node[i], bitshift - BITS_PER_LEVEL, result)
+          end
+        end
+        result
+      end
+    end
+
+    def replace_suffix(node, bitshift, from, suffix)
+      from_slot = (from >> bitshift) & INDEX_MASK
+
+      if bitshift == 0
+        if from_slot == 0
+          suffix.shift(32)
+        else
+          node.take(from_slot).concat(suffix.shift(32 - from_slot))
+        end
+      else
+        result = node.take(from_slot)
+        result.push(replace_suffix(node[from_slot], bitshift - BITS_PER_LEVEL, from, suffix))
+        remainder = suffix.shift((31 - from_slot) * (1 << bitshift))
+        (bitshift / BITS_PER_LEVEL).times { remainder = remainder.each_slice(32).to_a }
+        result.concat(remainder)
+      end
     end
   end
 
