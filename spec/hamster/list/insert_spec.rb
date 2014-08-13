@@ -34,7 +34,6 @@ describe Hamster::List do
 
     it "accepts a negative index, which counts back from the end of the list" do
       list = @original.insert(-2, :a)
-      p list.inspect
       list.size.should be(4)
       list.to_a.should == [1, :a, 2, 3]
     end
