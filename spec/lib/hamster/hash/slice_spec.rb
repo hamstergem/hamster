@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { described_class.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL") }
+  let(:hash) { Hamster::Hash.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL") }
 
   describe "#slice" do
     let(:slice) { hash.slice(*values) }
