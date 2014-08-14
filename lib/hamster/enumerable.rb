@@ -5,7 +5,7 @@ require "forwardable"
 # They must also implement:
 # - #filter, which takes a block, and returns an instance of the same class
 #     with only the items for which the block returns a true value
-# - #reverse
+# - #reverse (or else undef 'foldr')
 
 module Hamster
   module Enumerable
