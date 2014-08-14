@@ -39,6 +39,16 @@ describe Hamster::Hash do
           it "returns false if the block ever returns false" do
             hash.send(method) { |k,v| k != 'C' }.should == false
           end
+
+          it "propagates an exception from the block" do
+            -> { hash.all? { |k,v| raise "help" } }.should raise_error(RuntimeError)
+          end
+
+          it "stops iterating as soon as the block returns false" do
+            yielded = []
+            hash.all? { |k,v| yielded << k; false }
+            yielded.size.should == 1
+          end
         end
       end
     end
