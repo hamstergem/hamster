@@ -4,7 +4,6 @@ require "hamster/hash"
 describe Hamster::Hash do
   [:find, :detect].each do |method|
     describe "##{method}" do
-
       [
         [[], "A", nil],
         [[], nil, nil],
@@ -16,30 +15,29 @@ describe Hamster::Hash do
         [["A" => "aye", "B" => "bee", nil => "NIL"], nil, [nil, "NIL"]],
         [["A" => "aye", "B" => "bee", nil => "NIL"], "C", nil],
       ].each do |values, key, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @hash = Hamster.hash(*values)
-          end
+          let(:hash) { Hamster.hash(*values) }
 
           describe "with a block" do
-            before do
-              @result = @hash.send(method) { |k, v| k == key }
-            end
-
             it "returns #{expected.inspect}" do
-              @result.should == expected
+              hash.send(method) { |k, v| k == key }.should == expected
             end
           end
 
           describe "without a block" do
             it "returns an Enumerator" do
-              @result = @hash.send(method)
-              @result.should be_kind_of(Enumerator)
-              @result.each { |k,v| k == key }.should == expected
+              result = hash.send(method)
+              result.class.should be(Enumerator)
+              result.each { |k,v| k == key }.should == expected
             end
           end
         end
+      end
+
+      it "stops iterating when the block returns true" do
+        yielded = []
+        Hamster.hash(a: 1, b: 2).find { |k,v| yielded << k; true }
+        yielded.size.should == 1
       end
     end
   end
