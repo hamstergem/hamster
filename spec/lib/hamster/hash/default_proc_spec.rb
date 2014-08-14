@@ -46,6 +46,14 @@ describe Hamster::Hash do
       end
     end
 
+    context "when keys are removed with #except" do
+      it "doesn't change" do
+        other = hash.except(1, 2)
+        other.default_proc.should be(hash.default_proc)
+        other.default_proc.call(5).should == 10
+      end
+    end
+
     context "when Hash is mapped" do
       it "doesn't change" do
         other = hash.map { |k,v| [k + 10, v] }
