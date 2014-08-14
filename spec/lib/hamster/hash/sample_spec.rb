@@ -8,7 +8,7 @@ describe Hamster::Hash do
     end
 
     it "returns a randomly chosen item" do
-      chosen = 100.times.map { @hash.sample }
+      chosen = 150.times.map { @hash.sample }.sort.uniq
       chosen.each { |item| @hash.should include(item[0]) }
       @hash.each { |item| chosen.should include(item) }
     end

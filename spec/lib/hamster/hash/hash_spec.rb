@@ -3,7 +3,6 @@ require "hamster/hash"
 
 describe Hamster::Hash do
   describe "#hash" do
-
     it "values are sufficiently distributed" do
       (1..4000).each_slice(4).map { |ka, va, kb, vb| Hamster.hash(ka => va, kb => vb).hash }.uniq.size.should == 1000
     end
@@ -25,12 +24,8 @@ describe Hamster::Hash do
     end
 
     describe "on an empty hash" do
-      before do
-        @result = Hamster.hash.hash
-      end
-
       it "returns 0" do
-        @result.should == 0
+        Hamster.hash.hash.should == 0
       end
     end
   end
