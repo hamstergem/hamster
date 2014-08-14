@@ -4,17 +4,14 @@ require "hamster/set"
 
 describe Hamster::Hash do
   describe "#keys" do
-    before do
-      hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-      @result = hash.keys
-    end
+    let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
 
     it "returns the keys as a set" do
-      @result.should == Hamster.set("A", "B", "C")
+      hash.keys.should eql(Hamster.set("A", "B", "C"))
     end
 
     it "returns frozen String keys" do
-      @result.each { |s| s.should be_frozen }
+      hash.keys.each { |s| s.should be_frozen }
     end
   end
 end
