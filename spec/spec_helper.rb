@@ -26,7 +26,7 @@ else
 end
 
 class DeterministicHash
-  attr_reader :hash
+  attr_reader :hash, :value
 
   def initialize(value, hash)
     @value = value

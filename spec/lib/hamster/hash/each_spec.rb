@@ -2,29 +2,39 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  before do
-    @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-  end
+  let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
 
   [:each, :foreach, :each_pair].each do |method|
     describe "##{method}" do
-      describe "with a block (internal iteration)" do
+      context "with a block (internal iteration)" do
         it "returns self" do
-          @hash.send(method) {}.should be(@hash)
+          hash.send(method) {}.should be(hash)
         end
 
         it "yields all key/value pairs" do
           actual_pairs = {}
-          @hash.send(method) { |key, value| actual_pairs[key] = value }
+          hash.send(method) { |key, value| actual_pairs[key] = value }
           actual_pairs.should == { "A" => "aye", "B" => "bee", "C" => "see" }
+        end
+
+        it "yields key/value pairs in the same order as #each_key and #each_value" do
+          hash.each.to_a.should eql(hash.each_key.zip(hash.each_value))
+        end
+
+        it "yields both of a pair of colliding keys" do
+          yielded = []
+          hash = Hamster.hash(DeterministicHash.new('a', 1) => 1, DeterministicHash.new('b', 1) => 1)
+          hash.each { |k,v| yielded << k }
+          yielded.size.should == 2
+          yielded.map { |x| x.value }.sort.should == ['a', 'b']
         end
       end
 
-      describe "with no block" do
+      context "with no block" do
         it "returns an Enumerator" do
-          @result = @hash.send(method)
+          @result = hash.send(method)
           @result.class.should be(Enumerator)
-          @result.to_a.should == @hash.to_a
+          @result.to_a.should == hash.to_a
         end
       end
     end
@@ -33,14 +43,14 @@ describe Hamster::Hash do
   describe "#each_key" do
     it "yields all keys" do
       keys = []
-      @hash.each_key { |k| keys << k }
+      hash.each_key { |k| keys << k }
       keys.sort.should == ['A', 'B', 'C']
     end
 
     context "with no block" do
       it "returns an Enumerator" do
-        @hash.each_key.class.should be(Enumerator)
-        @hash.each_key.to_a.sort.should == ['A', 'B', 'C']
+        hash.each_key.class.should be(Enumerator)
+        hash.each_key.to_a.sort.should == ['A', 'B', 'C']
       end
     end
   end
@@ -48,14 +58,14 @@ describe Hamster::Hash do
   describe "#each_value" do
     it "yields all values" do
       values = []
-      @hash.each_value { |v| values << v }
+      hash.each_value { |v| values << v }
       values.sort.should == ['aye', 'bee', 'see']
     end
 
     context "with no block" do
       it "returns an Enumerator" do
-        @hash.each_value.class.should be(Enumerator)
-        @hash.each_value.to_a.sort.should == ['aye', 'bee', 'see']
+        hash.each_value.class.should be(Enumerator)
+        hash.each_value.to_a.sort.should == ['aye', 'bee', 'see']
       end
     end
   end
