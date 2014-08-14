@@ -8,7 +8,7 @@ describe Hamster::Hash do
     end
 
     it "uses the existing keys as values and values as keys" do
-      @hash.invert.should == Hamster.hash(3 => :a, 2 => :b, 1 => :c)
+      @hash.invert.should eql(Hamster.hash(3 => :a, 2 => :b, 1 => :c))
     end
   end
 end

@@ -212,7 +212,7 @@ module Hamster
     def invert
       pairs = []
       each { |k,v| pairs << [v, k] }
-      self.class.alloc(pairs, @default)
+      self.class.new(pairs, &@default)
     end
 
     def flatten(level = 1)
