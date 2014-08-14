@@ -4,45 +4,40 @@ require "hamster/hash"
 describe Hamster::Hash do
   [:map, :collect].each do |method|
     describe "##{method}" do
-      describe "when empty" do
-        before do
-          @original = Hamster.hash
-          @mapped = @original.send(method) {}
-        end
-
+      context "when empty" do
         it "returns self" do
-          @mapped.should equal(@original)
+          Hamster.hash.send(method) {}.should equal(Hamster.hash)
         end
       end
 
-      describe "when not empty" do
-        before do
-          @original = Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see")
-        end
+      context "when not empty" do
+        let(:hash) { Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see") }
 
-        describe "with a block" do
-          before do
-            @mapped = @original.send(method) { |key, value| [key.downcase, value.upcase] }
-          end
+        context "with a block" do
+          let(:mapped) { hash.send(method) { |key, value| [key.downcase, value.upcase] }}
 
           it "preserves the original values" do
-            @original.should == Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see")
+            hash.should eql(Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see"))
           end
 
           it "returns a new hash with the mapped values" do
-            @mapped.should == Hamster.hash("a" => "AYE", "b"  => "BEE", "c" => "SEE")
+            mapped.should eql(Hamster.hash("a" => "AYE", "b"  => "BEE", "c" => "SEE"))
           end
         end
 
-        describe "with no block" do
-          before do
-            @result = @original.send(method)
-          end
-
+        context "with no block" do
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each { |k,v| [k.downcase, v] }.should == @original.map { |k,v| [k.downcase, v] }
+            hash.send(method).class.should be(Enumerator)
+            hash.send(method).each { |k,v| [k.downcase, v] }.should == hash.map { |k,v| [k.downcase, v] }
           end
+        end
+      end
+
+      context "from a subclass" do
+        it "returns an instance of the subclass" do
+          subclass = Class.new(Hamster::Hash)
+          instance = subclass.new('a' => 'aye', 'b' => 'bee')
+          instance.map { |k,v| [k, v.upcase] }.class.should be(subclass)
         end
       end
     end
