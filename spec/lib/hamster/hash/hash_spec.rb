@@ -15,12 +15,10 @@ describe Hamster::Hash do
       Hamster.hash("ka" => "va").hash.should_not == Hamster.hash("kb" => "va").hash
     end
 
-    it "generates the same hash value for the a hash regardless of the order things were added to it" do
-      # The keys :issued_at and :expires_at happen to end up in the same
-      # bucket in the trie, so depending on which one gets added first, one
-      # of them will end up in a child trie. The hash value should be the
-      # same regardless of which is added first
-      Hamster.hash.put(:issued_at, nil).put(:expires_at, nil).hash.should == Hamster.hash.put(:expires_at, nil).put(:issued_at, nil).hash
+    it "generates the same hash value for a hash regardless of the order things were added to it" do
+      key1 = DeterministicHash.new('abc', 1)
+      key2 = DeterministicHash.new('xyz', 1)
+      Hamster.hash.put(key1, nil).put(key2, nil).hash.should == Hamster.hash.put(key2, nil).put(key1, nil).hash
     end
 
     describe "on an empty hash" do
