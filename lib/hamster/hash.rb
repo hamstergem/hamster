@@ -189,7 +189,7 @@ module Hamster
     end
 
     def flatten(level = 1)
-      return self if level == 0
+      return Vector.new(self) if level == 0
       array = []
       each { |k,v| array << k; array << v }
       array.flatten!(level-1) if level > 1

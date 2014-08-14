@@ -4,9 +4,9 @@ require "hamster/hash"
 describe Hamster::Hash do
   describe "#flatten" do
     context "with flatten depth of zero" do
-      it "returns self" do
-        @hash = Hamster.hash(a: 1, b: 2)
-        @hash.flatten(0).should be(@hash)
+      it "returns a vector of keys/value" do
+        hash = Hamster.hash(a: 1, b: 2)
+        hash.flatten(0).should eql(V[[:a, 1], [:b, 2]])
       end
     end
 
