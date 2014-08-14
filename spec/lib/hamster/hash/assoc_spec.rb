@@ -17,6 +17,10 @@ describe Hamster::Hash do
       hash.assoc(0).should be_nil
     end
 
+    it "returns nil even if there is a default" do
+      Hamster::Hash.new(a: 1, b: 2) { fail }.assoc(:c).should be_nil
+    end
+
     it "uses #== to compare keys with provided object" do
       hash.assoc(EqualNotEql.new).should_not be_nil
       hash.assoc(EqlNotEqual.new).should be_nil
@@ -34,6 +38,10 @@ describe Hamster::Hash do
       hash.rassoc(0).should be_nil
       hash.rassoc(4).should be_nil
       hash.rassoc(nil).should be_nil
+    end
+
+    it "returns nil even if there is a default" do
+      Hamster::Hash.new(a: 1, b: 2) { fail }.rassoc(3).should be_nil
     end
 
     it "uses #== to compare values with provided object" do
