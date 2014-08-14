@@ -264,6 +264,7 @@ module Hamster
 
     def pretty_print(pp)
       pp.group(1, "#{self.class}[", "]") do
+        pp.breakable ''
         pp.seplist(self, nil) do |key, val|
           pp.group do
             key.pretty_print(pp)
