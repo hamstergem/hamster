@@ -32,11 +32,11 @@ describe Hamster::List do
             end
 
             it "preserves the original" do
-              @original.should == Hamster.list(*values)
+              @original.should eql(Hamster.list(*values))
             end
 
             it "iterates over the items in order" do
-              @items.should == expected
+              @items.should eql(expected)
             end
 
             it "returns nil" do
@@ -50,7 +50,7 @@ describe Hamster::List do
             end
 
             it "preserves the original" do
-              @original.should == Hamster.list(*values)
+              @original.should eql(Hamster.list(*values))
             end
 
             it "returns an Enumerator" do

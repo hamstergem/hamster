@@ -17,7 +17,7 @@ describe Hamster::SortedSet do
 
       it "is equivalent to repeatedly using #add" do
         @set.size.should be(3)
-        @set.should == Hamster.sorted_set.add("A").add("B").add("C")
+        @set.should eql(Hamster.sorted_set.add("A").add("B").add("C"))
       end
     end
 

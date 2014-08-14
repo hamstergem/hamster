@@ -19,7 +19,7 @@ describe Hamster::Hash do
     end
 
     it "can survive dumping and loading into a new process" do
-      expect(reloaded_hash).to eq(Hamster.hash(existing_key: 42, other_thing: "data"))
+      expect(reloaded_hash).to eql(Hamster.hash(existing_key: 42, other_thing: "data"))
     end
 
     it "is still possible to find items by key after loading" do

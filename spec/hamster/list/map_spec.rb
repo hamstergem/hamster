@@ -25,11 +25,11 @@ describe Hamster::List do
             end
 
             it "preserves the original" do
-              @original.should == Hamster.list(*values)
+              @original.should eql(Hamster.list(*values))
             end
 
             it "returns #{expected.inspect}" do
-              @result.should == Hamster.list(*expected)
+              @result.should eql(Hamster.list(*expected))
             end
 
             it "is lazy" do

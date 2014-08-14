@@ -16,7 +16,7 @@ describe Hamster::Set do
       end
 
       it "is equivalent to repeatedly using #add" do
-        @set.should == Hamster.set.add("A").add("B").add("C")
+        @set.should eql(Hamster.set.add("A").add("B").add("C"))
       end
     end
   end

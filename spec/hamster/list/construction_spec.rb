@@ -27,7 +27,7 @@ describe Hamster do
       end
 
       it "is the same as repeatedly using #cons" do
-        @list.should == Hamster.list.cons("C").cons("B").cons("A")
+        @list.should eql(Hamster.list.cons("C").cons("B").cons("A"))
       end
     end
   end
@@ -50,7 +50,7 @@ describe Hamster do
       end
 
       it "repeatedly calls the block" do
-        @list.take(5).should == Hamster.list(1, 2, 3, 4, 5)
+        @list.take(5).should eql(Hamster.list(1, 2, 3, 4, 5))
       end
     end
   end
@@ -63,7 +63,7 @@ describe Hamster do
         end
 
         it "is equivalent to a list with explicit values" do
-          @list.should == Hamster.list(98, 99, 100, 101, 102)
+          @list.should eql(Hamster.list(98, 99, 100, 101, 102))
         end
       end
 
@@ -73,7 +73,7 @@ describe Hamster do
         end
 
         it "is equivalent to a list with explicit values" do
-          @list.should == Hamster.list("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA")
+          @list.should eql(Hamster.list("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA"))
         end
       end
     end
@@ -85,7 +85,7 @@ describe Hamster do
     end
 
     it "returns an infinite list with specified value for each element" do
-      @list.take(5).should == Hamster.list("A", "A", "A", "A", "A")
+      @list.take(5).should eql(Hamster.list("A", "A", "A", "A", "A"))
     end
   end
 
@@ -95,7 +95,7 @@ describe Hamster do
     end
 
     it "returns a list with the specified value repeated the specified number of times" do
-      @list.should == Hamster.list("A", "A", "A", "A", "A")
+      @list.should eql(Hamster.list("A", "A", "A", "A", "A"))
     end
   end
 
@@ -105,7 +105,7 @@ describe Hamster do
     end
 
     it "returns an infinite list where the first item is calculated by applying the block on the initial argument, the second item by applying the function on the previous result and so on" do
-      @list.take(10).should == Hamster.list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512)
+      @list.take(10).should eql(Hamster.list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512))
     end
   end
 

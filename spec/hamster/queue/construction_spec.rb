@@ -27,7 +27,7 @@ describe Hamster do
       end
 
       it "is the same as repeatedly using #enqueue" do
-        @queue.should == Hamster.queue.enqueue("A").enqueue("B").enqueue("C")
+        @queue.should eql(Hamster.queue.enqueue("A").enqueue("B").enqueue("C"))
       end
     end
   end

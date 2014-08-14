@@ -21,11 +21,11 @@ describe Hamster::List do
 
         describe "with a block" do
           it "returns #{expected.inspect}" do
-            @result.should == Hamster.list(*expected)
+            @result.should eql(Hamster.list(*expected))
           end
 
           it "preserves the original" do
-            @original.should == Hamster.list(*values)
+            @original.should eql(Hamster.list(*values))
           end
 
           it "is lazy" do
