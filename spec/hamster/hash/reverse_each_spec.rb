@@ -7,7 +7,7 @@ describe Hamster::Hash do
   end
 
   describe "#reverse_each" do
-    describe "with a block (internal iteration)" do
+    context "with a block (internal iteration)" do
       it "returns self" do
         @hash.reverse_each {}.should be(@hash)
       end
@@ -19,7 +19,7 @@ describe Hamster::Hash do
       end
     end
 
-    describe "with no block" do
+    context "with no block" do
       it "returns an Enumerator" do
         @result = @hash.reverse_each
         @result.class.should be(Enumerator)
