@@ -146,7 +146,19 @@ module Hamster
     def_delegator :self, :min, :minimum
 
     def merge(other)
-      derive_new_hash(other.reduce(@trie) { |trie, (key, value)| trie.put(key, value) })
+      trie = if block_given?
+        other.reduce(@trie) do |trie, (key, value)|
+          if entry = trie.get(key)
+            trie.put(key, yield(key, entry[1], value))
+          else
+            trie.put(key, value)
+          end
+        end
+      else
+        other.reduce(@trie) { |trie, (key, value)| trie.put(key, value) }
+      end
+
+      derive_new_hash(trie)
     end
     def_delegator :self, :merge, :+
 
