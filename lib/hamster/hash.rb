@@ -93,18 +93,7 @@ module Hamster
     end
 
     def delete(key)
-      trie = @trie.delete(key)
-      if trie.equal?(@trie)
-        self
-      elsif trie.empty?
-        if @default
-          self.class.alloc(EmptyTrie, @default)
-        else
-          self.class.empty
-        end
-      else
-        self.class.alloc(trie, @default)
-      end
+      derive_new_hash(@trie.delete(key))
     end
 
     def each(&block)
@@ -143,18 +132,7 @@ module Hamster
 
     def filter(&block)
       return enum_for(:filter) unless block_given?
-      trie = @trie.filter(&block)
-      if trie.equal?(@trie)
-        self
-      elsif trie.empty?
-        if @default
-          self.class.alloc(EmptyTrie, @default)
-        else
-          self.class.empty
-        end
-      else
-        self.class.alloc(trie, @default)
-      end
+      derive_new_hash(@trie.filter(&block))
     end
 
     def find
@@ -168,12 +146,7 @@ module Hamster
     def_delegator :self, :min, :minimum
 
     def merge(other)
-      trie = other.reduce(@trie) { |trie, (key, value)| trie.put(key, value) }
-      if trie.equal?(@trie)
-        self
-      else
-        self.class.alloc(trie, @default)
-      end
+      derive_new_hash(other.reduce(@trie) { |trie, (key, value)| trie.put(key, value) })
     end
     def_delegator :self, :merge, :+
 
@@ -307,6 +280,22 @@ module Hamster
 
     def marshal_load(dictionary)
       @trie = Trie[dictionary]
+    end
+
+    private
+
+    def derive_new_hash(trie)
+      if trie.equal?(@trie)
+        self
+      elsif trie.empty?
+        if @default
+          self.class.alloc(EmptyTrie, @default)
+        else
+          self.class.empty
+        end
+      else
+        self.class.alloc(trie, @default)
+      end
     end
   end
 
