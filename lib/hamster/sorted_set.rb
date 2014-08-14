@@ -117,10 +117,10 @@ module Hamster
       index += @node.size if index < 0
       if index >= 0 && index < size
         at(index)
-      elsif !missing_default
-        default
       elsif block_given?
         yield
+      elsif !missing_default
+        default
       else
         raise IndexError, "index #{index} outside of sorted set bounds"
       end

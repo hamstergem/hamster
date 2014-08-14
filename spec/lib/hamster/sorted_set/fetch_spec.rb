@@ -57,5 +57,9 @@ describe Hamster::SortedSet do
         end
       end
     end
+
+    it "gives precedence to default block over default argument if passed both" do
+      @sorted_set.fetch(3, 'one') { 'two' }.should == 'two'
+    end
   end
 end

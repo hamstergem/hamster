@@ -57,5 +57,9 @@ describe Hamster::Vector do
         end
       end
     end
+
+    it "gives precedence to default block over default argument if passed both" do
+      @vector.fetch(3, 'one') { 'two' }.should == 'two'
+    end
   end
 end

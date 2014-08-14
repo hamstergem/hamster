@@ -68,5 +68,9 @@ describe Hamster::Hash do
         end
       end
     end
+
+    it "gives precedence to default block over default argument if passed both" do
+      Hamster.hash("A" => "aye").fetch("B", 'one') { 'two' }.should == 'two'
+    end
   end
 end

@@ -92,10 +92,10 @@ module Hamster
       index += @size if index < 0
       if index >= 0 && index < size
         get(index)
-      elsif !missing_default
-        default
       elsif block_given?
         yield
+      elsif !missing_default
+        default
       else
         raise IndexError, "index #{index} outside of vector bounds"
       end

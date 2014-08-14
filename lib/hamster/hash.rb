@@ -79,10 +79,10 @@ module Hamster
       entry = @trie.get(key)
       if entry
         entry[1]
-      elsif default != Undefined
-        default
       elsif block_given?
         yield
+      elsif default != Undefined
+        default
       else
         raise KeyError, "key not found: #{key.inspect}"
       end
