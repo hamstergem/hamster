@@ -3,19 +3,29 @@ require "hamster/hash"
 
 describe Hamster::Hash do
   describe "#except" do
-    before do
-      @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL")
-    end
+    let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL") }
 
-    describe "with only keys that the Hash has" do
+    context "with only keys that the Hash has" do
       it "returns a Hash without those values" do
-        @hash.except("B", nil).should == Hamster.hash("A" => "aye", "C" => "see")
+        hash.except("B", nil).should eql(Hamster.hash("A" => "aye", "C" => "see"))
       end
     end
 
-    describe "with keys that the Hash doesn't have" do
+    context "with keys that the Hash doesn't have" do
       it "returns a Hash without the values that it had keys for" do
-        @hash.except("B", "A", 3).should == Hamster.hash("C" => "see", nil => "NIL")
+        hash.except("B", "A", 3).should eql(Hamster.hash("C" => "see", nil => "NIL"))
+      end
+    end
+
+    it "works on a large Hash, with many combinations of input" do
+      keys = (1..1000).to_a
+      original = Hamster::Hash.new(keys.zip(2..1001))
+      100.times do
+        to_remove = rand(100).times.collect { keys.sample }
+        result    = original.except(*to_remove)
+        result.size.should == original.size - to_remove.uniq.size
+        to_remove.each { |key| result.key?(key).should == false }
+        (keys.sample(100) - to_remove).each { |key| result.key?(key).should == true }
       end
     end
   end
