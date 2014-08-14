@@ -9,18 +9,28 @@ describe Hamster::Hash do
         [["A" => "aye"], false],
         [["A" => "aye", "B" => "bee", "C" => "see"], false],
       ].each do |pairs, result|
-
         it "returns #{result} for #{pairs.inspect}" do
           Hamster.hash(*pairs).send(method).should == result
         end
+      end
 
-        context "from a subclass" do
-          it "returns an empty instance of the subclass" do
-            @subclass = Class.new(Hamster::Hash)
-            @subclass.empty.class.should be @subclass
-            @subclass.empty.should be_empty
-          end
-        end
+      it "returns true for empty hashes which have a default block" do
+        Hamster::Hash.new { 'default' }.empty?.should == true
+      end
+    end
+  end
+
+  describe ".empty" do
+    it "returns the canonical empty Hash" do
+      Hamster::Hash.empty.should be_empty
+      Hamster::Hash.empty.should be(Hamster::EmptyHash)
+    end
+
+    context "from a subclass" do
+      it "returns an empty instance of the subclass" do
+        subclass = Class.new(Hamster::Hash)
+        subclass.empty.class.should be subclass
+        subclass.empty.should be_empty
       end
     end
   end
