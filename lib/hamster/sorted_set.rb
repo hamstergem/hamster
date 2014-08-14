@@ -409,26 +409,7 @@ module Hamster
 
         left  = @left.bulk_delete(left, comparator)
         right = @right.bulk_delete(right, comparator)
-
-        if keep_item
-          if left.height > right.height
-            rebalance_left(left, right)
-          else
-            rebalance_right(left, right)
-          end
-        elsif left.empty?
-          right
-        elsif right.empty?
-          left
-        else
-          if left.height > right.height
-            replace_with = left.max
-            AVLNode.new(replace_with, left.delete(replace_with, comparator), right)
-          else
-            replace_with = right.min
-            AVLNode.new(replace_with, left, right.delete(replace_with, comparator))
-          end
-        end
+        finish_removal(keep_item, left, right, comparator)
       end
 
       def keep_only(items, comparator)
@@ -448,7 +429,12 @@ module Hamster
 
         left  = @left.keep_only(left, comparator)
         right = @right.keep_only(right, comparator)
+        finish_removal(keep_item, left, right, comparator)
+      end
 
+      def finish_removal(keep_item, left, right, comparator)
+        # deletion of items may have occurred on left and right sides
+        # now we may also need to delete the current item
         if keep_item
           if left.height > right.height
             rebalance_left(left, right)
