@@ -4,43 +4,44 @@ require "hamster/hash"
 describe Hamster::Hash do
   [:remove, :reject, :delete_if].each do |method|
     describe "##{method}" do
-      before do
-        @original = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-      end
+      let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
 
-      describe "when nothing matches" do
-        before do
-          @result = @original.send(method) { |key, value| false }
-        end
-
+      context "when nothing matches" do
         it "returns self" do
-          @result.should equal(@original)
+          hash.send(method) { |key, value| false }.should equal(hash)
         end
       end
 
-      describe "when only some things match" do
-        describe "with a block" do
-          before do
-            @result = @original.send(method) { |key, value| key == "A" && value == "aye" }
-          end
+      context "when only some things match" do
+        context "with a block" do
+          let(:result) { hash.send(method) { |key, value| key == "A" && value == "aye" }}
 
           it "preserves the original" do
-            @original.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+            result
+            hash.should eql(Hamster.hash("A" => "aye", "B" => "bee", "C" => "see"))
           end
 
           it "returns a set with the matching values" do
-            @result.should == Hamster.hash("B" => "bee", "C" => "see")
+            result.should eql(Hamster.hash("B" => "bee", "C" => "see"))
           end
         end
 
-        describe "with no block" do
-          before do
-            @result = @original.send(method)
-          end
-
+        context "with no block" do
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.to_a.sort.should == [['A', 'aye'], ['B', 'bee'], ['C', 'see']]
+            hash.send(method).class.should be(Enumerator)
+            hash.send(method).to_a.sort.should == [['A', 'aye'], ['B', 'bee'], ['C', 'see']]
+            hash.send(method).each { true }.should eql(Hamster.hash)
+          end
+        end
+
+        context "on a large hash, with many combinations of input" do
+          array = 1000.times.collect { |n| [n, n] }
+          hash  = Hamster::Hash.new(array)
+          [0, 10, 100, 200, 500, 800, 900, 999, 1000].each do |threshold|
+            result = hash.send(method) { |k,v| k >= threshold}
+            result.size.should == threshold
+            0.upto(threshold-1) { |n| result.key?(n).should == true }
+            threshold.upto(1000) { |n| result.key?(n).should == false }
           end
         end
       end
