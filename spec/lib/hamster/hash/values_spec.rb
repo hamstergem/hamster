@@ -4,26 +4,22 @@ require "hamster/set"
 
 describe Hamster::Hash do
   describe "#values" do
-    before do
-      hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-      @result = hash.values
-    end
+    let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+    let(:result) { hash.values }
 
     it "returns the keys as a Vector" do
-      @result.should be_a Hamster::Vector
-      @result.to_a.sort.should == %w(aye bee see)
-    end
-  end
-
-  describe "#values with duplicates" do
-    before do
-      hash = Hamster.hash(:A => 15, :B => 19, :C => 15)
-      @result = hash.values
+      result.should be_a Hamster::Vector
+      result.to_a.sort.should == %w(aye bee see)
     end
 
-    it "returns the keys as a list" do
-      @result.should be_a Hamster::Vector
-      @result.to_a.sort.should == [15, 15, 19]
+    context "with duplicates" do
+      let(:hash) { Hamster.hash(:A => 15, :B => 19, :C => 15) }
+      let(:result) { hash.values }
+
+      it "returns the keys as a Vector" do
+        result.class.should be(Hamster::Vector)
+        result.to_a.sort.should == [15, 15, 19]
+      end
     end
   end
 end
