@@ -539,12 +539,6 @@ module Hamster
       nil
     end
 
-    def pretty_print(pp)
-      pp.group(1, "#{self.class}[", "]") do
-        pp.seplist(self) { |obj| obj.pretty_print(pp) }
-      end
-    end
-
     def to_a
       if @levels == 0
         @root

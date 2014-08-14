@@ -307,12 +307,6 @@ module Hamster
     def_delegator :self, :dup, :nub
     def_delegator :self, :dup, :remove_duplicates
 
-    def pretty_print(pp)
-      pp.group(1, "#{self.class}[", "]") do
-        pp.seplist(self) { |obj| obj.pretty_print(pp) }
-      end
-    end
-
     private
 
     def subsequence(from, length)
