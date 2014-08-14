@@ -6,7 +6,7 @@ describe Hamster::Hash do
     context "with flatten depth of zero" do
       it "returns a vector of keys/value" do
         hash = Hamster.hash(a: 1, b: 2)
-        hash.flatten(0).should eql(V[[:a, 1], [:b, 2]])
+        hash.flatten(0).sort.should eql(V[[:a, 1], [:b, 2]])
       end
     end
 
