@@ -33,6 +33,16 @@ describe Hamster::Hash do
               hash.send(method) { |key, value| key == "D" && value == "dee" }.should == false
             end
           end
+
+          it "propagates exceptions raised in the block" do
+            -> { hash.any? { |k,v| raise "help" } }.should raise_error(RuntimeError)
+          end
+
+          it "stops iterating as soon as the block returns true" do
+            yielded = []
+            hash.any? { |k,v| yielded << k; true }
+            yielded.size.should == 1
+          end
         end
 
         context "with no block" do
