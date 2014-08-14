@@ -92,6 +92,12 @@ module Hamster
       Set.new(self)
     end
 
+    def inspect
+      result = "#{self.class}["
+      each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
+      result << "]"
+    end
+
     def_delegator :self, :each, :foreach
     def_delegator :self, :all?, :forall?
     def_delegator :self, :any?, :exist?

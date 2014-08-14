@@ -539,12 +539,6 @@ module Hamster
       nil
     end
 
-    def inspect
-      result = "#{self.class}["
-      each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
-      result << "]"
-    end
-
     def pretty_print(pp)
       pp.group(1, "#{self.class}[", "]") do
         pp.seplist(self) { |obj| obj.pretty_print(pp) }
