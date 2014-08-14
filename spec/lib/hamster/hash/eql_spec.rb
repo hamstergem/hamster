@@ -2,37 +2,25 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
+  let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+
   describe "#eql?" do
-    describe "returns false when comparing with" do
-      before do
-        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-      end
+    it "returns false when comparing with a standard hash" do
+      hash.eql?("A" => "aye", "B" => "bee", "C" => "see").should == false
+    end
 
-      it "a standard hash" do
-        @hash.eql?("A" => "aye", "B" => "bee", "C" => "see").should == false
-      end
-
-      it "an arbitrary object" do
-        @hash.eql?(Object.new).should == false
-      end
+    it "returns false when comparing with an arbitrary object" do
+      hash.eql?(Object.new).should == false
     end
   end
 
   describe "#==" do
-    describe "returns true when comparing with" do
-      before do
-        @hash = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-      end
-
-      it "a standard hash" do
-        (@hash == {"A" => "aye", "B" => "bee", "C" => "see"}).should == true
-      end
+    it "returns true when comparing with a standard hash" do
+      (hash == {"A" => "aye", "B" => "bee", "C" => "see"}).should == true
     end
 
-    describe "returns false when comparing with" do
-      it "an arbitrary object" do
-        (@hash == Object.new).should == false
-      end
+    it "returns false when comparing with an arbitrary object" do
+      (hash == Object.new).should == false
     end
   end
 
@@ -49,22 +37,22 @@ describe Hamster::Hash do
         [{ "A" => "aye", "B" => "bee", "C" => "see" }, { "A" => "aye", "B" => "bee", "C" => "see" }, true],
         [{ "C" => "see", "A" => "aye", "B" => "bee" }, { "A" => "aye", "B" => "bee", "C" => "see" }, true],
       ].each do |a, b, expected|
-
         describe "returns #{expected.inspect}" do
-          before do
-            @a = Hamster.hash(a)
-            @b = Hamster.hash(b)
-          end
-
           it "for #{a.inspect} and #{b.inspect}" do
-            @a.send(method, @b).should == expected
+            Hamster.hash(a).send(method, Hamster.hash(b)).should == expected
           end
 
           it "for #{b.inspect} and #{a.inspect}" do
-            @b.send(method, @a).should == expected
+            Hamster.hash(b).send(method, Hamster.hash(a)).should == expected
           end
         end
       end
     end
+  end
+
+  it "returns true on a large hash which is modified and then modified back again" do
+    hash = Hamster::Hash.new((1..1000).zip(2..1001))
+    hash.put('a', 1).delete('a').should == hash
+    hash.put('b', 2).delete('b').should eql(hash)
   end
 end
