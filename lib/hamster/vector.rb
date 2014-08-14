@@ -70,7 +70,6 @@ module Hamster
       update_root(@size, item)
     end
     def_delegator :self, :add, :<<
-    def_delegator :self, :add, :cons
     def_delegator :self, :add, :conj
     def_delegator :self, :add, :conjoin
 
