@@ -3,68 +3,44 @@ require "hamster/hash"
 
 describe Hamster::Hash do
   describe "#fetch" do
-    describe "with no default provided" do
-      describe "when the key exists" do
-        before do
-          @hash = Hamster.hash("A" => "aye")
-        end
-
+    context "with no default provided" do
+      context "when the key exists" do
         it "returns the value associated with the key" do
-          @hash.fetch("A").should == "aye"
+          Hamster.hash("A" => "aye").fetch("A").should == "aye"
         end
       end
 
-      describe "when the key does not exist" do
-        before do
-          @hash = Hamster.hash("A" => "aye")
-        end
-
+      context "when the key does not exist" do
         it "raises a KeyError" do
-          -> { @hash.fetch("B") }.should raise_error(KeyError)
+          -> { Hamster.hash("A" => "aye").fetch("B") }.should raise_error(KeyError)
         end
       end
     end
 
-    describe "with a default value" do
-      describe "when the key exists" do
-        before do
-          @hash = Hamster.hash("A" => "aye")
-        end
-
+    context "with a default value" do
+      context "when the key exists" do
         it "returns the value associated with the key" do
-          @hash.fetch("A", "default").should == "aye"
+          Hamster.hash("A" => "aye").fetch("A", "default").should == "aye"
         end
       end
 
-      describe "when the key does not exist" do
-        before do
-          @hash = Hamster.hash("A" => "aye")
-        end
-
+      context "when the key does not exist" do
         it "returns the default value" do
-          @hash.fetch("B", "default").should == "default"
+          Hamster.hash("A" => "aye").fetch("B", "default").should == "default"
         end
       end
     end
 
-    describe "with a default block" do
-      describe "when the key exists" do
-        before do
-          @hash = Hamster.hash("A" => "aye")
-        end
-
+    context "with a default block" do
+      context "when the key exists" do
         it "returns the value associated with the key" do
-          @hash.fetch("A") { "default".upcase }.should == "aye"
+          Hamster.hash("A" => "aye").fetch("A") { "default".upcase }.should == "aye"
         end
       end
 
       describe "when the key does not exist" do
-        before do
-          @hash = Hamster.hash("A" => "aye")
-        end
-
         it "returns the default value" do
-          @hash.fetch("B") { "default".upcase }.should == "DEFAULT"
+          Hamster.hash("A" => "aye").fetch("B") { "default".upcase }.should == "DEFAULT"
         end
       end
     end
