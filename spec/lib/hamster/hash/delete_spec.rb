@@ -3,42 +3,36 @@ require "hamster/hash"
 
 describe Hamster::Hash do
   describe "#delete" do
-    before do
-      @original = Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
-    end
+    let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
 
     context "with an existing key" do
-      before do
-        @result = @original.delete("B")
-      end
+      let(:result) { hash.delete("B") }
 
       it "preserves the original" do
-        @original.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+        hash.should eql(Hamster.hash("A" => "aye", "B" => "bee", "C" => "see"))
       end
 
       it "returns a copy with the remaining key/value pairs" do
-        @result.should == Hamster.hash("A" => "aye", "C" => "see")
+        result.should eql(Hamster.hash("A" => "aye", "C" => "see"))
       end
     end
 
     context "with a non-existing key" do
-      before do
-        @result = @original.delete("D")
-      end
+      let(:result) { hash.delete("D") }
 
       it "preserves the original values" do
-        @original.should == Hamster.hash("A" => "aye", "B" => "bee", "C" => "see")
+        hash.should eql(Hamster.hash("A" => "aye", "B" => "bee", "C" => "see"))
       end
 
       it "returns self" do
-        @result.should equal(@original)
+        result.should equal(hash)
       end
     end
 
     context "when removing the last key" do
       context "from a Hash with no default block" do
         it "returns the canonical empty Hash" do
-          @original.delete('A').delete('B').delete('C').should be(Hamster::EmptyHash)
+          hash.delete('A').delete('B').delete('C').should be(Hamster::EmptyHash)
         end
       end
     end
