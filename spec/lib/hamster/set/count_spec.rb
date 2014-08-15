@@ -11,32 +11,27 @@ describe Hamster::Set do
       [[1, 2, 3, 4], 2],
       [[1, 2, 3, 4, 5], 3],
     ].each do |values, expected|
-
       describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.set(*values)
-        end
+        let(:set) { Hamster.set(*values) }
 
-        describe "with a block" do
-          before do
-            @result = @original.count(&:odd?)
-          end
-
+        context "with a block" do
           it "returns #{expected.inspect}" do
-            @result.should == expected
+            set.count(&:odd?).should == expected
           end
         end
 
-        describe "without a block" do
-          before do
-            @result = @original.count
-          end
-
+        context "without a block" do
           it "returns length" do
-            @result.should == @original.length
+            set.count.should == set.length
           end
         end
       end
+    end
+
+    it "works on large sets" do
+      set = Hamster::Set.new(1..2000)
+      set.count.should == 2000
+      set.count(&:odd?).should == 1000
     end
   end
 end
