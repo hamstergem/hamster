@@ -8,25 +8,21 @@ describe Hamster::Set do
         [[], [], []],
         [["A"], [], ["A"]],
         [["A"], ["A"], ["A"]],
+        [[], ["A"], ["A"]],
         [%w[A B C], [], %w[A B C]],
+        [%w[A B C], %w[A B C], %w[A B C]],
+        [%w[A B C], %w[X Y Z], %w[A B C X Y Z]]
       ].each do |a, b, expected|
-
         describe "returns #{expected.inspect}" do
-          before do
-            @a = Hamster.set(*a)
-            @b = Hamster.set(*b)
-          end
+          let(:set_a) { Hamster.set(*a) }
+          let(:set_b) { Hamster.set(*b) }
 
           it "for #{a.inspect} and #{b.inspect}"  do
-            @result = @a.send(method, @b)
+            set_a.send(method, set_b).should == Hamster.set(*expected)
           end
 
           it "for #{b.inspect} and #{a.inspect}"  do
-            @result = @b.send(method, @a)
-          end
-
-          after  do
-            @result.should == Hamster.set(*expected)
+            set_b.send(method, set_a).should == Hamster.set(*expected)
           end
         end
       end
