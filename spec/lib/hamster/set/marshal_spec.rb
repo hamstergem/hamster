@@ -18,7 +18,7 @@ describe Hamster::Set do
     end
 
     it "can survive dumping and loading into a new process" do
-      reloaded_hash.should == Hamster.set(:one, :two)
+      reloaded_hash.should eql(Hamster.set(:one, :two))
     end
 
     it "is still possible to test items by key after loading" do
