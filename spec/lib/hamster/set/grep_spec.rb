@@ -50,7 +50,7 @@ describe Hamster::Set do
     end
 
     describe "with a block" do
-      let(:block) { ->(item) { item.downcase } }
+      let(:block) { ->(item) { item.downcase }}
 
       include_examples "check different types of inputs"
     end
