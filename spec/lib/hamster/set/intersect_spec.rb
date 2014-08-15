@@ -16,7 +16,6 @@ describe Hamster::Set do
       [%w[A B C], %w[A B C D], true],
       [%w[D E F G], %w[A B C], false],
     ].each do |a, b, expected|
-
       describe "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}" do
           Hamster.set(*a).intersect?(Hamster.set(*b)).should be(expected)
