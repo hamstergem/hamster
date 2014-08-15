@@ -4,43 +4,45 @@ require "hamster/set"
 describe Hamster::Set do
   [:remove, :reject, :delete_if].each do |method|
     describe "##{method}" do
-      before do
-        @original = Hamster.set("A", "B", "C")
-      end
+      let(:set) { Hamster.set("A", "B", "C") }
 
-      describe "when nothing matches" do
-        before do
-          @result = @original.send(method) { |item| false }
-        end
-
+      context "when nothing matches" do
         it "returns self" do
-          @result.should equal(@original)
+          set.send(method) { |item| false }.should equal(set)
         end
       end
 
-      describe "when only some things match" do
-        describe "with a block" do
-          before do
-            @result = @original.send(method) { |item| item == "A" }
-          end
+      context "when only some things match" do
+        context "with a block" do
+          let(:result) { set.send(method) { |item| item == "A" }}
 
           it "preserves the original" do
-            @original.should == Hamster.set("A", "B", "C")
+            result
+            set.should eql(Hamster.set("A", "B", "C"))
           end
 
           it "returns a set with the matching values" do
-            @result.should == Hamster.set("B", "C")
+            result.should eql(Hamster.set("B", "C"))
           end
         end
 
-        describe "with no block" do
-          before do
-            @result = @original.send(method)
-          end
-
+        context "with no block" do
           it "returns self" do
-            @result.class.should be(Enumerator)
-            @result.each { |item| item == "A" }.should == Hamster.set("B", "C")
+            set.send(method).class.should be(Enumerator)
+            set.send(method).each { |item| item == "A" }.should == Hamster.set("B", "C")
+          end
+        end
+      end
+
+      context "on a large set, with many combinations of input" do
+        it "still works" do
+          array = (1..1000).to_a
+          set   = Hamster::Set.new(array)
+          [0, 10, 100, 200, 500, 800, 900, 999, 1000].each do |threshold|
+            result = set.send(method) { |item| item > threshold }
+            result.size.should == threshold
+            1.upto(threshold)  { |n| result.should include(n) }
+            (threshold+1).upto(1000) { |n| result.should_not include(n) }
           end
         end
       end
