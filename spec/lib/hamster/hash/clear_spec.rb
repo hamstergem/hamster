@@ -13,6 +13,7 @@ describe Hamster::Hash do
         let(:result)   { original.clear }
 
         it "preserves the original" do
+          result
           original.should eql(Hamster.hash(*values))
         end
 
