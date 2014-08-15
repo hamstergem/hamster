@@ -17,14 +17,9 @@ describe Hamster::Set do
         [%w[A B C], %w[A B C D], false],
         [%w[A B C D], %w[A B C], true],
       ].each do |a, b, expected|
-
         describe "for #{a.inspect} and #{b.inspect}" do
-          before do
-            @result = Hamster.set(*a).send(method, Hamster.set(*b))
-          end
-
           it "returns #{expected}"  do
-            @result.should == expected
+            Hamster.set(*a).send(method, Hamster.set(*b)).should == expected
           end
         end
       end
@@ -46,14 +41,9 @@ describe Hamster::Set do
         [%w[A B C], %w[A B C D], false],
         [%w[A B C D], %w[A B C], true],
       ].each do |a, b, expected|
-
         describe "for #{a.inspect} and #{b.inspect}" do
-          before do
-            @result = Hamster.set(*a).send(method, Hamster.set(*b))
-          end
-
           it "returns #{expected}"  do
-            @result.should == expected
+            Hamster.set(*a).send(method, Hamster.set(*b)).should == expected
           end
         end
       end
