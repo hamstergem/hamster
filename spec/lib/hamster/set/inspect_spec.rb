@@ -7,51 +7,41 @@ describe Hamster::Set do
       [[], "Hamster::Set[]"],
       [["A"], 'Hamster::Set["A"]'],
     ].each do |values, expected|
-
       describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.set(*values)
-          @result   = @original.inspect
-        end
+        let(:set) { Hamster.set(*values) }
 
         it "returns #{expected.inspect}" do
-          @result.should == expected
+          set.inspect.should == expected
         end
 
         it "returns a string which can be eval'd to get an equivalent set" do
-          eval(@result).should eql(@original)
+          eval(set.inspect).should eql(set)
         end
       end
     end
 
     describe 'on ["A", "B", "C"]' do
-      before do
-        @original = Hamster.set("A", "B", "C")
-        @result   = @original.inspect
-      end
+      let(:set) { Hamster.set("A", "B", "C") }
 
       it "returns a programmer-readable representation of the set contents" do
-        @result.should match(/^Hamster::Set\["[A-C]", "[A-C]", "[A-C]"\]$/)
+        set.inspect.should match(/^Hamster::Set\["[A-C]", "[A-C]", "[A-C]"\]$/)
       end
 
       it "returns a string which can be eval'd to get an equivalent set" do
-        eval(@result).should eql(@original)
+        eval(set.inspect).should eql(set)
       end
     end
 
     context "from a subclass" do
-      before do
-        MySet     = Class.new(Hamster::Set)
-        @original = MySet[1, 2]
-        @result   = @original.inspect
-      end
+      MySet = Class.new(Hamster::Set)
+      let(:set) { MySet[1, 2] }
 
       it "returns a programmer-readable representation of the set contents" do
-        @result.should match(/^MySet\[[1-2], [1-2]\]$/)
+        set.inspect.should match(/^MySet\[[1-2], [1-2]\]$/)
       end
 
       it "returns a string which can be eval'd to get an equivalent set" do
-        eval(@result).should eql(@original)
+        eval(set.inspect).should eql(set)
       end
     end
   end
