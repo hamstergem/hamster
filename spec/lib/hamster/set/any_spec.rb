@@ -19,7 +19,6 @@ describe Hamster::Set do
           let(:set) { Hamster.set("A", "B", "C", nil) }
 
           ["A", "B", "C", nil].each do |value|
-
             it "returns true if the block ever returns true (#{value.inspect})" do
               set.send(method) { |item| item == value }.should == true
             end
