@@ -4,24 +4,20 @@ require "hamster/set"
 describe Hamster::Set do
   [:head, :first].each do |method|
     describe "##{method}" do
-      describe "on an empty set" do
-        before do
-          @result = Hamster.set.send(method)
-        end
-
+      context "on an empty set" do
         it "returns nil" do
-          @returns.should be_nil
+          Hamster.set.send(method).should be_nil
         end
       end
 
-      describe "on a non-empty set" do
-        before do
-          @result = Hamster.set("A", "B", "C").send(method)
-        end
-
+      context "on a non-empty set" do
         it "returns an arbitrary value from the set" do
-          %w[A B C].should include(@result)
+          %w[A B C].should include(Hamster.set("A", "B", "C").send(method))
         end
+      end
+
+      it "returns nil if only member of set is nil" do
+        Hamster.set(nil).send(method).should be(nil)
       end
     end
   end
