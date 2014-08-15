@@ -14,19 +14,16 @@ describe Hamster::Set do
       [["A", nil, "C"], %w[A C]],
       [[nil, "B", nil], ["B"]],
     ].each do |values, expected|
-
       describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.set(*values)
-          @result = @original.compact
-        end
+        let(:set) { Hamster.set(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.set(*values)
+          set.compact
+          set.should eql(Hamster.set(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.set(*expected)
+          set.compact.should eql(Hamster.set(*expected))
         end
       end
     end
