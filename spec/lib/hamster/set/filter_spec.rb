@@ -4,68 +4,68 @@ require "hamster/set"
 describe Hamster::Set do
   [:filter, :select, :find_all].each do |method|
     describe "##{method}" do
-      before do
-        @original = Hamster.set("A", "B", "C")
-      end
+      let(:set) { Hamster.set("A", "B", "C") }
 
-      describe "when everything matches" do
-        before do
-          @result = @original.send(method) { |item| true }
-        end
-
+      context "when everything matches" do
         it "returns self" do
-          @result.should equal(@original)
+          set.send(method) { |item| true }.should equal(set)
         end
       end
 
-      describe "when only some things match" do
-        describe "with a block" do
-          before do
-            @result = @original.send(method) { |item| item == "A" }
-          end
+      context "when only some things match" do
+        context "with a block" do
+          let(:result) { set.send(method) { |item| item == "A" }}
 
           it "preserves the original" do
-            @original.should == Hamster.set("A", "B", "C")
+            result
+            set.should eql(Hamster.set("A", "B", "C"))
           end
 
           it "returns a set with the matching values" do
-            @result.should == Hamster.set("A")
+            result.should eql(Hamster.set("A"))
           end
         end
 
-        describe "with no block" do
-          before do
-            @result = @original.send(method)
-          end
-
+        context "with no block" do
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each { |item| item == "A" }.should == Hamster.set("A")
+            set.send(method).class.should be(Enumerator)
+            set.send(method).each { |item| item == "A" }.should eql(Hamster.set("A"))
           end
         end
       end
 
-      describe "when nothing matches" do
-        before do
-          @result = @original.send(method) { |item| false }
-        end
+      context "when nothing matches" do
+        let(:result) { set.send(method) { |item| false }}
 
         it "preserves the original" do
-          @original.should == Hamster.set("A", "B", "C")
+          result
+          set.should eql(Hamster.set("A", "B", "C"))
         end
 
         it "returns the canonical empty set" do
-          @result.should equal(Hamster::EmptySet)
+          result.should equal(Hamster::EmptySet)
         end
       end
 
       context "from a subclass" do
         it "returns an instance of the same class" do
-          @subclass = Class.new(Hamster::Set)
-          @instance = @subclass.new(['A', 'B', 'C'])
-          @instance.filter { true }.class.should be(@subclass)
-          @instance.filter { false }.class.should be(@subclass)
-          @instance.filter { rand(2) == 0 }.class.should be(@subclass)
+          subclass = Class.new(Hamster::Set)
+          instance = subclass.new(['A', 'B', 'C'])
+          instance.filter { true }.class.should be(subclass)
+          instance.filter { false }.class.should be(subclass)
+          instance.filter { rand(2) == 0 }.class.should be(subclass)
+        end
+      end
+
+      it "works on a large hash, with many combinations of input" do
+        items = (1..1000).to_a
+        original = Hamster::Set.new(items)
+        30.times do
+          threshold = rand(1000)
+          result    = original.send(method) { |item| item <= threshold }
+          result.size.should == threshold
+          result.each { |item| item.should <= threshold }
+          (threshold+1).upto(1000) { |item| result.should_not include(item) }
         end
       end
     end
