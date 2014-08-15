@@ -35,13 +35,15 @@ describe Hamster::Hash do
         end
 
         context "on a large hash, with many combinations of input" do
-          array = 1000.times.collect { |n| [n, n] }
-          hash  = Hamster::Hash.new(array)
-          [0, 10, 100, 200, 500, 800, 900, 999, 1000].each do |threshold|
-            result = hash.send(method) { |k,v| k >= threshold}
-            result.size.should == threshold
-            0.upto(threshold-1) { |n| result.key?(n).should == true }
-            threshold.upto(1000) { |n| result.key?(n).should == false }
+          it "still works" do
+            array = 1000.times.collect { |n| [n, n] }
+            hash  = Hamster::Hash.new(array)
+            [0, 10, 100, 200, 500, 800, 900, 999, 1000].each do |threshold|
+              result = hash.send(method) { |k,v| k >= threshold}
+              result.size.should == threshold
+              0.upto(threshold-1) { |n| result.key?(n).should == true }
+              threshold.upto(1000) { |n| result.key?(n).should == false }
+            end
           end
         end
       end
