@@ -26,14 +26,21 @@ describe Hamster::Set do
     end
 
     context "with a block" do
-      let(:items) { ::Set.new }
+      let(:items)  { ::Set.new }
       let(:values) { ::Set.new(%w[A B C]) }
-      let(:block) { ->(item) { items << item } }
+      let(:block)  { ->(item) { items << item } }
       before(:each) { each }
 
       it "yields all values" do
         expect(items).to eq(values)
       end
+    end
+
+    it "yields both of a pair of colliding keys" do
+      set = Hamster::Set[DeterministicHash.new('a', 1010), DeterministicHash.new('b', 1010)]
+      yielded = []
+      set.each { |obj| yielded << obj }
+      yielded.map(&:value).sort.should == ['a', 'b']
     end
   end
 end
