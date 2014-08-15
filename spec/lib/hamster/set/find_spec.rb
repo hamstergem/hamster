@@ -15,22 +15,18 @@ describe Hamster::Set do
         [["A", "B", nil], nil, nil],
         [["A", "B", nil], "C", nil],
       ].each do |values, item, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @set = Hamster.set(*values)
-          end
-
-          describe "with a block" do
-
+          context "with a block" do
             it "returns #{expected.inspect}" do
-              @set.send(method) { |x| x == item }.should == expected
+              Hamster.set(*values).send(method) { |x| x == item }.should == expected
             end
           end
 
-          describe "without a block" do
+          context "without a block" do
             it "returns an Enumerator" do
-              @set.send(method).class.should be(Enumerator)
+              result = Hamster.set(*values).send(method)
+              result.class.should be(Enumerator)
+              result.each { |x| x == item}.should == expected
             end
           end
         end
