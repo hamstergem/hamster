@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  describe "new" do
+  describe ".new" do
     it "initializes a new set" do
       set = Hamster::Set.new([1,2,3])
       set.size.should be(3)
@@ -16,17 +16,11 @@ describe Hamster::Set do
     end
 
     context "from a subclass" do
-      before do
-        @subclass = Class.new(Hamster::Set)
-        @instance = @subclass.new(["some", "values"])
-      end
-
-      it "returns an instance of the subclass" do
-        @instance.class.should be @subclass
-      end
-
-      it "returns a frozen instance" do
-        @instance.frozen?.should be true
+      it "returns a frozen instance of the subclass" do
+        subclass = Class.new(Hamster::Set)
+        instance = subclass.new(["some", "values"])
+        instance.class.should be subclass
+        instance.should be_frozen
       end
     end
 
