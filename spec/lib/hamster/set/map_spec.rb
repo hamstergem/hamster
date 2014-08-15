@@ -4,39 +4,29 @@ require "hamster/set"
 describe Hamster::Set do
   [:map, :collect].each do |method|
     describe "##{method}" do
-      describe "when empty" do
-        before do
-          @original = Hamster.set
-          @mapped = @original.send(method) {}
-        end
-
+      context "when empty" do
         it "returns self" do
-          @mapped.should equal(@original)
+          Hamster.set.send(method) {}.should equal(Hamster.set)
         end
       end
 
-      describe "when not empty" do
-        before do
-          @original = Hamster.set("A", "B", "C")
-        end
+      context "when not empty" do
+        let(:set) { Hamster.set("A", "B", "C") }
 
-        describe "with a block" do
-          before do
-            @mapped = @original.send(method, &:downcase)
-          end
-
+        context "with a block" do
           it "preserves the original values" do
-            @original.should == Hamster.set("A", "B", "C")
+            set.send(method, &:downcase)
+            set.should eql(Hamster.set("A", "B", "C"))
           end
 
           it "returns a new set with the mapped values" do
-            @mapped.should == Hamster.set("a", "b", "c")
+            set.send(method, &:downcase).should eql(Hamster.set("a", "b", "c"))
           end
         end
 
-        describe "with no block" do
+        context "with no block" do
           before do
-            @result = @original.send(method)
+            @result = set.send(method)
           end
 
           it "returns an Enumerator" do
@@ -44,6 +34,30 @@ describe Hamster::Set do
             @result.each(&:downcase).should == Hamster.set('a', 'b', 'c')
           end
         end
+      end
+
+      context "from a subclass" do
+        it "returns an instance of the subclass" do
+          subclass = Class.new(Hamster::Set)
+          instance = subclass['a', 'b']
+          instance.map { |item| item.upcase }.class.should be(subclass)
+        end
+      end
+
+      context "when multiple items map to the same value" do
+        it "filters out the duplicates" do
+          set = Hamster::Set.new('aa'..'zz')
+          result = set.map { |s| s[0] }
+          result.should eql(Hamster::Set.new('a'..'z'))
+          result.size.should == 26
+        end
+      end
+
+      it "works on large sets" do
+        set = Hamster::Set.new(1..1000)
+        result = set.map { |x| x * 10 }
+        result.size.should == 1000
+        1.upto(1000) { |n| result.should include(n * 10) }
       end
     end
   end
