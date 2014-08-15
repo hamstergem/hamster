@@ -9,16 +9,13 @@ describe Hamster::Set do
         [[1], 10, 9],
         [[1, 2, 3], 10, 4],
       ].each do |values, initial, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @set = Hamster.set(*values)
-          end
+          let(:set) { Hamster.set(*values) }
 
-          describe "with an initial value of #{initial}" do
-            describe "and a block" do
+          context "with an initial value of #{initial}" do
+            context "and a block" do
               it "returns #{expected.inspect}" do
-                @set.send(method, initial) { |memo, item| memo - item }.should == expected
+                set.send(method, initial) { |memo, item| memo - item }.should == expected
               end
             end
           end
@@ -30,16 +27,13 @@ describe Hamster::Set do
         [[1], 1],
         [[1, 2, 3], 6],
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @set = Hamster.set(*values)
-          end
+          let(:set) { Hamster.set(*values) }
 
-          describe "with no initial value" do
-            describe "and a block" do
+          context "with no initial value" do
+            context "and a block" do
               it "returns #{expected.inspect}" do
-                @set.send(method) { |memo, item| memo + item }.should == expected
+                set.send(method) { |memo, item| memo + item }.should == expected
               end
             end
           end
