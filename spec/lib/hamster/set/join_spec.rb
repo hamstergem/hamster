@@ -9,19 +9,16 @@ describe Hamster::Set do
         [["A"], "A"],
         [[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)], "A|B|C"]
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @original = Hamster.set(*values)
-            @result = @original.join("|")
-          end
+          let(:set) { Hamster.set(*values) }
 
           it "preserves the original" do
-            @original.should eql(Hamster.set(*values))
+            set.join("|")
+            set.should eql(Hamster.set(*values))
           end
 
           it "returns #{expected.inspect}" do
-            @result.should == expected
+            set.join("|").should eql(expected)
           end
         end
       end
@@ -33,35 +30,29 @@ describe Hamster::Set do
         [["A"], "A"],
         [[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)], "ABC"]
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @original = Hamster.set(*values)
-            @result = @original.join
-          end
+          let(:set) { Hamster.set(*values) }
 
           it "preserves the original" do
-            @original.should eql(Hamster.set(*values))
+            set.join
+            set.should eql(Hamster.set(*values))
           end
 
           it "returns #{expected.inspect}" do
-            @result.should == expected
+            set.join.should eql(expected)
           end
         end
       end
     end
 
     context "without a separator (with global default separator set)" do
-      before do
-        $, = '**'
-        @set = Hamster::Set[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)]
-        @expected = "A**B**C"
-      end
+      before { $, = '**' }
+      let(:set) { Hamster::Set[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)] }
       after  { $, = nil }
 
       describe "on #{@set.inspect}" do
         it "returns #{@expected.inspect}" do
-          @set.join.should == @expected
+          set.join.should == "A**B**C"
         end
       end
     end
