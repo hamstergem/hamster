@@ -16,7 +16,6 @@ describe Hamster::Set do
       [%w[A B C], %w[A B C D], false],
       [%w[D E F G], %w[A B C], true],
     ].each do |a, b, expected|
-
       describe "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}" do
           Hamster.set(*a).disjoint?(Hamster.set(*b)).should be(expected)
