@@ -13,46 +13,38 @@ describe Hamster::Set do
       [[3, 4], [3], [4]],
       [[4], [], [4]],
     ].each do |values, expected_matches, expected_remainder|
-
       describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.set(*values)
-        end
+        let(:set) { Hamster.set(*values) }
 
         describe "with a block" do
-          before do
-            @result = @original.partition(&:odd?)
-            @matches = @result.first
-            @remainder = @result.last
-          end
+          let(:result)  { set.partition(&:odd?) }
+          let(:matches) { result.first }
+          let(:remainder) { result.last }
 
           it "preserves the original" do
-            @original.should eql(Hamster.set(*values))
+            result
+            set.should eql(Hamster.set(*values))
           end
 
           it "returns a frozen array with two items" do
-            @result.class.should be(Array)
-            @result.should be_frozen
-            @result.size.should be(2)
+            result.class.should be(Array)
+            result.should be_frozen
+            result.size.should be(2)
           end
 
           it "correctly identifies the matches" do
-            @matches.should eql(Hamster.set(*expected_matches))
+            matches.should eql(Hamster.set(*expected_matches))
           end
 
           it "correctly identifies the remainder" do
-            @remainder.should eql(Hamster.set(*expected_remainder))
+            remainder.should eql(Hamster.set(*expected_remainder))
           end
         end
 
         describe "without a block" do
-          before do
-            @result = @original.partition
-          end
-
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each(&:odd?).should eql([Hamster::Set.new(expected_matches), Hamster::Set.new(expected_remainder)])
+            set.partition.class.should be(Enumerator)
+            set.partition.each(&:odd?).should eql([Hamster::Set.new(expected_matches), Hamster::Set.new(expected_remainder)])
           end
         end
       end
