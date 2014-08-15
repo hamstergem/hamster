@@ -8,15 +8,11 @@ describe Hamster::Set do
       ["A"],
       %w[A B C],
     ].each do |values|
-
       describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.set(*values)
-          @result = @original.to_set
-        end
+        let(:set) { Hamster.set(*values) }
 
         it "returns self" do
-          @result.should equal(@original)
+          set.to_set.should equal(set)
         end
       end
     end
