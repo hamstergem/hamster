@@ -8,25 +8,23 @@ describe Hamster::Set do
         [[], true],
         [["A"], false],
         [%w[A B C], false],
+        [[nil], false],
+        [[false], false]
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @set = Hamster.set(*values)
-          end
-
           it "returns #{expected.inspect}" do
-            @set.send(method).should == expected
+            Hamster.set(*values).send(method).should == expected
           end
         end
       end
     end
   end
 
-  describe "empty" do
+  describe ".empty" do
     it "returns the canonical empty set" do
-      Hamster::Set.empty.size.should be(0)
+      Hamster::Set.empty.should be_empty
       Hamster::Set.empty.object_id.should be(Hamster::Set.empty.object_id)
+      Hamster::Set.empty.should be(Hamster::EmptySet)
     end
 
     context "from a subclass" do
