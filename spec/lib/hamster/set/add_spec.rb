@@ -50,30 +50,26 @@ describe Hamster::Set do
 
   describe "#add?" do
     context "with a unique value" do
-      before do
-        @result = @original.add?("D")
-      end
+      let(:result) { original.add?("D") }
 
       it "preserves the original" do
-        @original.should eql(Hamster.set("A", "B", "C"))
+        original.should eql(Hamster.set("A", "B", "C"))
       end
 
       it "returns a copy with the superset of values" do
-        @result.should eql(Hamster.set("A", "B", "C", "D"))
+        result.should eql(Hamster.set("A", "B", "C", "D"))
       end
     end
 
     context "with a duplicate value" do
-      before do
-        @result = @original.add?("C")
-      end
+      let(:result) { original.add?("C") }
 
       it "preserves the original values" do
-        @original.should eql(Hamster.set("A", "B", "C"))
+        original.should eql(Hamster.set("A", "B", "C"))
       end
 
       it "returns false" do
-        @result.should equal(false)
+        result.should equal(false)
       end
     end
   end
