@@ -4,26 +4,20 @@ require "hamster/set"
 describe Hamster::Set do
   [:to_a, :entries].each do |method|
     describe "##{method}" do
-      [
-        [],
-        ["A"],
-        %w[A B C],
-      ].each do |values|
+      ('a'..'z').each do |letter|
+        let(:values) { ('a'..letter).to_a }
+        let(:set) { Hamster::Set.new(values) }
+        let(:result) { set.send(method) }
 
-        describe "on #{values.inspect}" do
-          before do
-            @set = Hamster.set(*values)
-            @result = @set.send(method)
-          end
-
-          it "returns #{values.inspect}" do
-            @result.sort.should == values.sort
+        describe "on 'a'..'#{letter}'" do
+          it "returns an equivalent array" do
+            result.sort.should == values.sort
           end
 
           it "returns a mutable array" do
-            expect(@result.last).to_not eq("The End")
-            @result << "The End"
-            @result.last.should == "The End"
+            expect(result.last).to_not eq("The End")
+            result << "The End"
+            result.last.should == "The End"
           end
         end
       end
