@@ -3,38 +3,38 @@ require "hamster/set"
 
 describe Hamster::Set do
   describe "#none?" do
-    describe "when empty" do
-      before do
-        @set = Hamster.set
-      end
-
+    context "when empty" do
       it "with a block returns true" do
-        @set.none? {}.should == true
+        Hamster.set.none? {}.should == true
       end
 
       it "with no block returns true" do
-        @set.none?.should == true
+        Hamster.set.none?.should == true
       end
     end
 
-    describe "when not empty" do
-      describe "with a block" do
-        before do
-          @set = Hamster.set("A", "B", "C", nil)
-        end
+    context "when not empty" do
+      context "with a block" do
+        let(:set) { Hamster.set("A", "B", "C", nil) }
 
         ["A", "B", "C", nil].each do |value|
           it "returns false if the block ever returns true (#{value.inspect})" do
-            @set.none? { |item| item == value }.should == false
+            set.none? { |item| item == value }.should == false
           end
         end
 
         it "returns true if the block always returns false" do
-          @set.none? { |item| item == "D" }.should == true
+          set.none? { |item| item == "D" }.should == true
+        end
+
+        it "stops iterating as soon as the block returns true" do
+          yielded = []
+          set.none? { |item| yielded << item; true }
+          yielded.size.should == 1
         end
       end
 
-      describe "with no block" do
+      context "with no block" do
         it "returns false if any value is truthy" do
           Hamster.set(nil, false, true, "A").none?.should == false
         end
