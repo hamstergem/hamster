@@ -6,22 +6,23 @@ describe Hamster::Vector do
     [
       [[], 10, []],
       [["A"], 10, []],
+      [["A"], 1, []],
+      [["A"], 0, ["A"]],
       [%w[A B C], 0, %w[A B C]],
       [%w[A B C], 2, ["C"]],
+      [(1..32), 3, (4..32)],
+      [(1..33), 32, [33]]
     ].each do |values, number, expected|
-
       describe "#{number} from #{values.inspect}" do
-        before do
-          @original = Hamster.vector(*values)
-          @result = @original.drop(number)
-        end
+        let(:vector) { Hamster.vector(*values) }
 
         it "preserves the original" do
-          @original.should eql(Hamster.vector(*values))
+          vector.drop(number)
+          vector.should eql(Hamster.vector(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should eql(Hamster.vector(*expected))
+          vector.drop(number).should eql(Hamster.vector(*expected))
         end
       end
     end
