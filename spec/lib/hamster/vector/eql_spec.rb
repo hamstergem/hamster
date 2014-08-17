@@ -3,18 +3,14 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#eql" do
-    describe "returns false when comparing with" do
-      before do
-        @vector = Hamster.vector("A", "B", "C")
-      end
+    let(:vector) { Hamster.vector("A", "B", "C") }
 
-      it "an array with the same contents" do
-        @vector.eql?(%w[A B C]).should == false
-      end
+    it "returns false when comparing with an array with the same contents" do
+      vector.eql?(%w[A B C]).should == false
+    end
 
-      it "an arbitrary object" do
-        @vector.eql?(Object.new).should == false
-      end
+    it "returns false when comparing with an arbitrary object" do
+      vector.eql?(Object.new).should == false
     end
 
     it "returns false when comparing an empty vector with an empty array" do
@@ -23,20 +19,23 @@ describe Hamster::Vector do
   end
 
   describe "#==" do
-    before do
-      @vector = Hamster.vector("A", "B", "C")
-    end
+    let(:vector) { Hamster.vector("A", "B", "C") }
 
     it "returns true when comparing with an array with the same contents" do
-      (@vector == %w[A B C]).should == true
+      (vector == %w[A B C]).should == true
     end
 
     it "returns false when comparing with an arbitrary object" do
-      (@vector == Object.new).should == false
+      (vector == Object.new).should == false
     end
 
     it "returns true when comparing an empty vector with an empty array" do
       (Hamster.vector == []).should == true
+    end
+
+    it "works on larger vectors" do
+      array = 2000.times.map { rand(10000) }
+      (V.new(array.dup) == array).should == true
     end
   end
 
@@ -52,19 +51,16 @@ describe Hamster::Vector do
         [%w[A B C], %w[A B C], true],
         [%w[C A B], %w[A B C], false],
       ].each do |a, b, expected|
-
         describe "returns #{expected.inspect}" do
-          before do
-            @a = Hamster.vector(*a)
-            @b = Hamster.vector(*b)
-          end
+          let(:vector_a) { Hamster.vector(*a) }
+          let(:vector_b) { Hamster.vector(*b) }
 
           it "for vectors #{a.inspect} and #{b.inspect}" do
-            @a.send(method, @b).should == expected
+            vector_a.send(method, vector_b).should == expected
           end
 
           it "for vectors #{b.inspect} and #{a.inspect}" do
-            @b.send(method, @a).should == expected
+            vector_b.send(method, vector_a).should == expected
           end
         end
       end
