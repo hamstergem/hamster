@@ -11,31 +11,31 @@ describe Hamster::Vector do
         [%w[A b C], %w[A C]],
         [%w[a b c], []],
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @original = Hamster.vector(*values)
-          end
+          let(:vector) { Hamster.vector(*values) }
 
           context "with a block" do
-            before do
-              @result = @original.send(method) { |item| item == item.downcase }
-            end
-
             it "returns #{expected.inspect}" do
-              @result.should eql(Hamster.vector(*expected))
+              vector.send(method) { |item| item == item.downcase }.should eql(Hamster.vector(*expected))
             end
           end
 
           context "without a block" do
-            before do
-              @result = @original.send(method)
-            end
-
             it "returns an Enumerator" do
-              @result.class.should be(Enumerator)
-              @result.each { |item| item == item.downcase }.should eql(Hamster.vector(*expected))
+              vector.send(method).class.should be(Enumerator)
+              vector.send(method).each { |item| item == item.downcase }.should eql(Hamster.vector(*expected))
             end
+          end
+        end
+      end
+
+      it "works with a variety of inputs" do
+        [1, 2, 10, 31, 32, 33, 1023, 1024, 1025].each do |size|
+          [0, 5, 32, 50, 500, 800, 1024].each do |threshold|
+            vector = V.new(1..size)
+            result = vector.send(method) { |item| item > threshold }
+            result.size.should == [size, threshold].min
+            result.should eql(V.new(1..[size, threshold].min))
           end
         end
       end
