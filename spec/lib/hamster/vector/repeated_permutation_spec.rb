@@ -3,31 +3,29 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#repeated_permutation" do
-    before do
-      @vector = Hamster.vector(1,2,3,4)
-    end
+    let(:vector) { Hamster.vector(1,2,3,4) }
 
     context "without a block" do
       context "and without argument" do
         it "returns an Enumerator of all repeated permutations" do
-          @vector.repeated_permutation.class.should be(Enumerator)
-          @vector.repeated_permutation.to_a.sort.should eql(@vector.to_a.repeated_permutation(4).to_a.sort)
+          vector.repeated_permutation.class.should be(Enumerator)
+          vector.repeated_permutation.to_a.sort.should eql(vector.to_a.repeated_permutation(4).to_a.sort)
         end
       end
 
       context "with an integral argument" do
         it "returns an Enumerator of all repeated permutations of the given length" do
-          @vector.repeated_permutation(2).class.should be(Enumerator)
-          @vector.repeated_permutation(2).to_a.sort.should eql(@vector.to_a.repeated_permutation(2).to_a.sort)
-          @vector.repeated_permutation(3).class.should be(Enumerator)
-          @vector.repeated_permutation(3).to_a.sort.should eql(@vector.to_a.repeated_permutation(3).to_a.sort)
+          vector.repeated_permutation(2).class.should be(Enumerator)
+          vector.repeated_permutation(2).to_a.sort.should eql(vector.to_a.repeated_permutation(2).to_a.sort)
+          vector.repeated_permutation(3).class.should be(Enumerator)
+          vector.repeated_permutation(3).to_a.sort.should eql(vector.to_a.repeated_permutation(3).to_a.sort)
         end
       end
     end
 
     context "with a block" do
       it "returns self" do
-        @vector.repeated_permutation {}.should be(@vector)
+        vector.repeated_permutation {}.should be(vector)
       end
 
       context "on an empty vector" do
@@ -41,7 +39,7 @@ describe Hamster::Vector do
       context "with an argument of zero" do
         it "yields the empty permutation" do
           yielded = []
-          @vector.repeated_permutation(0) { |obj| yielded << obj }
+          vector.repeated_permutation(0) { |obj| yielded << obj }
           yielded.should eql([[]])
         end
       end
@@ -60,7 +58,7 @@ describe Hamster::Vector do
       context "with a positive integral argument" do
         it "yields all repeated permutations of the given length" do
           yielded = []
-          @vector.repeated_permutation(2) { |obj| yielded << obj }
+          vector.repeated_permutation(2) { |obj| yielded << obj }
           yielded.sort.should eql([[1,1], [1,2], [1,3], [1,4], [2,1], [2,2], [2,3], [2,4],
             [3,1], [3,2], [3,3], [3,4], [4,1], [4,2], [4,3], [4,4]])
         end
@@ -77,6 +75,20 @@ describe Hamster::Vector do
         [[1, 1, 1], [1, 1, 2], [1, 2, 1],
          [1, 2, 2], [2, 1, 1], [2, 1, 2],
          [2, 2, 1], [2, 2, 2]])
+    end
+
+    it "leaves the original unmodified" do
+      vector.repeated_permutation(2) {}
+      vector.should eql(Hamster.vector(1,2,3,4))
+    end
+
+    it "behaves like Array#repeated_permutation" do
+      10.times do
+        array  = rand(8).times.map { rand(10000) }
+        vector = V.new(array)
+        perm_size = array.size == 0 ? 0 : rand(array.size)
+        array.repeated_permutation(perm_size).to_a.should == vector.repeated_permutation(perm_size).to_a
+      end
     end
   end
 end
