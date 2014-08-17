@@ -8,16 +8,14 @@ describe Hamster::Vector do
       [],
       ["A"],
       %w[A B C],
+      (1..10),
+      (1..32),
+      (1..33),
+      (1..1000)
     ].each do |values|
-
       describe "on #{values.inspect}" do
-        before do
-          original = Hamster.vector(*values)
-          @result = original.to_set
-        end
-
         it "returns a set with the same values" do
-          @result.should eql(Hamster.set(*values))
+          Hamster.vector(*values).to_set.should eql(Hamster.set(*values))
         end
       end
     end
