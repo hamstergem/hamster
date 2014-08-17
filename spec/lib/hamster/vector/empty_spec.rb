@@ -9,21 +9,16 @@ describe Hamster::Vector do
         [["A"], false],
         [%w[A B C], false],
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @vector = Hamster.vector(*values)
-          end
-
           it "returns #{expected.inspect}" do
-            @vector.send(method).should == expected
+            Hamster.vector(*values).send(method).should == expected
           end
         end
       end
     end
   end
 
-  describe "empty" do
+  describe ".empty" do
     it "returns the canonical empty vector" do
       Hamster::Vector.empty.size.should be(0)
       Hamster::Vector.empty.object_id.should be(Hamster::Vector.empty.object_id)
