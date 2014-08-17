@@ -10,15 +10,9 @@ describe Hamster::Vector do
           [["A"], "A"],
           [%w[Ichi Ni San], "Ni"],
         ].each do |values, expected|
-
           describe "on #{values.inspect}" do
-            before do
-              original = Hamster.vector(*values)
-              @result = original.send(method) { |minimum, item| minimum.length <=> item.length }
-            end
-
             it "returns #{expected.inspect}" do
-              @result.should == expected
+              Hamster.vector(*values).send(method) { |minimum, item| minimum.length <=> item.length }.should == expected
             end
           end
         end
@@ -30,15 +24,9 @@ describe Hamster::Vector do
           [["A"], "A"],
           [%w[Ichi Ni San], "Ichi"],
         ].each do |values, expected|
-
           describe "on #{values.inspect}" do
-            before do
-              original = Hamster.vector(*values)
-              @result = original.send(method)
-            end
-
             it "returns #{expected.inspect}" do
-              @result.should == expected
+              Hamster.vector(*values).send(method).should == expected
             end
           end
         end
