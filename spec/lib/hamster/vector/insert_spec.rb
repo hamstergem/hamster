@@ -4,47 +4,45 @@ require 'pry'
 
 describe Hamster::Vector do
   describe "#insert" do
-    before do
-      @vector = Hamster.vector(1, 2, 3)
-    end
+    let(:original) { Hamster.vector(1, 2, 3) }
 
     it "can add items at the beginning of a vector" do
-      vector = @vector.insert(0, :a, :b)
+      vector = original.insert(0, :a, :b)
       vector.size.should be(5)
       vector.at(0).should be(:a)
       vector.at(2).should be(1)
     end
 
     it "can add items in the middle of a vector" do
-      vector = @vector.insert(1, :a, :b, :c)
+      vector = original.insert(1, :a, :b, :c)
       vector.size.should be(6)
       vector.to_a.should == [1, :a, :b, :c, 2, 3]
     end
 
     it "can add items at the end of a vector" do
-      vector = @vector.insert(3, :a, :b, :c)
+      vector = original.insert(3, :a, :b, :c)
       vector.size.should be(6)
       vector.to_a.should == [1, 2, 3, :a, :b, :c]
     end
 
     it "can add items past the end of a vector" do
-      vector = @vector.insert(6, :a, :b)
+      vector = original.insert(6, :a, :b)
       vector.size.should be(8)
       vector.to_a.should == [1, 2, 3, nil, nil, nil, :a, :b]
     end
 
     it "accepts a negative index, which counts back from the end of the vector" do
-      vector = @vector.insert(-2, :a)
+      vector = original.insert(-2, :a)
       vector.size.should be(4)
       vector.to_a.should == [1, :a, 2, 3]
     end
 
     it "raises IndexError if a negative index is too great" do
-      expect { @vector.insert(-4, :a) }.to raise_error(IndexError)
+      expect { original.insert(-4, :a) }.to raise_error(IndexError)
     end
 
     it "works when adding an item past boundary when vector trie needs to deepen" do
-      vector = @vector.insert(32, :a, :b)
+      vector = original.insert(32, :a, :b)
       vector.size.should == 34
       vector.to_a.size.should == 34
     end
