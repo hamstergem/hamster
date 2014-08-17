@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  describe "new" do
+  describe ".new" do
     it "accepts a single enumerable argument and creates a new vector" do
       vector = Hamster::Vector.new([1,2,3])
       vector.size.should be(3)
@@ -31,17 +31,11 @@ describe Hamster::Vector do
     end
 
     describe "from a subclass" do
-      before do
-        @subclass = Class.new(Hamster::Vector)
-        @instance = @subclass.new(["some", "values"])
-      end
-
-      it "returns an instance of the subclass" do
-        @instance.class.should be @subclass
-      end
-
-      it "returns a frozen instance" do
-        @instance.frozen?.should be true
+      it "returns a frozen instance of the subclass" do
+        subclass = Class.new(Hamster::Vector)
+        instance = subclass.new(["some", "values"])
+        instance.class.should be subclass
+        instance.frozen?.should be true
       end
     end
   end
