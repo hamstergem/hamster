@@ -7,16 +7,13 @@ describe Hamster::Vector do
       [],
       ["A"],
       %w[A B C],
+      (1..32),
     ].each do |values|
-
       describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.vector(*values)
-          @result = @original.send(method)
-        end
+        let(:vector) { Hamster.vector(*values) }
 
         it "returns self" do
-          @result.should equal(@original)
+          vector.send(method).should equal(vector)
         end
       end
     end
