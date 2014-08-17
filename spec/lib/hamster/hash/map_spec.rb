@@ -17,6 +17,7 @@ describe Hamster::Hash do
           let(:mapped) { hash.send(method) { |key, value| [key.downcase, value.upcase] }}
 
           it "preserves the original values" do
+            mapped
             hash.should eql(Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see"))
           end
 
