@@ -112,26 +112,29 @@ describe Hamster::Vector do
 
     context "from a subclass" do
       it "returns an instance of the subclass" do
-        @subclass = Class.new(Hamster::Vector)
-        @instance = @subclass[1,2,3]
-        @instance.set(1, 2.5).class.should be(@subclass)
+        subclass = Class.new(Hamster::Vector)
+        instance = subclass[1,2,3]
+        instance.set(1, 2.5).class.should be(subclass)
       end
     end
 
-    context "on a large vector" do
-      it "sets the new value at the specified index" do
-        vector = Hamster.vector(*(1..2000).to_a).set(0, 100).set(1500, 200)
-        vector[0].should be(100)
-        vector[1500].should be(200)
-        vector[1999].should be(2000)
-      end
-    end
+    [10, 31, 32, 33, 1000, 1023, 1024, 1025, 2000].each do |size|
+      context "on a #{size}-item vector" do
+        it "works correctly" do
+          array = (1..size).to_a
+          vector = V.new(array)
 
-    context "at indexes which are likely to exercise edge-case behavior" do
-      it "still sets the new value at the specified index" do
-        vector = Hamster.vector(*(1..33).to_a).set(31, 'a').set(32, 'b')
-        vector[31].should == 'a'
-        vector[32].should == 'b'
+          [0, 1, 10, 31, 32, 33, 100, 500, 1000, 1023, 1024, 1025, 1998, 1999].select { |n| n < size }.each do |i|
+            value = rand(10000)
+            array[i] = value
+            vector = vector.set(i, value)
+            vector[i].should be(value)
+          end
+
+          0.upto(size-1) do |i|
+            vector.get(i).should == array[i]
+          end
+        end
       end
     end
   end
