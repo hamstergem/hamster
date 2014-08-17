@@ -16,18 +16,16 @@ describe Hamster::Vector do
     end
 
     context "when passed one or more vectors" do
-      before do
-        @vector = Hamster.vector(1,2,3)
-      end
+      let(:vector) { Hamster.vector(1,2,3) }
 
       context "when passed a block" do
         it "yields an array for each combination of items from the vectors" do
           yielded = []
-          @vector.product(@vector) { |obj| yielded << obj }
+          vector.product(vector) { |obj| yielded << obj }
           yielded.should eql([[1,1], [1,2], [1,3], [2,1], [2,2], [2,3], [3,1], [3,2], [3,3]])
 
           yielded = []
-          @vector.product(Hamster.vector(3,4,5), Hamster.vector(6,8)) { |obj| yielded << obj }
+          vector.product(Hamster.vector(3,4,5), Hamster.vector(6,8)) { |obj| yielded << obj }
           yielded.should eql(
             [[1, 3, 6], [1, 3, 8], [1, 4, 6], [1, 4, 8], [1, 5, 6], [1, 5, 8],
              [2, 3, 6], [2, 3, 8], [2, 4, 6], [2, 4, 8], [2, 5, 6], [2, 5, 8],
@@ -35,9 +33,9 @@ describe Hamster::Vector do
         end
 
         it "returns self" do
-          @vector.product(Hamster.vector) {}.should be(@vector)
-          @vector.product(Hamster.vector(1,2), Hamster.vector(3)) {}.should be(@vector)
-          Hamster.vector.product(@vector) {}.should be(Hamster.vector)
+          vector.product(Hamster.vector) {}.should be(vector)
+          vector.product(Hamster.vector(1,2), Hamster.vector(3)) {}.should be(vector)
+          Hamster.vector.product(vector) {}.should be(Hamster.vector)
         end
       end
 
@@ -51,13 +49,13 @@ describe Hamster::Vector do
 
       context "when one of the arguments is empty" do
         it "returns an empty array" do
-          @vector.product(Hamster.vector, Hamster.vector(4,5,6)).should eql([])
+          vector.product(Hamster.vector, Hamster.vector(4,5,6)).should eql([])
         end
       end
 
       context "when the receiver is empty" do
         it "returns an empty array" do
-          Hamster.vector.product(@vector, Hamster.vector(4,5,6)).should eql([])
+          Hamster.vector.product(vector, Hamster.vector(4,5,6)).should eql([])
         end
       end
     end
