@@ -129,27 +129,14 @@ module Hamster
       if index < @size
         suffix = flatten_suffix(@root, @levels * BITS_PER_LEVEL, index, [])
         suffix.unshift(*items)
-        new_size = @size + items.size
       elsif index == @size
         suffix = items
-        new_size = @size + items.size
       else
         suffix = Array.new(index - @size, nil).concat(items)
-        new_size = index + items.size
         index = @size
       end
 
-      root   = replace_suffix(@root, @levels * BITS_PER_LEVEL, index, suffix)
-      if !suffix.empty?
-        @levels.times { suffix = suffix.each_slice(32).to_a }
-        root.concat(suffix)
-      end
-      levels = @levels
-      while root.size > 32
-        root = root.each_slice(32).to_a
-        levels += 1
-      end
-      self.class.alloc(root.freeze, new_size, levels)
+      replace_suffix(index, suffix)
     end
 
     def delete_at(index)
@@ -157,13 +144,7 @@ module Hamster
       index += @size if index < 0
 
       suffix = flatten_suffix(@root, @levels * BITS_PER_LEVEL, index, [])
-      root   = replace_suffix(@root, @levels * BITS_PER_LEVEL, index, suffix.tap { |a| a.shift })
-      levels = @levels
-      while root.size == 1
-        root = root[0]
-        levels -= 1
-      end
-      self.class.alloc(root.freeze, @size - 1, levels)
+      replace_suffix(index, suffix.tap { |a| a.shift })
     end
 
     def each(&block)
@@ -219,18 +200,7 @@ module Hamster
     def +(other)
       other = other.to_a
       other = other.dup if other.frozen?
-      new_size = @size + other.size
-      root  = replace_suffix(@root, @levels * BITS_PER_LEVEL, @size, other)
-      if !other.empty?
-        @levels.times { other = other.each_slice(32).to_a }
-        root.concat(other)
-      end
-      levels = @levels
-      while root.size > 32
-        root = root.each_slice(32).to_a.freeze
-        levels += 1
-      end
-      self.class.alloc(root.freeze, new_size, levels)
+      replace_suffix(@size, other)
     end
     def_delegator :self, :+, :concat
 
@@ -280,27 +250,14 @@ module Hamster
       if index < @size
         suffix = flatten_suffix(@root, @levels * BITS_PER_LEVEL, index, [])
         suffix.fill(obj, 0, length)
-        new_size = index + length > @size ? index + length : @size
       elsif index == @size
         suffix = Array.new(length, obj)
-        new_size = index + length
       else
         suffix = Array.new(index - @size, nil).concat(Array.new(length, obj))
-        new_size = index + length
         index = @size
       end
 
-      root   = replace_suffix(@root, @levels * BITS_PER_LEVEL, index, suffix)
-      if !suffix.empty?
-        @levels.times { suffix = suffix.each_slice(32).to_a }
-        root.concat(suffix)
-      end
-      levels = @levels
-      while root.size > 32
-        root = root.each_slice(32).to_a
-        levels += 1
-      end
-      self.class.alloc(root.freeze, new_size, levels)
+      replace_suffix(index, suffix)
     end
 
     def combination(n)
@@ -677,7 +634,39 @@ module Hamster
       end
     end
 
-    def replace_suffix(node, bitshift, from, suffix)
+    def replace_suffix(from, suffix)
+      # new suffix can go directly after existing elements
+      raise IndexError if from > @size
+      root, levels = @root, @levels
+
+      if (from >> (BITS_PER_LEVEL * (@levels + 1))) != 0
+        # index where new suffix goes doesn't fall within current tree
+        # we will need to deepen tree
+        root = [root].freeze
+        levels += 1
+      end
+
+      new_size = from + suffix.size
+      root = replace_node_suffix(root, levels * BITS_PER_LEVEL, from, suffix)
+
+      if !suffix.empty?
+        levels.times { suffix = suffix.each_slice(32).to_a }
+        root.concat(suffix)
+        while root.size > 32
+          root = root.each_slice(32).to_a
+          levels += 1
+        end
+      else
+        while root.size == 1
+          root = root[0]
+          levels -= 1
+        end
+      end
+
+      self.class.alloc(root.freeze, new_size, levels)
+    end
+
+    def replace_node_suffix(node, bitshift, from, suffix)
       from_slot = (from >> bitshift) & INDEX_MASK
 
       if bitshift == 0
@@ -687,11 +676,36 @@ module Hamster
           node.take(from_slot).concat(suffix.shift(32 - from_slot))
         end
       else
-        result = node.take(from_slot)
-        result.push(replace_suffix(node[from_slot], bitshift - BITS_PER_LEVEL, from, suffix))
-        remainder = suffix.shift((31 - from_slot) * (1 << bitshift))
-        (bitshift / BITS_PER_LEVEL).times { remainder = remainder.each_slice(32).to_a }
-        result.concat(remainder)
+        mask = ((1 << bitshift) - 1)
+        if from & mask == 0
+          if from_slot == 0
+            new_node = suffix.shift(32 * (1 << bitshift))
+            while bitshift != 0
+              new_node = new_node.each_slice(32).to_a
+              bitshift -= BITS_PER_LEVEL
+            end
+            new_node
+          else
+            result = node.take(from_slot)
+            remainder = suffix.shift((32 - from_slot) * (1 << bitshift))
+            while bitshift != 0
+              remainder = remainder.each_slice(32).to_a
+              bitshift -= BITS_PER_LEVEL
+            end
+            result.concat(remainder)
+          end
+        elsif child = node[from_slot]
+          result = node.take(from_slot)
+          result.push(replace_node_suffix(child, bitshift - BITS_PER_LEVEL, from, suffix))
+          remainder = suffix.shift((31 - from_slot) * (1 << bitshift))
+          while bitshift != 0
+            remainder = remainder.each_slice(32).to_a
+            bitshift -= BITS_PER_LEVEL
+          end
+          result.concat(remainder)
+        else
+          raise "Shouldn't happen"
+        end
       end
     end
   end
