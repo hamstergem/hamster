@@ -2,28 +2,30 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  before do
-    @vector = Hamster.vector(1..1000)
-  end
-
   describe "#reverse_each" do
-    describe "with a block (internal iteration)" do
-      it "returns self" do
-        @vector.reverse_each {}.should be(@vector)
-      end
+    [2, 31, 32, 33, 1000, 1024, 1025, 2000].each do |size|
+      context "on a #{size}-item vector" do
+        let(:vector) { Hamster.vector(1..size) }
 
-      it "yields all items in the opposite order as #each" do
-        result = []
-        @vector.reverse_each { |item| result << item }
-        result.should eql(@vector.to_a.reverse)
-      end
-    end
+        context "with a block (internal iteration)" do
+          it "returns self" do
+            vector.reverse_each {}.should be(vector)
+          end
 
-    describe "with no block" do
-      it "returns an Enumerator" do
-        @result = @vector.reverse_each
-        @result.class.should be(Enumerator)
-        @result.to_a.should eql(@vector.to_a.reverse)
+          it "yields all items in the opposite order as #each" do
+            result = []
+            vector.reverse_each { |item| result << item }
+            result.should eql(vector.to_a.reverse)
+          end
+        end
+
+        context "with no block" do
+          it "returns an Enumerator" do
+            result = vector.reverse_each
+            result.class.should be(Enumerator)
+            result.to_a.should eql(vector.to_a.reverse)
+          end
+        end
       end
     end
   end
