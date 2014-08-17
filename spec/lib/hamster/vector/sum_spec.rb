@@ -8,15 +8,9 @@ describe Hamster::Vector do
       [[2], 2],
       [[1, 3, 5, 7, 11], 27],
     ].each do |values, expected|
-
       describe "on #{values.inspect}" do
-        before do
-          original = Hamster.vector(*values)
-          @result = original.sum
-        end
-
         it "returns #{expected.inspect}" do
-          @result.should == expected
+          Hamster.vector(*values).sum.should == expected
         end
       end
     end
