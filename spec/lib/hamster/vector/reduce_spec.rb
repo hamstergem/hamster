@@ -9,16 +9,13 @@ describe Hamster::Vector do
         [[1], 10, 9],
         [[1, 2, 3], 10, 4],
       ].each do |values, initial, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @vector = Hamster.vector(*values)
-          end
+          let(:vector) { Hamster.vector(*values) }
 
           describe "with an initial value of #{initial}" do
             describe "and a block" do
               it "returns #{expected.inspect}" do
-                @vector.send(method, initial) { |memo, item| memo - item }.should == expected
+                vector.send(method, initial) { |memo, item| memo - item }.should == expected
               end
             end
           end
@@ -30,16 +27,13 @@ describe Hamster::Vector do
         [[1], 1],
         [[1, 2, 3], -4],
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @vector = Hamster.vector(*values)
-          end
+          let(:vector) { Hamster.vector(*values) }
 
           describe "with no initial value" do
             describe "and a block" do
               it "returns #{expected.inspect}" do
-                @vector.send(method) { |memo, item| memo - item }.should == expected
+                vector.send(method) { |memo, item| memo - item }.should == expected
               end
             end
           end
@@ -68,14 +62,12 @@ describe Hamster::Vector do
     ].each do |values, initial, expected|
 
       describe "on #{values.inspect}" do
-        before do
-          @vector = Hamster.vector(*values)
-        end
+        let(:vector) { Hamster.vector(*values) }
 
         describe "with an initial value of #{initial}" do
           describe "and a block" do
             it "returns #{expected.inspect}" do
-              @vector.foldr(initial) { |memo, item| memo - item }.should == expected
+              vector.foldr(initial) { |memo, item| memo - item }.should == expected
             end
           end
         end
@@ -88,16 +80,13 @@ describe Hamster::Vector do
       [[1, 2, 3], 0],
       [[1, 2, 3, 4], -2]
     ].each do |values, expected|
-
       describe "on #{values.inspect}" do
-        before do
-          @vector = Hamster.vector(*values)
-        end
+        let(:vector) { Hamster.vector(*values) }
 
         describe "with no initial value" do
           describe "and a block" do
             it "returns #{expected.inspect}" do
-              @vector.foldr { |memo, item| memo - item }.should == expected
+              vector.foldr { |memo, item| memo - item }.should == expected
             end
           end
         end
