@@ -8,37 +8,48 @@ describe Hamster::Vector do
       [["A"], []],
       [%w[A B C], ["C"]],
     ].each do |values, expected|
-
       describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.vector(*values)
-        end
+        let(:vector) { Hamster.vector(*values) }
 
         describe "with a block" do
-          before do
-            @result = @original.drop_while { |item| item < "C" }
-          end
+          let(:result) { vector.drop_while { |item| item < "C" } }
 
           it "preserves the original" do
-            @original.should eql(Hamster.vector(*values))
+            result
+            vector.should eql(Hamster.vector(*values))
           end
 
           it "returns #{expected.inspect}" do
-            @result.should eql(Hamster.vector(*expected))
+            result.should eql(Hamster.vector(*expected))
           end
         end
 
         describe "without a block" do
-          before do
-            @result = @original.drop_while
-          end
-
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each { |item| item < "C" }.should eql(Hamster.vector(*expected))
+            vector.drop_while.class.should be(Enumerator)
+            vector.drop_while.each { |item| item < "C" }.should eql(Hamster.vector(*expected))
           end
         end
       end
+    end
+
+    context "on an empty vector" do
+      it "returns an empty vector" do
+        Hamster.vector.drop_while { false }.should eql(Hamster.vector)
+      end
+    end
+
+    it "returns an empty vector if block is always true" do
+      V.new(1..32).drop_while { true }.should eql(V.empty)
+      V.new(1..100).drop_while { true }.should eql(V.empty)
+    end
+
+    it "stops dropping items if block returns nil" do
+      V[1, 2, 3, nil, 4, 5].drop_while { |x| x }.should eql(V[nil, 4, 5])
+    end
+
+    it "stops dropping items if block returns false" do
+      V[1, 2, 3, false, 4, 5].drop_while { |x| x }.should eql(V[false, 4, 5])
     end
   end
 end
