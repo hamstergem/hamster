@@ -8,15 +8,11 @@ describe Hamster::Vector do
         [[], nil],
         [["A"], "A"],
         [%w[A B C], "A"],
+        [(1..32), 1],
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @vector = Hamster.vector(*values)
-          end
-
           it "returns #{expected.inspect}" do
-            @vector.send(method).should == expected
+            Hamster.vector(*values).send(method).should == expected
           end
         end
       end
