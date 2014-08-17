@@ -14,6 +14,12 @@ describe Hamster::Vector do
       V[EqlNotEqual.new, EqlNotEqual.new].delete(:something).should_not be_empty
     end
 
+    context "on an empty vector" do
+      it "returns self" do
+        Hamster.vector.delete(1).should be(Hamster.vector)
+      end
+    end
+
     context "on a subclass of Vector" do
       it "returns an instance of the subclass" do
         subclass = Class.new(Hamster::Vector)
