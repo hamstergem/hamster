@@ -14,19 +14,15 @@ describe Hamster::Vector do
         [["A", "B", nil], "B", true],
         [["A", "B", nil], nil, true],
         [["A", "B", nil], "C", false],
+        [["A", "B", false], false, true],
         [[2], 2, true],
         [[2], 2.0, true],
         [[2.0], 2.0, true],
         [[2.0], 2, true],
       ].each do |values, item, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @vector = Hamster.vector(*values)
-          end
-
           it "returns #{expected.inspect}" do
-            @vector.send(method, item).should == expected
+            Hamster.vector(*values).send(method, item).should == expected
           end
         end
       end
