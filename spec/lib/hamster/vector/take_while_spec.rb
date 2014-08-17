@@ -6,33 +6,27 @@ describe Hamster::Vector do
     [
       [[], []],
       [["A"], ["A"]],
-      [%w[A B C], %w[A B]],
+      [%w[A B C], %w[A B]]
     ].each do |values, expected|
-
       describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.vector(*values)
-          @result = @original.take_while { |item| item < "C" }
-        end
+        let(:vector) { Hamster.vector(*values) }
+        let(:result) { vector.take_while { |item| item < "C" }}
 
         describe "with a block" do
           it "returns #{expected.inspect}" do
-            @result.should eql(Hamster.vector(*expected))
+            result.should eql(Hamster.vector(*expected))
           end
 
           it "preserves the original" do
-            @original.should eql(Hamster.vector(*values))
+            result
+            vector.should eql(Hamster.vector(*values))
           end
         end
 
         describe "without a block" do
-          before do
-            @result = @original.take_while
-          end
-
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each { |item| item < "C" }.should eql(Hamster.vector(*expected))
+            vector.take_while.class.should be(Enumerator)
+            vector.take_while.each { |item| item < "C" }.should eql(Hamster.vector(*expected))
           end
         end
       end
