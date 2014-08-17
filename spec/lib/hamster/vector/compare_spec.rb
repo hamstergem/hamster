@@ -7,9 +7,9 @@ describe Hamster::Vector do
       [[], [1]],
       [[1], [2]],
       [[1], [1, 2]],
-      [[2, 3, 4], [3, 4, 5]]
+      [[2, 3, 4], [3, 4, 5]],
+      [[[0]], [[1]]]
     ].each do |items1, items2|
-
       describe "with #{items1} and #{items2}" do
         it "returns -1" do
           (Hamster::Vector.new(items1) <=> Hamster::Vector.new(items2)).should be(-1)
