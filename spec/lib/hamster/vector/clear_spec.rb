@@ -8,28 +8,25 @@ describe Hamster::Vector do
       ["A"],
       %w[A B C],
     ].each do |values|
-
       describe "on #{values}" do
-        before do
-          @original = Hamster.vector(*values)
-          @result = @original.clear
-        end
+        let(:vector) { Hamster.vector(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.vector(*values)
+          vector.clear
+          vector.should eql(Hamster.vector(*values))
         end
 
         it "returns an empty vector" do
-          @result.should equal(Hamster.vector)
+          vector.clear.should equal(Hamster.vector)
         end
       end
 
       context "from a subclass" do
         it "returns an instance of the subclass" do
-          @subclass = Class.new(Hamster::Vector)
-          @instance = @subclass.new(%w{a b c})
-          @instance.clear.class.should be(@subclass)
-          @instance.clear.should be_empty
+          subclass = Class.new(Hamster::Vector)
+          instance = subclass.new(%w{a b c})
+          instance.clear.class.should be(subclass)
+          instance.clear.should be_empty
         end
       end
     end
