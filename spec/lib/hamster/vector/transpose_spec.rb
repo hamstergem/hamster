@@ -21,6 +21,22 @@ describe Hamster::Vector do
       V[[1,2,3], [4,5,6]].transpose.should eql(V[V[1,4], V[2,5], V[3,6]])
     end
 
+    [10, 31, 32, 33, 1000, 1023, 1024, 1025, 2000].each do |size|
+      context "on #{size}-item vectors" do
+        it "behaves like Array#transpose" do
+          array = rand(10).times.map { size.times.map { rand(10000) }}
+          vector = V.new(array)
+          result = vector.transpose
+          # Array#== uses Object#== to compare corresponding elements,
+          #   so although Vector#== does type coercion, it does not consider
+          #   nested Arrays and corresponding nested Vectors to be equal
+          # That is why the following ".map { |a| V.new(a) }" is needed
+          result.should == array.transpose.map { |a| V.new(a) }
+          result.each { |v| v.class.should be(Hamster::Vector) }
+        end
+      end
+    end
+
     context "on a subclass of Vector" do
       it "returns instances of the subclass" do
         subclass = Class.new(V)
