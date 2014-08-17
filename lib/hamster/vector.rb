@@ -188,7 +188,7 @@ module Hamster
     end
 
     def rotate(count = 1)
-      return self if count == 0
+      return self if (count % @size) == 0
       self.class.new(((array = to_a).frozen? ? array.rotate(count) : array.rotate!(count)).freeze)
     end
 
