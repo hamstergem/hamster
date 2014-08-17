@@ -539,7 +539,7 @@ module Hamster
 
     def update_root(index, item)
       root, levels = @root, @levels
-      while index >= (1 << (BLOCK_SIZE * (levels + 1)))
+      while index >= (1 << (BITS_PER_LEVEL * (levels + 1)))
         root = [root].freeze
         levels += 1
       end
