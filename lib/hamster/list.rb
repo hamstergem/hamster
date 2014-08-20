@@ -304,7 +304,7 @@ module Hamster
 
     def rotate(count = 1)
       raise TypeError, "expected Integer" if not count.is_a?(Integer)
-      return self if count == 0 || empty?
+      return self if  empty? || (count % size) == 0
       count = (count >= 0) ? count % size : (size - (~count % size) - 1)
       drop(count).append(take(count))
     end
