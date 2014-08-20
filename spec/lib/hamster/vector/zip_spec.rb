@@ -38,7 +38,7 @@ describe Hamster::Vector do
     [10, 31, 32, 33, 1000, 1023, 1024, 1025].each do |size|
       context "on #{size}-item vectors" do
         it "behaves like Array#zip" do
-          array   = rand(10).times.map { size.times.map { rand(10000) }}
+          array   = (rand(9)+1).times.map { size.times.map { rand(10000) }}
           vectors = array.map { |a| V.new(a) }
           result  = vectors.first.zip(*vectors.drop(1))
           result.class.should be(Hamster::Vector)
