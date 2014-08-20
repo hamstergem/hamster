@@ -2,38 +2,31 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
-  [:combinations, :combination].each do |method|
-    describe "##{method}" do
-      it "is lazy" do
-        -> { Hamster.stream { fail }.combinations(2) }.should_not raise_error
-      end
+  describe "#combination" do
+    it "is lazy" do
+      -> { Hamster.stream { fail }.combination(2) }.should_not raise_error
+    end
 
-      [
-        [%w[A B C D], 1, [["A"], ["B"], ["C"], ["D"]]],
-        [%w[A B C D], 2, [%w[A B], %w[A C], %w[A D], %w[B C], %w[B D], %w[C D]]],
-        [%w[A B C D], 3, [%w[A B C], %w[A B D], %w[A C D], %w[B C D]]],
-        [%w[A B C D], 4, [%w[A B C D]]],
-        [%w[A B C D], 0, [[]]],
-        [%w[A B C D], 5, []],
-        [[], 0, [[]]],
-        [[], 1, []],
-      ].each do |values, number, expected|
+    [
+      [%w[A B C D], 1, [L["A"], L["B"], L["C"], L["D"]]],
+      [%w[A B C D], 2, [L["A","B"], L["A","C"], L["A","D"], L["B","C"], L["B","D"], L["C","D"]]],
+      [%w[A B C D], 3, [L["A","B","C"], L["A","B","D"], L["A","C","D"], L["B","C","D"]]],
+      [%w[A B C D], 4, [L["A", "B", "C", "D"]]],
+      [%w[A B C D], 0, [EmptyList]],
+      [%w[A B C D], 5, []],
+      [[], 0, [EmptyList]],
+      [[], 1, []],
+    ].each do |values, number, expected|
+      context "on #{values.inspect} in groups of #{number}" do
+        let(:list) { Hamster.list(*values) }
 
-        expected = expected.map { |x| Hamster.list(*x) }
+        it "preserves the original" do
+          list.combination(number)
+          list.should eql(Hamster.list(*values))
+        end
 
-        describe "on #{values.inspect} in groups of #{number}" do
-          before do
-            @original = Hamster.list(*values)
-            @result = @original.send(method, number)
-          end
-
-          it "preserves the original" do
-            @original.should == Hamster.list(*values)
-          end
-
-          it "returns #{expected.inspect}" do
-            @result.should == Hamster.list(*expected)
-          end
+        it "returns #{expected.inspect}" do
+          list.combination(number).should eql(Hamster.list(*expected))
         end
       end
     end

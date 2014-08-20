@@ -17,57 +17,51 @@ describe Hamster::List do
       [[3, 4], [], [3, 4]],
       [[4], [], [4]],
     ].each do |values, expected_prefix, expected_remainder|
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-        end
-
-        describe "with a block" do
-          before do
-            @result = @original.break { |item| item > 2 }
-            @prefix = @result.first
-            @remainder = @result.last
-          end
+        context "with a block" do
+          let(:result) { list.break { |item| item > 2 }}
+          let(:prefix) { result.first }
+          let(:remainder) { result.last }
 
           it "preserves the original" do
-            @original.should == Hamster.list(*values)
+            result
+            list.should eql(Hamster.list(*values))
           end
 
           it "returns a frozen array with two items" do
-            @result.class.should be(Array)
-            @result.should be_frozen
-            @result.size.should be(2)
+            result.class.should be(Array)
+            result.should be_frozen
+            result.size.should be(2)
           end
 
           it "correctly identifies the prefix" do
-            @prefix.should == Hamster.list(*expected_prefix)
+            prefix.should eql(Hamster.list(*expected_prefix))
           end
 
           it "correctly identifies the remainder" do
-            @remainder.should == Hamster.list(*expected_remainder)
+            remainder.should eql(Hamster.list(*expected_remainder))
           end
         end
 
-        describe "without a block" do
-          before do
-            @result = @original.break
-            @prefix = @result.first
-            @remainder = @result.last
-          end
+        context "without a block" do
+          let(:result) { list.break }
+          let(:prefix) { result.first }
+          let(:remainder) { result.last }
 
           it "returns a frozen array with two items" do
-            @result.class.should be(Array)
-            @result.should be_frozen
-            @result.size.should be(2)
+            result.class.should be(Array)
+            result.should be_frozen
+            result.size.should be(2)
           end
 
           it "returns self as the prefix" do
-            @prefix.should equal(@original)
+            prefix.should equal(list)
           end
 
           it "leaves the remainder empty" do
-            @remainder.should be_empty
+            remainder.should be_empty
           end
         end
       end

@@ -4,13 +4,9 @@ require "hamster/list"
 describe Hamster::List do
   [:each, :foreach].each do |method|
     describe "##{method}" do
-      describe "on a really big list" do
-        before do
-          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        end
-
+      context "on a really big list" do
         it "doesn't run out of stack" do
-          -> { @list.send(method) { |item| } }.should_not raise_error
+          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).send(method) { |item| } }.should_not raise_error
         end
       end
 
@@ -19,35 +15,25 @@ describe Hamster::List do
         ["A"],
         %w[A B C],
       ].each do |values|
+        context "on #{values.inspect}" do
+          let(:list) { Hamster.list(*values) }
 
-        describe "on #{values.inspect}" do
-          before do
-            @original = Hamster.list(*values)
-          end
-
-          describe "with a block" do
-            before do
-              @items = []
-              @result = @original.send(method) { |item| @items << item }
-            end
-
+          context "with a block" do
             it "iterates over the items in order" do
-              @items.should == values
+              yielded = []
+              list.send(method) { |item| yielded << item }
+              yielded.should == values
             end
 
             it "returns nil" do
-              @result.should be_nil
+              list.send(method) { |item| item }.should be_nil
             end
           end
 
-          describe "without a block" do
-            before do
-              @result = @original.send(method)
-            end
-
+          context "without a block" do
             it "returns an Enumerator" do
-              @result.class.should be(Enumerator)
-              @result.to_list.should eql(@original)
+              list.send(method).class.should be(Enumerator)
+              list.send(method).to_list.should eql(list)
             end
           end
         end

@@ -12,34 +12,25 @@ describe Hamster::List do
       [["A"], []],
       [%w[A B C], ["C"]],
     ].each do |values, expected|
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-        end
-
-        describe "with a block" do
-          before do
-            @result = @original.drop_while { |item| item < "C" }
-          end
-
+        context "with a block" do
           it "preserves the original" do
-            @original.should eql(Hamster.list(*values))
+            list.drop_while { |item| item < "C" }
+            list.should eql(Hamster.list(*values))
           end
 
           it "returns #{expected.inspect}" do
-            @result.should eql(Hamster.list(*expected))
+            list.drop_while { |item| item < "C" }.should eql(Hamster.list(*expected))
           end
         end
 
-        describe "without a block" do
-          before do
-            @result = @original.drop_while
-          end
-
+        context "without a block" do
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each { false }.should eql(@original)
+            list.drop_while.class.should be(Enumerator)
+            list.drop_while.each { false }.should eql(list)
+            list.drop_while.each { true  }.should be_empty
           end
         end
       end

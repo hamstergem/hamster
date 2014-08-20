@@ -3,13 +3,9 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#product" do
-    describe "on a really big list" do
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
+    context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { @list.product }.should_not raise_error
+        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).product }.should_not raise_error
       end
     end
 
@@ -18,15 +14,9 @@ describe Hamster::List do
       [[2], 2],
       [[1, 3, 5, 7, 11], 1155],
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          original = Hamster.list(*values)
-          @result = original.product
-        end
-
+      context "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          @result.should == expected
+          Hamster.list(*values).product.should == expected
         end
       end
     end

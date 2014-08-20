@@ -5,6 +5,7 @@ require "hamster/list"
 
 V = Hamster::Vector
 L = Hamster::List
+EmptyList = Hamster::EmptyList
 
 def fixture(name)
   File.read(fixture_path(name))

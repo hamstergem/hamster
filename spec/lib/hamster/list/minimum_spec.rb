@@ -4,51 +4,35 @@ require "hamster/list"
 describe Hamster::List do
   [:minimum, :min].each do |method|
     describe "##{method}" do
-      describe "on a really big list" do
-        before do
-          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        end
-
+      context "on a really big list" do
         it "doesn't run out of stack" do
-          -> { @list.send(method) }.should_not raise_error
+          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).send(method) }.should_not raise_error
         end
       end
 
-      describe "with a block" do
+      context "with a block" do
         [
           [[], nil],
           [["A"], "A"],
           [%w[Ichi Ni San], "Ni"],
         ].each do |values, expected|
-
-          describe "on #{values.inspect}" do
-            before do
-              original = Hamster.list(*values)
-              @result = original.send(method) { |minimum, item| minimum.length <=> item.length }
-            end
-
+          context "on #{values.inspect}" do
             it "returns #{expected.inspect}" do
-              @result.should == expected
+              Hamster.list(*values).send(method) { |minimum, item| minimum.length <=> item.length }.should == expected
             end
           end
         end
       end
 
-      describe "without a block" do
+      context "without a block" do
         [
           [[], nil],
           [["A"], "A"],
           [%w[Ichi Ni San], "Ichi"],
         ].each do |values, expected|
-
-          describe "on #{values.inspect}" do
-            before do
-              original = Hamster.list(*values)
-              @result = original.send(method)
-            end
-
+          context "on #{values.inspect}" do
             it "returns #{expected.inspect}" do
-              @result.should == expected
+              Hamster.list(*values).send(method).should == expected
             end
           end
         end

@@ -18,19 +18,16 @@ describe Hamster::List do
       [["A", nil, "C"], %w[A C]],
       [[nil, "B", nil], ["B"]],
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.compact
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.compact
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          list.compact.should eql(Hamster.list(*expected))
         end
       end
     end

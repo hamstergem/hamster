@@ -4,13 +4,9 @@ require "hamster/list"
 describe Hamster::List do
   [:size, :length].each do |method|
     describe "##{method}" do
-      describe "on a really big list" do
-        before do
-          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        end
-
+      context "on a really big list" do
         it "doesn't run out of stack" do
-          -> { @list.size }.should_not raise_error
+          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).size }.should_not raise_error
         end
       end
 
@@ -19,14 +15,9 @@ describe Hamster::List do
         [["A"], 1],
         [%w[A B C], 3],
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @list = Hamster.list(*values)
-          end
-
+        context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            @list.send(method).should == expected
+            Hamster.list(*values).send(method).should == expected
           end
         end
       end

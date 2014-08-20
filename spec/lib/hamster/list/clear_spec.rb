@@ -8,19 +8,16 @@ describe Hamster::List do
       ["A"],
       %w[A B C],
     ].each do |values|
-
       describe "on #{values}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.clear
-        end
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.clear
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns an empty list" do
-          @result.should equal(Hamster.list)
+          list.clear.should equal(Hamster.list)
         end
       end
     end

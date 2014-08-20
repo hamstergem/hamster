@@ -8,15 +8,11 @@ describe Hamster::List do
       ["A"],
       %w[A B C],
     ].each do |values|
-
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.to_list
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "returns self" do
-          @result.should equal(@original)
+          list.to_list.should equal(list)
         end
       end
     end

@@ -14,19 +14,16 @@ describe Hamster do
       [["A", Hamster.list("B"), "C"], %w[A B C]],
       [[Hamster.list("A"), Hamster.list("B"), Hamster.list("C")], %w[A B C]],
     ].each do |values, expected|
-
-      describe "on #{values}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.flatten
-        end
+      context "on #{values}" do
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.flatten
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns an empty list" do
-          @result.should == Hamster.list(*expected)
+          list.flatten.should eql(Hamster.list(*expected))
         end
       end
     end

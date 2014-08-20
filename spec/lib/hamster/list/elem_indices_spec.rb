@@ -18,15 +18,9 @@ describe Hamster::List do
         [[2.0], 2.0, [0]],
         [[2.0], 2, [0]],
       ].each do |values, item, expected|
-
-        describe "looking for #{item.inspect} in #{values.inspect}" do
-          before do
-            list = Hamster.list(*values)
-            @result = list.send(method, item)
-          end
-
+        context "looking for #{item.inspect} in #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            @result.should == Hamster.list(*expected)
+            Hamster.list(*values).send(method, item).should eql(Hamster.list(*expected))
           end
         end
       end

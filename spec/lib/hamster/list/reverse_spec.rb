@@ -3,13 +3,9 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#reverse" do
-    describe "on a really big list" do
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
+    context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { @list.reverse }.should_not raise_error
+        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).reverse }.should_not raise_error
       end
     end
 
@@ -22,19 +18,16 @@ describe Hamster::List do
       [["A"], ["A"]],
       [%w[A B C], %w[C B A]],
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.reverse { |item| item.downcase }
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.reverse { |item| item.downcase }
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          list.reverse { |item| item.downcase }.should == Hamster.list(*expected)
         end
       end
     end

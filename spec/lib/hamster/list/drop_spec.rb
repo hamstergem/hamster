@@ -14,19 +14,16 @@ describe Hamster::List do
       [%w[A B C], 0, %w[A B C]],
       [%w[A B C], 2, ["C"]],
     ].each do |values, number, expected|
-
-      describe "#{number} from #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.drop(number)
-        end
+      context "with #{number} from #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.drop(number)
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          list.drop(number).should == Hamster.list(*expected)
         end
       end
     end

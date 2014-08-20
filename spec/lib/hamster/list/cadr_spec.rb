@@ -17,24 +17,21 @@ describe Hamster::List do
     [%w[A B C], :cdddr, Hamster.list],
     [%w[A B C], :cddddr, Hamster.list],
   ].each do |values, method, expected|
-
     describe "##{method}" do
       it "is responded to" do
         Hamster.list.respond_to?(method).should == true
       end
 
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.send(method)
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.send(method)
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == expected
+          list.send(method).should == expected
         end
       end
     end

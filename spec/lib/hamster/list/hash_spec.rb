@@ -3,23 +3,15 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#hash" do
-    describe "on a really big list" do
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
+    context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { @list.hash }.should_not raise_error
+        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).hash }.should_not raise_error
       end
     end
 
-    describe "on an empty list" do
-      before do
-        @result = Hamster.list.hash
-      end
-
+    context "on an empty list" do
       it "returns 0" do
-        expect(@result).to eq(0)
+        expect(Hamster.list.hash).to eq(0)
       end
     end
 

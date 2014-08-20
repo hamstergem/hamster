@@ -45,46 +45,37 @@ describe Hamster::List do
       [[3, 4], [3], [4]],
       [[4], [], [4]],
     ].each do |values, expected_matches, expected_remainder|
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-        end
-
-        describe "with a block" do
-          before do
-            @result = @original.partition(&:odd?)
-            @matches = @result.first
-            @remainder = @result.last
-          end
+        context "with a block" do
+          let(:result)  { list.partition(&:odd?) }
+          let(:matches) { result.first }
+          let(:remainder) { result.last }
 
           it "preserves the original" do
-            @original.should eql(Hamster.list(*values))
+            list.should eql(Hamster.list(*values))
           end
 
           it "returns a frozen array with two items" do
-            @result.class.should be(Array)
-            @result.should be_frozen
-            @result.size.should be(2)
+            result.class.should be(Array)
+            result.should be_frozen
+            result.size.should be(2)
           end
 
           it "correctly identifies the matches" do
-            @matches.should eql(Hamster.list(*expected_matches))
+            matches.should eql(Hamster.list(*expected_matches))
           end
 
           it "correctly identifies the remainder" do
-            @remainder.should eql(Hamster.list(*expected_remainder))
+            remainder.should eql(Hamster.list(*expected_remainder))
           end
         end
 
-        describe "without a block" do
-          before do
-            @result = @original.partition
-          end
-
+        context "without a block" do
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each(&:odd?).should eql([Hamster.list(*expected_matches), Hamster.list(*expected_remainder)])
+            list.partition.class.should be(Enumerator)
+            list.partition.each(&:odd?).should eql([Hamster.list(*expected_matches), Hamster.list(*expected_remainder)])
           end
         end
       end

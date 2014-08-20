@@ -13,40 +13,30 @@ describe Hamster::List do
         [["A"], ["a"]],
         [%w[A B C], %w[a b c]],
       ].each do |values, expected|
+        context "on #{values.inspect}" do
+          let(:list) { Hamster.list(*values) }
 
-        describe "on #{values.inspect}" do
-          before do
-            @original = Hamster.list(*values)
-          end
-
-          describe "with a block" do
-            before do
-              @result = @original.send(method, &:downcase)
-            end
-
+          context "with a block" do
             it "preserves the original" do
-              @original.should eql(Hamster.list(*values))
+              list.send(method, &:downcase)
+              list.should eql(Hamster.list(*values))
             end
 
             it "returns #{expected.inspect}" do
-              @result.should eql(Hamster.list(*expected))
+              list.send(method, &:downcase).should eql(Hamster.list(*expected))
             end
 
             it "is lazy" do
               count = 0
-              @original.send(method) { |item| count += 1 }
+              list.send(method) { |item| count += 1 }
               count.should <= 1
             end
           end
 
-          describe "without a block" do
-            before do
-              @result = @original.send(method)
-            end
-
+          context "without a block" do
             it "returns an Enumerator" do
-              @result.class.should be(Enumerator)
-              @result.each(&:downcase).should eql(Hamster.list(*expected))
+              list.send(method).class.should be(Enumerator)
+              list.send(method).each(&:downcase).should eql(Hamster.list(*expected))
             end
           end
         end

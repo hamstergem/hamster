@@ -4,13 +4,9 @@ require "hamster/list"
 describe Hamster::List do
   [:to_a, :entries].each do |method|
     describe "##{method}" do
-      describe "on a really big list" do
-        before do
-          @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        end
-
+      context "on a really big list" do
         it "doesn't run out of stack" do
-          -> { @list.to_a }.should_not raise_error
+          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).to_a }.should_not raise_error
         end
       end
 
@@ -19,21 +15,23 @@ describe Hamster::List do
         ["A"],
         %w[A B C],
       ].each do |values|
-
-        describe "on #{values.inspect}" do
-          before do
-            @list = Hamster.list(*values)
-            @result = @list.send(method)
-          end
+        context "on #{values.inspect}" do
+          let(:list) { Hamster.list(*values) }
 
           it "returns #{values.inspect}" do
-            @result.should == values
+            list.send(method).should == values
+          end
+
+          it "leaves the original unchanged" do
+            list.send(method)
+            list.should eql(Hamster.list(*values))
           end
 
           it "returns a mutable array" do
-            expect(@result.last).to_not eq("The End")
-            @result << "The End"
-            @result.last.should == "The End"
+            result = list.send(method)
+            expect(result.last).to_not eq("The End")
+            result << "The End"
+            result.last.should == "The End"
           end
         end
       end

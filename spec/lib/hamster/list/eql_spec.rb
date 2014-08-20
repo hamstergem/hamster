@@ -3,15 +3,9 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#eql?" do
-    describe "on a really big list" do
-
-      before do
-        @a = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-        @b = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
+    context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { @a.eql?(@b) }.should_not raise_error
+        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).eql?(Hamster.interval(0, STACK_OVERFLOW_DEPTH)) }.should_not raise_error
       end
     end
   end

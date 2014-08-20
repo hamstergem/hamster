@@ -8,25 +8,20 @@ describe Hamster::List do
     end
 
     [
-      [[], [[]]],
-      [["A"], [["A"], []]],
-      [%w[A B C], [%w[A B C], %w[B C], ["C"], []]],
+      [[], [EmptyList]],
+      [["A"], [L["A"], EmptyList]],
+      [%w[A B C], [L["A", "B", "C"], L["B", "C"], L["C"], EmptyList]],
     ].each do |values, expected|
-
-      expected = expected.map { |x| Hamster.list(*x) }
-
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.tails
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.tails
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          list.tails.should eql(Hamster.list(*expected))
         end
       end
     end

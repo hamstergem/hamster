@@ -3,13 +3,9 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#tail" do
-    describe "on a really big list" do
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
+    context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { @list.filter(&:nil?).tail }.should_not raise_error
+        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).filter(&:nil?).tail }.should_not raise_error
       end
     end
 
@@ -18,19 +14,16 @@ describe Hamster::List do
       [["A"], []],
       [%w[A B C], %w[B C]],
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.tail
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.tail
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          list.tail.should eql(Hamster.list(*expected))
         end
       end
     end

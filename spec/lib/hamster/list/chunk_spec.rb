@@ -12,19 +12,16 @@ describe Hamster::List do
       [["A"], [Hamster.list("A")]],
       [%w[A B C], [Hamster.list("A", "B"), Hamster.list("C")]],
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.chunk(2)
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          list.chunk(2)
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          list.chunk(2).should eql(Hamster.list(*expected))
         end
       end
     end

@@ -14,31 +14,29 @@ describe Hamster::List do
       [[1, 2, 3], [1, 2], [3]],
       [[1, 2, 3, 4], [1, 2], [3, 4]],
     ].each do |values, expected_prefix, expected_remainder|
-
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.list(*values)
-          @result = @original.split_at(2)
-          @prefix = @result.first
-          @remainder = @result.last
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
+        let(:result) { list.split_at(2) }
+        let(:prefix) { result.first }
+        let(:remainder) { result.last }
 
         it "preserves the original" do
-          @original.should == Hamster.list(*values)
+          result
+          list.should eql(Hamster.list(*values))
         end
 
         it "returns a frozen array with two items" do
-          @result.class.should be(Array)
-          @result.should be_frozen
-          @result.size.should be(2)
+          result.class.should be(Array)
+          result.should be_frozen
+          result.size.should be(2)
         end
 
         it "correctly identifies the matches" do
-          @prefix.should == Hamster.list(*expected_prefix)
+          prefix.should eql(Hamster.list(*expected_prefix))
         end
 
         it "correctly identifies the remainder" do
-          @remainder.should == Hamster.list(*expected_remainder)
+          remainder.should eql(Hamster.list(*expected_remainder))
         end
       end
     end

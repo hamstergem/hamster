@@ -9,14 +9,9 @@ describe Hamster::List do
         [["A"], "A"],
         [%w[A B C], "A"],
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @list = Hamster.list(*values)
-          end
-
+        context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            @list.send(method).should == expected
+            Hamster.list(*values).send(method).should == expected
           end
         end
       end

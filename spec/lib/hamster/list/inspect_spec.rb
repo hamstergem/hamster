@@ -3,13 +3,9 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#inspect" do
-    describe "on a really big list" do
-      before do
-        @list = Hamster.interval(0, STACK_OVERFLOW_DEPTH)
-      end
-
+    context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { @list.inspect }.should_not raise_error
+        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).inspect }.should_not raise_error
       end
     end
 
@@ -18,18 +14,15 @@ describe Hamster::List do
       [["A"], 'Hamster::List["A"]'],
       [%w[A B C], 'Hamster::List["A", "B", "C"]']
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @list = Hamster.list(*values)
-        end
+      context "on #{values.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
         it "returns #{expected.inspect}" do
-          @list.inspect.should == expected
+          list.inspect.should == expected
         end
 
         it "returns a string which can be eval'd to get an equivalent object" do
-          eval(@list.inspect).should eql(@list)
+          eval(list.inspect).should eql(list)
         end
       end
     end

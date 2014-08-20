@@ -19,19 +19,16 @@ describe Hamster::List do
         [%w[A B C], 0, 3, %w[A B C]],
         [%w[A B C], 2, 1, ["C"]],
       ].each do |values, from, length, expected|
-
-        describe "#{values.inspect} from #{from} for a length of #{length}" do
-          before do
-            @original = Hamster.list(*values)
-            @result = @original.send(method, from, length)
-          end
+        context "on #{values.inspect} from #{from} for a length of #{length}" do
+          let(:list) { Hamster.list(*values) }
 
           it "preserves the original" do
-            @original.should == Hamster.list(*values)
+            list.send(method, from, length)
+            list.should eql(Hamster.list(*values))
           end
 
           it "returns #{expected.inspect}" do
-            @result.should == Hamster.list(*expected)
+            list.send(method, from, length).should eql(Hamster.list(*expected))
           end
         end
       end

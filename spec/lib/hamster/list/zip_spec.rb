@@ -14,16 +14,9 @@ describe Hamster::List do
       [[], ["A"], [Hamster.list(nil, "A")]],
       [%w[A B C], %w[aye bee see], [Hamster.list("A", "aye"), Hamster.list("B", "bee"), Hamster.list("C", "see")]],
     ].each do |left, right, expected|
-
-      describe "on #{left.inspect} and #{right.inspect}" do
-        before do
-          @left = Hamster.list(*left)
-          @right = Hamster.list(*right)
-          @result = @left.zip(@right)
-        end
-
+      context "on #{left.inspect} and #{right.inspect}" do
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          Hamster.list(*left).zip(Hamster.list(*right)).should eql(Hamster.list(*expected))
         end
       end
     end

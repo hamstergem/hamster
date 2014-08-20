@@ -7,29 +7,22 @@ describe Hamster do
       -> { Hamster.stream { fail }.cycle }.should_not raise_error
     end
 
-    describe "with an empty list" do
-      before do
-        original = Hamster.list
-        @result = original.cycle
-      end
-
+    context "with an empty list" do
       it "returns an empty list" do
-        @result.should be_empty
+        Hamster.list.cycle.should be_empty
       end
     end
 
-    describe "with a non-empty list" do
-      before do
-        @original = Hamster.list("A", "B", "C")
-        @result = @original.cycle
-      end
+    context "with a non-empty list" do
+      let(:list) { Hamster.list("A", "B", "C") }
 
       it "preserves the original" do
-        @original.should == Hamster.list("A", "B", "C")
+        list.cycle
+        list.should == Hamster.list("A", "B", "C")
       end
 
       it "infinitely cycles through all values" do
-        @result.take(7).should == Hamster.list("A", "B", "C", "A", "B", "C", "A")
+        list.cycle.take(7).should == Hamster.list("A", "B", "C", "A", "B", "C", "A")
       end
     end
   end
