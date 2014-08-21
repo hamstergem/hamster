@@ -5,7 +5,15 @@ describe Hamster::List do
   [:find_indices, :indices].each do |method|
     describe "##{method}" do
       it "is lazy" do
-        -> { Hamster.stream { fail }.send(method) { |item| true } }.should_not raise_error
+        count = 0
+        Hamster.stream { count += 1 }.send(method) { |item| true }
+        count.should <= 1
+      end
+
+      context "on a large list which doesn't contain desired item" do
+        it "doesn't blow the stack" do
+          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).find_indices { |x| x < 0 }.size }.should_not raise_error
+        end
       end
 
       [

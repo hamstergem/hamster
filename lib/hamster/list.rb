@@ -431,11 +431,15 @@ module Hamster
     def_delegator :self, :slice, :[]
 
     def find_indices(i = 0, &block)
-      return EmptyList unless block_given?
+      return EmptyList if empty? || !block_given?
       Stream.new do
-        next EmptyList if empty?
-        next Sequence.new(i, tail.find_indices(i + 1, &block)) if yield(head)
-        tail.find_indices(i + 1, &block)
+        node = self
+        while true
+          break Sequence.new(i, node.tail.find_indices(i + 1, &block)) if yield(node.head)
+          node = node.tail
+          break EmptyList if node.empty?
+          i += 1
+        end
       end
     end
 
