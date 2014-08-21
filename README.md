@@ -26,10 +26,8 @@ Hamster collections are almost always closed under a given operation. That is,
 whereas Ruby's collection methods always return arrays, Hamster collections
 will return an instance of the same class wherever possible.
 
-And lastly, Hamster lists are lazy -- where Ruby's language constructs permit
--- making it possible to, among other things, process "infinitely large" lists.
-(Note: Ruby 1.9 supports a form of laziness using `Enumerator`. However, they're
-implemented using Fibers which unfortunately can't be shared across threads.)
+And lastly, Hamster lists are lazy, making it possible to (among other things)
+process "infinitely large" lists.
 
 Where possible, Hamster collections offer an interface compatible with Ruby's
 built-in `Hash`, `Array`, and `Enumerable`, to ease code migration.
