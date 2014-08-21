@@ -383,14 +383,13 @@ module Hamster
       end
     end
 
-    def combinations(number)
+    def combination(number)
       return Sequence.new(EmptyList) if number == 0
       Stream.new do
         next self if empty?
-        tail.combinations(number - 1).map { |list| list.cons(head) }.append(tail.combinations(number))
+        tail.combination(number - 1).map { |list| list.cons(head) }.append(tail.combination(number))
       end
     end
-    def_delegator :self, :combinations, :combination
 
     def chunk(number)
       Stream.new do
@@ -547,7 +546,6 @@ module Hamster
       end
       self
     end
-    def_delegator :self, :permutation, :permutations
 
     def subsequences(&block)
       return enum_for(:subsequences) if not block_given?
