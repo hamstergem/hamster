@@ -426,7 +426,12 @@ module Hamster
     def at(index)
       index += size if index < 0
       return nil if index < 0
-      drop(index).head
+      node = self
+      while index > 0
+        node = node.tail
+        index -= 1
+      end
+      node.head
     end
 
     def slice(from, length = Undefined)
