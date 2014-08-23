@@ -1,6 +1,7 @@
 require "forwardable"
 require "thread"
 require "atomic"
+require "set"
 
 require "hamster/core_ext/enumerable"
 require "hamster/undefined"
@@ -343,7 +344,7 @@ module Hamster
       end
     end
 
-    def uniq(items = EmptySet)
+    def uniq(items = ::Set.new)
       Stream.new do
         next self if empty?
         next tail.uniq(items) if items.include?(head)
