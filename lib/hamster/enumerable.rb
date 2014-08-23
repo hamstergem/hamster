@@ -84,10 +84,6 @@ module Hamster
       result
     end
 
-    def to_list
-      reduce(EmptyList) { |list, item| list.cons(item) }
-    end
-
     def to_set
       Set.new(self)
     end
