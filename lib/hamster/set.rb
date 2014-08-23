@@ -228,8 +228,11 @@ module Hamster
 
     def_delegator :self, :dup, :uniq
     def_delegator :self, :dup, :nub
-    def_delegator :self, :dup, :to_set
     def_delegator :self, :dup, :remove_duplicates
+
+    def to_set
+      self
+    end
 
     def marshal_dump
       output = {}
