@@ -109,5 +109,10 @@ describe Hamster do
       list.size.should be(3)
       list.to_a.should == [1,2,3]
     end
+
+    it "returns an empty list when called without arguments" do
+      Hamster::List[].should be_kind_of(Hamster::List)
+      Hamster::List[].should be_empty
+    end
   end
 end
