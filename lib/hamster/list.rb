@@ -434,11 +434,40 @@ module Hamster
       node.head
     end
 
-    def slice(from, length = Undefined)
-      return at(from) if length.equal?(Undefined)
-      drop(from).take(length)
+    def [](arg, length = (missing_length = true))
+      if missing_length
+        if arg.is_a?(Range)
+          from, to = arg.begin, arg.end
+          from += size if from < 0
+          return nil if from < 0
+          to   += size if to < 0
+          to   += 1    if !arg.exclude_end?
+          length = to - from
+          length = 0 if length < 0
+          list = self
+          while from > 0
+            return nil if list.empty?
+            list = list.tail
+            from -= 1
+          end
+          list.take(length)
+        else
+          at(arg)
+        end
+      else
+        return nil if length < 0
+        arg += size if arg < 0
+        return nil if arg < 0
+        list = self
+        while arg > 0
+          return nil if list.empty?
+          list = list.tail
+          arg -= 1
+        end
+        list.take(length)
+      end
     end
-    def_delegator :self, :slice, :[]
+    def_delegator :self, :[], :slice
 
     def find_indices(i = 0, &block)
       return EmptyList if empty? || !block_given?

@@ -2,35 +2,228 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
+  let(:list) { Hamster.list(1,2,3,4) }
+  let(:big)  { Hamster.list(*1..10000) }
+
   [:slice, :[]].each do |method|
-    describe "#slice" do
-      it "is lazy" do
-        -> { Hamster.stream { fail }.send(method, 1, 5) }.should_not raise_error
+    describe "##{method}" do
+      context "when passed a positive integral index" do
+        it "returns the element at that index" do
+          list.send(method, 0).should be(1)
+          list.send(method, 1).should be(2)
+          list.send(method, 2).should be(3)
+          list.send(method, 3).should be(4)
+          list.send(method, 4).should be(nil)
+          list.send(method, 10).should be(nil)
+
+          big.send(method, 0).should be(1)
+          big.send(method, 9999).should be(10000)
+        end
+
+        it "leaves the original unchanged" do
+          list.should eql(Hamster.list(1,2,3,4))
+        end
       end
 
-      [
-        [[], 0, 10, []],
-        [[], 1, 1, []],
-        [["A"], 0, 0, []],
-        [["A"], 1, 1, []],
-        [["A"], 1, 10, []],
-        [["A"], 0, 1, ["A"]],
-        [["A"], 0, 10, ["A"]],
-        [%w[A B C], 0, 3, %w[A B C]],
-        [%w[A B C], 2, 1, ["C"]],
-      ].each do |values, from, length, expected|
-        context "on #{values.inspect} from #{from} for a length of #{length}" do
-          let(:list) { Hamster.list(*values) }
+      context "when passed a negative integral index" do
+        it "returns the element which is number (index.abs) counting from the end of the list" do
+          list.send(method, -1).should be(4)
+          list.send(method, -2).should be(3)
+          list.send(method, -3).should be(2)
+          list.send(method, -4).should be(1)
+          list.send(method, -5).should be(nil)
+          list.send(method, -10).should be(nil)
 
-          it "preserves the original" do
-            list.send(method, from, length)
-            list.should eql(Hamster.list(*values))
-          end
-
-          it "returns #{expected.inspect}" do
-            list.send(method, from, length).should eql(Hamster.list(*expected))
-          end
+          big.send(method, -1).should be(10000)
+          big.send(method, -10000).should be(1)
         end
+      end
+
+      context "when passed a positive integral index and count" do
+        it "returns 'count' elements starting from 'index'" do
+          list.send(method, 0, 0).should eql(Hamster.list)
+          list.send(method, 0, 1).should eql(Hamster.list(1))
+          list.send(method, 0, 2).should eql(Hamster.list(1,2))
+          list.send(method, 0, 4).should eql(Hamster.list(1,2,3,4))
+          list.send(method, 0, 6).should eql(Hamster.list(1,2,3,4))
+          list.send(method, 0, -1).should be_nil
+          list.send(method, 0, -2).should be_nil
+          list.send(method, 0, -4).should be_nil
+          list.send(method, 2, 0).should eql(Hamster.list)
+          list.send(method, 2, 1).should eql(Hamster.list(3))
+          list.send(method, 2, 2).should eql(Hamster.list(3,4))
+          list.send(method, 2, 4).should eql(Hamster.list(3,4))
+          list.send(method, 2, -1).should be_nil
+          list.send(method, 4, 0).should eql(Hamster.list)
+          list.send(method, 4, 2).should eql(Hamster.list)
+          list.send(method, 4, -1).should be_nil
+          list.send(method, 5, 0).should be_nil
+          list.send(method, 5, 2).should be_nil
+          list.send(method, 5, -1).should be_nil
+          list.send(method, 6, 0).should be_nil
+          list.send(method, 6, 2).should be_nil
+          list.send(method, 6, -1).should be_nil
+
+          big.send(method, 0, 3).should eql(Hamster.list(1,2,3))
+          big.send(method, 1023, 4).should eql(Hamster.list(1024,1025,1026,1027))
+          big.send(method, 1024, 4).should eql(Hamster.list(1025,1026,1027,1028))
+        end
+
+        it "leaves the original unchanged" do
+          list.should eql(Hamster.list(1,2,3,4))
+        end
+      end
+
+      context "when passed a negative integral index and count" do
+        it "returns 'count' elements, starting from index which is number 'index.abs' counting from the end of the array" do
+          list.send(method, -1, 0).should eql(Hamster.list)
+          list.send(method, -1, 1).should eql(Hamster.list(4))
+          list.send(method, -1, 2).should eql(Hamster.list(4))
+          list.send(method, -1, -1).should be_nil
+          list.send(method, -2, 0).should eql(Hamster.list)
+          list.send(method, -2, 1).should eql(Hamster.list(3))
+          list.send(method, -2, 2).should eql(Hamster.list(3,4))
+          list.send(method, -2, 4).should eql(Hamster.list(3,4))
+          list.send(method, -2, -1).should be_nil
+          list.send(method, -4, 0).should eql(Hamster.list)
+          list.send(method, -4, 1).should eql(Hamster.list(1))
+          list.send(method, -4, 2).should eql(Hamster.list(1,2))
+          list.send(method, -4, 4).should eql(Hamster.list(1,2,3,4))
+          list.send(method, -4, 6).should eql(Hamster.list(1,2,3,4))
+          list.send(method, -4, -1).should be_nil
+          list.send(method, -5, 0).should be_nil
+          list.send(method, -5, 1).should be_nil
+          list.send(method, -5, 10).should be_nil
+          list.send(method, -5, -1).should be_nil
+
+          big.send(method, -1, 1).should eql(Hamster.list(10000))
+          big.send(method, -1, 2).should eql(Hamster.list(10000))
+          big.send(method, -6, 2).should eql(Hamster.list(9995,9996))
+        end
+      end
+
+      context "when passed a Range" do
+        it "returns the elements whose indexes are within the given Range" do
+          list.send(method, 0..-1).should eql(Hamster.list(1,2,3,4))
+          list.send(method, 0..-10).should eql(Hamster.list)
+          list.send(method, 0..0).should eql(Hamster.list(1))
+          list.send(method, 0..1).should eql(Hamster.list(1,2))
+          list.send(method, 0..2).should eql(Hamster.list(1,2,3))
+          list.send(method, 0..3).should eql(Hamster.list(1,2,3,4))
+          list.send(method, 0..4).should eql(Hamster.list(1,2,3,4))
+          list.send(method, 0..10).should eql(Hamster.list(1,2,3,4))
+          list.send(method, 2..-10).should eql(Hamster.list)
+          list.send(method, 2..0).should eql(Hamster.list)
+          list.send(method, 2..2).should eql(Hamster.list(3))
+          list.send(method, 2..3).should eql(Hamster.list(3,4))
+          list.send(method, 2..4).should eql(Hamster.list(3,4))
+          list.send(method, 3..0).should eql(Hamster.list)
+          list.send(method, 3..3).should eql(Hamster.list(4))
+          list.send(method, 3..4).should eql(Hamster.list(4))
+          list.send(method, 4..0).should eql(Hamster.list)
+          list.send(method, 4..4).should eql(Hamster.list)
+          list.send(method, 4..5).should eql(Hamster.list)
+          list.send(method, 5..0).should be_nil
+          list.send(method, 5..5).should be_nil
+          list.send(method, 5..6).should be_nil
+
+          big.send(method, 159..162).should eql(Hamster.list(160,161,162,163))
+          big.send(method, 160..162).should eql(Hamster.list(161,162,163))
+          big.send(method, 161..162).should eql(Hamster.list(162,163))
+          big.send(method, 9999..10100).should eql(Hamster.list(10000))
+          big.send(method, 10000..10100).should eql(Hamster.list)
+          big.send(method, 10001..10100).should be_nil
+
+          list.send(method, 0...-1).should eql(Hamster.list(1,2,3))
+          list.send(method, 0...-10).should eql(Hamster.list)
+          list.send(method, 0...0).should eql(Hamster.list)
+          list.send(method, 0...1).should eql(Hamster.list(1))
+          list.send(method, 0...2).should eql(Hamster.list(1,2))
+          list.send(method, 0...3).should eql(Hamster.list(1,2,3))
+          list.send(method, 0...4).should eql(Hamster.list(1,2,3,4))
+          list.send(method, 0...10).should eql(Hamster.list(1,2,3,4))
+          list.send(method, 2...-10).should eql(Hamster.list)
+          list.send(method, 2...0).should eql(Hamster.list)
+          list.send(method, 2...2).should eql(Hamster.list)
+          list.send(method, 2...3).should eql(Hamster.list(3))
+          list.send(method, 2...4).should eql(Hamster.list(3,4))
+          list.send(method, 3...0).should eql(Hamster.list)
+          list.send(method, 3...3).should eql(Hamster.list)
+          list.send(method, 3...4).should eql(Hamster.list(4))
+          list.send(method, 4...0).should eql(Hamster.list)
+          list.send(method, 4...4).should eql(Hamster.list)
+          list.send(method, 4...5).should eql(Hamster.list)
+          list.send(method, 5...0).should be_nil
+          list.send(method, 5...5).should be_nil
+          list.send(method, 5...6).should be_nil
+
+          big.send(method, 159...162).should eql(Hamster.list(160,161,162))
+          big.send(method, 160...162).should eql(Hamster.list(161,162))
+          big.send(method, 161...162).should eql(Hamster.list(162))
+          big.send(method, 9999...10100).should eql(Hamster.list(10000))
+          big.send(method, 10000...10100).should eql(Hamster.list)
+          big.send(method, 10001...10100).should be_nil
+
+          list.send(method, -1..-1).should eql(Hamster.list(4))
+          list.send(method, -1...-1).should eql(Hamster.list)
+          list.send(method, -1..3).should eql(Hamster.list(4))
+          list.send(method, -1...3).should eql(Hamster.list)
+          list.send(method, -1..4).should eql(Hamster.list(4))
+          list.send(method, -1...4).should eql(Hamster.list(4))
+          list.send(method, -1..10).should eql(Hamster.list(4))
+          list.send(method, -1...10).should eql(Hamster.list(4))
+          list.send(method, -1..0).should eql(Hamster.list)
+          list.send(method, -1..-4).should eql(Hamster.list)
+          list.send(method, -1...-4).should eql(Hamster.list)
+          list.send(method, -1..-6).should eql(Hamster.list)
+          list.send(method, -1...-6).should eql(Hamster.list)
+          list.send(method, -2..-2).should eql(Hamster.list(3))
+          list.send(method, -2...-2).should eql(Hamster.list)
+          list.send(method, -2..-1).should eql(Hamster.list(3,4))
+          list.send(method, -2...-1).should eql(Hamster.list(3))
+          list.send(method, -2..10).should eql(Hamster.list(3,4))
+          list.send(method, -2...10).should eql(Hamster.list(3,4))
+
+          big.send(method, -1..-1).should eql(Hamster.list(10000))
+          big.send(method, -1..9999).should eql(Hamster.list(10000))
+          big.send(method, -1...9999).should eql(Hamster.list)
+          big.send(method, -2...9999).should eql(Hamster.list(9999))
+          big.send(method, -2..-1).should eql(Hamster.list(9999,10000))
+
+          list.send(method, -4..-4).should eql(Hamster.list(1))
+          list.send(method, -4..-2).should eql(Hamster.list(1,2,3))
+          list.send(method, -4...-2).should eql(Hamster.list(1,2))
+          list.send(method, -4..-1).should eql(Hamster.list(1,2,3,4))
+          list.send(method, -4...-1).should eql(Hamster.list(1,2,3))
+          list.send(method, -4..3).should eql(Hamster.list(1,2,3,4))
+          list.send(method, -4...3).should eql(Hamster.list(1,2,3))
+          list.send(method, -4..4).should eql(Hamster.list(1,2,3,4))
+          list.send(method, -4...4).should eql(Hamster.list(1,2,3,4))
+          list.send(method, -4..0).should eql(Hamster.list(1))
+          list.send(method, -4...0).should eql(Hamster.list)
+          list.send(method, -4..1).should eql(Hamster.list(1,2))
+          list.send(method, -4...1).should eql(Hamster.list(1))
+
+          list.send(method, -5..-5).should be_nil
+          list.send(method, -5...-5).should be_nil
+          list.send(method, -5..-4).should be_nil
+          list.send(method, -5..-1).should be_nil
+          list.send(method, -5..10).should be_nil
+
+          big.send(method, -10001..-1).should be_nil
+        end
+
+        it "leaves the original unchanged" do
+          list.should eql(Hamster.list(1,2,3,4))
+        end
+      end
+    end
+
+    context "when passed a subclass of Range" do
+      it "works the same as with a Range" do
+        subclass = Class.new(Range)
+        list.send(method, subclass.new(1,2)).should eql(Hamster.list(2,3))
+        list.send(method, subclass.new(-3,-1,true)).should eql(Hamster.list(2,3))
       end
     end
   end
