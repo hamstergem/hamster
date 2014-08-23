@@ -633,10 +633,6 @@ module Hamster
       self
     end
 
-    def to_set
-      Set.new(self)
-    end
-
     def inspect
       result = "Hamster::List["
       each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
