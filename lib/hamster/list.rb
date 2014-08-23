@@ -354,8 +354,12 @@ module Hamster
     def_delegator :self, :uniq, :nub
     def_delegator :self, :uniq, :remove_duplicates
 
-    def union(other)
-      append(other).uniq
+    def union(other, items = ::Set.new)
+      Stream.new do
+        next other.uniq(items) if empty?
+        next tail.union(other, items) if items.include?(head)
+        Sequence.new(head, tail.union(other, items.add(head)))
+      end
     end
     def_delegator :self, :union, :|
 
