@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/stack"
 
 describe Hamster::Stack do
-  describe "new" do
+  describe ".new" do
     it "initializes a new stack" do
       stack = Hamster::Stack.new([1,2,3])
       stack.size.should be(3)
@@ -10,17 +10,11 @@ describe Hamster::Stack do
     end
 
     context "from a subclass" do
-      before do
-        @subclass = Class.new(Hamster::Stack)
-        @instance = @subclass.new(["some", "values"])
-      end
-
-      it "returns an instance of the subclass" do
-        @instance.class.should be @subclass
-      end
-
-      it "returns a frozen instance" do
-        @instance.frozen?.should be true
+      it "returns a frozen instance of the subclass" do
+        subclass = Class.new(Hamster::Stack)
+        instance = subclass.new(["some", "values"])
+        instance.class.should be subclass
+        instance.frozen?.should be true
       end
     end
 

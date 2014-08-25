@@ -9,15 +9,9 @@ describe Hamster::Stack do
       [["A"], ["A"]],
       [%w[A B C], %w[C B A]],
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @stack = Hamster.stack(*values)
-          @result = @stack.to_list
-        end
-
+      context "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          @result.should == Hamster.list(*expected)
+          Hamster.stack(*values).to_list.should eql(Hamster.list(*expected))
         end
       end
     end

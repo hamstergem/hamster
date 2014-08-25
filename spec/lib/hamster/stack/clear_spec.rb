@@ -2,25 +2,23 @@ require "spec_helper"
 require "hamster/stack"
 
 describe Hamster::Stack do
-  describe "#stack" do
+  describe "#clear" do
     [
       [],
       ["A"],
       %w[A B C],
     ].each do |values|
-
-      describe "on #{values}" do
-        before do
-          @original = Hamster.stack(*values)
-          @result = @original.clear
-        end
+      context "on #{values}" do
+        let(:stack) { Hamster.stack(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.stack(*values)
+          stack.clear
+          stack.should eql(Hamster.stack(*values))
         end
 
-        it "returns an empty list" do
-          @result.should equal(Hamster.stack)
+        it "returns an empty stack" do
+          stack.clear.should equal(Hamster.stack)
+          stack.clear.should be_empty
         end
       end
     end

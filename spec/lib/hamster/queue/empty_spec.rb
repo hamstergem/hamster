@@ -28,7 +28,7 @@ describe Hamster::Queue do
     it "returns the canonical empty vector" do
       Hamster::Queue.empty.size.should be(0)
       Hamster::Queue.empty.class.should be(Hamster::Queue)
-      Hamster::Queue.empty.object_id.should be(Hamster::Queue.empty.object_id)
+      Hamster::Queue.empty.object_id.should be(Hamster::EmptyQueue.object_id)
     end
 
     context "from a subclass" do

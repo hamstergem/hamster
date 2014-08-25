@@ -1,38 +1,33 @@
 require "spec_helper"
 require "hamster/stack"
 
-describe Hamster do
+describe Hamster::Stack do
   describe ".stack" do
-    describe "with no arguments" do
-      before do
-        @stack = Hamster.stack
-      end
-
+    context "with no arguments" do
       it "always returns the same instance" do
-        @stack.should equal(Hamster.stack)
+        Hamster.stack.should equal(Hamster.stack)
       end
 
-      it "returns an empty stack" do
-        @stack.should be_empty
+      it "returns an empty, frozen stack" do
+        Hamster.stack.should be_empty
+        Hamster.stack.should be_frozen
       end
     end
 
-    describe "with a number of items" do
-      before do
-        @stack = Hamster.stack("A", "B", "C")
-      end
+    context "with a number of items" do
+      let(:stack) { Hamster.stack("A", "B", "C") }
 
       it "always returns a different instance" do
-        @stack.should_not equal(Hamster.stack("A", "B", "C"))
+        stack.should_not equal(Hamster.stack("A", "B", "C"))
       end
 
       it "is the same as repeatedly using #push" do
-        @stack.should == Hamster.stack.push("A").push("B").push("C")
+        stack.should eql(Hamster.stack.push("A").push("B").push("C"))
       end
     end
   end
 
-  describe "[]" do
+  describe ".[]" do
     it "takes a variable number of items and returns a new stack" do
       stack = Hamster::Stack[1,2,3]
       stack.class.should be(Hamster::Stack)

@@ -8,24 +8,19 @@ describe Hamster::Stack do
       [["A"], false],
       [%w[A B C], false],
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @stack = Hamster.stack(*values)
-        end
-
+      context "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          @stack.empty?.should == expected
+          Hamster.stack(*values).empty?.should == expected
         end
       end
     end
   end
 
-  describe "empty" do
+  describe ".empty" do
     it "returns the canonical empty stack object" do
       Hamster::Stack.empty.should be_empty
       Hamster::Stack.empty.class.should be(Hamster::Stack)
-      Hamster::Stack.empty.object_id.should == Hamster::Stack.empty.object_id
+      Hamster::Stack.empty.object_id.should == Hamster::EmptyStack.object_id
     end
 
     context "from a subclass" do

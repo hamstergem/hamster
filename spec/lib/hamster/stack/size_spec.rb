@@ -9,14 +9,9 @@ describe Hamster::Stack do
         [["A"], 1],
         [%w[A B C], 3],
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @stack = Hamster.stack(*values)
-          end
-
+        context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            @stack.send(method).should == expected
+            Hamster.stack(*values).send(method).should == expected
           end
         end
       end

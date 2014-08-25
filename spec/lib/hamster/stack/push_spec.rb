@@ -10,19 +10,16 @@ describe Hamster::Stack do
         [["A"], "A", %w[A A]],
         [%w[A B C], "D", %w[A B C D]],
       ].each do |values, new_value, expected|
-
-        describe "on #{values.inspect} with #{new_value.inspect}" do
-          before do
-            @original = Hamster.stack(*values)
-            @result = @original.send(method, new_value)
-          end
+        context "on #{values.inspect} with #{new_value.inspect}" do
+          let(:stack) { Hamster.stack(*values) }
 
           it "preserves the original" do
-            @original.should == Hamster.stack(*values)
+            stack.send(method, new_value)
+            stack.should eql(Hamster.stack(*values))
           end
 
           it "returns #{expected.inspect}" do
-            @result.should == Hamster.stack(*expected)
+            stack.send(method, new_value).should eql(Hamster.stack(*expected))
           end
         end
       end

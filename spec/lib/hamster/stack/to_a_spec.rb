@@ -9,21 +9,18 @@ describe Hamster::Stack do
         [["A"], ["A"]],
         [%w[A B C], %w[C B A]],
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @stack = Hamster.stack(*values)
-            @result = @stack.send(method)
-          end
+        context "on #{values.inspect}" do
+          let(:stack) { Hamster.stack(*values) }
 
           it "returns #{expected.inspect}" do
-            @result.should == expected
+            stack.send(method).should == expected
           end
 
           it "returns a mutable array" do
-            expect(@result.last).to_not eq("The End")
-            @result << "The End"
-            @result.last.should == "The End"
+            result = stack.send(method)
+            expect(result.last).to_not eq("The End")
+            result << "The End"
+            result.last.should == "The End"
           end
         end
       end

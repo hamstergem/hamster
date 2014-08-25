@@ -8,14 +8,11 @@ describe Hamster::Stack do
       ["A"],
       %w[A B C],
     ].each do |values|
-
-      describe "on #{values.inspect}" do
-        before do
-          @stack = Hamster.stack(*values)
-        end
+      context "on #{values.inspect}" do
+        let(:stack) { Hamster.stack(*values) }
 
         it "returns self" do
-          @stack.send(method).should equal(@stack)
+          stack.send(method).should equal(stack)
         end
       end
     end
