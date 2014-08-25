@@ -74,6 +74,10 @@ module Hamster
       size1 > size2 ? 1 : -1
     end
 
+    def ==(other)
+      self.eql?(other) || other.respond_to?(:to_ary) && to_ary.eql?(other.to_ary)
+    end
+
     def join(separator = $,)
       result = ""
       if separator

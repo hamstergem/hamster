@@ -509,10 +509,6 @@ module Hamster
       @root.eql?(other.instance_variable_get(:@root))
     end
 
-    def ==(other)
-      self.eql?(other) || other.respond_to?(:to_ary) && to_ary.eql?(other.to_ary)
-    end
-
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end

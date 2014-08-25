@@ -297,7 +297,6 @@ module Hamster
     rescue StopIteration
       true
     end
-    def_delegator :self, :eql?, :==
 
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
