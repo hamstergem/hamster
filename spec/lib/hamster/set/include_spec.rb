@@ -29,6 +29,7 @@ describe Hamster::Set do
         item = ['mutable']
         set  = Hamster::Set[item]
         item.push('HOSED!')
+        # this may fail occasionally if ['mutable', 'HOSED!'] hashes to the same trie branch as ['mutable']
         set.should_not include(item)
       end
 
