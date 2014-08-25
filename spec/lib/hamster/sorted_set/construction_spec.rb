@@ -11,20 +11,18 @@ describe Hamster::SortedSet do
     end
 
     context "with a list of values" do
-      before do
-        @set = Hamster.sorted_set("A", "B", "C")
-      end
+      let(:sorted_set) { Hamster.sorted_set("A", "B", "C") }
 
       it "is equivalent to repeatedly using #add" do
-        @set.size.should be(3)
-        @set.should eql(Hamster.sorted_set.add("A").add("B").add("C"))
+        sorted_set.size.should be(3)
+        sorted_set.should eql(Hamster.sorted_set.add("A").add("B").add("C"))
       end
     end
 
     context "with a block" do
       it "returns a set sorted using the given block" do
-        @set = Hamster.sorted_set('fling', 'chalk', 'whip', 'papaya') { |str| str.reverse }
-        @set.to_a.should == ['papaya', 'fling', 'chalk', 'whip']
+        set = Hamster.sorted_set('fling', 'chalk', 'whip', 'papaya') { |str| str.reverse }
+        set.to_a.should == ['papaya', 'fling', 'chalk', 'whip']
       end
     end
   end

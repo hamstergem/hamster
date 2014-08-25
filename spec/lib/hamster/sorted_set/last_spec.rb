@@ -2,10 +2,10 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  let(:set) { Hamster.sorted_set(*values) }
+  let(:sorted_set) { Hamster.sorted_set(*values) }
 
   describe "#last" do
-    let(:last) { set.last }
+    let(:last) { sorted_set.last }
 
     shared_examples "checking values" do
       it "returns the last item" do

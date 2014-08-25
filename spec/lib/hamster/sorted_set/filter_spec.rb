@@ -4,68 +4,57 @@ require "hamster/sorted_set"
 describe Hamster::SortedSet do
   [:filter, :select, :find_all].each do |method|
     describe "##{method}" do
-      before do
-        @original = Hamster.sorted_set("A", "B", "C")
-      end
+      let(:sorted_set) { Hamster.sorted_set("A", "B", "C") }
 
-      describe "when everything matches" do
-        before do
-          @result = @original.send(method) { |item| true }
+      context "when everything matches" do
+        it "preserves the original" do
+          sorted_set.send(method) { true }
+          sorted_set.should eql(Hamster.sorted_set("A", "B", "C"))
         end
 
         it "returns self" do
-          @result.should equal(@original)
+          sorted_set.send(method) { |item| true }.should equal(sorted_set)
         end
       end
 
-      describe "when only some things match" do
-        describe "with a block" do
-          before do
-            @result = @original.send(method) { |item| item == "A" }
-          end
-
+      context "when only some things match" do
+        context "with a block" do
           it "preserves the original" do
-            @original.should == Hamster.sorted_set("A", "B", "C")
+            sorted_set.send(method) { |item| item == "A" }
+            sorted_set.should eql(Hamster.sorted_set("A", "B", "C"))
           end
 
           it "returns a set with the matching values" do
-            @result.should == Hamster.sorted_set("A")
+            sorted_set.send(method) { |item| item == "A" }.should eql(Hamster.sorted_set("A"))
           end
         end
 
-        describe "with no block" do
-          before do
-            @result = @original.send(method)
-          end
-
+        context "with no block" do
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each { |item| item == "A" }.should == Hamster.sorted_set("A")
+            sorted_set.send(method).class.should be(Enumerator)
+            sorted_set.send(method).each { |item| item == "A" }.should eql(Hamster.sorted_set("A"))
           end
         end
       end
 
-      describe "when nothing matches" do
-        before do
-          @result = @original.send(method) { |item| false }
-        end
-
+      context "when nothing matches" do
         it "preserves the original" do
-          @original.should == Hamster.sorted_set("A", "B", "C")
+          sorted_set.send(method) { |item| false }
+          sorted_set.should eql(Hamster.sorted_set("A", "B", "C"))
         end
 
         it "returns the canonical empty set" do
-          @result.should equal(Hamster::EmptySortedSet)
+          sorted_set.send(method) { |item| false }.should equal(Hamster::EmptySortedSet)
         end
       end
 
       context "from a subclass" do
         it "returns an instance of the same class" do
-          @subclass = Class.new(Hamster::SortedSet)
-          @instance = @subclass.new(['A', 'B', 'C'])
-          @instance.filter { true }.class.should be(@subclass)
-          @instance.filter { false }.class.should be(@subclass)
-          @instance.filter { rand(2) == 0 }.class.should be(@subclass)
+          subclass = Class.new(Hamster::SortedSet)
+          instance = subclass.new(['A', 'B', 'C'])
+          instance.filter { true }.class.should be(subclass)
+          instance.filter { false }.class.should be(subclass)
+          instance.filter { rand(2) == 0 }.class.should be(subclass)
         end
       end
     end

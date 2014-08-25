@@ -12,14 +12,9 @@ describe Hamster::SortedSet do
         [%w[A B C], %w[B C D], %w[A D]],
         [%w[A B C], %w[D E F], %w[A B C D E F]],
       ].each do |a, b, expected|
-
-        describe "for #{a.inspect} and #{b.inspect}" do
-          before do
-            @result = Hamster.sorted_set(*a).send(method, Hamster.sorted_set(*b))
-          end
-
+        context "for #{a.inspect} and #{b.inspect}" do
           it "returns #{expected.inspect}"  do
-            @result.should eql(Hamster.sorted_set(*expected))
+            Hamster.sorted_set(*a).send(method, Hamster.sorted_set(*b)).should eql(Hamster.sorted_set(*expected))
           end
         end
       end

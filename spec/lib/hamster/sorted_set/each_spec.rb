@@ -5,30 +5,25 @@ describe Hamster::SortedSet do
   [:each, :foreach].each do |method|
     describe "##{method}" do
       context "with no block" do
-        before do
-          @set    = Hamster.sorted_set("A", "B", "C")
-          @result = @set.send(method)
-        end
+        let(:sorted_set) { Hamster.sorted_set("A", "B", "C") }
 
         it "returns an Enumerator" do
-          @result.class.should be(Enumerator)
-          @result.to_a.should eql(@set.to_a)
+          sorted_set.send(method).class.should be(Enumerator)
+          sorted_set.send(method).to_a.should eql(sorted_set.to_a)
         end
       end
 
       context "with a block" do
-        before do
-          @set    = Hamster::SortedSet.new((1..1025).to_a.reverse)
-          @items  = []
-          @result = @set.send(method) { |item| @items << item }
-        end
+        let(:sorted_set) { Hamster::SortedSet.new((1..1025).to_a.reverse) }
 
         it "returns self" do
-          @result.should be(@set)
+          sorted_set.send(method) {}.should be(sorted_set)
         end
 
         it "iterates over the items in order" do
-          @items.should == (1..1025).to_a
+          items = []
+          sorted_set.send(method) { |item| items << item }
+          items.should == (1..1025).to_a
         end
       end
     end

@@ -19,15 +19,9 @@ describe Hamster::SortedSet do
         [[2.0], 2.0, 0],
         [[2.0], 2, 0],
       ].each do |values, item, expected|
-
-        describe "looking for #{item.inspect} in #{values.inspect}" do
-          before do
-            sorted_set = Hamster.sorted_set(*values)
-            @result = sorted_set.send(method) { |x| x == item }
-          end
-
+        context "looking for #{item.inspect} in #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            @result.should == expected
+            Hamster.sorted_set(*values).send(method) { |x| x == item }.should == expected
           end
         end
       end

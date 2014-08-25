@@ -4,30 +4,25 @@ require "hamster/sorted_set"
 describe Hamster::SortedSet do
   describe "#reverse_each" do
     context "with no block" do
-      before do
-        @set    = Hamster.sorted_set("A", "B", "C")
-        @result = @set.reverse_each
-      end
+      let(:sorted_set) { Hamster.sorted_set("A", "B", "C") }
 
       it "returns an Enumerator" do
-        @result.class.should be(Enumerator)
-        @result.to_a.should eql(@set.to_a.reverse)
+        sorted_set.reverse_each.class.should be(Enumerator)
+        sorted_set.reverse_each.to_a.should eql(sorted_set.to_a.reverse)
       end
     end
 
     context "with a block" do
-      before do
-        @set    = Hamster::SortedSet.new((1..1025).to_a)
-        @items  = []
-        @result = @set.reverse_each { |item| @items << item }
-      end
+      let(:sorted_set) { Hamster::SortedSet.new((1..1025).to_a) }
 
       it "returns self" do
-        @result.should be(@set)
+        sorted_set.reverse_each {}.should be(sorted_set)
       end
 
       it "iterates over the items in order" do
-        @items.should == (1..1025).to_a.reverse
+        items = []
+        sorted_set.reverse_each { |item| items << item }
+        items.should == (1..1025).to_a.reverse
       end
     end
   end

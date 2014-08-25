@@ -9,15 +9,9 @@ describe Hamster::SortedSet do
       ["A"],
       %w[A B C],
     ].each do |values|
-
-      describe "on #{values.inspect}" do
-        before do
-          original = Hamster.sorted_set(*values)
-          @result = original.to_set
-        end
-
+      context "on #{values.inspect}" do
         it "returns a set with the same values" do
-          @result.should eql(Hamster.set(*values))
+          Hamster.sorted_set(*values).to_set.should eql(Hamster.set(*values))
         end
       end
     end

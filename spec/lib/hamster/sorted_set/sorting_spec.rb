@@ -6,48 +6,36 @@ describe Hamster::SortedSet do
     [:sort, ->(left, right) { left.length <=> right.length }],
     [:sort_by, ->(item) { item.length }],
   ].each do |method, comparator|
-
     describe "##{method}" do
       [
         [[], []],
         [["A"], ["A"]],
         [%w[Ichi Ni San], %w[Ni San Ichi]],
       ].each do |values, expected|
-
         describe "on #{values.inspect}" do
-          before do
-            @original = Hamster.sorted_set(*values) { |item| item.reverse }
-          end
+          let(:sorted_set) { Hamster.sorted_set(*values) { |item| item.reverse }}
 
           context "with a block" do
-            before do
-              @array  = @original.to_a
-              @result = @original.send(method, &comparator)
-            end
-
             it "preserves the original" do
-              @original.to_a.should == @array
+              sorted_set.send(method, &comparator)
+              sorted_set.to_a.should == Hamster.sorted_set(*values) { |item| item.reverse }
             end
 
             it "returns #{expected.inspect}" do
-              @result.class.should be(Hamster::SortedSet)
-              @result.to_a.should == expected
+              sorted_set.send(method, &comparator).class.should be(Hamster::SortedSet)
+              sorted_set.send(method, &comparator).to_a.should == expected
             end
           end
 
           context "without a block" do
-            before do
-              @array  = @original.to_a
-              @result = @original.send(method)
-            end
-
             it "preserves the original" do
-              @original.to_a.should == @array
+              sorted_set.send(method)
+              sorted_set.to_a.should == Hamster.sorted_set(*values) { |item| item.reverse }
             end
 
             it "returns #{expected.sort.inspect}" do
-              @result.class.should be(Hamster::SortedSet)
-              @result.to_a.should == expected.sort
+              sorted_set.send(method).class.should be(Hamster::SortedSet)
+              sorted_set.send(method).to_a.should == expected.sort
             end
           end
         end

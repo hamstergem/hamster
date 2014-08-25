@@ -10,14 +10,9 @@ describe Hamster::SortedSet do
         [%w[A B C], "A"],
         [%w[Z Y X], "X"]
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @vector = Hamster.sorted_set(*values)
-          end
-
+        context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            @vector.send(method).should eql(expected)
+            Hamster.sorted_set(*values).send(method).should eql(expected)
           end
         end
       end

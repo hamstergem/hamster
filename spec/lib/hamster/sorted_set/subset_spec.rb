@@ -16,14 +16,9 @@ describe Hamster::SortedSet do
       [%w[A B C], %w[A B C D], true],
       [%w[A B C D], %w[A B C], false],
     ].each do |a, b, expected|
-
-      describe "for #{a.inspect} and #{b.inspect}" do
-        before do
-          @result = Hamster.sorted_set(*a).subset?(Hamster.sorted_set(*b))
-        end
-
+      context "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}"  do
-          @result.should == expected
+          Hamster.sorted_set(*a).subset?(Hamster.sorted_set(*b)).should == expected
         end
       end
     end
@@ -43,14 +38,9 @@ describe Hamster::SortedSet do
       [%w[A B C], %w[A B C D], true],
       [%w[A B C D], %w[A B C], false],
     ].each do |a, b, expected|
-
-      describe "for #{a.inspect} and #{b.inspect}" do
-        before do
-          @result = Hamster.sorted_set(*a).proper_subset?(Hamster.sorted_set(*b))
-        end
-
+      context "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}"  do
-          @result.should == expected
+          Hamster.sorted_set(*a).proper_subset?(Hamster.sorted_set(*b)).should == expected
         end
       end
     end

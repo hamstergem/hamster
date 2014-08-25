@@ -2,8 +2,8 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  describe "new" do
-    it "accepts a single enumerable argument and creates a new sorted_set" do
+  describe ".new" do
+    it "accepts a single enumerable argument and creates a new sorted set" do
       sorted_set = Hamster::SortedSet.new([1,2,3])
       sorted_set.size.should be(3)
       sorted_set[0].should be(1)
@@ -31,23 +31,17 @@ describe Hamster::SortedSet do
       sorted_set.to_a.should == ['SNAZZY!!!']
     end
 
-    describe "from a subclass" do
-      before do
-        @subclass = Class.new(Hamster::SortedSet)
-        @instance = @subclass.new(["some", "values"])
-      end
-
-      it "returns an instance of the subclass" do
-        @instance.class.should be @subclass
-      end
-
-      it "returns a frozen instance" do
-        @instance.frozen?.should be true
+    context "from a subclass" do
+      it "returns a frozen instance of the subclass" do
+        subclass = Class.new(Hamster::SortedSet)
+        instance = subclass.new(["some", "values"])
+        instance.class.should be subclass
+        instance.frozen?.should be true
       end
     end
   end
 
-  describe "[]" do
+  describe ".[]" do
     it "accepts a variable number of items and creates a new sorted set" do
       sorted_set = Hamster::SortedSet['a', 'b']
       sorted_set.size.should be(2)

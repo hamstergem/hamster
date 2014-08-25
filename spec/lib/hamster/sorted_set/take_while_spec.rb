@@ -8,31 +8,24 @@ describe Hamster::SortedSet do
       [["A"], ["A"]],
       [%w[A B C], %w[A B]],
     ].each do |values, expected|
+      context "on #{values.inspect}" do
+        let(:sorted_set) { Hamster.sorted_set(*values) }
 
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.sorted_set(*values)
-          @result = @original.take_while { |item| item < "C" }
-        end
-
-        describe "with a block" do
+        context "with a block" do
           it "returns #{expected.inspect}" do
-            @result.should eql(Hamster.sorted_set(*expected))
+            sorted_set.take_while { |item| item < "C" }.should eql(Hamster.sorted_set(*expected))
           end
 
           it "preserves the original" do
-            @original.should eql(Hamster.sorted_set(*values))
+            sorted_set.take_while { |item| item < "C" }
+            sorted_set.should eql(Hamster.sorted_set(*values))
           end
         end
 
-        describe "without a block" do
-          before do
-            @result = @original.take_while
-          end
-
+        context "without a block" do
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each { |item| item < "C" }.should eql(Hamster.sorted_set(*expected))
+            sorted_set.take_while.class.should be(Enumerator)
+            sorted_set.take_while.each { |item| item < "C" }.should eql(Hamster.sorted_set(*expected))
           end
         end
       end

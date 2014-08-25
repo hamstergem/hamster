@@ -9,7 +9,6 @@ describe Hamster::SortedSet do
         [["A"], 1],
         [%w[A B C], 3],
       ].each do |values, result|
-
         it "returns #{result} for #{values.inspect}" do
           Hamster.sorted_set(*values).send(method).should == result
         end

@@ -16,8 +16,7 @@ describe Hamster::SortedSet do
       [%w[A B C], %w[A B C D], false],
       [%w[D E F G], %w[A B C], true],
     ].each do |a, b, expected|
-
-      describe "for #{a.inspect} and #{b.inspect}" do
+      context "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}" do
           Hamster.sorted_set(*a).disjoint?(Hamster.sorted_set(*b)).should be(expected)
         end

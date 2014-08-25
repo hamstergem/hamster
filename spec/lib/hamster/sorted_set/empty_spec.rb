@@ -9,21 +9,18 @@ describe Hamster::SortedSet do
         [["A"], false],
         [%w[A B C], false],
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @set = Hamster.sorted_set(*values)
-          end
+        context "on #{values.inspect}" do
+          let(:sorted_set) { Hamster.sorted_set(*values) }
 
           it "returns #{expected.inspect}" do
-            @set.send(method).should == expected
+            sorted_set.send(method).should == expected
           end
         end
       end
     end
   end
 
-  describe "empty" do
+  describe ".empty" do
     it "returns the canonical empty set" do
       Hamster::SortedSet.empty.size.should be(0)
       Hamster::SortedSet.empty.object_id.should be(Hamster::SortedSet.empty.object_id)

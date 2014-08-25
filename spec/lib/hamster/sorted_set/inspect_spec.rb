@@ -8,36 +8,30 @@ describe Hamster::SortedSet do
       [["A"], 'Hamster::SortedSet["A"]'],
       [["C", "B", "A"], 'Hamster::SortedSet["A", "B", "C"]']
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @original = Hamster.sorted_set(*values)
-          @result   = @original.inspect
-        end
+      context "on #{values.inspect}" do
+        let(:sorted_set) { Hamster.sorted_set(*values) }
 
         it "returns #{expected.inspect}" do
-          @result.should == expected
+          sorted_set.inspect.should == expected
         end
 
         it "returns a string which can be eval'd to get an equivalent set" do
-          eval(@result).should eql(@original)
+          eval(sorted_set.inspect).should eql(sorted_set)
         end
       end
     end
 
+    MySortedSet = Class.new(Hamster::SortedSet)
+
     context "from a subclass" do
-      before do
-        MySet     = Class.new(Hamster::SortedSet)
-        @original = MySet[1, 2]
-        @result   = @original.inspect
-      end
+      let(:sorted_set) { MySortedSet[1, 2] }
 
       it "returns a programmer-readable representation of the set contents" do
-        @result.should == 'MySet[1, 2]'
+        sorted_set.inspect.should == 'MySortedSet[1, 2]'
       end
 
       it "returns a string which can be eval'd to get an equivalent set" do
-        eval(@result).should eql(@original)
+        eval(sorted_set.inspect).should eql(sorted_set)
       end
     end
   end
