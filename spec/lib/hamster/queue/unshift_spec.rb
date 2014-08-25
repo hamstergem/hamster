@@ -9,19 +9,16 @@ describe Hamster::Queue do
       [["A"], "A", %w[A A]],
       [%w[A B C], "D", %w[D A B C]],
     ].each do |values, new_value, expected|
-
-      describe "on #{values.inspect} with #{new_value.inspect}" do
-        before do
-          @original = Hamster.queue(*values)
-          @result = @original.unshift(new_value)
-        end
+      context "on #{values.inspect} with #{new_value.inspect}" do
+        let(:queue) { Hamster.queue(*values) }
 
         it "preserves the original" do
-          @original.should eql(Hamster.queue(*values))
+          queue.unshift(new_value)
+          queue.should eql(Hamster.queue(*values))
         end
 
         it "returns #{expected.inspect}" do
-          @result.should eql(Hamster.queue(*expected))
+          queue.unshift(new_value).should eql(Hamster.queue(*expected))
         end
       end
     end

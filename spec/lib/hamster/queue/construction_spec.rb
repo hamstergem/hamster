@@ -1,33 +1,29 @@
 require "spec_helper"
 require "hamster/queue"
 
-describe Hamster do
+describe Hamster::Queue do
   describe ".queue" do
-    describe "with no arguments" do
-      before do
-        @queue = Hamster.queue
-      end
-
+    context "with no arguments" do
       it "always returns the same instance" do
-        @queue.should equal(Hamster.queue)
+        Hamster.queue.class.should be(Hamster::Queue)
+        Hamster.queue.should equal(Hamster.queue)
       end
 
-      it "returns an empty queue" do
-        @queue.should be_empty
+      it "returns an empty, frozen queue" do
+        Hamster.queue.should be_empty
+        Hamster.queue.should be_frozen
       end
     end
 
-    describe "with a number of items" do
-      before do
-        @queue = Hamster.queue("A", "B", "C")
-      end
+    context "with a number of items" do
+      let(:queue) { Hamster.queue("A", "B", "C") }
 
       it "always returns a different instance" do
-        @queue.should_not equal(Hamster.queue("A", "B", "C"))
+        queue.should_not equal(Hamster.queue("A", "B", "C"))
       end
 
       it "is the same as repeatedly using #enqueue" do
-        @queue.should eql(Hamster.queue.enqueue("A").enqueue("B").enqueue("C"))
+        queue.should eql(Hamster.queue.enqueue("A").enqueue("B").enqueue("C"))
       end
     end
   end

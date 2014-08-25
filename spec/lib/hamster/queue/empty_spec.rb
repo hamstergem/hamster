@@ -9,31 +9,22 @@ describe Hamster::Queue do
         [["A"], false],
         [%w[A B C], false],
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @result = Hamster.queue(*values).send(method)
-          end
-
+        context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            @result.should == expected
+            Hamster.queue(*values).send(method).should == expected
           end
         end
       end
     end
 
-    describe "after dequeueing an item from #{%w[A B C].inspect}" do
-      before do
-        @result = Hamster.queue("A", "B", "C").dequeue
-      end
-
+    context "after dequeueing an item from #{%w[A B C].inspect}" do
       it "returns false" do
-        @result.should_not be_empty
+        Hamster.queue("A", "B", "C").dequeue.should_not be_empty
       end
     end
   end
 
-  describe "empty" do
+  describe ".empty" do
     it "returns the canonical empty vector" do
       Hamster::Queue.empty.size.should be(0)
       Hamster::Queue.empty.class.should be(Hamster::Queue)

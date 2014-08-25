@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/queue"
 
 describe Hamster::Queue do
-  describe "new" do
+  describe ".new" do
     it "accepts a single enumerable argument and creates a new queue" do
       queue = Hamster::Queue.new([1,2,3])
       queue.size.should be(3)
@@ -23,23 +23,17 @@ describe Hamster::Queue do
       queue.to_a.should == ['SNAZZY!!!']
     end
 
-    describe "from a subclass" do
-      before do
-        @subclass = Class.new(Hamster::Queue)
-        @instance = @subclass.new(["some", "values"])
-      end
-
-      it "returns an instance of the subclass" do
-        @instance.class.should be @subclass
-      end
-
-      it "returns a frozen instance" do
-        @instance.frozen?.should be true
+    context "from a subclass" do
+      it "returns a frozen instance of the subclass" do
+        subclass = Class.new(Hamster::Queue)
+        instance = subclass.new(["some", "values"])
+        instance.class.should be subclass
+        instance.frozen?.should be true
       end
     end
   end
 
-  describe "[]" do
+  describe ".[]" do
     it "accepts a variable number of items and creates a new queue" do
       queue = Hamster::Queue['a', 'b']
       queue.size.should be(2)

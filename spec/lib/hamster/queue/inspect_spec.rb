@@ -8,18 +8,15 @@ describe Hamster::Queue do
       [["A"], 'Hamster::Queue["A"]'],
       [%w[A B C], 'Hamster::Queue["A", "B", "C"]']
     ].each do |values, expected|
-
-      describe "on #{values.inspect}" do
-        before do
-          @queue = Hamster.queue(*values)
-        end
+      context "on #{values.inspect}" do
+        let(:queue) { Hamster.queue(*values) }
 
         it "returns #{expected.inspect}" do
-          @queue.inspect.should == expected
+          queue.inspect.should == expected
         end
 
         it "returns a string which can be eval'd to get an equivalent object" do
-          eval(@queue.inspect).should eql(@queue)
+          eval(queue.inspect).should eql(queue)
         end
       end
     end

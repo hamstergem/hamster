@@ -9,14 +9,9 @@ describe Hamster::Queue do
         [["A"], "A"],
         [%w[A B C], "C"],
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @queue = Hamster.queue(*values)
-          end
-
+        context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            @queue.send(method).should eql(expected)
+            Hamster.queue(*values).send(method).should eql(expected)
           end
         end
       end

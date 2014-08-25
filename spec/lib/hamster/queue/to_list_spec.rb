@@ -9,25 +9,17 @@ describe Hamster::Queue do
       ["A"],
       %w[A B C],
     ].each do |values|
-
-      describe "on #{values.inspect}" do
-        before do
-          @list = Hamster.queue(*values).to_list
-        end
-
+      context "on #{values.inspect}" do
         it "returns a list containing #{values.inspect}" do
-          @list.should == Hamster.list(*values)
+          Hamster.queue(*values).to_list.should eql(Hamster.list(*values))
         end
       end
     end
 
-    describe "after dequeueing an item from #{%w[A B C].inspect}" do
-      before do
-        @list = Hamster.queue("A", "B", "C").dequeue.to_list
-      end
-
+    context "after dequeueing an item from #{%w[A B C].inspect}" do
       it "returns a list containing #{%w[B C].inspect}" do
-        @list.should == Hamster.list("B", "C")
+        list = Hamster.queue("A", "B", "C").dequeue.to_list
+        list.should eql(Hamster.list("B", "C"))
       end
     end
   end

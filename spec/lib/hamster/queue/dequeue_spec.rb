@@ -9,19 +9,16 @@ describe Hamster::Queue do
         [["A"], []],
         [%w[A B C], %w[B C]],
       ].each do |values, expected|
-
-        describe "on #{values.inspect}" do
-          before do
-            @original = Hamster.queue(*values)
-            @result = @original.send(method)
-          end
+        context "on #{values.inspect}" do
+          let(:queue) { Hamster.queue(*values) }
 
           it "preserves the original" do
-            @original.should == Hamster.queue(*values)
+            queue.send(method)
+            queue.should eql(Hamster.queue(*values))
           end
 
           it "returns #{expected.inspect}" do
-            @result.should == Hamster.queue(*expected)
+            queue.send(method).should eql(Hamster.queue(*expected))
           end
         end
       end

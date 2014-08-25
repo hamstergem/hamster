@@ -8,19 +8,16 @@ describe Hamster::Queue do
       ["A"],
       %w[A B C],
     ].each do |values|
-
-      describe "on #{values}" do
-        before do
-          @original = Hamster.queue(*values)
-          @result = @original.clear
-        end
+      context "on #{values}" do
+        let(:queue) { Hamster.queue(*values) }
 
         it "preserves the original" do
-          @original.should == Hamster.queue(*values)
+          queue.clear
+          queue.should eql(Hamster.queue(*values))
         end
 
         it "returns an empty queue" do
-          @result.should equal(Hamster.queue)
+          queue.clear.should equal(Hamster.queue)
         end
       end
     end
