@@ -86,6 +86,25 @@ module Hamster
       (item = at(index)) ? delete(item) : self
     end
 
+    def at(index)
+      index += @node.size if index < 0
+      return nil if index >= @node.size || index < 0
+      @node.at(index)
+    end
+
+    def fetch(index, default = (missing_default = true))
+      index += @node.size if index < 0
+      if index >= 0 && index < size
+        at(index)
+      elsif block_given?
+        yield
+      elsif !missing_default
+        default
+      else
+        raise IndexError, "index #{index} outside of sorted set bounds"
+      end
+    end
+
     def [](arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
@@ -106,25 +125,6 @@ module Hamster
       end
     end
     def_delegator :self, :[], :slice
-
-    def at(index)
-      index += @node.size if index < 0
-      return nil if index >= @node.size || index < 0
-      @node.at(index)
-    end
-
-    def fetch(index, default = (missing_default = true))
-      index += @node.size if index < 0
-      if index >= 0 && index < size
-        at(index)
-      elsif block_given?
-        yield
-      elsif !missing_default
-        default
-      else
-        raise IndexError, "index #{index} outside of sorted set bounds"
-      end
-    end
 
     def values_at(*indexes)
       indexes.select! { |i| i >= -@node.size && i < @node.size }
