@@ -30,7 +30,7 @@ describe Hamster::Vector do
       vector.should == ['SNAZZY!!!']
     end
 
-    describe "from a subclass" do
+    context "from a subclass" do
       it "returns a frozen instance of the subclass" do
         subclass = Class.new(Hamster::Vector)
         instance = subclass.new(["some", "values"])
@@ -40,7 +40,7 @@ describe Hamster::Vector do
     end
   end
 
-  describe "[]" do
+  describe ".[]" do
     it "accepts a variable number of items and creates a new vector" do
       vector = Hamster::Vector['a', 'b']
       vector.size.should be(2)
