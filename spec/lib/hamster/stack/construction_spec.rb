@@ -17,6 +17,11 @@ describe Hamster::Stack do
     context "with a number of items" do
       let(:stack) { Hamster.stack("A", "B", "C") }
 
+      it "initializes a new stack" do
+        stack.size.should == 3
+        stack.to_a.should == ['A', 'B', 'C']
+      end
+
       it "always returns a different instance" do
         stack.should_not equal(Hamster.stack("A", "B", "C"))
       end
