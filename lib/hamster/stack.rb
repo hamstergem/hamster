@@ -20,7 +20,7 @@ module Hamster
       end
 
       def empty
-        @empty ||= self.alloc
+        @empty ||= self.alloc.freeze
       end
 
       def alloc(list = EmptyList)
