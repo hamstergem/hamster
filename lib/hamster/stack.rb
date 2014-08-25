@@ -4,7 +4,7 @@ require "hamster/list"
 
 module Hamster
   def self.stack(*items)
-    items.empty? ? EmptyStack : Stack.new(items.reverse!)
+    items.empty? ? EmptyStack : Stack.new(items)
   end
 
   class Stack
@@ -29,7 +29,10 @@ module Hamster
     end
 
     def initialize(items)
-      @list = items.to_list
+      @list = EmptyList
+      items.each do |item|
+        @list = @list.cons(item)
+      end
     end
 
     def empty?
@@ -69,7 +72,7 @@ module Hamster
     end
 
     def each(&block)
-      @list.each(&block)
+      @list.reverse_each(&block)
     end
 
     def eql?(other)
@@ -78,15 +81,18 @@ module Hamster
     def_delegator :self, :eql?, :==
 
     def to_a
-      @list.to_a
+      @list.to_a.reverse!
     end
     def_delegator :self, :to_a, :entries
     def_delegator :self, :to_a, :to_ary
 
     def inspect
-      result = "#{self.class}["
-      @list.each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
-      result << "]"
+      result = "]"
+      @list.each_with_index do |obj, i|
+        result.prepend(obj.inspect)
+        result.prepend(", ") if i < @list.size-1
+      end
+      result.prepend("#{self.class}[")
     end
 
     def pretty_print(pp)

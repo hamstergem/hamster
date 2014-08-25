@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/stack"
 
 describe Hamster::Stack do
-  let(:stack) { Hamster.stack("D", "C", "B", "A") }
+  let(:stack) { Hamster.stack("A", "B", "C", "D") }
 
   describe "#to_ary" do
     context "enables implicit conversion to" do

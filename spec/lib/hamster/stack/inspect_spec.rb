@@ -6,7 +6,7 @@ describe Hamster::Stack do
     [
       [[], 'Hamster::Stack[]'],
       [["A"], 'Hamster::Stack["A"]'],
-      [%w[A B C], 'Hamster::Stack["C", "B", "A"]']
+      [%w[A B C], 'Hamster::Stack["A", "B", "C"]']
     ].each do |values, expected|
       context "on #{values.inspect}" do
         let(:stack) { Hamster.stack(*values) }

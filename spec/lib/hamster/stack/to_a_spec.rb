@@ -5,15 +5,15 @@ describe Hamster::Stack do
   [:to_a, :entries].each do |method|
     describe "##{method}" do
       [
-        [[], []],
-        [["A"], ["A"]],
-        [%w[A B C], %w[C B A]],
-      ].each do |values, expected|
+        [],
+        ["A"],
+        %w[A B C]
+      ].each do |values|
         context "on #{values.inspect}" do
           let(:stack) { Hamster.stack(*values) }
 
-          it "returns #{expected.inspect}" do
-            stack.send(method).should == expected
+          it "returns #{values.inspect}" do
+            stack.send(method).should == values
           end
 
           it "returns a mutable array" do
