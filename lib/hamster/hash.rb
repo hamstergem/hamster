@@ -76,14 +76,18 @@ module Hamster
     include Enumerable
 
     class << self
+      # @return [Hash]
       def [](pairs = nil)
         (pairs.nil? || pairs.empty?) ? empty : new(pairs)
       end
 
+      # @return [Hash]
       def empty
         @empty ||= self.alloc
       end
 
+      # @return [Hash]
+      # @private
       def alloc(trie = EmptyTrie, block = nil)
         obj = allocate
         obj.instance_variable_set(:@trie, trie)
@@ -97,20 +101,24 @@ module Hamster
       @default = block
     end
 
+    # @return [Proc]
     def default_proc
       @default
     end
 
+    # @return [Integer]
     def size
       @trie.size
     end
     def_delegator :self, :size, :length
 
+    # @return [Boolean]
     def empty?
       @trie.empty?
     end
     def_delegator :self, :empty?, :null?
 
+    # @return [Boolean]
     def key?(key)
       @trie.key?(key)
     end
@@ -118,12 +126,19 @@ module Hamster
     def_delegator :self, :key?, :include?
     def_delegator :self, :key?, :member?
 
+    # @return [Boolean]
     def value?(value)
       each { |k,v| return true if value == v }
       false
     end
     def_delegator :self, :value?, :has_value?
 
+    # Retrieve the value corresponding to the provided key object. If not found, and
+    # the +Hash+ has a default block, the default block is called to provide the
+    # value.
+    #
+    # @param key [Object]
+    # @return [Object]
     def get(key)
       entry = @trie.get(key)
       if entry
@@ -134,6 +149,7 @@ module Hamster
     end
     def_delegator :self, :get, :[]
 
+    # @return [Object]
     def fetch(key, default = Undefined)
       entry = @trie.get(key)
       if entry
@@ -147,14 +163,17 @@ module Hamster
       end
     end
 
+    # @return [Hash]
     def put(key, value = yield(get(key)))
       self.class.alloc(@trie.put(key, value), @default)
     end
 
+    # @return [Hash]
     def store(key, value)
       self.class.alloc(@trie.put(key, value), @default)
     end
 
+    # @return [Hash]
     def delete(key)
       derive_new_hash(@trie.delete(key))
     end
@@ -184,6 +203,7 @@ module Hamster
       self
     end
 
+    # @return [Hash]
     def map
       return enum_for(:map) unless block_given?
       return self if empty?
@@ -193,6 +213,7 @@ module Hamster
 
     def_delegator :self, :reduce, :foldr
 
+    # @return [Hash]
     def filter(&block)
       return enum_for(:filter) unless block_given?
       derive_new_hash(@trie.filter(&block))
@@ -208,6 +229,7 @@ module Hamster
     def_delegator :self, :max, :maximum
     def_delegator :self, :min, :minimum
 
+    # @return [Hash]
     def merge(other)
       trie = if block_given?
         other.reduce(@trie) do |trie, (key, value)|
@@ -225,44 +247,53 @@ module Hamster
     end
     def_delegator :self, :merge, :+
 
+    # @return [Vector]
     def sort
       Vector.new(super)
     end
 
+    # @return [Vector]
     def sort_by
       Vector.new(super)
     end
 
+    # @return [Hash]
     def except(*keys)
       keys.reduce(self) { |hash, key| hash.delete(key) }
     end
 
+    # @return [Hash]
     def slice(*wanted)
       trie = Trie.new(0)
       wanted.each { |key| trie.put!(key, get(key)) if key?(key) }
       self.class.alloc(trie, @default)
     end
 
+    # @return [Vector]
     def values_at(*wanted)
       array = []
       wanted.each { |key| array << get(key) if key?(key) }
       Vector.new(array.freeze)
     end
 
+    # @return [Set]
     def keys
       Set.alloc(@trie)
     end
 
+    # @return [Vector]
     def values
       Vector.new(each_value.to_a.freeze)
     end
 
+    # @return [Hash]
     def invert
       pairs = []
       each { |k,v| pairs << [v, k] }
       self.class.new(pairs, &@default)
     end
 
+    # @return [Vector]
     def flatten(level = 1)
       return Vector.new(self) if level == 0
       array = []
@@ -290,20 +321,24 @@ module Hamster
       @trie.at(rand(size))
     end
 
+    # @return [Hash]
     def clear
       self.class.empty
     end
 
     # Value-and-type equality
+    # @return [Boolean]
     def eql?(other)
       instance_of?(other.class) && @trie.eql?(other.instance_variable_get(:@trie))
     end
 
     # Value equality, will do type coercion
+    # @return [Boolean]
     def ==(other)
       self.eql?(other) || (other.respond_to?(:to_hash) && to_hash.eql?(other.to_hash))
     end
 
+    # @return [Integer]
     def hash
       keys.to_a.sort.reduce(0) do |hash, key|
         (hash << 32) - hash + key.hash + get(key).hash
@@ -314,6 +349,7 @@ module Hamster
     def_delegator :self, :dup, :nub
     def_delegator :self, :dup, :remove_duplicates
 
+    # @return [String]
     def inspect
       result = "#{self.class}["
       i = 0
@@ -341,6 +377,7 @@ module Hamster
       end
     end
 
+    # @return [::Hash]
     def to_hash
       output = {}
       each do |key, value|
@@ -350,6 +387,7 @@ module Hamster
     end
     def_delegator :self, :to_hash, :to_h
 
+    # @return [::Hash]
     def marshal_dump
       to_hash
     end
