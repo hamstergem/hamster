@@ -14,12 +14,8 @@ describe Hamster::Hash do
         let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
 
         context "with a block" do
-          before do
-            @result = hash.send(method, 0) { |memo, key, value| memo + 1 }
-          end
-
           it "returns the final memo" do
-            @result.should == 3
+            hash.send(method, 0) { |memo, key, value| memo + 1 }.should == 3
           end
         end
 
