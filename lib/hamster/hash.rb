@@ -92,6 +92,10 @@ module Hamster
       self.class.alloc(@trie.put(key, value), @default)
     end
 
+    def store(key, value)
+      self.class.alloc(@trie.put(key, value), @default)
+    end
+
     def delete(key)
       derive_new_hash(@trie.delete(key))
     end
