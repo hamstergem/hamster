@@ -19,29 +19,29 @@ describe Hamster::Hash do
          [:b, 2, :c, 3, :a, 1],
          [:c, 3, :a, 1, :b, 2],
          [:c, 3, :b, 2, :a, 1]]
-        possibilities.should include(hash.flatten(1))
-        possibilities.should include(hash.flatten(2))
+        possibilities.include?(hash.flatten(1)).should == true
+        possibilities.include?(hash.flatten(2)).should == true
         hash.flatten(2).class.should be(Hamster::Vector)
-        possibilities.should include(hash.flatten(10))
+        possibilities.include?(hash.flatten(10)).should == true
       end
     end
 
     context "with array keys" do
       it "flattens array keys into returned vector if flatten depth is sufficient" do
         hash = Hamster.hash([1, 2] => 3, [4, 5] => 6)
-        [[[1, 2], 3, [4, 5], 6], [[4, 5], 6, [1, 2], 3]].should include(hash.flatten(1))
+        [[[1, 2], 3, [4, 5], 6], [[4, 5], 6, [1, 2], 3]].include?(hash.flatten(1)).should == true
         hash.flatten(1).class.should be(Hamster::Vector)
-        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].should include(hash.flatten(2))
-        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].should include(hash.flatten(3))
+        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
+        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
       end
     end
 
     context "with array values" do
       it "flattens array values into returned vector if flatten depth is sufficient" do
         hash = Hamster.hash(1 => [2, 3], 4 => [5, 6])
-        [[1, [2, 3], 4, [5, 6]], [4, [5, 6], 1, [2, 3]]].should include(hash.flatten(1))
-        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].should include(hash.flatten(2))
-        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].should include(hash.flatten(3))
+        [[1, [2, 3], 4, [5, 6]], [4, [5, 6], 1, [2, 3]]].include?(hash.flatten(1)).should == true
+        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
+        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
         hash.flatten(3).class.should be(Hamster::Vector)
       end
     end
@@ -49,18 +49,18 @@ describe Hamster::Hash do
     context "with vector keys" do
       it "flattens vector keys into returned vector if flatten depth is sufficient" do
         hash = Hamster.hash(V[1, 2] => 3, V[4, 5] => 6)
-        [[V[1, 2], 3, V[4, 5], 6], [V[4, 5], 6, V[1, 2], 3]].should include(hash.flatten(1))
-        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].should include(hash.flatten(2))
-        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].should include(hash.flatten(3))
+        [[V[1, 2], 3, V[4, 5], 6], [V[4, 5], 6, V[1, 2], 3]].include?(hash.flatten(1)).should == true
+        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
+        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
       end
     end
 
     context "with vector values" do
       it "flattens vector values into returned vector if flatten depth is sufficient" do
         hash = Hamster.hash(1 => V[2, 3], 4 => V[5, 6])
-        [[1, V[2, 3], 4, V[5, 6]], [4, V[5, 6], 1, V[2, 3]]].should include(hash.flatten(1))
-        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].should include(hash.flatten(2))
-        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].should include(hash.flatten(3))
+        [[1, V[2, 3], 4, V[5, 6]], [4, V[5, 6], 1, V[2, 3]]].include?(hash.flatten(1)).should == true
+        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
+        [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
       end
     end
   end

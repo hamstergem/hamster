@@ -12,7 +12,7 @@ describe Hamster::Set do
 
       context "on a non-empty set" do
         it "returns an arbitrary value from the set" do
-          %w[A B C].should include(Hamster.set("A", "B", "C").send(method))
+          %w[A B C].include?(Hamster.set("A", "B", "C").send(method)).should == true
         end
       end
 

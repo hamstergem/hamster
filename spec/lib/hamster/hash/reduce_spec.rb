@@ -27,11 +27,11 @@ describe Hamster::Hash do
           let(:hash) { Hamster.hash(a: 1, b: 2) }
 
           it "uses a passed string as the name of a method to use instead" do
-            [[:a, 1, :b, 2], [:b, 2, :a, 1]].should include(hash.send(method, "+"))
+            [[:a, 1, :b, 2], [:b, 2, :a, 1]].include?(hash.send(method, "+")).should == true
           end
 
           it "uses a passed symbol as the name of a method to use instead" do
-            [[:a, 1, :b, 2], [:b, 2, :a, 1]].should include(hash.send(method, :+))
+            [[:a, 1, :b, 2], [:b, 2, :a, 1]].include?(hash.send(method, :+)).should == true
           end
         end
       end

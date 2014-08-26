@@ -7,8 +7,8 @@ describe Hamster::SortedSet do
 
     it "returns a randomly chosen item" do
       chosen = 100.times.map { sorted_set.sample }
-      chosen.each { |item| sorted_set.should include(item) }
-      sorted_set.each { |item| chosen.should include(item) }
+      chosen.each { |item| sorted_set.include?(item).should == true }
+      sorted_set.each { |item| chosen.include?(item).should == true }
     end
   end
 end

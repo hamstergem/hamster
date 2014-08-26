@@ -6,13 +6,13 @@ describe Hamster::Set do
     it "initializes a new set" do
       set = Hamster::Set.new([1,2,3])
       set.size.should be(3)
-      [1,2,3].each { |n| set.should include(n) }
+      [1,2,3].each { |n| set.include?(n).should == true }
     end
 
     it "accepts a Range" do
       set = Hamster::Set.new(1..3)
       set.size.should be(3)
-      [1,2,3].each { |n| set.should include(n) }
+      [1,2,3].each { |n| set.include?(n).should == true }
     end
 
     context "from a subclass" do
@@ -33,7 +33,7 @@ describe Hamster::Set do
 
       set = SnazzySet.new
       set.size.should be(1)
-      set.should include('SNAZZY!!!')
+      set.include?('SNAZZY!!!').should == true
     end
   end
 
@@ -41,7 +41,7 @@ describe Hamster::Set do
     it "accepts any number of arguments and initializes a new set" do
       set = Hamster::Set[1,2,3,4]
       set.size.should be(4)
-      [1,2,3,4].each { |n| set.should include(n) }
+      [1,2,3,4].each { |n| set.include?(n).should == true }
     end
   end
 end

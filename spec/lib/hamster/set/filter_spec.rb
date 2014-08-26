@@ -65,7 +65,7 @@ describe Hamster::Set do
           result    = original.send(method) { |item| item <= threshold }
           result.size.should == threshold
           result.each { |item| item.should <= threshold }
-          (threshold+1).upto(1000) { |item| result.should_not include(item) }
+          (threshold+1).upto(1000) { |item| result.include?(item).should == false }
         end
       end
     end

@@ -39,9 +39,9 @@ describe Hamster::Set do
       array.each do |key|
         result = set.delete(key)
         result.size.should == set.size - 1
-        result.should_not include(key)
+        result.include?(key).should == false
         other = array.sample
-        result.should include(other) if other != key
+        (result.include?(other).should == true) if other != key
       end
     end
   end

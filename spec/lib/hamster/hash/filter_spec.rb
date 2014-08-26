@@ -26,7 +26,11 @@ describe Hamster::Hash do
         end
 
         it "yields entries as [key, value] pairs" do
-          original.send(method) { |e| e.should be_kind_of(Array); ["A", "B", "C"].should include(e[0]); ["aye", "bee", "see"].should include(e[1]) }
+          original.send(method) do |e|
+            e.should be_kind_of(Array)
+            ["A", "B", "C"].include?(e[0]).should == true
+            ["aye", "bee", "see"].include?(e[1]).should == true
+          end
         end
 
         context "with no block" do

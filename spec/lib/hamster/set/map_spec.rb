@@ -57,7 +57,7 @@ describe Hamster::Set do
         set = Hamster::Set.new(1..1000)
         result = set.map { |x| x * 10 }
         result.size.should == 1000
-        1.upto(1000) { |n| result.should include(n * 10) }
+        1.upto(1000) { |n| result.include?(n * 10).should == true }
       end
     end
   end

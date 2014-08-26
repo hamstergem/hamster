@@ -12,7 +12,7 @@ describe Hamster::Hash do
     it "will select one key/value pair among multiple which have same value" do
       [Hamster.hash(1 => :a),
        Hamster.hash(1 => :b),
-       Hamster.hash(1 => :c)].should include(Hamster.hash(a: 1, b: 1, c: 1).invert)
+       Hamster.hash(1 => :c)].include?(Hamster.hash(a: 1, b: 1, c: 1).invert).should == true
     end
   end
 end

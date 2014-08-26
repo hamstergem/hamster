@@ -42,7 +42,7 @@ describe Hamster::Set do
           set = Hamster::Set.new(array)
           to_add = 1000 + rand(1000)
           set.add(to_add).size.should == 101
-          set.add(to_add).should include(to_add)
+          set.add(to_add).include?(to_add).should == true
         end
       end
     end

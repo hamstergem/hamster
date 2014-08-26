@@ -41,8 +41,8 @@ describe Hamster::Set do
           [0, 10, 100, 200, 500, 800, 900, 999, 1000].each do |threshold|
             result = set.send(method) { |item| item > threshold }
             result.size.should == threshold
-            1.upto(threshold)  { |n| result.should include(n) }
-            (threshold+1).upto(1000) { |n| result.should_not include(n) }
+            1.upto(threshold)  { |n| result.include?(n).should == true }
+            (threshold+1).upto(1000) { |n| result.include?(n).should == false }
           end
         end
       end

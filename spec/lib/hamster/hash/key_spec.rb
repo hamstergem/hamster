@@ -6,7 +6,7 @@ describe Hamster::Hash do
     let(:hash) { Hamster.hash(a: 1, b: 1, c: 2, d: 3) }
 
     it "returns a key associated with the given value, if there is one" do
-      [:a, :b].should include(hash.key(1))
+      [:a, :b].include?(hash.key(1)).should == true
       hash.key(2).should be(:c)
       hash.key(3).should be(:d)
     end

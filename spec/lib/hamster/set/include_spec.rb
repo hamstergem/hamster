@@ -31,7 +31,7 @@ describe Hamster::Set do
         item.push('HOSED!')
         # this may fail occasionally if ['mutable', 'HOSED!'] hashes to the same trie branch as ['mutable']
         # the set is initialized with 5,000 items to make that less likely
-        set.should_not include(item)
+        set.include?(item).should == false
       end
 
       it "uses #eql? for equality" do
@@ -46,12 +46,12 @@ describe Hamster::Set do
             array << (item = rand(10000))
             rb_set.add(item)
             set = set.add(item)
-            set.should include(item)
+            set.include?(item).should == true
           else
             item = array.sample
             rb_set.delete(item)
             set = set.delete(item)
-            set.should_not include(item)
+            set.include?(item).should == false
           end
         end
 
