@@ -14,7 +14,7 @@ describe Hamster::Hash do
       hash['snazzy?'].should == 'oh yeah'
     end
 
-    describe "from a subclass" do
+    context "from a subclass" do
       it "returns a frozen instance of the subclass" do
         subclass = Class.new(Hamster::Hash)
         instance = subclass.new("some" => "values")
