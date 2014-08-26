@@ -1,4 +1,5 @@
 module Hamster
+  # @private
   module Immutable
     def self.included(klass)
       klass.extend(ClassMethods)

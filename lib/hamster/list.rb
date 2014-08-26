@@ -601,12 +601,12 @@ module Hamster
       self
     end
 
+    # This class can divide a collection into 2 lazy streams, one of items
+    #   for which the block returns true, and another for false
+    # At the same time, it guarantees the block will only be called ONCE for each item
+    #
+    # @private
     class Partitioner
-      # this class is an implementation detail and should not be documented
-      # it makes it possible to divide a collection into 2 lazy streams, one of items
-      #   for which the block returns true, and another for false
-      # at the same time, it guarantees the block will only be called ONCE for each item
-
       def initialize(collection, block)
         @enum, @block, @left, @right, @done = collection.to_enum, block, [], [], false
       end
@@ -718,6 +718,7 @@ module Hamster
   #
   # The last +Sequence+ instance in the chain has the {EmptyList} as its tail.
   #
+  # @private
   class Sequence
     include List
 
@@ -753,6 +754,7 @@ module Hamster
   #
   # The recommended interface for using this is through {Hamster.stream Hamster.stream}
   #
+  # @private
   class Stream
     include List
 
@@ -833,6 +835,7 @@ module Hamster
   #
   # This is a singleton, since all empty lists are equivalent. It is used
   # as a terminating element in a chain of +Sequence+ instances.
+  #
   module EmptyList
     class << self
       include List

@@ -315,6 +315,7 @@ module Hamster
       self.class.alloc(@node.slice(from, length), @comparator)
     end
 
+    # @private
     class AVLNode
       def self.from_items(items, from, to) # items must be sorted
         size = to - from + 1

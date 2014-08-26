@@ -1,4 +1,5 @@
 module Hamster
+  # @private
   class Trie
     def self.[](pairs)
       result = self.new(0)
