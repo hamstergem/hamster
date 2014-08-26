@@ -23,3 +23,7 @@
 /coverage
 /doc
 .yardoc
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
