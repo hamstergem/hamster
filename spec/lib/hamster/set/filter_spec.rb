@@ -57,7 +57,7 @@ describe Hamster::Set do
         end
       end
 
-      it "works on a large hash, with many combinations of input" do
+      it "works on a large set, with many combinations of input" do
         items = (1..1000).to_a
         original = Hamster::Set.new(items)
         30.times do
