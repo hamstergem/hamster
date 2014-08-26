@@ -11,6 +11,65 @@ module Hamster
     (pairs.nil? && block.nil?) ? EmptyHash : Hash.new(pairs, &block)
   end
 
+  # A `Hamster::Hash` maps from a set of unique keys to corresponding values,
+  # much like a dictionary maps from words to definitions. Given a key, it can
+  # efficiently store and retrieve values. Looking up a key given its value is also
+  # possible, but less efficient. If an existing key is stored again, the new value
+  # will replace that which was previously stored.
+  #
+  # It behaves much like Ruby's built-in Hash, which we will call RubyHash
+  # for clarity. Like RubyHash, `Hamster::Hash` uses `#hash` and `#eql?` to define
+  # equality between keys. Keys with the same `#hash` code, but which are not `#eql?`
+  # to each other, can coexist in the same `Hamster::Hash`. To retrieve a previously
+  # stored value, the key provided must have the same `#hash` code and be `#eql?`
+  # to the one used for storage.
+  #
+  # A `Hamster::Hash` can be created in several ways:
+  #
+  #     Hamster.hash('Jane Doe' => 10, 'Jim Doe' => 6)
+  #     Hamster::Hash.new(font_size: 10, font_family: 'Arial')
+  #     Hamster::Hash[first_name: 'John', last_name: 'Smith']
+  #
+  # If you want to write your own class which inherits from `Hamster::Hash`, you can
+  # use either of the latter 2 forms of initialization.
+  #
+  # Note that any `Enumerable` object which yields 2-element `[key, value]` arrays
+  # can be used to initialize a `Hamster::Hash`. So this is also possible:
+  #
+  #     Hamster::Hash.new([[:first_name, 'John'], [:last_name, 'Smith']])
+  #
+  # Like RubyHash, key/value pairs can be added using {#store}. Unlike RubyHash,
+  # a new hash is returned, and the existing one is left unchanged:
+  #
+  #     hash = Hamster::Hash[a: 100, b: 200]
+  #     hash.store(:c, 500) # => Hamster::Hash[:a => 100, :b => 200, :c => 500]
+  #     hash # => Hamster::Hash[:a => 100, :b => 200]
+  #
+  # You also use {#put}. The difference is that {#put} can optionally take a block which
+  # is used to calculate the value to be stored:
+  #
+  #     hash.put(:a) { hash[:b] + 100 } # => Hamster::Hash[:a => 300, :b => 200]
+  #
+  # Since it is immutable, all methods which you might expect to "modify" a `Hamster::Hash`
+  # actually return a new hash and leave the existing one unchanged. This means that the
+  # `hash[key] = value` syntax used with RubyHashes *cannot* be used with `Hamster::Hash`.
+  #
+  # While a `Hamster::Hash` can iterate over its keys (or values), it does not
+  # guarantee any specific iteration order (unlike RubyHash). Likewise, methods like
+  # {#flatten} do not guarantee which order the returned key/value pairs will appear
+  # in.
+  #
+  # Like RubyHash, a `Hamster::Hash` can have a default block which is used when
+  # looking up a key which does not exist in the hash. Unlike RubyHash, the default
+  # block will only be passed the missing key, not the hash itself:
+  #
+  #     hash = Hamster::Hash.new { |n| n * 10 }
+  #     hash[5] # => 50
+  #
+  # A default block can only be set when creating a `Hamster::Hash` with `Hamster::Hash.new` or
+  # {Hamster.hash Hamster.hash}, not with {Hamster::Hash.[] Hamster::Hash[]}. Default blocks
+  # do not survive marshalling and unmarshalling.
+  #
   class Hash
     extend Forwardable
     include Immutable
