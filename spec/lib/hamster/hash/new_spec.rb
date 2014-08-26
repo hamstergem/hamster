@@ -27,4 +27,39 @@ describe Hamster::Hash do
       Hamster::Hash.new([['a', 'b'], ['c', 'd']]).should eql(Hamster.hash('a' => 'b', 'c' => 'd'))
     end
   end
+
+  describe ".[]" do
+    it "accepts a Ruby Hash as initializer" do
+      hash = Hamster::Hash[a: 1, b: 2]
+      hash.class.should be(Hamster::Hash)
+      hash.size.should == 2
+      hash.key?(:a).should == true
+      hash.key?(:b).should == true
+    end
+
+    it "accepts a Hamster::Hash as initializer" do
+      hash = Hamster::Hash[Hamster.hash(a: 1, b: 2)]
+      hash.class.should be(Hamster::Hash)
+      hash.size.should == 2
+      hash.key?(:a).should == true
+      hash.key?(:b).should == true
+    end
+
+    it "accepts an array as initializer" do
+      hash = Hamster::Hash[[[:a, 1], [:b, 2]]]
+      hash.class.should be(Hamster::Hash)
+      hash.size.should == 2
+      hash.key?(:a).should == true
+      hash.key?(:b).should == true
+    end
+
+    it "can be used with a subclass of Hamster::Hash" do
+      subclass = Class.new(Hamster::Hash)
+      instance = subclass[a: 1, b: 2]
+      instance.class.should be(subclass)
+      instance.size.should == 2
+      instance.key?(:a).should == true
+      instance.key?(:b).should == true
+    end
+  end
 end
