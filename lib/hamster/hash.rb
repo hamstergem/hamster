@@ -81,11 +81,17 @@ module Hamster
         (pairs.nil? || pairs.empty?) ? empty : new(pairs)
       end
 
+      # Return an empty `Hash`. If used on a subclass, returns an empty instance
+      # of that class.
+      #
       # @return [Hash]
       def empty
         @empty ||= self.alloc
       end
 
+      # "Raw" allocation of a new `Hash`. Used internally to create a new
+      # instance quickly after obtaining a modified {Trie}.
+      #
       # @return [Hash]
       # @private
       def alloc(trie = EmptyTrie, block = nil)
@@ -101,23 +107,33 @@ module Hamster
       @default = block
     end
 
+    # Return the default block if there is one. Otherwise, return `nil`.
+    #
     # @return [Proc]
     def default_proc
       @default
     end
 
+    # Return the number of key/value pairs in this `Hash`.
+    #
     # @return [Integer]
     def size
       @trie.size
     end
     def_delegator :self, :size, :length
 
+    # Return `true` if this `Hash` contains no key/value pairs.
+    #
     # @return [Boolean]
     def empty?
       @trie.empty?
     end
     def_delegator :self, :empty?, :null?
 
+    # Return `true` if the given key object is present in this `Hash`. More precisely,
+    # return `true` if a key with the same `#hash` code, and which is also `#eql?`
+    # to the given key object is present.
+    #
     # @return [Boolean]
     def key?(key)
       @trie.key?(key)
@@ -126,6 +142,8 @@ module Hamster
     def_delegator :self, :key?, :include?
     def_delegator :self, :key?, :member?
 
+    # Return `true` if this `Hash` has one or more keys which map to the provided value.
+    #
     # @return [Boolean]
     def value?(value)
       each { |k,v| return true if value == v }
@@ -134,10 +152,10 @@ module Hamster
     def_delegator :self, :value?, :has_value?
 
     # Retrieve the value corresponding to the provided key object. If not found, and
-    # the +Hash+ has a default block, the default block is called to provide the
+    # this `Hash` has a default block, the default block is called to provide the
     # value.
     #
-    # @param key [Object]
+    # @param key [Object] The key to look up
     # @return [Object]
     def get(key)
       entry = @trie.get(key)
@@ -149,6 +167,11 @@ module Hamster
     end
     def_delegator :self, :get, :[]
 
+    # Retrieve the value corresponding to the given key object. If the key is not
+    # present, and an optional code block is provided, call the block (with the
+    # missing key) to get the return value. Otherwise, if an optional `default`
+    # argument is provided, return that. Otherwise, raise a `KeyError`.
+    #
     # @return [Object]
     def fetch(key, default = Undefined)
       entry = @trie.get(key)
@@ -163,21 +186,48 @@ module Hamster
       end
     end
 
+    # Return a new `Hash` with the existing key/value associations, plus an association
+    # between the provided key and value. If an equivalent key is already present, its
+    # associated value will be replaced with the provided one.
+    #
+    # If the `value` argument is missing, but an optional code block is provided,
+    # it will be passed the key and what it returns will be used as the value.
+    #
+    # Avoid mutating objects which are used as keys. `String`s are an exception --
+    # unfrozen `String`s which are used as keys are internally duplicated and
+    # frozen.
+    #
     # @return [Hash]
     def put(key, value = yield(get(key)))
       self.class.alloc(@trie.put(key, value), @default)
     end
 
+    # Return a new `Hash` with the existing key/value associations, plus an association
+    # between the provided key and value. If an equivalent key is already present, its
+    # associated value will be replaced with the provided one.
+    #
+    # Avoid mutating objects which are used as keys. `String`s are an exception --
+    # unfrozen `String`s which are used as keys are internally duplicated and
+    # frozen.
+    #
     # @return [Hash]
     def store(key, value)
       self.class.alloc(@trie.put(key, value), @default)
     end
 
+    # Return a new `Hash` with the association for `key` removed. If `key` is not
+    # present, return `self`.
+    #
     # @return [Hash]
     def delete(key)
       derive_new_hash(@trie.delete(key))
     end
 
+    # Call the block once for each key/value pair in this `Hash`, passing the key/value
+    # pair as parameters. No specific iteration order is guaranteed (but the order will
+    # be stable for any particular `Hash`.)
+    #
+    # @return [void]
     def each(&block)
       return to_enum if not block_given?
       @trie.each(&block)
@@ -185,24 +235,40 @@ module Hamster
     end
     def_delegator :self, :each, :each_pair
 
+    # Call the block once for each key/value pair in this `Hash`, passing the key/value
+    # pair as parameters. Iteration order will be the opposite of `#each`.
+    #
+    # @return [void]
     def reverse_each(&block)
       return enum_for(:reverse_each) if not block_given?
       @trie.reverse_each(&block)
       self
     end
 
+    # Call the block once for each key/value pair in this `Hash`, passing the key as a
+    # parameter.
+    #
+    # @return [void]
     def each_key
       return enum_for(:each_key) if not block_given?
       @trie.each { |k,v| yield k }
       self
     end
 
+    # Call the block once for each key/value pair in this `Hash`, passing the value as a
+    # parameter.
+    #
+    # @return [void]
     def each_value
       return enum_for(:each_value) if not block_given?
       @trie.each { |k,v| yield v }
       self
     end
 
+    # Call the block once for each key/value pair in this `Hash`, passing the key/value
+    # pair as parameters. The block should return a `[key, value]` array each time.
+    # All the returned `[key, value]` arrays will be gathered into a new `Hash`.
+    #
     # @return [Hash]
     def map
       return enum_for(:map) unless block_given?
@@ -213,12 +279,18 @@ module Hamster
 
     def_delegator :self, :reduce, :foldr
 
+    # Return a new `Hash` with all the key/value pairs for which the block returns true.
+    #
     # @return [Hash]
     def filter(&block)
       return enum_for(:filter) unless block_given?
       derive_new_hash(@trie.filter(&block))
     end
 
+    # Yield `[key, value]` pairs until one is found for which the block returns true.
+    # Return that `[key, value]` pair. If the block never returns true, return `nil`.
+    #
+    # @return [Array]
     def find
       return enum_for(:find) unless block_given?
       each { |entry| return entry if yield entry }
@@ -229,6 +301,12 @@ module Hamster
     def_delegator :self, :max, :maximum
     def_delegator :self, :min, :minimum
 
+    # Return a new `Hash` containing all the key/value pairs from this `Hash` and
+    # `other`. If no block is provided, the value for entries with colliding keys
+    # will be that from `other`. Otherwie, the value for each duplicate key is
+    # determined by called the block with the key, its value in this `Hash`, and
+    # its value in `other`.
+    #
     # @return [Hash]
     def merge(other)
       trie = if block_given?
@@ -276,16 +354,24 @@ module Hamster
       Vector.new(array.freeze)
     end
 
+    # Return a new {Set} populated with the keys from this `Hash`.
+    #
     # @return [Set]
     def keys
       Set.alloc(@trie)
     end
 
+    # Return a new {Vector} populated with the values from this `Hash`.
+    #
     # @return [Vector]
     def values
       Vector.new(each_value.to_a.freeze)
     end
 
+    # Return a new `Hash` created by using our keys as values, and values as keys.
+    # If there are multiple values which are equivalent (as determined by `#hash` and
+    # `#eql?`), only one out of each group of equivalent values will be retained.
+    #
     # @return [Hash]
     def invert
       pairs = []
@@ -293,6 +379,16 @@ module Hamster
       self.class.new(pairs, &@default)
     end
 
+    # Return a new {Vector} which is a one-dimensional flattening of this `Hash`.
+    # If `level` is 1, all the `[key, value]` pairs in the hash will be concatenated
+    # into one {Vector}. If `level` is greater than 1, keys or values which are
+    # themselves `Array`s or {Vector}s will be recursively flattened into the output
+    # {Vector}. The depth to which that flattening will be recursively applied is
+    # determined by the optional `level` argument.
+    #
+    # As a special case, if `level` is 0, each `[key, value]` pair will be a
+    # separate element in the returned {Vector}.
+    #
     # @return [Vector]
     def flatten(level = 1)
       return Vector.new(self) if level == 0
@@ -302,11 +398,21 @@ module Hamster
       Vector.new(array.freeze)
     end
 
+    # Searches through the `Hash`, comparing `obj` with each key (using `#==`).
+    # When a matching key is found, return the `[key, value]` pair as an array.
+    # Return `nil` if no match is found.
+    #
+    # @return [Array]
     def assoc(obj)
       each { |entry| return entry if obj == entry[0] }
       nil
     end
 
+    # Searches through the `Hash`, comparing `obj` with each value (using `#==`).
+    # When a matching value is found, return the `[key, value]` pair as an array.
+    # Return `nil` if no match is found.
+    #
+    # @return [Array]
     def rassoc(obj)
       each { |entry| return entry if obj == entry[1] }
       nil
@@ -317,27 +423,38 @@ module Hamster
       nil
     end
 
+    # Return a randomly chosen `[key, value]` pair from this `Hash`. If it is empty,
+    # return `nil`.
+    #
+    # @return [Array]
     def sample
       @trie.at(rand(size))
     end
 
+    # Return an empty `Hash` instance, of the same class as this one. Useful if you
+    # have multiple subclasses of `Hash` and want to treat them polymorphically.
+    #
     # @return [Hash]
     def clear
       self.class.empty
     end
 
     # Value-and-type equality
+    #
     # @return [Boolean]
     def eql?(other)
       instance_of?(other.class) && @trie.eql?(other.instance_variable_get(:@trie))
     end
 
     # Value equality, will do type coercion
+    #
     # @return [Boolean]
     def ==(other)
       self.eql?(other) || (other.respond_to?(:to_hash) && to_hash.eql?(other.to_hash))
     end
 
+    # See `Object#hash`.
+    #
     # @return [Integer]
     def hash
       keys.to_a.sort.reduce(0) do |hash, key|
@@ -349,6 +466,11 @@ module Hamster
     def_delegator :self, :dup, :nub
     def_delegator :self, :dup, :remove_duplicates
 
+    # Return the contents of this `Hash` as a programmer-readable `String`. If all the
+    # keys and values are serializable as Ruby literal strings, the returned string can
+    # be passed to `eval` to reconstitute an equivalent `Hash`. However, the default
+    # block (if there is one) will be lost when doing this.
+    #
     # @return [String]
     def inspect
       result = "#{self.class}["
@@ -361,6 +483,12 @@ module Hamster
       result << "]"
     end
 
+    # Allows this `Hash` to be printed at the `pry` console, or using `pp` (from the
+    # Ruby standard library), in a way which takes the amount of horizontal space on
+    # the screen into account, and which indents nested structures to make them easier
+    # to read.
+    #
+    # @return [void]
     def pretty_print(pp)
       pp.group(1, "#{self.class}[", "]") do
         pp.breakable ''
@@ -377,6 +505,8 @@ module Hamster
       end
     end
 
+    # Convert this `Hamster::Hash` to an instance of Ruby's built-in `Hash`.
+    #
     # @return [::Hash]
     def to_hash
       output = {}
