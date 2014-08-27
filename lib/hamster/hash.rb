@@ -171,15 +171,25 @@ module Hamster
     end
     def_delegator :self, :get, :[]
 
-    # Retrieve the value corresponding to the given key object. If the key is not
-    # present, and an optional code block is provided, call the block (with the
-    # missing key) to get the return value. Otherwise, if an optional `default`
-    # argument is provided, return that. Otherwise, raise a `KeyError`.
+    # Retrieve the value corresponding to the given key object, or use the provided
+    # default value or block, or otherwise raise a `KeyError`.
     #
-    # @param key [Object] The key to look up
-    # @param default [Object] Object to return if the key is not found
-    # @yield [key] The key which was not found
-    # @yieldreturn [Object] Object to return since the key was not found
+    # @overload fetch(key)
+    #   Retrieve the value corresponding to the given key, or raise a `KeyError`
+    #   if it is not found.
+    #   @param key [Object] The key to look up
+    # @overload fetch(key) { |key| ... }
+    #   Retrieve the value corresponding to the given key, or call the optional
+    #   code block (with the missing key) and get its return value.
+    #   @yield [key] The key which was not found
+    #   @yieldreturn [Object] Object to return since the key was not found
+    #   @param key [Object] The key to look up
+    # @overload fetch(key, default)
+    #   Retrieve the value corresponding to the given key, or else return
+    #   the provided `default` value.
+    #   @param key [Object] The key to look up
+    #   @param default [Object] Object to return if the key is not found
+    #
     # @return [Object]
     def fetch(key, default = Undefined)
       entry = @trie.get(key)
