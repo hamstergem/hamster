@@ -63,6 +63,10 @@ module Hamster
       end
     end
 
+    def group_by(&block)
+      group_by_with(self.class.empty, &block)
+    end
+
     def <=>(other)
       return 0 if self.equal?(other)
       enum1, enum2 = self.to_enum, other.to_enum
