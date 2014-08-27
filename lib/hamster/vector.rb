@@ -7,6 +7,43 @@ module Hamster
     items.empty? ? EmptyVector : Vector.new(items.freeze)
   end
 
+  # A `Vector` is an ordered, integer-indexed collection of objects. Like `Array`,
+  # `Vector` indexing starts at 0. Also like `Array`, negative indexes count back
+  # from the end of the `Vector`.
+  #
+  # `Vector`'s interface is modeled after that of `Array`, minus all the methods
+  # which do destructive updates. Some methods which modify `Array`s destructively
+  # (like {#insert} or {#delete_at}) are included, but they return new `Vectors`
+  # and leave the existing one unchanged.
+  #
+  # = Creating New Vectors
+  #
+  #     Hamster.vector('a', 'b', 'c')
+  #     Hamster::Vector.new([:first, :second, :third])
+  #     Hamster::Vector[1, 2, 3, 4, 5]
+  #
+  # = Retrieving Items from Vectors
+  #
+  #     require 'hamster/vector'
+  #     vector = Hamster.vector(1, 2, 3, 4, 5)
+  #     vector[0]      # => 1
+  #     vector[-1]     # => 5
+  #     vector[0,3]    # => Hamster::Vector[1, 2, 3]
+  #     vector[1..-1]  # => Hamster::Vector[2, 3, 4, 5]
+  #     vector.first   # => 1
+  #     vector.last    # => 5
+  #
+  # = Creating Modified Vectors
+  #
+  #     vector.add(6)  # => Hamster::Vector[1, 2, 3, 4, 5, 6]
+  #     vector.insert(1, :a, :b) # => Hamster::Vector[1, :a, :b, 2, 3, 4, 5]
+  #     vector.delete_at(2)      # => Hamster::Vector[1, 2, 4, 5]
+  #     vector + [6, 7]          # => Hamster::Vector[1, 2, 3, 4, 5, 6, 7]
+  #
+  # Other `Array`-like methods like {#select}, {#map}, {#shuffle}, {#uniq}, {#reverse},
+  # {#rotate}, {#flatten}, {#sort}, {#sort_by}, {#take}, {#drop}, {#take_while},
+  # {#drop_while}, {#fill}, {#product}, and {#transpose} are also supported.
+  #
   class Vector
     extend Forwardable
     include Immutable
