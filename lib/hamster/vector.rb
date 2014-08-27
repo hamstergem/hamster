@@ -49,8 +49,11 @@ module Hamster
     include Immutable
     include Enumerable
 
+    # @private
     BLOCK_SIZE = 32
+    # @private
     INDEX_MASK = BLOCK_SIZE - 1
+    # @private
     BITS_PER_LEVEL = 5
 
     attr_reader :size
