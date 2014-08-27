@@ -76,6 +76,8 @@ module Hamster
     include Enumerable
 
     class << self
+      # Create a new `Hash` populated with the given key/value pairs.
+      #
       # @return [Hash]
       def [](pairs = nil)
         (pairs.nil? || pairs.empty?) ? empty : new(pairs)
@@ -134,6 +136,7 @@ module Hamster
     # return `true` if a key with the same `#hash` code, and which is also `#eql?`
     # to the given key object is present.
     #
+    # @param key [Object] The key to check for
     # @return [Boolean]
     def key?(key)
       @trie.key?(key)
@@ -144,6 +147,7 @@ module Hamster
 
     # Return `true` if this `Hash` has one or more keys which map to the provided value.
     #
+    # @param value [Object] The value to check for
     # @return [Boolean]
     def value?(value)
       each { |k,v| return true if value == v }
@@ -172,6 +176,10 @@ module Hamster
     # missing key) to get the return value. Otherwise, if an optional `default`
     # argument is provided, return that. Otherwise, raise a `KeyError`.
     #
+    # @param key [Object] The key to look up
+    # @param default [Object] Object to return if the key is not found
+    # @yield [key] The key which was not found
+    # @yieldreturn [Object] Object to return since the key was not found
     # @return [Object]
     def fetch(key, default = Undefined)
       entry = @trie.get(key)
@@ -191,12 +199,18 @@ module Hamster
     # associated value will be replaced with the provided one.
     #
     # If the `value` argument is missing, but an optional code block is provided,
-    # it will be passed the key and what it returns will be used as the value.
+    # it will be passed the existing value (or `nil` if there is none) and what it
+    # returns will replace the existing value. This is useful for "transforming"
+    # the value associated with a certain key.
     #
     # Avoid mutating objects which are used as keys. `String`s are an exception --
     # unfrozen `String`s which are used as keys are internally duplicated and
     # frozen.
     #
+    # @param key [Object] The key to store
+    # @param value [Object] The value to associate it with
+    # @yield [value] The previously stored value
+    # @yieldreturn [Object] The new value to store
     # @return [Hash]
     def put(key, value = yield(get(key)))
       self.class.alloc(@trie.put(key, value), @default)
@@ -210,6 +224,8 @@ module Hamster
     # unfrozen `String`s which are used as keys are internally duplicated and
     # frozen.
     #
+    # @param key [Object] The key to store
+    # @param value [Object] The value to associate it with
     # @return [Hash]
     def store(key, value)
       self.class.alloc(@trie.put(key, value), @default)
@@ -218,6 +234,7 @@ module Hamster
     # Return a new `Hash` with the association for `key` removed. If `key` is not
     # present, return `self`.
     #
+    # @param key [Object] The key to remove
     # @return [Hash]
     def delete(key)
       derive_new_hash(@trie.delete(key))
@@ -227,7 +244,7 @@ module Hamster
     # pair as parameters. No specific iteration order is guaranteed (but the order will
     # be stable for any particular `Hash`.)
     #
-    # @return [void]
+    # @return [self]
     def each(&block)
       return to_enum if not block_given?
       @trie.each(&block)
@@ -238,7 +255,7 @@ module Hamster
     # Call the block once for each key/value pair in this `Hash`, passing the key/value
     # pair as parameters. Iteration order will be the opposite of `#each`.
     #
-    # @return [void]
+    # @return [self]
     def reverse_each(&block)
       return enum_for(:reverse_each) if not block_given?
       @trie.reverse_each(&block)
@@ -248,7 +265,7 @@ module Hamster
     # Call the block once for each key/value pair in this `Hash`, passing the key as a
     # parameter.
     #
-    # @return [void]
+    # @return [self]
     def each_key
       return enum_for(:each_key) if not block_given?
       @trie.each { |k,v| yield k }
@@ -258,7 +275,7 @@ module Hamster
     # Call the block once for each key/value pair in this `Hash`, passing the value as a
     # parameter.
     #
-    # @return [void]
+    # @return [self]
     def each_value
       return enum_for(:each_value) if not block_given?
       @trie.each { |k,v| yield v }
@@ -307,6 +324,14 @@ module Hamster
     # determined by called the block with the key, its value in this `Hash`, and
     # its value in `other`.
     #
+    # `other` can be a `Hamster::Hash`, a built-in Ruby `Hash`, or any `Enumerable`
+    # object which yields `[key, value]` pairs.
+    #
+    # @param other [Enumerable] The collection to merge with
+    # @yieldparam key [Object] The key which was present in both collections
+    # @yieldparam my_value [Object] The associated value from this `Hash`
+    # @yieldparam other_value [Object] The associated value from the other collection
+    # @yieldreturn [Object] The value to associate this key with in the new `Hash`
     # @return [Hash]
     def merge(other)
       trie = if block_given?
@@ -325,21 +350,40 @@ module Hamster
     end
     def_delegator :self, :merge, :+
 
+    # Return a {Vector} which contains all the `[key, value]` pairs in this `Hash`
+    # as 2-element Arrays, either in their natural sorted order as determined by
+    # `#<=>`, or if an optional block is supplied, by using the block as a comparator.
+    # See `Enumerable#sort`.
+    #
     # @return [Vector]
     def sort
       Vector.new(super)
     end
 
+    # Return a {Vector} which contains all the `[key, value]` pairs in this `Hash`
+    # as 2-element Arrays. The order which the pairs will appear in is determined by
+    # passing each pair to the code block to obtain a sort key object, and comparing
+    # the sort keys using `#<=>`.
+    # See `Enumerable#sort_by`.
+    #
     # @return [Vector]
     def sort_by
       Vector.new(super)
     end
 
+    # Return a new `Hash` with the associations for all of the given `keys` removed.
+    #
+    # @param keys [Array] The keys to remove
     # @return [Hash]
     def except(*keys)
       keys.reduce(self) { |hash, key| hash.delete(key) }
     end
 
+    # Return a new `Hash` with only the associations for the `wanted` keys retained.
+    # If any of the `wanted` keys are not present in this `Hash`, they will not be present
+    # in the returned `Hash` either.
+    #
+    # @param wanted [Array] The keys to retain
     # @return [Hash]
     def slice(*wanted)
       trie = Trie.new(0)
@@ -347,6 +391,10 @@ module Hamster
       self.class.alloc(trie, @default)
     end
 
+    # Return a {Vector} of the values which correspond to the `wanted` keys.
+    # If any of the `wanted` keys are not present in this `Hash`, they will be skipped.
+    #
+    # @param wanted [Array] The keys to retrieve
     # @return [Vector]
     def values_at(*wanted)
       array = []
@@ -384,11 +432,12 @@ module Hamster
     # into one {Vector}. If `level` is greater than 1, keys or values which are
     # themselves `Array`s or {Vector}s will be recursively flattened into the output
     # {Vector}. The depth to which that flattening will be recursively applied is
-    # determined by the optional `level` argument.
+    # determined by `level`.
     #
     # As a special case, if `level` is 0, each `[key, value]` pair will be a
     # separate element in the returned {Vector}.
     #
+    # @param level [Integer] The number of times to recursively flatten the `[key, value]` pairs in this `Hash`.
     # @return [Vector]
     def flatten(level = 1)
       return Vector.new(self) if level == 0
@@ -402,6 +451,7 @@ module Hamster
     # When a matching key is found, return the `[key, value]` pair as an array.
     # Return `nil` if no match is found.
     #
+    # @param obj [Object] The key to search for (using #==)
     # @return [Array]
     def assoc(obj)
       each { |entry| return entry if obj == entry[0] }
@@ -412,12 +462,19 @@ module Hamster
     # When a matching value is found, return the `[key, value]` pair as an array.
     # Return `nil` if no match is found.
     #
+    # @param obj [Object] The value to search for (using #==)
     # @return [Array]
     def rassoc(obj)
       each { |entry| return entry if obj == entry[1] }
       nil
     end
 
+    # Searches through the `Hash`, comparing `value` with each value (using `#==`).
+    # When a matching value is found, return its associated key object.
+    # Return `nil` if no match is found.
+    #
+    # @param value [Object] The value to search for (using #==)
+    # @return [Object]
     def key(value)
       each { |entry| return entry[0] if value == entry[1] }
       nil
@@ -439,15 +496,18 @@ module Hamster
       self.class.empty
     end
 
-    # Value-and-type equality
+    # Return true if `other` has the same type and contents as this `Hash`.
     #
+    # @param other [Object] The collection to compare with
     # @return [Boolean]
     def eql?(other)
       instance_of?(other.class) && @trie.eql?(other.instance_variable_get(:@trie))
     end
 
-    # Value equality, will do type coercion
+    # Return true if `other` has the same contents as this `Hash`. Will convert
+    # `other` to a Ruby `Hash` using `#to_hash` if necessary.
     #
+    # @param other [Object] The object to compare with
     # @return [Boolean]
     def ==(other)
       self.eql?(other) || (other.respond_to?(:to_hash) && to_hash.eql?(other.to_hash))
@@ -488,7 +548,7 @@ module Hamster
     # the screen into account, and which indents nested structures to make them easier
     # to read.
     #
-    # @return [void]
+    # @private
     def pretty_print(pp)
       pp.group(1, "#{self.class}[", "]") do
         pp.breakable ''
@@ -518,16 +578,21 @@ module Hamster
     def_delegator :self, :to_hash, :to_h
 
     # @return [::Hash]
+    # @private
     def marshal_dump
       to_hash
     end
 
+    # @private
     def marshal_load(dictionary)
       @trie = Trie[dictionary]
     end
 
     private
 
+    # Return a new `Hash` which is derived from this one, using a modified {Trie}.
+    # The new `Hash` will retain the existing default block, if there is one.
+    #
     def derive_new_hash(trie)
       if trie.equal?(@trie)
         self
