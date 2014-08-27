@@ -60,12 +60,12 @@ module Hamster
 
       if !entry
         entries = @entries.dup
-        key = key.dup.freeze if key.is_a?(String)
+        key = key.dup.freeze if key.is_a?(String) && !key.frozen?
         entries[index] = [key, value].freeze
         Trie.new(@significant_bits, @size + 1, entries, @children)
       elsif entry[0].eql?(key)
         entries = @entries.dup
-        key = key.dup.freeze if key.is_a?(String)
+        key = key.dup.freeze if key.is_a?(String) && !key.frozen?
         entries[index] = [key, value].freeze
         Trie.new(@significant_bits, @size, entries, @children)
       else
@@ -89,10 +89,10 @@ module Hamster
       entry = @entries[index]
       if !entry
         @size += 1
-        key = key.dup.freeze if key.is_a?(String)
+        key = key.dup.freeze if key.is_a?(String) && !key.frozen?
         @entries[index] = [key, value].freeze
       elsif entry[0].eql?(key)
-        key = key.dup.freeze if key.is_a?(String)
+        key = key.dup.freeze if key.is_a?(String) && !key.frozen?
         @entries[index] = [key, value].freeze
       else
         child = @children[index]
