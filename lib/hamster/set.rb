@@ -10,6 +10,47 @@ module Hamster
     items.empty? ? EmptySet : Set.new(items)
   end
 
+  # `Hamster::Set` is a collection of unordered values with no duplicates. Testing whether
+  # an object is present in the `Set` is fast. `Set` is also `Enumerable`, so you can
+  # iterate over the members of the set with {#each}, transform them with {#map}, filter
+  # them with {#select}, and so on. Some of the `Enumerable` methods are overridden to
+  # return Hamster collections.
+  #
+  # Like the `Set` class in Ruby's standard library, which we will call RubySet,
+  # `Hamster::Set` defines equivalency of objects using `#hash` and `#eql?`. No two
+  # objects with the same `#hash` code, and which are also `#eql?`, can coexist in the
+  # same `Set`. If one is added, it will replace the other.
+  #
+  # `Set`s have no natural ordering and cannot be compared using `#<=>`. However, they
+  # define {#<}, {#>}, {#<=}, and {#>=} as shorthand for {#proper_subset?},
+  # {#proper_superset?}, {#subset?}, and {#superset?} (respectively).
+  #
+  # The basic set-theoretic operations {#union}, {#intersection}, {#difference}, and
+  # {#exclusion} work with any `Enumerable` object. They may be more efficient when used
+  # with another `Hamster::Set`, or a RubySet.
+  #
+  # A `Set` can be created in any of the following ways:
+  #
+  #     Hamster.set('Tom', 'Dick', 'Harry')
+  #     Hamster::Set.new([1, 2, 3]) # any Enumerable can be used to initialize
+  #     Hamster::Set['A', 'B', 'C', 'D']
+  #
+  # The latter 2 forms of initialization can be used with your own, custom subclasses
+  # of `Hamster::Set`.
+  #
+  # Unlike RubySet, all methods which you might expect to "modify" a `Hamster::Set`
+  # actually return a new set and leave the existing one unchanged.
+  #
+  # @example
+  #   require 'hamster/set'
+  #   set1 = Hamster.set(1, 2)  # => Hamster::Set[1, 2]
+  #   set2 = Hamster::Set[1, 2] # => Hamster::Set[1, 2]
+  #   set1 == set2              # => true
+  #   set3 = set1.add("foo")    # => Hamster::Set[1, 2, "foo"]
+  #   set3 - set2               # => Hamster::Set["foo"]
+  #   set3.subset?(set1)        # => false
+  #   set1.subset?(set3)        # => true
+  #
   class Set
     extend Forwardable
     include Immutable
