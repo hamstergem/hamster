@@ -490,7 +490,7 @@ module Hamster
       nil
     end
 
-    # Return a randomly chosen `[key, value]` pair from this `Hash`. If it is empty,
+    # Return a randomly chosen `[key, value]` pair from this `Hash`. If the hash is empty,
     # return `nil`.
     #
     # @return [Array]
