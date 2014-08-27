@@ -56,18 +56,32 @@ module Hamster
     # @private
     BITS_PER_LEVEL = 5
 
+    # Return the number of items in this `Vector`
+    # @return [Integer]
     attr_reader :size
     def_delegator :self, :size, :length
 
     class << self
+      # Create a new `Vector` populated with the given items.
+      #
+      # @return [Vector]
       def [](*items)
         new(items.freeze)
       end
 
+      # Return an empty `Vector`. If used on a subclass, returns an empty instance
+      # of that class.
+      #
+      # @return [Vector]
       def empty
         @empty ||= self.alloc([].freeze, 0, 0)
       end
 
+      # "Raw" allocation of a new `Vector`. Used internally to create a new
+      # instance quickly after building a modified trie.
+      #
+      # @return [Vector]
+      # @private
       def alloc(root, size, levels)
         obj = allocate
         obj.instance_variable_set(:@root, root)
@@ -92,20 +106,33 @@ module Hamster
       end
     end
 
+    # Return `true` if this `Vector` contains no items.
+    #
+    # @return [Boolean]
     def empty?
       @size == 0
     end
     def_delegator :self, :empty?, :null?
 
+    # Return the first item in the `Vector`. If the vector is empty, return `nil`.
+    #
+    # @return [Object]
     def first
       get(0)
     end
     def_delegator :self, :first, :head
 
+    # Return the last item in the `Vector`. If the vector is empty, return `nil`.
+    #
+    # @return [Object]
     def last
       get(-1)
     end
 
+    # Return a new `Vector` with `item` added after the last occupied position.
+    #
+    # @param item [Object] The object to insert at the end of the vector
+    # @return [Vector]
     def add(item)
       update_root(@size, item)
     end
@@ -113,6 +140,13 @@ module Hamster
     def_delegator :self, :add, :conj
     def_delegator :self, :add, :conjoin
 
+    # Return a new `Vector` with the item at `index` replaced by `item`. If the
+    # `item` argument is missing, but an optional code block is provided, it will
+    # be passed the existing item and what the block returns will replace it.
+    #
+    # @param index [Integer] The index to update
+    # @param item [Object] The object to insert into that position
+    # @return [Vector]
     def set(index, item = yield(get(index)))
       raise IndexError if @size == 0
       index += @size if index < 0
@@ -120,6 +154,11 @@ module Hamster
       update_root(index, item)
     end
 
+    # Retrieve the item at `index`. If there is none (either the provided index
+    # is too high or too low), return `nil`.
+    #
+    # @param index [Integer] The index to retrieve
+    # @return [Object]
     def get(index)
       return nil if @size == 0
       index += @size if index < 0
@@ -128,6 +167,26 @@ module Hamster
     end
     def_delegator :self, :get, :at
 
+    # Retrieve the value at `index`, or use the provided default value or block,
+    # or otherwise raise an `IndexError`.
+    #
+    # @overload fetch(index)
+    #   Retrieve the value at the given index, or raise an `IndexError` if it is
+    #   not found.
+    #   @param index [Integer] The index to look up
+    # @overload fetch(index) { |index| ... }
+    #   Retrieve the value at the given index, or call the optional
+    #   code block (with the non-existent index) and get its return value.
+    #   @yield [index] The index which does not exist
+    #   @yieldreturn [Object] Object to return instead
+    #   @param index [Integer] The index to look up
+    # @overload fetch(index, default)
+    #   Retrieve the value at the given index, or else return the provided
+    #   `default` value.
+    #   @param index [Integer] The index to look up
+    #   @param default [Object] Object to return if the key is not found
+    #
+    # @return [Object]
     def fetch(index, default = (missing_default = true))
       index += @size if index < 0
       if index >= 0 && index < size
@@ -141,6 +200,21 @@ module Hamster
       end
     end
 
+    # Element reference. Return the item at a specific index, or a specified,
+    # contiguous range of items (as a new `Vector`).
+    #
+    # @overload vector[index]
+    #   Return the item at `index`.
+    #   @param index [Integer] The index to retrieve.
+    # @overload vector[start, length]
+    #   Return a subvector starting at index `start` and continuing for `length` elements.
+    #   @param start [Integer] The index to start retrieving items from.
+    #   @param length [Integer] The number of items to retrieve.
+    # @overload vector[range]
+    #   Return a subvector specified by the given `range` of indices.
+    #   @param range [Range] The range of indices to retrieve.
+    #
+    # @return [Vector]
     def [](arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
@@ -162,6 +236,11 @@ module Hamster
     end
     def_delegator :self, :[], :slice
 
+    # Return a new `Vector` with the given values inserted before the element at `index`.
+    #
+    # @param index [Integer] The index where the new items should go
+    # @param items [Array] The items to add
+    # @return [Vector]
     def insert(index, *items)
       raise IndexError if index < -@size
       index += @size if index < 0
@@ -179,6 +258,11 @@ module Hamster
       replace_suffix(index, suffix)
     end
 
+    # Return a new `Vector` with the element at `index` removed. If the given `index`
+    # does not exist, return `self`.
+    #
+    # @param index [Integer] The index to remove
+    # @return [Vector]
     def delete_at(index)
       return self if index >= @size || index < -@size
       index += @size if index < 0
@@ -187,27 +271,48 @@ module Hamster
       replace_suffix(index, suffix.tap { |a| a.shift })
     end
 
+    # Call the given block once for each item in the vector, passing each
+    # item from first to last successively to the block.
+    #
+    # @return [self]
     def each(&block)
       return to_enum unless block_given?
       traverse_depth_first(@root, @levels, &block)
       self
     end
 
+    # Call the given block once for each item in the vector, passing each
+    # item starting from the last, and counting back to the first, successively to
+    # the block.
+    #
+    # @return [self]
     def reverse_each(&block)
       return enum_for(:reverse_each) unless block_given?
       reverse_traverse_depth_first(@root, @levels, &block)
       self
     end
 
+    # Return a new `Vector` containing all elements for which the given block returns
+    # true.
+    #
+    # @return [Vector]
     def filter
       return enum_for(:filter) unless block_given?
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
     end
 
+    # Return a new `Vector` with all items which are equal to `obj` removed.
+    # `#==` is used fo rchecking equality.
+    #
+    # @return [Vector]
     def delete(obj)
       filter { |item| item != obj }
     end
 
+    # Invoke the given block once for each item in the vector, and return a new
+    # `Vector` containing the values returned by the block.
+    #
+    # @return [Vector]
     def map
       return enum_for(:map) if not block_given?
       return self if empty?
@@ -215,18 +320,35 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
+    # Return a new `Vector` with the same elements as this one, but randomly permuted.
+    #
+    # @return [Vector]
     def shuffle
       self.class.new(((array = to_a).frozen? ? array.shuffle : array.shuffle!).freeze)
     end
 
+    # Return a new `Vector` with no duplicate elements, as determined by `#hash` and
+    # `#eql?`. For each group of equivalent elements, only the first will be retained.
+    #
+    # @return [Vector]
     def uniq
       self.class.new(((array = to_a).frozen? ? array.uniq : array.uniq!).freeze)
     end
 
+    # Return a new `Vector` with the same elements as this one, but in reverse order.
+    #
+    # @return [Vector]
     def reverse
       self.class.new(((array = to_a).frozen? ? array.reverse : array.reverse!).freeze)
     end
 
+    # Return a new `Vector` with the same elements, but rotated so that the one at
+    # index `count` is the first element of the new vector. If `count` is positive,
+    # the elements will be shifted left, and those shifted past the lowest position
+    # will be moved to the end. If `count` is negative, the elements will be shifted
+    # right, and those shifted past the last position will be moved to the beginning
+    #
+    # @return [Vector]
     def rotate(count = 1)
       return self if (count % @size) == 0
       self.class.new(((array = to_a).frozen? ? array.rotate(count) : array.rotate!(count)).freeze)
@@ -498,10 +620,17 @@ module Hamster
       result
     end
 
+    # Return an empty `Vector` instance, of the same class as this one. Useful if you
+    # have multiple subclasses of `Vector` and want to treat them polymorphically.
+    #
+    # @return [Hash]
     def clear
       self.class.empty
     end
 
+    # Return a randomly chosen item from this `Vector`. If the vector is empty, return `nil`.
+    #
+    # @return [Object]
     def sample
       get(rand(@size))
     end
