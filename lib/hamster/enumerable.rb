@@ -11,7 +11,6 @@ module Hamster
   #     with only the items for which the block returns a true value
   # - `#reverse` (or else undef `#foldr`, or provide another definition for it)
   #
-  # @private
   module Enumerable
     extend Forwardable
     include ::Enumerable
