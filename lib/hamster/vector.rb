@@ -371,7 +371,7 @@ module Hamster
     end
 
     # Return a new `Vector` built by concatenating this one with `other`. `other`
-    # can be any object which is convertible to an `Array` using `#to_ary`.
+    # can be any object which is convertible to an `Array` using `#to_a`.
     #
     # @param other [Enumerable] The collection to concatenate onto this vector
     # @return [Vector]
