@@ -9,18 +9,13 @@ Hamster
 
 Efficient, immutable, and thread-safe collection classes for Ruby.
 
-Hamster started out as an implementation of [Hash Array Mapped Tries][HAMT] for
-Ruby. It has since expanded to implementations of other [Persistent Data
-Structures][PDS] like `Set`, `List`, `Stack`, `Queue`, and `Vector`.
+Hamster provides 7 [Persistent Data
+Structures][PDS]: `Hash`, `Vector`, `Set`, `SortedSet`, `List`, `Stack`, and `Queue` (which is actually a [Deque][DQ]).
 
 Hamster collections are **immutable**. Whenever you modify a Hamster
 collection, the original is preserved and a modified copy is returned. This
-makes them inherently thread-safe and shareable. For an interesting
-perspective on why immutability itself is inherently a good thing, you might
-like to take a look at Matthias Felleisen's [Function Objects presentation][FO].
-
-Hamster collection classes remain space efficient by making use of some very
-well understood and very simple techniques that enable sharing between copies.
+makes them inherently thread-safe and shareable. At the same time, they remain
+CPU and memory-efficient by sharing between copies.
 
 Hamster collections are almost always closed under a given operation. That is,
 whereas Ruby's collection methods always return arrays, Hamster collections
@@ -32,16 +27,14 @@ process "infinitely large" lists.
 Where possible, Hamster collections offer an interface compatible with Ruby's
 built-in `Hash`, `Array`, and `Enumerable`, to ease code migration.
 
-[HAMT]: http://lampwww.epfl.ch/papers/idealhashtrees.pdf
 [PDS]: http://en.wikipedia.org/wiki/Persistent_data_structure
-[FO]: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf
+[DQ]:  http://en.wikipedia.org/wiki/Deque
 
 
 Using
 =====
 
-Once installed, all that remains is to make the
-collection classes available in your code:
+To make the collection classes available in your code:
 
 ``` ruby
 require "hamster"
@@ -50,12 +43,13 @@ require "hamster"
 Or if you prefer to only pull in certain collection types:
 
 ``` ruby
+require "hamster/hash"
+require "hamster/vector"
+require "hamster/set"
+require "hamster/sorted_set"
 require "hamster/list"
 require "hamster/stack"
 require "hamster/queue"
-require "hamster/hash"
-require "hamster/set"
-require "hamster/vector"
 ```
 
 **Hash**
@@ -117,7 +111,7 @@ counters[:odds] += 1
   # => 1
 ```
 
-Because of this, the returned copy would be lost thus
+Because of this, the returned copy would be lost, thus
 making the construct useless. Instead `Hash#put` accepts a
 block instead of an explicit value so we can still do
 something similar:
@@ -136,7 +130,7 @@ counters.put(:odds, &:next)
 
 **List**
 
-Hamster `List` have a head -- the value of the item at the
+Hamster `List`s have a head -- the value of the item at the
 head of the list -- and a tail -- containing the remaining
 items:
 
@@ -158,7 +152,7 @@ copy = original.cons(0)
 
 Notice how modifying a list actually returns a new list.
 That's because Hamster `List` are immutable. Thankfully,
-just like Hamster `Set` and `Hash`, they're also very
+just like other Hamster collections, they're also very
 efficient at making copies!
 
 `List` is, where possible, lazy. That is, it tries to defer
@@ -388,6 +382,16 @@ I'll leave that as an exercise for you :)
 And don't forget that even if threading isn't a concern for
 you, the safety provided by immutability alone is worth it,
 not to mention the lazy implementations.
+
+
+Other Reading
+=============
+
+- The structure which is used for Hamster's `Hash` and `Set`: [Hash Array Mapped Tries][HAMT]
+- An interesting perspective on why immutability itself is inherently a good thing: Matthias Felleisen's [Function Objects presentation][FO].
+
+[HAMT]: http://lampwww.epfl.ch/papers/idealhashtrees.pdf
+[FO]: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf
 
 
 Contributing
