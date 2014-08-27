@@ -354,11 +354,20 @@ module Hamster
       self.class.new(((array = to_a).frozen? ? array.rotate(count) : array.rotate!(count)).freeze)
     end
 
+    # Return a new `Vector` with all nested vectors and arrays "flattened out", that is,
+    # their elements inserted into the new `Vector` in the place where the nested
+    # array/vector originally was.
+    #
+    # @return [Vector]
     def flatten(level = nil)
       return self if level == 0
       self.class.new(((array = to_a).frozen? ? array.flatten(level) : array.flatten!(level)).freeze)
     end
 
+    # Return a new `Vector` built by concatenating this one with `other`. `other`
+    # can be any object which is convertible to an `Array` using `#to_ary`.
+    #
+    # @return [Vector]
     def +(other)
       other = other.to_a
       other = other.dup if other.frozen?
@@ -366,6 +375,14 @@ module Hamster
     end
     def_delegator :self, :+, :concat
 
+    # `others` should be `Array`s or `Vector`s. The corresponding elements from this
+    # `Vector` and each of `others` (that is, the elements with the same indices)
+    # will be gathered into arrays.
+    #
+    # If an optional block is provided, each such array will be passed successively
+    # to the block. Otherwise, a new `Vector` of those arrays will be returned.
+    #
+    # @return [Vector, nil]
     def zip(*others)
       if block_given?
         super
