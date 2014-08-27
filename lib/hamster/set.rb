@@ -222,7 +222,17 @@ module Hamster
     def sort(&comparator)
       SortedSet.new(self.to_a, &comparator)
     end
-    alias :sort_by :sort
+
+    # Return a {SortedSet} which contains the same items as this `Set`, ordered by
+    # mapping each item through the provided block to obtain sort keys, and then
+    # sorting the keys.
+    #
+    # @yield [item] The item to obtain a sort key for
+    # @yieldreturn [Object]
+    # @return [SortedSet]
+    def sort_by(&mapper)
+      SortedSet.new(self.to_a, &mapper)
+    end
 
     # Return a new `Set` which contains all the members of both this `Set` and `other`.
     # `other` can be any `Enumerable` object.
