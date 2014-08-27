@@ -115,15 +115,13 @@ module Hamster
     end
   end
 
-  # Common behavior for lists
-  #
   # A +Hamster::List+ can be constructed with {Hamster.list Hamster.list}. It
   # consists of a +head+ (the first element) and a +tail+, containing the rest
   # of the list.
   #
   # This is a singly linked list. Prepending to the list with {List#cons} runs
   # in constant time. Traversing the list from front to back is efficient,
-  # indexed access however runs in linear time because the list needs to be
+  # however, indexed access runs in linear time because the list needs to be
   # traversed to find the element.
   #
   # In practice lists are constructed of a combination of {Sequence}, providing
