@@ -219,6 +219,7 @@ module Hamster
     #
     # @yield [a, b] A pair of items to be compared
     # @yieldreturn [Integer]
+    # @return [SortedSet]
     def sort(&comparator)
       SortedSet.new(self.to_a, &comparator)
     end
