@@ -19,8 +19,6 @@ module Hamster
     #   # => [:a, :b, :c]
     #
     # @return [Hamster::List]
-    #
-    # @api public
     def list(*items)
       items.to_list
     end
@@ -34,8 +32,6 @@ module Hamster
     #   # => [:hello, :hello, :hello]
     #
     # @return [Hamster::List]
-    #
-    # @api public
     def stream(&block)
       return EmptyList unless block_given?
       Stream.new { Sequence.new(yield, stream(&block)) }
@@ -50,8 +46,6 @@ module Hamster
     # @param from [Integer] Start value, inclusive
     # @param to [Integer] End value, inclusive
     # @return [Hamster::List]
-    #
-    # @api public
     def interval(from, to)
       return EmptyList if from > to
       interval_exclusive(from, to.next)
@@ -64,7 +58,6 @@ module Hamster
     #   Hamster.repeat(:chunky).take(4)
     #   => [:chunky, :chunky, :chunky, :chunky]
     #
-    # @api public
     def repeat(item)
       Stream.new { Sequence.new(item, repeat(item)) }
     end
@@ -75,7 +68,6 @@ module Hamster
     #   Hamster.replicate(3).(:hamster)
     #   #=> [:hamster, :hamster, :hamster]
     #
-    # @api public
     def replicate(number, item)
       repeat(item).take(number)
     end
@@ -90,7 +82,6 @@ module Hamster
     # @yieldparam [Object] The previous value
     # @yieldreturn [Object] The next value
     #
-    # @api public
     def iterate(item, &block)
       Stream.new { Sequence.new(item, iterate(yield(item), &block)) }
     end
@@ -106,8 +97,6 @@ module Hamster
     #
     # @param enum [Enumerator] The object to iterate over
     # @return [Stream]
-    #
-    # @api public
     def enumerate(enum)
       Stream.new do
         begin
