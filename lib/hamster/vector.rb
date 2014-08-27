@@ -302,8 +302,9 @@ module Hamster
     end
 
     # Return a new `Vector` with all items which are equal to `obj` removed.
-    # `#==` is used fo rchecking equality.
+    # `#==` is used for checking equality.
     #
+    # @param obj [Object] The object to remove (every occurrence)
     # @return [Vector]
     def delete(obj)
       filter { |item| item != obj }
@@ -348,16 +349,21 @@ module Hamster
     # will be moved to the end. If `count` is negative, the elements will be shifted
     # right, and those shifted past the last position will be moved to the beginning
     #
+    # @param count [Integer] The number of positions to shift items by
     # @return [Vector]
     def rotate(count = 1)
       return self if (count % @size) == 0
       self.class.new(((array = to_a).frozen? ? array.rotate(count) : array.rotate!(count)).freeze)
     end
 
-    # Return a new `Vector` with all nested vectors and arrays "flattened out", that is,
-    # their elements inserted into the new `Vector` in the place where the nested
-    # array/vector originally was.
+    # Return a new `Vector` with all nested vectors and arrays recursively "flattened
+    # out", that is, their elements inserted into the new `Vector` in the place where
+    # the nested array/vector originally was. If an optional `level` argument is
+    # provided, the flattening will only be done recursively that number of times.
+    # A `level` of 0 means not to flatten at all, 1 means to only flatten nested
+    # arrays/vectors which are directly contained within this `Vector`.
     #
+    # @param level [Integer] The depth to which flattening should be applied
     # @return [Vector]
     def flatten(level = nil)
       return self if level == 0
@@ -367,6 +373,7 @@ module Hamster
     # Return a new `Vector` built by concatenating this one with `other`. `other`
     # can be any object which is convertible to an `Array` using `#to_ary`.
     #
+    # @param other [Enumerable] The collection to concatenate onto this vector
     # @return [Vector]
     def +(other)
       other = other.to_a
@@ -375,13 +382,14 @@ module Hamster
     end
     def_delegator :self, :+, :concat
 
-    # `others` should be `Array`s or `Vector`s. The corresponding elements from this
+    # `others` should be arrays and/or vectors. The corresponding elements from this
     # `Vector` and each of `others` (that is, the elements with the same indices)
     # will be gathered into arrays.
     #
     # If an optional block is provided, each such array will be passed successively
-    # to the block. Otherwise, a new `Vector` of those arrays will be returned.
+    # to the block. Otherwise, a new `Vector` of all those arrays will be returned.
     #
+    # @param others [Array] The arrays/vectors to zip together with this one
     # @return [Vector, nil]
     def zip(*others)
       if block_given?
@@ -391,24 +399,55 @@ module Hamster
       end
     end
 
+    # Return a new `Vector` with the same items, but sorted. The sort order will
+    # be determined by comparing items using `#<=>`, or if an optional code block
+    # is provided, by using it as a comparator. The block should accept 2 parameters,
+    # and should return 0, 1, or -1 if the first parameter is equal to, greater than,
+    # or less than the second parameter (respectively).
+    #
+    # @return [Vector]
     def sort
       self.class.new(super)
     end
+
+    # Return a new `Vector` with the same items, but sorted. The sort order will be
+    # determined by mapping the items through the given block to obtain sort keys,
+    # and then sorting the keys according to their natural sort order.
+    #
+    # @return [Vector]
     def sort_by
       self.class.new(super)
     end
 
+    # Drop the first `n` elements and return the rest in a new `Vector`.
+    # @param n [Integer] The number of elements to remove
+    # @return [Vector]
     def drop(n)
       self.class.new(super)
     end
+
+    # Return only the first `n` elements in a new `Vector`.
+    # @param n [Integer] The number of elements to retain
+    # @return [Vector]
     def take(n)
       self.class.new(super)
     end
 
+    # Drop elements up to, but not including, the first element for which the
+    # block returns `nil` or `false`. Gather the remaining elements into a new
+    # `Vector`. If no block is given, an `Enumerator` is returned instead.
+    #
+    # @return [Vector, Enumerator]
     def drop_while
       return enum_for(:drop_while) if not block_given?
       self.class.new(super)
     end
+
+    # Gather elements up to, but not including, the first element for which the
+    # block returns `nil` or `false`, and return them in a new `Vector`. If no block
+    # is given, an `Enumerator` is returned instead.
+    #
+    # @return [Vector, Enumerator]
     def take_while
       return enum_for(:take_while) if not block_given?
       self.class.new(super)
@@ -417,6 +456,7 @@ module Hamster
     # Repetition. Return a new `Vector` built by concatenating `times` copies
     # of this one together.
     #
+    # @param times [Integer] The number of times to repeat the elements in this vector
     # @return [Vector]
     def *(times)
       return self.class.empty if times == 0
@@ -663,6 +703,10 @@ module Hamster
     # down to the end of each nested vector/array. Gather all the resulting `Vectors`
     # into a new `Vector` and return it.
     #
+    # This operation is closely related to {#zip}. The result is almost the same as
+    # calling {#zip} on the first nested vector/array with the others supplied as
+    # arguments.
+    #
     # @return [Vector]
     def transpose
       return self.class.empty if empty?
@@ -683,6 +727,11 @@ module Hamster
       self.class.new(result)
     end
 
+    # By using binary search, finds a value from this `Vector` which meets the
+    # condition defined by the provided block. Behavior is just like `Array#bsearch`.
+    # See `Array#bsearch` for details.
+    #
+    # @return [Object]
     def bsearch
       low, high, result = 0, @size, nil
       while low < high
@@ -724,10 +773,27 @@ module Hamster
       get(rand(@size))
     end
 
-    def values_at(*indexes)
-      self.class.new(indexes.map { |i| get(i) }.freeze)
+    # Return a new `Vector` with only the elements at the given `indices`, in the
+    # order specified by `indices`. If any of the `indices` do not exist, `nil`s will
+    # appear in their places.
+    #
+    # @param indices [Array] The indices to retrieve and gather into a new `Vector`
+    # @return [Vector]
+    def values_at(*indices)
+      self.class.new(indices.map { |i| get(i) }.freeze)
     end
 
+    # Return the index of the last element which is equal to the provided object,
+    # or for which the provided block returns true.
+    #
+    # @overload rindex(obj)
+    #   Return the index of the last element in this `Vector` which is `#==` to `obj`.
+    # @overload rindex { |item| ... }
+    #   Return the index of the last element in this `Vector` for which the block
+    #   returns true. (Iteration starts from the last element, counts back, and
+    #   stops as soon as a matching element is found.)
+    #
+    # @return [Index]
     def rindex(obj = (missing_arg = true))
       i = @size - 1
       if missing_arg
@@ -743,16 +809,32 @@ module Hamster
       end
     end
 
+    # Assumes all elements are nested, indexable collections, and searches through them,
+    # comparing `obj` with the first element of each nested collection. Return the
+    # first nested collection which matches, or `nil` if none is found.
+    #
+    # @param obj [Object] The object to search for
+    # @return [Object]
     def assoc(obj)
       each { |array| return array if obj == array[0] }
       nil
     end
 
+    # Assumes all elements are nested, indexable collections, and searches through them,
+    # comparing `obj` with the second element of each nested collection. Return the
+    # first nested collection which matches, or `nil` if none is found.
+    #
+    # @param obj [Object] The object to search for
+    # @return [Object]
     def rassoc(obj)
       each { |array| return array if obj == array[1] }
       nil
     end
 
+    # Return an `Array` with the same elements, in the same order. The returned
+    # `Array` may or may not be frozen.
+    #
+    # @return [Array]
     def to_a
       if @levels == 0
         @root
@@ -761,12 +843,18 @@ module Hamster
       end
     end
 
+    # Return true if `other` has the same type and contents as this `Vector`.
+    #
+    # @param other [Object] The collection to compare with
+    # @return [Boolean]
     def eql?(other)
       return true if other.equal?(self)
       return false unless instance_of?(other.class) && @size == other.size
       @root.eql?(other.instance_variable_get(:@root))
     end
 
+    # See `Object#hash`.
+    # @return [Integer]
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
