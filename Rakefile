@@ -24,12 +24,12 @@ class DefDelegatorHandler < YARD::Handlers::Ruby::Base
 
   process do
     arg_list = statement.children[1]
-    delegate = arg_list.children[0].source[1..-1]
-    old_meth = arg_list.children[1].source[1..-1].to_sym
+    delegate = eval(arg_list.children[0].source)
+    old_meth = eval(arg_list.children[1].source).to_sym
     new_meth = arg_list.children[2]
-    new_meth = new_meth ? new_meth.source[1..-1].to_sym : old_meth
+    new_meth = new_meth ? eval(new_meth.source).to_sym : old_meth
 
-    if delegate == 'self'
+    if delegate == 'self' || delegate == :self
       old_obj = namespace.child(:name => old_meth, :scope => scope)
       new_obj = register YARD::CodeObjects::MethodObject.new(namespace, new_meth, scope) do |o|
         o.add_file(parser.file, statement.line)
