@@ -134,6 +134,7 @@ module Hamster
     if RUBY_ENGINE == 'rbx'
       # Rubinius implements Enumerable#sort_by using Enumerable#map
       # Because we do our own, custom implementations of #map, that doesn't work well
+      # @private
       def sort_by(&block)
         result = to_a
         result.frozen? ? result.sort_by(&block) : result.sort_by!(&block)
