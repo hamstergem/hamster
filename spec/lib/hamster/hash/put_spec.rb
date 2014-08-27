@@ -19,6 +19,17 @@ describe Hamster::Hash do
         result = hash.put("A", &:upcase)
         result.get("A").should == "AYE"
       end
+
+      context "if there is no existing association" do
+        it "passes nil to the block" do
+          hash.put("D") { |value| value.should be_nil }
+        end
+
+        it "stores the result of the block as the new value" do
+          result = hash.put("D") { |value| "FLIBBLE" }
+          result.get("D").should == "FLIBBLE"
+        end
+      end
     end
 
     context "with a unique key" do
