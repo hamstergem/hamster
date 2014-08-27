@@ -414,6 +414,10 @@ module Hamster
       self.class.new(super)
     end
 
+    # Repetition. Return a new `Vector` built by concatenating `times` copies
+    # of this one together.
+    #
+    # @return [Vector]
     def *(times)
       return self.class.empty if times == 0
       return self if times == 1
@@ -421,6 +425,18 @@ module Hamster
       result.is_a?(Array) ? self.class.new(result) : result
     end
 
+    # Replace a range of indexes with the given object.
+    #
+    # @overload fill(obj)
+    #   Return a new `Vector` of the same size, with every index set to `obj`.
+    # @overload fill(obj, start)
+    #   Return a new `Vector` with all indexes from `start` to the end of the
+    #   vector set to `obj`.
+    # @overload fill(obj, start, length)
+    #   Return a new `Vector` with `length` indexes, beginning from `start`,
+    #   set to `obj`.
+    #
+    # @return [Vector]
     def fill(obj, index = 0, length = nil)
       raise IndexError if index < -@size
       index += @size if index < 0
@@ -439,6 +455,13 @@ module Hamster
       replace_suffix(index, suffix)
     end
 
+    # When invoked with a block, yields all combinations of length `n` of items
+    # from the `Vector`, and then returns `self`. There is no guarantee about
+    # which order the combinations will be yielded in.
+    #
+    # If no block is given, an `Enumerator` is returned instead.
+    #
+    # @return [self, Enumerator]
     def combination(n)
       return enum_for(:combination, n) if not block_given?
       return self if n < 0 || @size < n
@@ -466,6 +489,16 @@ module Hamster
       self
     end
 
+    # When invoked with a block, yields all repeated combinations of length `n` of
+    # items from the `Vector`, and then returns `self`. A "repeated combination" is
+    # one in which any item from the `Vector` can appear consecutively any number of
+    # times.
+    #
+    # There is no guarantee about which order the combinations will be yielded in.
+    #
+    # If no block is given, an `Enumerator` is returned instead.
+    #
+    # @return [self, Enumerator]
     def repeated_combination(n)
       return enum_for(:repeated_combination, n) if not block_given?
       if n < 0
@@ -495,6 +528,15 @@ module Hamster
       self
     end
 
+    # When invoked with a block, yields all permutations of length `n` of items
+    # from the `Vector`, and then returns `self`. If no length `n` is specified,
+    # permutations of all elements will be yielded.
+    #
+    # There is no guarantee about which order the permutations will be yielded in.
+    #
+    # If no block is given, an `Enumerator` is returned instead.
+    #
+    # @return [self, Enumerator]
     def permutation(n = @size)
       return enum_for(:permutation, n) if not block_given?
       if n < 0 || @size < n
@@ -524,6 +566,17 @@ module Hamster
       self
     end
 
+    # When invoked with a block, yields all repeated permutations of length `n` of
+    # items from the `Vector`, and then returns `self`. A "repeated permutation" is
+    # one where any item from the `Vector` can appear any number of times, and in
+    # any position (not just consecutively)
+    #
+    # If no length `n` is specified, permutations of all elements will be yielded.
+    # There is no guarantee about which order the permutations will be yielded in.
+    #
+    # If no block is given, an `Enumerator` is returned instead.
+    #
+    # @return [self, Enumerator]
     def repeated_permutation(n = @size)
       return enum_for(:repeated_permutation, n) if not block_given?
       if n < 0
@@ -549,6 +602,18 @@ module Hamster
       self
     end
 
+    # With one or more vector or array arguments, return the cartesian product of
+    # this vector's elements and those of each argument; with no arguments, return the
+    # result of multiplying all this vector's items together.
+    #
+    # @overload product(*vectors)
+    #   Return a `Vector` of all combinations of elements from this `Vector` and each
+    #   of the given vectors or arrays. The length of the returned `Vector` is the product
+    #   of `self.size` and the size of each argument vector or array.
+    # @overload product
+    #   Return the result of multiplying all the items in this `Vector` together.
+    #
+    # @return [Vector]
     def product(*vectors)
       # if no vectors passed, return "product" as in result of multiplying all items
       return super if vectors.empty?
@@ -592,6 +657,13 @@ module Hamster
       end
     end
 
+    # Assume all elements are vectors or arrays and transpose the rows and columns.
+    # In other words, take the first element of each nested vector/array and gather
+    # them together into a new `Vector`. Do likewise for the second, third, and so on
+    # down to the end of each nested vector/array. Gather all the resulting `Vectors`
+    # into a new `Vector` and return it.
+    #
+    # @return [Vector]
     def transpose
       return self.class.empty if empty?
       result = Array.new(first.size) { [] }
