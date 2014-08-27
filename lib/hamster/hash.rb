@@ -263,7 +263,7 @@ module Hamster
     def_delegator :self, :each, :each_pair
 
     # Call the block once for each key/value pair in this `Hash`, passing the key/value
-    # pair as parameters. Iteration order will be the opposite of `#each`.
+    # pair as parameters. Iteration order will be the opposite of {#each}.
     #
     # @return [self]
     def reverse_each(&block)
