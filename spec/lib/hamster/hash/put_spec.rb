@@ -71,7 +71,7 @@ describe Hamster::Hash do
     context "when a String is inserted as key and then mutated" do
       it "is not affected" do
         string = "a string!"
-        hash = Hamster.hash(string => 'a value!')
+        hash = Hamster.hash.put(string, 'a value!')
         string.upcase!
         hash['a string!'].should == 'a value!'
         hash['A STRING!'].should be_nil
