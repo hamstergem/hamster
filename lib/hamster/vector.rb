@@ -761,7 +761,7 @@ module Hamster
     # Return an empty `Vector` instance, of the same class as this one. Useful if you
     # have multiple subclasses of `Vector` and want to treat them polymorphically.
     #
-    # @return [Hash]
+    # @return [Vector]
     def clear
       self.class.empty
     end
