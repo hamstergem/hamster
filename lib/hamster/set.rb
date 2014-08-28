@@ -325,8 +325,8 @@ module Hamster
     end
     alias :>= :superset?
 
-    # Returns `true` if this `Set` contains all the items in `other`, plus at least
-    # one item which is not in `other`.
+    # Returns `true` if `other` contains all the items in this `Set`, plus at least
+    # one item which is not in this set.
     #
     # @param other [Set]
     # @return [Boolean]
@@ -336,8 +336,8 @@ module Hamster
     end
     alias :< :proper_subset?
 
-    # Returns `true` if `other` contains all the items in this `Set`, plus at least
-    # one item which is not in this set.
+    # Returns `true` if this `Set` contains all the items in `other`, plus at least
+    # one item which is not in `other`.
     #
     # @param other [Set]
     # @return [Boolean]
