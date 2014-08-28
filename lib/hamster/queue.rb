@@ -7,6 +7,36 @@ module Hamster
     items.empty? ? EmptyQueue : Queue.new(items)
   end
 
+  # A `Queue` is an ordered, sequential collection of objects, which allows elements to
+  # be efficiently added and removed at the front and end of the sequence. Retrieving
+  # the elements at the front and end is also efficient.
+  #
+  # A `Queue` differs from a {Vector} in that vectors allow indexed access to any
+  # element in the collection. `Queue`s only allow access to the first and last
+  # element. But adding and removing from the ends of a `Queue` is faster than
+  # adding and removing from the ends of a {Vector}.
+  #
+  # To create a new `Queue`:
+  #
+  #     Hamster.queue('a', 'b', 'c')
+  #     Hamster::Queue.new([:first, :second, :third])
+  #     Hamster::Queue[1, 2, 3, 4, 5]
+  #
+  # Or you can start with an empty queue and build it up:
+  #
+  #     Hamster::Queue.empty.push('b').push('c').unshift('a')
+  #
+  # Like all Hamster collections, `Queue` is immutable. The 4 basic operations which
+  # "modify" queues ({#push}, {#pop}, {#shift}, and {#unshift}) all return a new
+  # collection and leave the existing one unchanged.
+  #
+  # @example
+  #   queue = Hamster::Queue.empty                 # => Hamster::Queue[]
+  #   queue = queue.push('a').push('b').push('c')  # => Hamster::Queue['a', 'b', 'c']
+  #   queue.first                                  # => 'a'
+  #   queue.last                                   # => 'c'
+  #   queue = queue.shift                          # => Hamster::Queue['b', 'c']
+  #
   class Queue
     extend Forwardable
     include Immutable
