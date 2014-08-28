@@ -7,6 +7,50 @@ module Hamster
     (items.empty? && block.nil?) ? EmptySortedSet : SortedSet.new(items, &block)
   end
 
+  # A `SortedSet` is a collection of ordered values with no duplicates. Unlike a
+  # {Vector}, in which items can appear in any arbitrary order, a `SortedSet` always
+  # keeps items either in their natural order, or in an order defined by a comparator
+  # block which is provided at initialization time.
+  #
+  # `SortedSet` uses `#<=>` (or its comparator block) to determine which items are
+  # equivalent. If the comparator indicates that an existing item and a new item are
+  # equal, any attempt to insert the new item will have no effect.
+  #
+  # A `SortedSet` can be created in any of the following ways:
+  #
+  #     Hamster.sorted_set('Tom', 'Dick', 'Harry')
+  #     Hamster::SortedSet.new([1, 2, 3]) # any Enumerable can be used to initialize
+  #     Hamster::SortedSet['A', 'B', 'C', 'D']
+  #
+  # Or if you want to use a custom ordering:
+  #
+  #     Hamster.sorted_set('Tom', 'Dick', 'Harry') { |a, b| a.reverse <=> b.reverse }
+  #     Hamster.sorted_set('Tom', 'Dick', 'Harry') { |str| str.reverse }
+  #     Hamster::SortedSet.new([1,2,3]) { |a, b| -a <=> -b }
+  #     Hamster::SortedSet.new([1, 2, 3]) { |num| -num }
+  #
+  # As you can see, `SortedSet` can use a 2-parameter block which returns 0, 1, or -1
+  # as a comparator (like `Array#sort`), *or* use a 1-parameter block to derive sort
+  # keys (like `Array#sort_by`) which will be compared using `#<=>`.
+  #
+  # Like all Hamster collections, `SortedSet`s are immutable. Any operation which you
+  # might expect to "modify" a `SortedSet` will actually return a new collection and
+  # leave the existing one unchanged.
+  #
+  # `SortedSet` supports the same basic set-theoretic operations as {Set}, including
+  # {#union}, {#intersection}, {#difference}, and {#exclusion}, as well as {#subset?},
+  # {#superset?}, and so on. Unlike {Set}, it does not define comparison operators like
+  # {#>} or {#<} as aliases for the superset/subset predicates. Instead, these comparison
+  # operators do a item-by-item comparison between the `SortedSet` and another sequential
+  # collection. (See `Array#<=>` for details.)
+  #
+  # Additionally, since `SortedSet`s are ordered, they also support indexed retrieval
+  # of items (or slices of items) using {#at} or {#[]}. Like {Vector} (or `Array`),
+  # negative indices count back from the end of the `SortedSet`.
+  #
+  # Getting the {#max} or {#min} item from a `SortedSet`, as defined by its comparator,
+  # is very efficient.
+  #
   class SortedSet
     extend Forwardable
     include Immutable
