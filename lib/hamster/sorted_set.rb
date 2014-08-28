@@ -320,17 +320,33 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
+    # Return `true` if the given item is present in this `SortedSet`. More precisely,
+    # return `true` if an object which compares as "equal" using this set's
+    # comparator is present.
+    #
+    # @param object [Object] The object to check for
+    # @return [Boolean]
     def include?(item)
       @node.include?(item, @comparator)
     end
     def_delegator :self, :include?, :member?
 
+    # Return a new `SortedSet` with the same items, but a sort order determined by
+    # the given block.
+    #
+    # @return [SortedSet]
     def sort(&block)
       block ||= lambda { |a,b| a <=> b }
       self.class.new(self.to_a, &block)
     end
     alias :sort_by :sort
 
+    # Return the index of the first object in this set which is equal to
+    # `obj`. Rather than using `#==`, we use `#<=>` (or our comparator block) for
+    # comparisons. This means we can find the index in O(log N) time, rather than O(N).
+    #
+    # @param obj [Object] The object to search for
+    # @return [Integer]
     def find_index(obj = (missing_obj = true), &block)
       if !missing_obj
         # Enumerable provides a default implementation, but this is more efficient
@@ -355,22 +371,49 @@ module Hamster
     end
     def_delegator :self, :find_index, :index
 
+    # Drop the first `n` elements and return the rest in a new `SortedSet`.
+    # @param n [Integer] The number of elements to remove
+    # @return [SortedSet]
     def drop(n)
       self.class.new(super)
     end
+
+    # Return only the first `n` elements in a new `SortedSet`.
+    # @param n [Integer] The number of elements to retain
+    # @return [SortedSet]
     def take(n)
       self.class.new(super)
     end
 
+    # Drop elements up to, but not including, the first element for which the
+    # block returns `nil` or `false`. Gather the remaining elements into a new
+    # `SortedSet`. If no block is given, an `Enumerator` is returned instead.
+    #
+    # @return [SortedSet, Enumerator]
     def drop_while
       return enum_for(:drop_while) if not block_given?
       self.class.new(super)
     end
+
+    # Gather elements up to, but not including, the first element for which the
+    # block returns `nil` or `false`, and return them in a new `SortedSet`. If no block
+    # is given, an `Enumerator` is returned instead.
+    #
+    # @return [SortedSet, Enumerator]
     def take_while
       return enum_for(:take_while) if not block_given?
       self.class.new(super)
     end
 
+    # Return a new `SortedSet` which contains all the members of both this set and `other`.
+    # `other` can be any `Enumerable` object.
+    #
+    # @example
+    #   Hamster::SortedSet[1, 2] | Hamster::SortedSet[2, 3]
+    #   # => Hamster::SortedSet[1, 2, 3]
+    #
+    # @param other [Enumerable] The collection to merge with
+    # @return [SortedSet]
     def union(other)
       self.class.alloc(@node.bulk_insert(other, @comparator), @comparator)
     end
@@ -378,12 +421,30 @@ module Hamster
     def_delegator :self, :union, :+
     def_delegator :self, :union, :merge
 
+    # Return a new `SortedSet` which contains all the items which are members of both
+    # this set and `other`. `other` can be any `Enumerable` object.
+    #
+    # @example
+    #   Hamster::SortedSet[1, 2] & Hamster::SortedSet[2, 3]
+    #   # => Hamster::SortedSet[2]
+    #
+    # @param other [Enumerable] The collection to intersect with
+    # @return [SortedSet]
     def intersection(other)
       self.class.alloc(@node.keep_only(other, @comparator), @comparator)
     end
     def_delegator :self, :intersection, :intersect
     def_delegator :self, :intersection, :&
 
+    # Return a new `SortedSet` with all the items in `other` removed. `other` can be
+    # any `Enumerable` object.
+    #
+    # @example
+    #   Hamster::SortedSet[1, 2] - Hamster::SortedSet[2, 3]
+    #   # => Hamster::SortedSet[1]
+    #
+    # @param other [Enumerable] The collection to subtract from this set
+    # @return [SortedSet]
     def difference(other)
       self.class.alloc(@node.bulk_delete(other, @comparator), @comparator)
     end
@@ -391,29 +452,60 @@ module Hamster
     def_delegator :self, :difference, :subtract
     def_delegator :self, :difference, :-
 
+    # Return a new `SortedSet` with all the items which are members of this
+    # set or of `other`, but not both. `other` can be any `Enumerable` object.
+    #
+    # @example
+    #   Hamster::SortedSet[1, 2] ^ Hamster::SortedSet[2, 3]
+    #   # => Hamster::SortedSet[1, 3]
+    #
+    # @param other [Enumerable] The collection to take the exclusive disjunction of
+    # @return [SortedSet]
     def exclusion(other)
       ((self | other) - (self & other))
     end
     def_delegator :self, :exclusion, :^
 
+    # Return `true` if all items in this set are also in `other`.
+    #
+    # @param other [Enumerable]
+    # @return [Boolean]
     def subset?(other)
       return false if other.size < size
       all? { |item| other.include?(item) }
     end
 
+    # Return `true` if all items in `other` are also in this set.
+    #
+    # @param other [Enumerable]
+    # @return [Boolean]
     def superset?(other)
       other.subset?(self)
     end
 
+    # Returns `true` if `other` contains all the items in this set, plus at least
+    # one item which is not in this set.
+    #
+    # @param other [Enumerable]
+    # @return [Boolean]
     def proper_subset?(other)
       return false if other.size <= size
       all? { |item| other.include?(item) }
     end
 
+    # Returns `true` if this set contains all the items in `other`, plus at least
+    # one item which is not in `other`.
+    #
+    # @param other [Enumerable]
+    # @return [Boolean]
     def proper_superset?(other)
       other.proper_subset?(self)
     end
 
+    # Return `true` if this set and `other` do not share any items.
+    #
+    # @param other [Enumerable]
+    # @return [Boolean]
     def disjoint?(other)
       if size < other.size
         each { |item| return false if other.include?(item) }
@@ -423,6 +515,10 @@ module Hamster
       true
     end
 
+    # Return `true` if this set and `other` have at least one item in common.
+    #
+    # @param other [Enumerable]
+    # @return [Boolean]
     def intersect?(other)
       !disjoint?(other)
     end
@@ -430,14 +526,25 @@ module Hamster
     def_delegator :self, :group_by, :group
     def_delegator :self, :group_by, :classify
 
+    # Return a randomly chosen item from this set. If the set is empty, return `nil`.
+    #
+    # @return [Object]
     def sample
       @node.at(rand(@node.size))
     end
 
+    # Return an empty `SortedSet` instance, of the same class as this one. Useful if you
+    # have multiple subclasses of `SortedSet` and want to treat them polymorphically.
+    #
+    # @return [Hash]
     def clear
       self.class.empty
     end
 
+    # Return true if `other` has the same type and contents as this `SortedSet`.
+    #
+    # @param other [Object] The object to compare with
+    # @return [Boolean]
     def eql?(other)
       return false if not instance_of?(other.class)
       return false if size != other.size
@@ -449,6 +556,8 @@ module Hamster
       true
     end
 
+    # See `Object#hash`.
+    # @return [Integer]
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
