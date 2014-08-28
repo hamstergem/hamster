@@ -57,14 +57,27 @@ module Hamster
     include Enumerable
 
     class << self
+      # Create a new `SortedSet` populated with the given items. This method does not
+      # accept a comparator block.
+      #
+      # @return [SortedSet]
       def [](*items)
         new(items)
       end
 
+      # Return an empty `SortedSet`. If used on a subclass, returns an empty instance
+      # of that class.
+      #
+      # @return [SortedSet]
       def empty
         @empty ||= self.alloc(EmptyAVLNode, lambda { |a,b| a <=> b })
       end
 
+      # "Raw" allocation of a new `SortedSet`. Used internally to create a new
+      # instance quickly after obtaining a modified binary tree.
+      #
+      # @return [Set]
+      # @private
       def alloc(node, comparator)
         result = allocate
         result.instance_variable_set(:@node, node)
@@ -89,16 +102,27 @@ module Hamster
       @node = AVLNode.from_items(items, 0, items.size-1)
     end
 
+    # Return `true` if this `SortedSet` contains no items.
+    #
+    # @return [Boolean]
     def empty?
       @node.empty?
     end
     def_delegator :self, :empty?, :null?
 
+    # Return the number of items in this `SortedSet`.
+    #
+    # @return [Integer]
     def size
       @node.size
     end
     def_delegator :self, :size, :length
 
+    # Return a new `SortedSet` with `item` added. If `item` is already in the set,
+    # return `self`.
+    #
+    # @param item [Object] The object to add
+    # @return [SortedSet]
     def add(item)
       return self if include?(item)
       node = @node.insert(item, @comparator)
@@ -108,10 +132,20 @@ module Hamster
     def_delegator :self, :add, :conj
     def_delegator :self, :add, :conjoin
 
+    # If `item` is not a member of this `SortedSet`, return a new `SortedSet` with
+    # `item` added. Otherwise, return `false`.
+    #
+    # @param item [Object] The object to add
+    # @return [SortedSet, false]
     def add?(item)
       !include?(item) && add(item)
     end
 
+    # Return a new `SortedSet` with `item` removed. If `item` is not a member of the set,
+    # return `self`.
+    #
+    # @param item [Object] The object to remove
+    # @return [SortedSet]
     def delete(item)
       return self if not include?(item)
       node = @node.delete(item, @comparator)
@@ -122,20 +156,55 @@ module Hamster
       end
     end
 
+    # If `item` is a member of this `SortedSet`, return a new `SortedSet` with
+    # `item` removed. Otherwise, return `false`.
+    #
+    # @param item [Object] The object to remove
+    # @return [SortedSet, false]
     def delete?(item)
       include?(item) && delete(item)
     end
 
+    # Return a new `SortedSet` with the item at `index` removed. If the given `index`
+    # does not exist (if it is too high or too low), return `self`.
+    #
+    # @param index [Integer] The index to remove
+    # @return [SortedSet]
     def delete_at(index)
       (item = at(index)) ? delete(item) : self
     end
 
+    # Retrieve the item at `index`. If there is none (either the provided index
+    # is too high or too low), return `nil`.
+    #
+    # @param index [Integer] The index to retrieve
+    # @return [Object]
     def at(index)
       index += @node.size if index < 0
       return nil if index >= @node.size || index < 0
       @node.at(index)
     end
 
+    # Retrieve the value at `index`, or use the provided default value or block,
+    # or otherwise raise an `IndexError`.
+    #
+    # @overload fetch(index)
+    #   Retrieve the value at the given index, or raise an `IndexError` if it is
+    #   not found.
+    #   @param index [Integer] The index to look up
+    # @overload fetch(index) { |index| ... }
+    #   Retrieve the value at the given index, or call the optional
+    #   code block (with the non-existent index) and get its return value.
+    #   @yield [index] The index which does not exist
+    #   @yieldreturn [Object] Object to return instead
+    #   @param index [Integer] The index to look up
+    # @overload fetch(index, default)
+    #   Retrieve the value at the given index, or else return the provided
+    #   `default` value.
+    #   @param index [Integer] The index to look up
+    #   @param default [Object] Object to return if the key is not found
+    #
+    # @return [Object]
     def fetch(index, default = (missing_default = true))
       index += @node.size if index < 0
       if index >= 0 && index < size
@@ -149,6 +218,21 @@ module Hamster
       end
     end
 
+    # Element reference. Return the item at a specific index, or a specified,
+    # contiguous range of items (as a new `SortedSet`).
+    #
+    # @overload set[index]
+    #   Return the item at `index`.
+    #   @param index [Integer] The index to retrieve.
+    # @overload set[start, length]
+    #   Return a subset starting at index `start` and continuing for `length` elements.
+    #   @param start [Integer] The index to start retrieving items from.
+    #   @param length [Integer] The number of items to retrieve.
+    # @overload set[range]
+    #   Return a subset specified by the given `range` of indices.
+    #   @param range [Range] The range of indices to retrieve.
+    #
+    # @return [SortedSet]
     def [](arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
@@ -170,39 +254,65 @@ module Hamster
     end
     def_delegator :self, :[], :slice
 
-    def values_at(*indexes)
-      indexes.select! { |i| i >= -@node.size && i < @node.size }
-      self.class.new(indexes.map! { |i| at(i) })
+    # Return a new `SortedSet` with only the elements at the given `indices`.
+    # If any of the `indices` do not exist, they will be skipped.
+    #
+    # @param indices [Array] The indices to retrieve and gather into a new `SortedSet`
+    # @return [SortedSet]
+    def values_at(*indices)
+      indices.select! { |i| i >= -@node.size && i < @node.size }
+      self.class.new(indices.map! { |i| at(i) })
     end
 
+    # Call the given block once for each item in the set, passing each
+    # item from first to last successively to the block.
+    #
+    # @return [self]
     def each(&block)
       return @node.to_enum if not block_given?
       @node.each(&block)
       self
     end
 
+    # Call the given block once for each item in the set, passing each
+    # item starting from the last, and counting back to the first, successively to
+    # the block.
+    #
+    # @return [self]
     def reverse_each(&block)
       return @node.enum_for(:reverse_each) if not block_given?
       @node.reverse_each(&block)
       self
     end
 
+    # Return the "lowest" element in this set, as determined by its sort order.
+    # @return [Object]
     def min
       @node.min
     end
     alias :first :min
     def_delegator :self, :first, :head
 
+    # Return the "highest" element in this set, as determined by its sort order.
+    # @return [Object]
     def max
       @node.max
     end
     alias :last :max
 
+    # Return a new `SortedSet` containing all elements for which the given block returns
+    # true.
+    #
+    # @return [SortedSet]
     def filter
       return enum_for(:filter) unless block_given?
       reduce(self) { |set, item| yield(item) ? set : set.delete(item) }
     end
 
+    # Invoke the given block once for each item in the set, and return a new
+    # `SortedSet` containing the values returned by the block.
+    #
+    # @return [SortedSet]
     def map
       return enum_for(:map) if not block_given?
       return self if empty?
