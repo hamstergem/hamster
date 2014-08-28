@@ -136,10 +136,14 @@ module Hamster
     def_delegator :self, :head, :first
     def_delegator :self, :empty?, :null?
 
+    # Create a new `List` populated with the given items.
+    # @return [Set]
     def self.[](*items)
       items.to_list
     end
 
+    # Return the number of items in this `List`.
+    # @return [Integer]
     def size
       result, list = 0, self
       until list.empty?
@@ -154,6 +158,9 @@ module Hamster
     end
     def_delegator :self, :size, :length
 
+    # Create a new `List` with `item` added at the front.
+    # @param item [Object] The item to add
+    # @return [List]
     def cons(item)
       Sequence.new(item, self)
     end
@@ -161,11 +168,18 @@ module Hamster
     def_delegator :self, :cons, :conj
     def_delegator :self, :cons, :conjoin
 
+    # Create a new `List` with `item` added at the end.
+    # @param item [Object] The item to add
+    # @return [List]
     def add(item)
       append(Hamster.list(item))
     end
     def_delegator :self, :add, :<<
 
+    # Call the given block once for each item in the list, passing each
+    # item from first to last successively to the block.
+    #
+    # @return [self]
     def each
       return to_enum unless block_given?
       list = self
@@ -175,6 +189,10 @@ module Hamster
       end
     end
 
+    # Return a lazy list in which each element is derived from the corresponding
+    # element in this `List`, transformed through the given block.
+    #
+    # @return [List]
     def map(&block)
       return enum_for(:map) unless block_given?
       Stream.new do
@@ -184,6 +202,10 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
+    # Return a lazy list which is realized by transforming each item into a `List`,
+    # and flattening the resulting lists.
+    #
+    # @return [List]
     def flat_map(&block)
       return enum_for(:flat_map) unless block_given?
       Stream.new do
@@ -194,6 +216,10 @@ module Hamster
       end
     end
 
+    # Return a lazy list which contains all the items for which the given block
+    # returns true.
+    #
+    # @return [List]
     def filter(&block)
       return enum_for(:filter) unless block_given?
       Stream.new do
@@ -206,6 +232,10 @@ module Hamster
       end
     end
 
+    # Return a lazy list which contains all elements up to, but not including, the
+    # first element for which the block returns `nil` or `false`.
+    #
+    # @return [List, Enumerator]
     def take_while(&block)
       return enum_for(:take_while) unless block_given?
       Stream.new do
@@ -215,6 +245,10 @@ module Hamster
       end
     end
 
+    # Return a lazy list which contains all elements starting from the
+    # first element for which the block returns `nil` or `false`.
+    #
+    # @return [List, Enumerator]
     def drop_while(&block)
       return enum_for(:drop_while) unless block_given?
       Stream.new do
@@ -224,6 +258,9 @@ module Hamster
       end
     end
 
+    # Return a lazy list containing the first `number` items from this `List`.
+    # @param number [Integer] The number of items to retain
+    # @return [List]
     def take(number)
       Stream.new do
         next self if empty?
@@ -232,6 +269,8 @@ module Hamster
       end
     end
 
+    # Return a lazy list containing all but the last item from this `List`.
+    # @return [List]
     def pop
       Stream.new do
         next self if empty?
@@ -241,6 +280,10 @@ module Hamster
       end
     end
 
+    # Return a lazy list containing all items after the first `number` items from
+    # this `List`.
+    # @param number [Integer] The number of items to skip over
+    # @return [List]
     def drop(number)
       Stream.new do
         list = self
@@ -252,6 +295,11 @@ module Hamster
       end
     end
 
+    # Return a lazy list with all items from this `List`, followed by all items from
+    # `other`.
+    #
+    # @param other [List] The list to add onto the end of this one
+    # @return [List]
     def append(other)
       Stream.new do
         next other if empty?
@@ -262,6 +310,8 @@ module Hamster
     def_delegator :self, :append, :cat
     def_delegator :self, :append, :+
 
+    # Return a `List` with the same items, but in reverse order.
+    # @return [List]
     def reverse
       Stream.new { reduce(EmptyList) { |list, item| list.cons(item) } }
     end
@@ -311,6 +361,8 @@ module Hamster
       span { |item| !yield(item) }
     end
 
+    # Return an empty `List`.
+    # @return [List]
     def clear
       EmptyList
     end
@@ -355,6 +407,8 @@ module Hamster
       Stream.new { Sequence.new(head, tail.init) }
     end
 
+    # Return the last item in this list.
+    # @return [Object]
     def last
       list = self
       list = list.tail until list.tail.empty?
@@ -500,6 +554,8 @@ module Hamster
       end
     end
 
+    # Return a randomly chosen element from this list.
+    # @return [Object]
     def sample
       at(rand(size))
     end
@@ -517,6 +573,10 @@ module Hamster
       end
     end
 
+    # Return a lazy list with all elements equal to `obj` removed. `#==` is used
+    # for testing equality.
+    # @param obj [Object] The object to remove.
+    # @return [List]
     def delete(obj)
       list = self
       list = list.tail while list.head == obj && !list.empty?
@@ -524,6 +584,11 @@ module Hamster
       Stream.new { Sequence.new(list.head, list.tail.delete(obj)) }
     end
 
+    # Return a lazy list containing the same items, minus the one at `index`.
+    # If `index` is negative, it counts back from the end of the list.
+    #
+    # @param index [Integer] The index of the item to remove
+    # @return [List]
     def delete_at(index)
       if index == 0
         tail
@@ -626,7 +691,10 @@ module Hamster
       [partitioner.left, partitioner.right].freeze
     end
 
-    # Value-and-type equality
+    # Return true if `other` has the same type and contents as this `Hash`.
+    #
+    # @param other [Object] The collection to compare with
+    # @return [Boolean]
     def eql?(other)
       list = self
       loop do
@@ -640,6 +708,8 @@ module Hamster
       end
     end
 
+    # See `Object#hash`
+    # @return [Integer]
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
@@ -653,6 +723,11 @@ module Hamster
       self
     end
 
+    # Return the contents of this `List` as a programmer-readable `String`. If all the
+    # items in the list are serializable as Ruby literal strings, the returned string can
+    # be passed to `eval` to reconstitute an equivalent `List`.
+    #
+    # @return [String]
     def inspect
       result = "Hamster::List["
       each_with_index { |obj, i| result << ', ' if i > 0; result << obj.inspect }
