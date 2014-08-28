@@ -12,32 +12,32 @@ module Hamster
   class << self
     extend Forwardable
 
-    # Create a list containing the given items
+    # Create a list containing the given items.
     #
     # @example
     #   list = Hamster.list(:a, :b, :c)
     #   # => [:a, :b, :c]
     #
-    # @return [Hamster::List]
+    # @return [List]
     def list(*items)
       items.to_list
     end
 
-    # Create a lazy, infinite list
+    # Create a lazy, infinite list.
     #
-    # The given block is repeatedly called to yield the elements of the list.
+    # The given block is called as necessary to return successive elements of the list.
     #
     # @example
     #   Hamster.stream { :hello }.take(3)
     #   # => [:hello, :hello, :hello]
     #
-    # @return [Hamster::List]
+    # @return [List]
     def stream(&block)
       return EmptyList unless block_given?
       Stream.new { Sequence.new(yield, stream(&block)) }
     end
 
-    # Construct a list of consecutive integers
+    # Construct a list of consecutive integers.
     #
     # @example
     #   Hamster.interval(5,9)
@@ -45,7 +45,7 @@ module Hamster
     #
     # @param from [Integer] Start value, inclusive
     # @param to [Integer] End value, inclusive
-    # @return [Hamster::List]
+    # @return [List]
     def interval(from, to)
       return EmptyList if from > to
       interval_exclusive(from, to.next)
@@ -58,6 +58,7 @@ module Hamster
     #   Hamster.repeat(:chunky).take(4)
     #   => [:chunky, :chunky, :chunky, :chunky]
     #
+    # @return [List]
     def repeat(item)
       Stream.new { Sequence.new(item, repeat(item)) }
     end
@@ -68,25 +69,27 @@ module Hamster
     #   Hamster.replicate(3).(:hamster)
     #   #=> [:hamster, :hamster, :hamster]
     #
+    # @return [List]
     def replicate(number, item)
       repeat(item).take(number)
     end
 
-    # Create an infinite list where each item is based on the previous one
+    # Create an infinite list where each item is derived from the previous one,
+    # using the provided block
     #
     # @example
-    #   Hamster.iterate(0) {|i| i.next}.take(5)
+    #   Hamster.iterate(0) {|i| i.next }.take(5)
     #   # => [0, 1, 2, 3, 4]
     #
     # @param item [Object] Starting value
     # @yieldparam [Object] The previous value
     # @yieldreturn [Object] The next value
-    #
+    # @return [List]
     def iterate(item, &block)
       Stream.new { Sequence.new(item, iterate(yield(item), &block)) }
     end
 
-    # Turn an enumerator into a Hamster list
+    # Turn an Enumerator into a `Hamster::List`.
     #
     # The result is a lazy collection where the values are memoized as they are
     # generated.
@@ -96,7 +99,7 @@ module Hamster
     #   Hamster.enumerate(to_enum(:rg)).take(10)
     #
     # @param enum [Enumerator] The object to iterate over
-    # @return [Stream]
+    # @return [List]
     def enumerate(enum)
       Stream.new do
         begin
@@ -115,18 +118,15 @@ module Hamster
     end
   end
 
-  # A +Hamster::List+ can be constructed with {Hamster.list Hamster.list}. It
-  # consists of a +head+ (the first element) and a +tail+, containing the rest
-  # of the list.
+  # A `List` can be constructed with {Hamster.list Hamster.list} or {List.[] List[]}.
+  # It consists of a *head* (the first element) and a *tail* (which itself is also
+  # a `List`, containing all the remaining elements).
   #
   # This is a singly linked list. Prepending to the list with {List#cons} runs
   # in constant time. Traversing the list from front to back is efficient,
   # however, indexed access runs in linear time because the list needs to be
   # traversed to find the element.
   #
-  # In practice lists are constructed of a combination of {Sequence}, providing
-  # the basic blocks that are linked, {Stream} for providing laziness, and
-  # {EmptyList} as a terminator.
   module List
     extend Forwardable
     include Enumerable
