@@ -453,5 +453,9 @@ module Hamster
     end
   end
 
+  # The canonical empty `Set`. Returned by `Hamster.set` and `Set[]` when
+  # invoked with no arguments; also returned by `Set.empty`. Prefer using this
+  # one rather than creating many empty sets using `Set.new`.
+  #
   EmptySet = Hamster::Set.empty
 end

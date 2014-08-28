@@ -1052,5 +1052,9 @@ module Hamster
     end
   end
 
+  # The canonical empty `Vector`. Returned by `Hamster.vector` and `Vector[]` when
+  # invoked with no arguments; also returned by `Vector.empty`. Prefer using this
+  # one rather than creating many empty vectors using `Vector.new`.
+  #
   EmptyVector = Hamster::Vector.empty
 end

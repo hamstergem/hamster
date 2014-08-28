@@ -205,5 +205,9 @@ module Hamster
     end
   end
 
+  # The canonical empty `Queue`. Returned by `Hamster.queue` and `Queue[]` when
+  # invoked with no arguments; also returned by `Queue.empty`. Prefer to use this
+  # one rather than creating many empty queues using `Queue.new`.
+  #
   EmptyQueue = Hamster::Queue.empty
 end

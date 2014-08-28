@@ -849,5 +849,9 @@ module Hamster
     end.freeze
   end
 
+  # The canonical empty `SortedSet`. Returned by `Hamster.sorted_set` and `SortedSet[]`
+  # when invoked with no arguments; also returned by `SortedSet.empty`. Prefer using
+  # this one rather than creating many empty sorted sets using `SortedSet.new`.
+  #
   EmptySortedSet = Hamster::SortedSet.empty
 end

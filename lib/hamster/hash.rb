@@ -618,5 +618,9 @@ module Hamster
     end
   end
 
+  # The canonical empty `Hash`. Returned by `Hamster.hash` and `Hash[]` when
+  # invoked with no arguments; also returned by `Hash.empty`. Prefer using this
+  # one rather than creating many empty hashes using `Hash.new`.
+  #
   EmptyHash = Hamster::Hash.empty
 end
