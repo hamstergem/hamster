@@ -11,6 +11,12 @@ describe Hamster::Hash do
       it "converts a non-empty Hamster::Hash to a Hash with the same keys and values" do
         Hamster.hash(a: 1, b: 2).send(method).should eql({a: 1, b: 2})
       end
+
+      it "doesn't modify the receiver" do
+        hash = Hamster.hash(a: 1, b: 2)
+        hash.send(method)
+        hash.should eql(Hamster.hash(a: 1, b: 2))
+      end
     end
   end
 end
