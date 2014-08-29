@@ -1,33 +1,33 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
+describe Hamster::Deque do
   describe "modification (using #push, #pop, #shift, and #unshift)" do
     it "works when applied in many random combinations" do
       array = [1,2,3]
-      queue = Hamster::Queue.new(array)
+      deque = Hamster::Deque.new(array)
       1000.times do
         case [:push, :pop, :shift, :unshift].sample
         when :push
           value = rand(10000)
           array.push(value)
-          queue = queue.push(value)
+          deque = deque.push(value)
         when :pop
           array.pop
-          queue = queue.pop
+          deque = deque.pop
         when :shift
           array.shift
-          queue = queue.shift
+          deque = deque.shift
         when :unshift
           value = rand(10000)
           array.unshift(value)
-          queue = queue.unshift(value)
+          deque = deque.unshift(value)
         end
 
-        queue.to_a.should eql(array)
-        queue.size.should == array.size
-        queue.first.should == array.first
-        queue.last.should == array.last
+        deque.to_a.should eql(array)
+        deque.size.should == array.size
+        deque.first.should == array.first
+        deque.last.should == array.last
       end
     end
   end

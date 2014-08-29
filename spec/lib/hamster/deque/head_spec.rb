@@ -1,7 +1,7 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
+describe Hamster::Deque do
   [:head, :first, :front].each do |method|
     describe "##{method}" do
       [
@@ -11,7 +11,7 @@ describe Hamster::Queue do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.queue(*values).send(method).should == expected
+            Hamster.deque(*values).send(method).should == expected
           end
         end
       end

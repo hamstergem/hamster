@@ -1,7 +1,7 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
+describe Hamster::Deque do
   describe "#clear" do
     [
       [],
@@ -9,15 +9,15 @@ describe Hamster::Queue do
       %w[A B C],
     ].each do |values|
       context "on #{values}" do
-        let(:queue) { Hamster.queue(*values) }
+        let(:deque) { Hamster.deque(*values) }
 
         it "preserves the original" do
-          queue.clear
-          queue.should eql(Hamster.queue(*values))
+          deque.clear
+          deque.should eql(Hamster.deque(*values))
         end
 
-        it "returns an empty queue" do
-          queue.clear.should equal(Hamster.queue)
+        it "returns an empty deque" do
+          deque.clear.should equal(Hamster.deque)
         end
       end
     end
@@ -25,7 +25,7 @@ describe Hamster::Queue do
 
   context "from a subclass" do
     it "returns an instance of the subclass" do
-      subclass = Class.new(Hamster::Queue)
+      subclass = Class.new(Hamster::Deque)
       instance = subclass.new([1,2])
       instance.clear.should be_empty
       instance.clear.class.should be(subclass)

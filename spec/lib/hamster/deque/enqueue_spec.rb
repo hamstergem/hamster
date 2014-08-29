@@ -1,7 +1,7 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
+describe Hamster::Deque do
   [:enqueue, :<<, :add, :conj, :conjoin, :push].each do |method|
     describe "##{method}" do
       [
@@ -11,15 +11,15 @@ describe Hamster::Queue do
         [%w[A B C], "D", %w[A B C D]],
       ].each do |values, new_value, expected|
         describe "on #{values.inspect} with #{new_value.inspect}" do
-          let(:queue) { Hamster.queue(*values) }
+          let(:deque) { Hamster.deque(*values) }
 
           it "preserves the original" do
-            queue.send(method, new_value)
-            queue.should eql(Hamster.queue(*values))
+            deque.send(method, new_value)
+            deque.should eql(Hamster.deque(*values))
           end
 
           it "returns #{expected.inspect}" do
-            queue.send(method, new_value).should eql(Hamster.queue(*expected))
+            deque.send(method, new_value).should eql(Hamster.deque(*expected))
           end
         end
       end

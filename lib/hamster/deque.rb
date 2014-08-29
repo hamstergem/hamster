@@ -3,64 +3,64 @@ require "hamster/immutable"
 require "hamster/list"
 
 module Hamster
-  def self.queue(*items)
-    items.empty? ? EmptyQueue : Queue.new(items)
+  def self.deque(*items)
+    items.empty? ? EmptyDeque : Deque.new(items)
   end
 
-  # A `Queue` is an ordered, sequential collection of objects, which allows elements to
+  # A `Deque` is an ordered, sequential collection of objects, which allows elements to
   # be efficiently added and removed at the front and end of the sequence. Retrieving
   # the elements at the front and end is also efficient.
   #
-  # A `Queue` differs from a {Vector} in that vectors allow indexed access to any
-  # element in the collection. `Queue`s only allow access to the first and last
-  # element. But adding and removing from the ends of a `Queue` is faster than
+  # A `Deque` differs from a {Vector} in that vectors allow indexed access to any
+  # element in the collection. `Deque`s only allow access to the first and last
+  # element. But adding and removing from the ends of a `Deque` is faster than
   # adding and removing from the ends of a {Vector}.
   #
-  # To create a new `Queue`:
+  # To create a new `Deque`:
   #
-  #     Hamster.queue('a', 'b', 'c')
-  #     Hamster::Queue.new([:first, :second, :third])
-  #     Hamster::Queue[1, 2, 3, 4, 5]
+  #     Hamster.deque('a', 'b', 'c')
+  #     Hamster::Deque.new([:first, :second, :third])
+  #     Hamster::Deque[1, 2, 3, 4, 5]
   #
-  # Or you can start with an empty queue and build it up:
+  # Or you can start with an empty deque and build it up:
   #
-  #     Hamster::Queue.empty.push('b').push('c').unshift('a')
+  #     Hamster::Deque.empty.push('b').push('c').unshift('a')
   #
-  # Like all Hamster collections, `Queue` is immutable. The 4 basic operations which
-  # "modify" queues ({#push}, {#pop}, {#shift}, and {#unshift}) all return a new
+  # Like all Hamster collections, `Deque` is immutable. The 4 basic operations which
+  # "modify" deques ({#push}, {#pop}, {#shift}, and {#unshift}) all return a new
   # collection and leave the existing one unchanged.
   #
   # @example
-  #   queue = Hamster::Queue.empty                 # => Hamster::Queue[]
-  #   queue = queue.push('a').push('b').push('c')  # => Hamster::Queue['a', 'b', 'c']
-  #   queue.first                                  # => 'a'
-  #   queue.last                                   # => 'c'
-  #   queue = queue.shift                          # => Hamster::Queue['b', 'c']
+  #   deque = Hamster::Deque.empty                 # => Hamster::Deque[]
+  #   deque = deque.push('a').push('b').push('c')  # => Hamster::Deque['a', 'b', 'c']
+  #   deque.first                                  # => 'a'
+  #   deque.last                                   # => 'c'
+  #   deque = deque.shift                          # => Hamster::Deque['b', 'c']
   #
-  class Queue
+  class Deque
     extend Forwardable
     include Immutable
 
     class << self
-      # Create a new `Queue` populated with the given items.
-      # @return [Queue]
+      # Create a new `Deque` populated with the given items.
+      # @return [Deque]
       def [](*items)
         items.empty? ? empty : new(items)
       end
 
-      # Return an empty `Queue`. If used on a subclass, returns an empty instance
+      # Return an empty `Deque`. If used on a subclass, returns an empty instance
       # of that class.
       #
-      # @return [Queue]
+      # @return [Deque]
       def empty
         @empty ||= self.new
       end
 
-      # "Raw" allocation of a new `Queue`. Used internally to create a new
+      # "Raw" allocation of a new `Deque`. Used internally to create a new
       # instance quickly after consing onto the front/rear lists or taking their
       # tails.
       #
-      # @return [Queue]
+      # @return [Deque]
       # @private
       def alloc(front, rear)
         result = allocate
@@ -75,40 +75,40 @@ module Hamster
       @rear  = EmptyList
     end
 
-    # Return `true` if this `Queue` contains no items.
+    # Return `true` if this `Deque` contains no items.
     # @return [Boolean]
     def empty?
       @front.empty? && @rear.empty?
     end
     def_delegator :self, :empty?, :null?
 
-    # Return the number of items in this `Queue`.
+    # Return the number of items in this `Deque`.
     # @return [Integer]
     def size
       @front.size + @rear.size
     end
     def_delegator :self, :size, :length
 
-    # Return the first item in the `Queue`. If the queue is empty, return `nil`.
+    # Return the first item in the `Deque`. If the deque is empty, return `nil`.
     # @return [Object]
     def first
       return @front.head unless @front.empty?
-      @rear.last
+      @rear.last # memoize?
     end
     def_delegator :self, :first, :head
     def_delegator :self, :first, :front
 
-    # Return the last item in the `Queue`. If the queue is empty, return `nil`.
+    # Return the last item in the `Deque`. If the deque is empty, return `nil`.
     # @return [Object]
     def last
       return @rear.head unless @rear.empty?
-      @front.last
+      @front.last # memoize?
     end
     def_delegator :self, :last, :peek
 
-    # Return a new `Queue` with `item` added at the end.
+    # Return a new `Deque` with `item` added at the end.
     # @param item [Object] The item to add
-    # @return [Queue]
+    # @return [Deque]
     def push(item)
       self.class.alloc(@front, @rear.cons(item))
     end
@@ -118,33 +118,33 @@ module Hamster
     def_delegator :self, :push, :conj
     def_delegator :self, :push, :conjoin
 
-    # Return a new `Queue` with the last item removed.
-    # @return [Queue]
+    # Return a new `Deque` with the last item removed.
+    # @return [Deque]
     def pop
       front, rear = @front, @rear
 
       if rear.empty?
-        return EmptyQueue if front.empty?
+        return EmptyDeque if front.empty?
         front, rear = EmptyList, front.reverse
       end
 
       self.class.alloc(front, rear.tail)
     end
 
-    # Return a new `Queue` with `item` added at the front.
+    # Return a new `Deque` with `item` added at the front.
     # @param item [Object] The item to add
-    # @return [Queue]
+    # @return [Deque]
     def unshift(item)
       self.class.alloc(@front.cons(item), @rear)
     end
 
-    # Return a new `Queue` with the first item removed.
-    # @return [Queue]
+    # Return a new `Deque` with the first item removed.
+    # @return [Deque]
     def shift
       front, rear = @front, @rear
 
       if front.empty?
-        return EmptyQueue if rear.empty?
+        return EmptyDeque if rear.empty?
         front, rear = rear.reverse, EmptyList
       end
 
@@ -153,15 +153,15 @@ module Hamster
     def_delegator :self, :shift, :dequeue
     def_delegator :self, :shift, :tail
 
-    # Return an empty `Queue` instance, of the same class as this one. Useful if you
-    # have multiple subclasses of `Queue` and want to treat them polymorphically.
+    # Return an empty `Deque` instance, of the same class as this one. Useful if you
+    # have multiple subclasses of `Deque` and want to treat them polymorphically.
     #
-    # @return [Queue]
+    # @return [Deque]
     def clear
       self.class.empty
     end
 
-    # Return true if `other` has the same type and contents as this `Queue`.
+    # Return true if `other` has the same type and contents as this `Deque`.
     #
     # @param other [Object] The collection to compare with
     # @return [Boolean]
@@ -184,9 +184,9 @@ module Hamster
       @front.append(@rear.reverse)
     end
 
-    # Return the contents of this `Queue` as a programmer-readable `String`. If all the
-    # keys and values are serializable as Ruby literal strings, the returned string can
-    # be passed to `eval` to reconstitute an equivalent `Queue`.
+    # Return the contents of this `Deque` as a programmer-readable `String`. If all the
+    # items in the deque are serializable as Ruby literal strings, the returned string can
+    # be passed to `eval` to reconstitute an equivalent `Deque`.
     #
     # @return [String]
     def inspect
@@ -205,9 +205,9 @@ module Hamster
     end
   end
 
-  # The canonical empty `Queue`. Returned by `Hamster.queue` and `Queue[]` when
-  # invoked with no arguments; also returned by `Queue.empty`. Prefer to use this
-  # one rather than creating many empty queues using `Queue.new`.
+  # The canonical empty `Deque`. Returned by `Hamster.deque` and `Deque[]` when
+  # invoked with no arguments; also returned by `Deque.empty`. Prefer using this
+  # one rather than creating many empty deques using `Deque.new`.
   #
-  EmptyQueue = Hamster::Queue.empty
+  EmptyDeque = Hamster::Deque.empty
 end

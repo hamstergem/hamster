@@ -1,7 +1,7 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
+describe Hamster::Deque do
   describe "#pop" do
     [
       [[], []],
@@ -9,15 +9,15 @@ describe Hamster::Queue do
       [%w[A B C], %w[A B]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:queue) { Hamster.queue(*values) }
+        let(:deque) { Hamster.deque(*values) }
 
         it "preserves the original" do
-          queue.pop
-          queue.should eql(Hamster.queue(*values))
+          deque.pop
+          deque.should eql(Hamster.deque(*values))
         end
 
         it "returns #{expected.inspect}" do
-          queue.pop.should eql(Hamster.queue(*expected))
+          deque.pop.should eql(Hamster.deque(*expected))
         end
       end
     end

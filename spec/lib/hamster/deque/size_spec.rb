@@ -1,17 +1,17 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
-  [:last, :peek].each do |method|
+describe Hamster::Deque do
+  [:size, :length].each do |method|
     describe "##{method}" do
       [
-        [[], nil],
-        [["A"], "A"],
-        [%w[A B C], "C"],
+        [[], 0],
+        [["A"], 1],
+        [%w[A B C], 3],
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.queue(*values).send(method).should eql(expected)
+            Hamster.deque(*values).send(method).should == expected
           end
         end
       end

@@ -1,14 +1,14 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
-  let(:queue) { Hamster.queue("A", "B", "C", "D") }
+describe Hamster::Deque do
+  let(:deque) { Hamster.deque("A", "B", "C", "D") }
 
   describe "#to_ary" do
     context "enables implicit conversion to" do
       it "block parameters" do
         def func(&block)
-          yield(queue)
+          yield(deque)
         end
 
         func do |a, b, *c|
@@ -24,11 +24,11 @@ describe Hamster::Queue do
           expect(b).to eq("B")
           expect(c).to eq(%w[C D])
         end
-        func(*queue)
+        func(*deque)
       end
 
       it "works with splat" do
-        array = *queue
+        array = *deque
         expect(array).to eq(%w[A B C D])
       end
     end

@@ -1,7 +1,7 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
+describe Hamster::Deque do
   [:dup, :clone].each do |method|
     [
       [],
@@ -9,10 +9,10 @@ describe Hamster::Queue do
       %w[A B C],
     ].each do |values|
       context "on #{values.inspect}" do
-        let(:queue) { Hamster.queue(*values) }
+        let(:deque) { Hamster.deque(*values) }
 
         it "returns self" do
-          queue.send(method).should equal(queue)
+          deque.send(method).should equal(deque)
         end
       end
     end

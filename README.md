@@ -10,7 +10,7 @@ Hamster
 Efficient, immutable, and thread-safe collection classes for Ruby.
 
 Hamster provides 7 [Persistent Data
-Structures][PDS]: `Hash`, `Vector`, `Set`, `SortedSet`, `List`, `Stack`, and `Queue` (which is actually a [Deque][DQ]).
+Structures][PDS]: `Hash`, `Vector`, `Set`, `SortedSet`, `List`, `Stack`, and [`Deque`][DQ].
 
 Hamster collections are **immutable**. Whenever you modify a Hamster
 collection, the original is preserved and a modified copy is returned. This

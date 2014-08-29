@@ -1,7 +1,7 @@
 require "spec_helper"
-require "hamster/queue"
+require "hamster/deque"
 
-describe Hamster::Queue do
+describe Hamster::Deque do
   [:to_a, :entries].each do |method|
     describe "##{method}" do
       [
@@ -11,11 +11,11 @@ describe Hamster::Queue do
       ].each do |values|
         context "on #{values.inspect}" do
           it "returns #{values.inspect}" do
-            Hamster.queue(*values).send(method).should == values
+            Hamster.deque(*values).send(method).should == values
           end
 
           it "returns a mutable array" do
-            result = Hamster.queue(*values).send(method)
+            result = Hamster.deque(*values).send(method)
             expect(result.last).to_not eq("The End")
             result << "The End"
             result.last.should == "The End"
