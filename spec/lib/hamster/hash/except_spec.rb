@@ -9,11 +9,21 @@ describe Hamster::Hash do
       it "returns a Hash without those values" do
         hash.except("B", nil).should eql(Hamster.hash("A" => "aye", "C" => "see"))
       end
+
+      it "doesn't change the original Hash" do
+        hash.except("B", nil)
+        hash.should eql(Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
+      end
     end
 
     context "with keys that the Hash doesn't have" do
       it "returns a Hash without the values that it had keys for" do
         hash.except("B", "A", 3).should eql(Hamster.hash("C" => "see", nil => "NIL"))
+      end
+
+      it "doesn't change the original Hash" do
+        hash.except("B", "A", 3)
+        hash.should eql(Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
       end
     end
 
@@ -27,6 +37,7 @@ describe Hamster::Hash do
         to_remove.each { |key| result.key?(key).should == false }
         (keys.sample(100) - to_remove).each { |key| result.key?(key).should == true }
       end
+      original.should eql(Hamster::Hash.new(keys.zip(2..1001))) # shouldn't have changed
     end
   end
 end
