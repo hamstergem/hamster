@@ -51,6 +51,7 @@ describe Hamster::Hash do
           result.each_key { |k| k.should <= threshold }
           (threshold+1).upto(1000) { |k| result.key?(k).should == false }
         end
+        original.should eql(Hamster::Hash.new(keys.zip(2..1001))) # shouldn't have changed
       end
     end
   end
