@@ -386,7 +386,7 @@ module Hamster
     def_delegator :self, :group_by, :group
     def_delegator :self, :group_by, :classify
 
-    # Return a randomly chosen item from this `Set`. If it is empty, return `nil`.
+    # Return a randomly chosen item from this `Set`. If the set is empty, return `nil`.
     #
     # @return [Object]
     def sample
