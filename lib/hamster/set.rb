@@ -417,14 +417,13 @@ module Hamster
     def_delegator :self, :eql?, :==
 
     # See `Object#hash`.
-    #
     # @return [Integer]
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
     undef :"<=>" # Sets are not ordered, so Enumerable#<=> will give a meaningless result
-    undef :each_index # Set members cannot be accessed by 'index', so #each_index is not very meaningful
+    undef :each_index # Set members cannot be accessed by 'index', so #each_index is not meaningful
 
     def_delegator :self, :dup, :uniq
     def_delegator :self, :dup, :nub
