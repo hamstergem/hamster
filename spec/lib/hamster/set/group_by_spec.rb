@@ -10,23 +10,29 @@ describe Hamster::Set do
           [[1], [true => Hamster.set(1)]],
           [[1, 2, 3, 4], [true => Hamster.set(3, 1), false => Hamster.set(4, 2)]],
         ].each do |values, expected|
-          describe "on #{values.inspect}" do
+          context "on #{values.inspect}" do
+            let(:set) { Hamster.set(*values) }
+
             it "returns #{expected.inspect}" do
-              Hamster.set(*values).send(method, &:odd?).should eql(Hamster.hash(*expected))
+              set.send(method, &:odd?).should eql(Hamster.hash(*expected))
+              set.should eql(Hamster::Set.new(values)) # make sure it hasn't changed
             end
           end
         end
       end
 
-      describe "without a block" do
+      context "without a block" do
         [
           [[], []],
           [[1], [1 => Hamster.set(1)]],
           [[1, 2, 3, 4], [1 => Hamster.set(1), 2 => Hamster.set(2), 3 => Hamster.set(3), 4 => Hamster.set(4)]],
         ].each do |values, expected|
-          describe "on #{values.inspect}" do
+          context "on #{values.inspect}" do
+            let(:set) { Hamster.set(*values) }
+
             it "returns #{expected.inspect}" do
-              Hamster.set(*values).group_by.should eql(Hamster.hash(*expected))
+              set.group_by.should eql(Hamster.hash(*expected))
+              set.should eql(Hamster::Set.new(values)) # make sure it hasn't changed
             end
           end
         end
