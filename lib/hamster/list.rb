@@ -330,6 +330,30 @@ module Hamster
       end
     end
 
+    # Gather the first element of each nested list into a new `List`, then the second
+    # element of each nested list, then the third, and so on. In other words, if each
+    # nested list is a "row", return a lazy list of "columns" instead.
+    #
+    # Although the returned list is lazy, each returned nested list (each "column")
+    # is strict. So while each nested list in the input can be infinite, the parent
+    # `List` must not be, or trying to realize the first element in the output will
+    # cause an infinite loop.
+    #
+    # @example
+    #   # First let's create some infinite lists
+    #   list1 = Hamster.iterate(1, &:next)
+    #   list2 = Hamster.iterate(2) { |n| n * 2 }
+    #   list3 = Hamster.iterate(3) { |n| n * 3 }
+    #
+    #   # Now we transpose our 3 infinite "rows" into an infinite series of 3-element "columns"
+    #   Hamster.list(list1, list2, list3).transpose.take(4)
+    #   # => Hamster::List[
+    #   #      Hamster::List[1, 2, 3],
+    #   #      Hamster::List[2, 4, 9],
+    #   #      Hamster::List[3, 8, 27],
+    #   #      Hamster::List[4, 16, 81]]
+    #
+    # @return [List]
     def transpose
       return EmptyList if empty?
       Stream.new do
@@ -340,6 +364,10 @@ module Hamster
       end
     end
 
+    # Concatenate an infinite series of copies of this `List` together (into a
+    # new lazy list). Or, if empty, just return an empty list.
+    #
+    # @return [List]
     def cycle
       Stream.new do
         next self if empty?
@@ -362,15 +390,27 @@ module Hamster
       drop(count).append(take(count))
     end
 
+    # Return 2 `List`s, one of the first `number` items, and another of all the
+    # remaining items.
+    # @param number [Integer] The index at which to split this list
+    # @return [Array]
     def split_at(number)
       [take(number), drop(number)].freeze
     end
 
+    # Return 2 `List`s, one up to (but not including) the first item for which the
+    # block returns `nil` or `false`, and another of all the remaining items.
+    #
+    # @return [Array]
     def span(&block)
       return [self, EmptyList].freeze unless block_given?
       [take_while(&block), drop_while(&block)].freeze
     end
 
+    # Return 2 `List`s, one up to (but not including) the first item for which the
+    # block returns true, and another of all the remaining items.
+    #
+    # @return [Array]
     def break(&block)
       return span unless block_given?
       span { |item| !yield(item) }
@@ -392,11 +432,23 @@ module Hamster
       Stream.new { super(&comparator).to_list }
     end
 
+    # Return a new `List` with the same items, but sorted. The sort order will be
+    # determined by mapping the items through the given block to obtain sort keys,
+    # and then sorting the keys according to their natural sort order.
+    #
+    # @return [List]
     def sort_by(&transformer)
       return sort unless block_given?
       Stream.new { super(&transformer).to_list }
     end
 
+    # Return a new `List` with `sep` inserted between each of the existing elements.
+    #
+    # @example
+    #   Hamster.list('one', 'two', 'three').intersperse(' ')
+    #   # => Hamster::List['one', ' ', 'two', ' ', 'three']
+    #
+    # @return [List]
     def intersperse(sep)
       Stream.new do
         next self if tail.empty?
@@ -404,6 +456,10 @@ module Hamster
       end
     end
 
+    # Return a lazy list with the same items, but all duplicates removed.
+    # Use `#hash` and `#eql?` to determine which items are duplicates.
+    #
+    # @return [List]
     def uniq(items = ::Set.new)
       Stream.new do
         next self if empty?
@@ -428,6 +484,8 @@ module Hamster
     end
     def_delegator :self, :union, :|
 
+    # Return a lazy list with all elements except the last one.
+    # @return [List]
     def init
       return EmptyList if tail.empty?
       Stream.new { Sequence.new(head, tail.init) }
@@ -455,11 +513,21 @@ module Hamster
       end
     end
 
-    def combination(number)
-      return Sequence.new(EmptyList) if number == 0
+    # Return a lazy list of all combinations of length `n` of items from this `List`.
+    #
+    # @example
+    #   Hamster.list(1,2,3).combination(2)
+    #   # => Hamster::List[
+    #   #      Hamster::List[1, 2],
+    #   #      Hamster::List[1, 3],
+    #   #      Hamster::List[2, 3]]
+    #
+    # @return [List]
+    def combination(n)
+      return Sequence.new(EmptyList) if n == 0
       Stream.new do
         next self if empty?
-        tail.combination(number - 1).map { |list| list.cons(head) }.append(tail.combination(number))
+        tail.combination(n - 1).map { |list| list.cons(head) }.append(tail.combination(n))
       end
     end
 
@@ -492,6 +560,11 @@ module Hamster
       end
     end
 
+    # Passes each item to the block, and gathers them into a {Hash} where the
+    # keys are return values from the block, and the values are `List`s of items
+    # for which the block returned that value.
+    #
+    # @return [Hash]
     def group_by(&block)
       group_by_with(EmptyList, &block)
     end
@@ -514,6 +587,21 @@ module Hamster
       node.head
     end
 
+    # Element reference. Return the item at a specific index, or a specified,
+    # contiguous range of items (as a new list).
+    #
+    # @overload list[index]
+    #   Return the item at `index`.
+    #   @param index [Integer] The index to retrieve.
+    # @overload list[start, length]
+    #   Return a sublist starting at index `start` and continuing for `length` elements.
+    #   @param start [Integer] The index to start retrieving items from.
+    #   @param length [Integer] The number of items to retrieve.
+    # @overload list[range]
+    #   Return a sublist specified by the given `range` of indices.
+    #   @param range [Range] The range of indices to retrieve.
+    #
+    # @return [Object]
     def [](arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
@@ -549,6 +637,10 @@ module Hamster
     end
     def_delegator :self, :[], :slice
 
+    # Pass each item successively to the block, and return a `List` of indices where
+    # the block returns true.
+    #
+    # @return [List]
     def find_indices(i = 0, &block)
       return EmptyList if empty? || !block_given?
       Stream.new do
@@ -562,15 +654,38 @@ module Hamster
       end
     end
 
+    # Return a `List` of indices where `object` is found. Use `#==` for testing equality.
+    #
+    # @param object [Object] The object to search for
+    # @return [List]
     def elem_indices(object)
       find_indices { |item| item == object }
     end
 
+    # Return a `List` of indices where the given object is found, or where the given
+    # block returns true.
+    #
+    # @overload indices(obj)
+    #   Return a `List` of indices where `obj` is found. Use `#==` for testing equality.
+    # @overload indices { |item| ... }
+    #   Pass each item successively to the block. Return a list of indices where the
+    #   block returns true.
+    #
+    # @return [List]
     def indices(object = Undefined, &block)
       return elem_indices(object) unless object.equal?(Undefined)
       find_indices(&block)
     end
 
+    # Merge all the nested lists into a single list, using the given comparator
+    # block to determine the order which items should be shifted out of the nested
+    # lists and into the output list. The comparator should take 2 parameters and
+    # return 0, 1, or -1 if the first parameter is (respectively) equal to, greater
+    # than, or less than the second parameter. Whichever nested list's `#head` is
+    # determined to be "lowest" according to the comparator will be the first in
+    # the merged `List`.
+    #
+    # @return [List]
     def merge(&comparator)
       return merge_by unless block_given?
       Stream.new do
@@ -582,6 +697,13 @@ module Hamster
       end
     end
 
+    # Merge all the nested lists into a single list, using sort keys generated
+    # by mapping the items in the nested lists through the given block to determine the
+    # order which items should be shifted out of the nested lists and into the output
+    # list. Whichever nested list's `#head` has the "lowest" sort key (according to
+    # their natural order) will be the first in the merged `List`.
+    #
+    # @return [List]
     def merge_by(&transformer)
       return merge_by { |item| item } unless block_given?
       Stream.new do
@@ -991,19 +1113,20 @@ module Hamster
     end
   end
 
-  # A list without any elements
-  #
-  # This is a singleton, since all empty lists are equivalent. It is used
-  # as a terminating element in a chain of +Sequence+ instances.
+  # A list without any elements. This is a singleton, since all empty lists are equivalent.
   #
   module EmptyList
     class << self
       include List
 
+      # There is no first item in an empty list, so return `nil`.
+      # @return [nil]
       def head
         nil
       end
 
+      # There are no subsequent elements, so return an empty list.
+      # @return [self]
       def tail
         self
       end
@@ -1012,6 +1135,8 @@ module Hamster
         true
       end
 
+      # Return the number of items in this `List`.
+      # @return [Integer]
       def size
         0
       end
