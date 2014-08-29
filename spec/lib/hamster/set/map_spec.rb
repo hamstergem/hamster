@@ -25,13 +25,9 @@ describe Hamster::Set do
         end
 
         context "with no block" do
-          before do
-            @result = set.send(method)
-          end
-
           it "returns an Enumerator" do
-            @result.class.should be(Enumerator)
-            @result.each(&:downcase).should == Hamster.set('a', 'b', 'c')
+            set.send(method).class.should be(Enumerator)
+            set.send(method).each(&:downcase).should == Hamster.set('a', 'b', 'c')
           end
         end
       end
