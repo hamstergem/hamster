@@ -8,9 +8,9 @@ describe Hamster::List do
     end
 
     [
-      [[], [EmptyList]],
-      [["A"], [EmptyList, L["A"]]],
-      [%w[A B C], [EmptyList, L["A"], L["A", "B"], L["A", "B", "C"]]],
+      [[], []],
+      [["A"], [L["A"]]],
+      [%w[A B C], [L["A"], L["A", "B"], L["A", "B", "C"]]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
         let(:list) { Hamster.list(*values) }

@@ -499,17 +499,37 @@ module Hamster
       list.head
     end
 
+    # Return a lazy list of all suffixes of this list.
+    #
+    # @example
+    #   Hamster.list(1,2,3).tails
+    #   # => Hamster::List[
+    #   #      Hamster::List[1, 2, 3],
+    #   #      Hamster::List[2, 3],
+    #   #      Hamster::List[3]]
+    #
+    # @return [List]
     def tails
       Stream.new do
-        next Sequence.new(self) if empty?
+        next self if empty?
         Sequence.new(self, tail.tails)
       end
     end
 
+    # Return a lazy list of all prefixes of this list.
+    #
+    # @example
+    #   Hamster.list(1,2,3).inits
+    #   # => Hamster::List[
+    #   #      Hamster::List[1],
+    #   #      Hamster::List[1, 2],
+    #   #      Hamster::List[1, 2, 3]]
+    #
+    # @return [List]
     def inits
       Stream.new do
-        next Sequence.new(self) if empty?
-        Sequence.new(EmptyList, tail.inits.map { |list| list.cons(head) })
+        next self if empty?
+        Sequence.new(Hamster.list(head), tail.inits.map { |list| list.cons(head) })
       end
     end
 
