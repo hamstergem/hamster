@@ -8,7 +8,7 @@ describe Hamster::Hash do
       ["A" => "aye"],
       ["A" => "aye", "B" => "bee", "C" => "see"],
     ].each do |values|
-      describe "on #{values}" do
+      context "on #{values}" do
         let(:original) { Hamster.hash(*values) }
         let(:result)   { original.clear }
 
