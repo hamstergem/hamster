@@ -9,9 +9,14 @@ describe Hamster::Set do
         let(:set) { Hamster::Set.new(values) }
         let(:result) { set.send(method) }
 
-        describe "on 'a'..'#{letter}'" do
+        context "on 'a'..'#{letter}'" do
           it "returns an equivalent array" do
             result.sort.should == values.sort
+          end
+
+          it "doesn't change the original Set" do
+            result
+            set.should eql(Hamster.set(*values))
           end
 
           it "returns a mutable array" do
