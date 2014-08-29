@@ -62,6 +62,7 @@ module Hamster
         hash.put(key, group.conj(item))
       end
     end
+    protected :group_by_with
 
     def group_by(&block)
       group_by_with(self.class.empty, &block)
