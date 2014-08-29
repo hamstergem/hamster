@@ -67,6 +67,7 @@ describe Hamster::Set do
           result.each { |item| item.should <= threshold }
           (threshold+1).upto(1000) { |item| result.include?(item).should == false }
         end
+        original.should eql(Hamster::Set.new(items))
       end
     end
   end
