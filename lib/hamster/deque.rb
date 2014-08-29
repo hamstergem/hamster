@@ -7,9 +7,10 @@ module Hamster
     items.empty? ? EmptyDeque : Deque.new(items)
   end
 
-  # A `Deque` is an ordered, sequential collection of objects, which allows elements to
-  # be efficiently added and removed at the front and end of the sequence. Retrieving
-  # the elements at the front and end is also efficient.
+  # A `Deque` (or double-ended queue) is an ordered, sequential collection of objects,
+  # which allows elements to be efficiently added and removed at the front and end of
+  # the sequence. Retrieving the elements at the front and end is also efficient. This
+  # makes `Deque` perfect for use as an immutable queue *or* stack.
   #
   # A `Deque` differs from a {Vector} in that vectors allow indexed access to any
   # element in the collection. `Deque`s only allow access to the first and last
