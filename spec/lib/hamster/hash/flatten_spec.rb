@@ -24,6 +24,13 @@ describe Hamster::Hash do
         hash.flatten(2).class.should be(Hamster::Vector)
         possibilities.include?(hash.flatten(10)).should == true
       end
+
+      it "doesn't modify the receiver" do
+        hash = Hamster.hash(a: 1, b: 2, c: 3)
+        hash.flatten(1)
+        hash.flatten(2)
+        hash.should eql(Hamster.hash(a: 1, b: 2, c: 3))
+      end
     end
 
     context "with array keys" do
@@ -34,6 +41,13 @@ describe Hamster::Hash do
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
       end
+
+      it "doesn't modify the receiver (or its contents)" do
+        hash = Hamster.hash([1, 2] => 3, [4, 5] => 6)
+        hash.flatten(1)
+        hash.flatten(2)
+        hash.should eql(Hamster.hash([1, 2] => 3, [4, 5] => 6))
+      end
     end
 
     context "with array values" do
@@ -43,6 +57,13 @@ describe Hamster::Hash do
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
         hash.flatten(3).class.should be(Hamster::Vector)
+      end
+
+      it "doesn't modify the receiver (or its contents)" do
+        hash = Hamster.hash(1 => [2, 3], 4 => [5, 6])
+        hash.flatten(1)
+        hash.flatten(2)
+        hash.should eql(Hamster.hash(1 => [2, 3], 4 => [5, 6]))
       end
     end
 
