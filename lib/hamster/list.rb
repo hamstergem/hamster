@@ -131,6 +131,7 @@ module Hamster
     extend Forwardable
     include Enumerable
 
+    # @private
     CADR = /^c([ad]+)r$/
 
     def_delegator :self, :head, :first
