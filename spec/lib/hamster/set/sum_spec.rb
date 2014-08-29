@@ -8,9 +8,15 @@ describe Hamster::Set do
       [[2], 2],
       [[1, 3, 5, 7, 11], 27],
     ].each do |values, expected|
-      describe "on #{values.inspect}" do
+      context "on #{values.inspect}" do
+        let(:set) { Hamster.set(*values) }
+
         it "returns #{expected.inspect}" do
-          Hamster.set(*values).sum.should == expected
+          set.sum.should == expected
+        end
+
+        it "doesn't change the original Set" do
+          set.should eql(Hamster::Set.new(values))
         end
       end
     end
