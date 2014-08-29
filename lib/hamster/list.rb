@@ -325,7 +325,7 @@ module Hamster
     # @return [List]
     def zip(others)
       Stream.new do
-        next self if empty? && other.empty?
+        next self if empty? && others.empty?
         Sequence.new(Sequence.new(head, Sequence.new(others.head)), tail.zip(others.tail))
       end
     end
