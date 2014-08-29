@@ -38,6 +38,8 @@ module Hamster
   #   deque.last                                   # => 'c'
   #   deque = deque.shift                          # => Hamster::Deque['b', 'c']
   #
+  # @see http://en.wikipedia.org/wiki/Deque "Deque" on Wikipedia
+  #
   class Deque
     extend Forwardable
     include Immutable
