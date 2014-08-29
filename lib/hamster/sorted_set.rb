@@ -324,7 +324,7 @@ module Hamster
     # return `true` if an object which compares as "equal" using this set's
     # comparator is present.
     #
-    # @param object [Object] The object to check for
+    # @param item [Object] The object to check for
     # @return [Boolean]
     def include?(item)
       @node.include?(item, @comparator)
