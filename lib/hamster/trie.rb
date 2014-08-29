@@ -214,5 +214,6 @@ module Hamster
     end
   end
 
+  # @private
   EmptyTrie = Hamster::Trie.new(0)
 end
