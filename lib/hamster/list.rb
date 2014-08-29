@@ -316,10 +316,21 @@ module Hamster
       Stream.new { reduce(EmptyList) { |list, item| list.cons(item) } }
     end
 
-    def zip(other)
+    # `others` should a `List` of `List`s. The corresponding elements from this
+    # `List` and each of `others` (that is, the elements with the same indices)
+    # will be gathered into new lists. In other words, the "rows" and "columns"
+    # will be transposed.
+    #
+    # The returned `List` is lazy, but each of its nested lists is strict. So
+    # `others` must *not* be an infinite list. However, it is fine if this list,
+    # and each of the nested lists *within* `others`, are infinite.
+    #
+    # @param others [List] A list of the lists to zip together with this one
+    # @return [List]
+    def zip(others)
       Stream.new do
         next self if empty? && other.empty?
-        Sequence.new(Sequence.new(head, Sequence.new(other.head)), tail.zip(other.tail))
+        Sequence.new(Sequence.new(head, Sequence.new(others.head)), tail.zip(others.tail))
       end
     end
 
@@ -393,6 +404,11 @@ module Hamster
     def_delegator :self, :uniq, :nub
     def_delegator :self, :uniq, :remove_duplicates
 
+    # Return a `List` with all the elements from both this list and `other`,
+    # with all duplicates removed.
+    #
+    # @param other [List] The list to merge with
+    # @return [List]
     def union(other, items = ::Set.new)
       Stream.new do
         next other.uniq(items) if empty?
@@ -451,6 +467,11 @@ module Hamster
     end
     def_delegator :self, :each_chunk, :each_slice
 
+    # Return a new `List` with all nested lists recursively "flattened out",
+    # that is, their elements inserted into the new `List` in the place where
+    # the nested list originally was.
+    #
+    # @return [List]
     def flatten
       Stream.new do
         next self if empty?
@@ -464,6 +485,12 @@ module Hamster
     end
     def_delegator :self, :group_by, :group
 
+    # Retrieve the item at `index`. Negative indices count back from the end of
+    # the list (-1 is the last item). If `index` is invalid (either too high or
+    # too low), return `nil`.
+    #
+    # @param index [Integer] The index to retrieve
+    # @return [Object]
     def at(index)
       index += size if index < 0
       return nil if index < 0
@@ -560,6 +587,11 @@ module Hamster
       at(rand(size))
     end
 
+    # Return a new `List` with the given items inserted before the item at `index`.
+    #
+    # @param index [Integer] The index where the new items should go
+    # @param items [Array] The items to add
+    # @return [List]
     def insert(index, *items)
       if index == 0
         return items.to_list.append(self)
@@ -714,11 +746,15 @@ module Hamster
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
+    # Return `self`.
+    # @return [List]
     def dup
       self
     end
     def_delegator :self, :dup, :clone
 
+    # Return `self`.
+    # @return [List]
     def to_list
       self
     end
@@ -734,16 +770,26 @@ module Hamster
       result << "]"
     end
 
+    # Allows this `List` to be printed at the `pry` console, or using `pp` (from the
+    # Ruby standard library), in a way which takes the amount of horizontal space on
+    # the screen into account, and which indents nested structures to make them easier
+    # to read.
+    #
+    # @private
     def pretty_print(pp)
       pp.group(1, "Hamster::List[", "]") do
         pp.seplist(self) { |obj| obj.pretty_print(pp) }
       end
     end
 
+    # @private
     def respond_to?(name, include_private = false)
       super || !!name.to_s.match(CADR)
     end
 
+    # Return `true` if the size of this list can be obtained in constant time (without
+    # traversing the list).
+    # @return [Integer]
     def cached_size?
       false
     end
