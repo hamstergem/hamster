@@ -347,7 +347,7 @@ module Hamster
     # index `count` is the first element of the new vector. If `count` is positive,
     # the elements will be shifted left, and those shifted past the lowest position
     # will be moved to the end. If `count` is negative, the elements will be shifted
-    # right, and those shifted past the last position will be moved to the beginning
+    # right, and those shifted past the last position will be moved to the beginning.
     #
     # @param count [Integer] The number of positions to shift items by
     # @return [Vector]
@@ -568,9 +568,9 @@ module Hamster
       self
     end
 
-    # When invoked with a block, yields all permutations of length `n` of items
-    # from the `Vector`, and then returns `self`. If no length `n` is specified,
-    # permutations of all elements will be yielded.
+    # Yields all permutations of length `n` of items from the `Vector`, and then
+    # returns `self`. If no length `n` is specified, permutations of all elements
+    # will be yielded.
     #
     # There is no guarantee about which order the permutations will be yielded in.
     #
