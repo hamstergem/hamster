@@ -351,6 +351,14 @@ module Hamster
       end
     end
 
+    # Return a new `List` with the same elements, but rotated so that the one at
+    # index `count` is the first element of the new list. If `count` is positive,
+    # the elements will be shifted left, and those shifted past the lowest position
+    # will be moved to the end. If `count` is negative, the elements will be shifted
+    # right, and those shifted past the last position will be moved to the beginning.
+    #
+    # @param count [Integer] The number of positions to shift items by
+    # @return [Vector]
     def rotate(count = 1)
       raise TypeError, "expected Integer" if not count.is_a?(Integer)
       return self if  empty? || (count % size) == 0
@@ -378,6 +386,12 @@ module Hamster
       EmptyList
     end
 
+    # Return a `List` with the same items, but sorted either in their natural order,
+    # or using an optional comparator block. The block must take 2 parameters, and
+    # return 0, 1, or -1 if the first one is equal, greater than, or less than the
+    # second (respectively).
+    #
+    # @return [List]
     def sort(&comparator)
       Stream.new { super(&comparator).to_list }
     end
@@ -453,6 +467,8 @@ module Hamster
       end
     end
 
+    # Split the items in this list in groups of `number`. Return a list of lists.
+    # @return [List]
     def chunk(number)
       Stream.new do
         next self if empty?
@@ -633,6 +649,18 @@ module Hamster
       end
     end
 
+    # Replace a range of indexes with the given object.
+    #
+    # @overload fill(obj)
+    #   Return a new `List` of the same size, with every item set to `obj`.
+    # @overload fill(obj, start)
+    #   Return a new `List` with all indexes from `start` to the end of the
+    #   list set to `obj`.
+    # @overload fill(obj, start, length)
+    #   Return a new `List` with `length` indexes, beginning from `start`,
+    #   set to `obj`.
+    #
+    # @return [List]
     def fill(obj, index = 0, length = nil)
       if index == 0
         length ||= size
@@ -653,6 +681,15 @@ module Hamster
       end
     end
 
+    # Yields all permutations of length `n` of the items in the list, and then
+    # returns `self`. If no length `n` is specified, permutations of the entire
+    # list will be yielded.
+    #
+    # There is no guarantee about which order the permutations will be yielded in.
+    #
+    # If no block is given, an `Enumerator` is returned instead.
+    #
+    # @return [self, Enumerator]
     def permutation(length = size, &block)
       return enum_for(:permutation, length) if not block_given?
       if length == 0
@@ -674,6 +711,21 @@ module Hamster
       self
     end
 
+    # Yield every non-empty sublist to the given block. (The entire `List` also
+    # counts as one sublist.)
+    #
+    # @example
+    #   Hamster.list(1, 2, 3).subsequences { |list| p list }
+    #   # prints:
+    #   # Hamster::List[1]
+    #   # Hamster::List[1, 2]
+    #   # Hamster::List[1, 2, 3]
+    #   # Hamster::List[2]
+    #   # Hamster::List[2, 3]
+    #   # Hamster::List[3]
+    #
+    # @yield [sublist] One or more contiguous elements from this list
+    # @return [self]
     def subsequences(&block)
       return enum_for(:subsequences) if not block_given?
       if not empty?
@@ -717,6 +769,10 @@ module Hamster
       end
     end
 
+    # Return 2 `List`s, the first containing all the elements for which the block
+    # evaluates to true, the second containing the rest.
+    #
+    # @return [List]
     def partition(&block)
       return enum_for(:partition) if not block_given?
       partitioner = Partitioner.new(self, block)
