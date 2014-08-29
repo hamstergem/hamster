@@ -317,14 +317,9 @@ module Hamster
       Stream.new { reduce(EmptyList) { |list, item| list.cons(item) } }
     end
 
-    # `others` should a `List` of `List`s. The corresponding elements from this
-    # `List` and each of `others` (that is, the elements with the same indices)
-    # will be gathered into new lists. In other words, the "rows" and "columns"
-    # will be transposed.
-    #
-    # The returned `List` is lazy, but each of its nested lists is strict. So
-    # `others` must *not* be an infinite list. However, it is fine if this list,
-    # and each of the nested lists *within* `others`, are infinite.
+    # Gather the corresponding elements from this `List` and `others` (that is,
+    # the elements with the same indices) into new 2-element lists. Return a
+    # lazy list of these 2-element lists.
     #
     # @param others [List] A list of the lists to zip together with this one
     # @return [List]
