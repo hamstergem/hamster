@@ -8,6 +8,7 @@ module Hamster
       end
     end
 
+    # @private
     module ClassMethods
       def new(*args)
         super.immutable!
@@ -31,6 +32,7 @@ module Hamster
       end
     end
 
+    # @private
     module MemoizeMethods
       def immutable!
         @__hamster_immutable_memory__ = Object.new
@@ -38,6 +40,7 @@ module Hamster
       end
     end
 
+    # @private
     module InstanceMethods
       def immutable!
         freeze
