@@ -214,7 +214,7 @@ module Hamster
     #   Return a subvector specified by the given `range` of indices.
     #   @param range [Range] The range of indices to retrieve.
     #
-    # @return [Vector]
+    # @return [Object]
     def [](arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
