@@ -952,6 +952,7 @@ module Hamster
     # @private
     def pretty_print(pp)
       pp.group(1, "Hamster::List[", "]") do
+        pp.breakable ''
         pp.seplist(self) { |obj| obj.pretty_print(pp) }
       end
     end
