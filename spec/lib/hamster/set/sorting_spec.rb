@@ -22,6 +22,11 @@ describe Hamster::Set do
               result.should eql(Hamster.sorted_set(*expected, &comparator))
               result.to_a.should == expected
             end
+
+            it "doesn't change the original Set" do
+              result
+              set.should eql(Hamster::Set.new(values))
+            end
           end
 
           describe "without a block" do
@@ -30,6 +35,11 @@ describe Hamster::Set do
             it "returns #{expected.sort.inspect}" do
               result.should eql(Hamster.sorted_set(*expected))
               result.to_a.should == expected.sort
+            end
+
+            it "doesn't change the original Set" do
+              result
+              set.should eql(Hamster::Set.new(values))
             end
           end
         end
