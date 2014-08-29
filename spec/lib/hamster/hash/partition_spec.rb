@@ -19,6 +19,11 @@ describe Hamster::Hash do
       partition[1].should == {"a" => 1, "c" => 3}
     end
 
+    it "doesn't modify the original Hash" do
+      partition
+      hash.should eql(Hamster.hash("a" => 1, "b" => 2, "c" => 3, "d" => 4))
+    end
+
     context "from a subclass" do
       it "should return instances of the subclass" do
         subclass  = Class.new(Hamster::Hash)
