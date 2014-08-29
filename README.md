@@ -49,7 +49,7 @@ require "hamster/set"
 require "hamster/sorted_set"
 require "hamster/list"
 require "hamster/stack"
-require "hamster/queue"
+require "hamster/deque"
 ```
 
 **Hash**
