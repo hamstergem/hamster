@@ -29,8 +29,8 @@ describe Hamster::List do
               yielded.should eql(expected)
             end
 
-            it "returns nil" do
-              list.send(method, 2) { |item| item }.should be_nil
+            it "returns self" do
+              list.send(method, 2) { |item| item }.should be(list)
             end
           end
 

@@ -561,9 +561,13 @@ module Hamster
       end
     end
 
+    # Split the items in this list in groups of `number`, and yield each group
+    # to the block (as a `List`).
+    # @return [self]
     def each_chunk(number, &block)
       return enum_for(:each_chunk, number) unless block_given?
       chunk(number).each(&block)
+      self
     end
     def_delegator :self, :each_chunk, :each_slice
 
