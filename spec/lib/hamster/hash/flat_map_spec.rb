@@ -17,6 +17,11 @@ describe Hamster::Hash do
       hash.flat_map { |k,v| Hamster.vector(k,v) }.sort.should == ['A', 'B', 'C', 'aye', 'bee', 'see']
     end
 
+    it "doesn't change the receiver" do
+      hash.flat_map { |k,v| [k,v] }
+      hash.should eql(Hamster.hash("A" => "aye", "B" => "bee", "C" => "see"))
+    end
+
     context "with no block" do
       it "returns an Enumerator" do
         hash.flat_map.class.should be(Enumerator)
