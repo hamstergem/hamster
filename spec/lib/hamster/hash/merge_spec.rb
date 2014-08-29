@@ -11,15 +11,23 @@ describe Hamster::Hash do
         [{"A" => "aye"}, {"B" => "bee"}, {"A" => "aye", "B" => "bee"}],
         [(1..300).zip(1..300), (150..450).zip(150..450), (1..450).zip(1..450)]
       ].each do |a, b, expected|
-        describe "for #{a.inspect} and #{b.inspect}" do
-          let(:result) { Hamster.hash(a).send(method, Hamster.hash(b)) }
+        context "for #{a.inspect} and #{b.inspect}" do
+          let(:hash_a) { Hamster.hash(a) }
+          let(:hash_b) { Hamster.hash(b) }
+          let(:result) { hash_a.send(method, hash_b) }
 
           it "returns #{expected.inspect} when passed a Hamster::Hash"  do
             result.should eql(Hamster.hash(expected))
           end
 
           it "returns #{expected.inspect} when passed a Ruby Hash" do
-            Hamster.hash(a).send(method, Hash[b]).should eql(Hamster.hash(expected))
+            Hamster.hash(a).send(method, ::Hash[b]).should eql(Hamster.hash(expected))
+          end
+
+          it "doesn't change the original Hashes" do
+            result
+            hash_a.should eql(Hamster.hash(a))
+            hash_b.should eql(Hamster.hash(b))
           end
         end
       end
