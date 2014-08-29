@@ -15,6 +15,13 @@ describe Hamster::Set do
       [1,2,3].each { |n| set.include?(n).should == true }
     end
 
+    it "returns a Set which doesn't change even if the initializer is mutated" do
+      array = [1,2,3]
+      set = Hamster::Set.new([1,2,3])
+      array.push('BAD')
+      set.should eql(Hamster.set(1,2,3))
+    end
+
     context "from a subclass" do
       it "returns a frozen instance of the subclass" do
         subclass = Class.new(Hamster::Set)
