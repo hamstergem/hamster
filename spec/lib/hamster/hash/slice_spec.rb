@@ -13,6 +13,11 @@ describe Hamster::Hash do
       it "returns the sliced values" do
         expect(slice).to eq(described_class.new("B" => "bee", nil => "NIL"))
       end
+
+      it "doesn't modify the original Hash" do
+        slice
+        hash.should eql(Hamster::Hash.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
+      end
     end
 
     context "with keys aren't present in the Hash" do
@@ -20,6 +25,11 @@ describe Hamster::Hash do
 
       it "returns the sliced values of the matching keys" do
         expect(slice).to eq(described_class.new("A" => "aye", "B" => "bee"))
+      end
+
+      it "doesn't modify the original Hash" do
+        slice
+        hash.should eql(Hamster::Hash.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
       end
     end
 
