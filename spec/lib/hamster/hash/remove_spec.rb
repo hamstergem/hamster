@@ -44,6 +44,8 @@ describe Hamster::Hash do
               0.upto(threshold-1) { |n| result.key?(n).should == true }
               threshold.upto(1000) { |n| result.key?(n).should == false }
             end
+            # shouldn't have changed
+            hash.should eql(Hamster::Hash.new(1000.times.collect { |n| [n, n] }))
           end
         end
       end
