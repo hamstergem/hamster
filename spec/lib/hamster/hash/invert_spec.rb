@@ -14,5 +14,10 @@ describe Hamster::Hash do
        Hamster.hash(1 => :b),
        Hamster.hash(1 => :c)].include?(Hamster.hash(a: 1, b: 1, c: 1).invert).should == true
     end
+
+    it "doesn't change the original Hash" do
+      hash.invert
+      hash.should eql(Hamster.hash(a: 3, b: 2, c: 1))
+    end
   end
 end
