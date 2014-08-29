@@ -26,6 +26,13 @@ describe Hamster::Hash do
     it "accepts an array as initializer" do
       Hamster::Hash.new([['a', 'b'], ['c', 'd']]).should eql(Hamster.hash('a' => 'b', 'c' => 'd'))
     end
+
+    it "returns a Hash which doesn't change even if initializer is mutated" do
+      rbhash = {a: 1, b: 2}
+      hash = Hamster::Hash.new(rbhash)
+      rbhash[:a] = 'BAD'
+      hash.should eql(Hamster.hash(a: 1, b: 2))
+    end
   end
 
   describe ".[]" do
