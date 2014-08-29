@@ -11,16 +11,25 @@ describe Hamster::Set do
         [%w[A B C], ["B"], ["B"]],
         [%w[A B C], %w[A C], %w[A C]],
       ].each do |a, b, expected|
-        describe "returns #{expected.inspect}" do
+        context "for #{a.inspect} and #{b.inspect}"  do
           let(:set_a) { Hamster.set(*a) }
           let(:set_b) { Hamster.set(*b) }
 
-          it "for #{a.inspect} and #{b.inspect}"  do
+          it "returns #{expected.inspect}, without changing the original Sets" do
             set_a.send(method, set_b).should eql(Hamster.set(*expected))
+            set_a.should eql(Hamster::Set.new(a))
+            set_b.should eql(Hamster::Set.new(b))
           end
+        end
 
-          it "for #{b.inspect} and #{a.inspect}"  do
+        context "for #{b.inspect} and #{a.inspect}"  do
+          let(:set_a) { Hamster.set(*a) }
+          let(:set_b) { Hamster.set(*b) }
+
+          it "returns #{expected.inspect}, without changing the original Sets" do
             set_b.send(method, set_a).should eql(Hamster.set(*expected))
+            set_a.should eql(Hamster::Set.new(a))
+            set_b.should eql(Hamster::Set.new(b))
           end
         end
       end
