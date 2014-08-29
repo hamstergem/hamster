@@ -9,12 +9,17 @@ describe Hamster::Set do
       ["A"],
       %w[A B C],
     ].each do |values|
-      describe "on #{values.inspect}" do
+      context "on #{values.inspect}" do
         let(:set) { Hamster.set(*values) }
         let(:list) { set.to_list }
 
         it "returns a list" do
           list.is_a?(Hamster::List).should == true
+        end
+
+        it "doesn't change the original Set" do
+          list
+          set.should eql(Hamster::Set.new(values))
         end
 
         describe "the returned list" do
