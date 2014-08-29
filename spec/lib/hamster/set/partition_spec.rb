@@ -13,10 +13,10 @@ describe Hamster::Set do
       [[3, 4], [3], [4]],
       [[4], [], [4]],
     ].each do |values, expected_matches, expected_remainder|
-      describe "on #{values.inspect}" do
+      context "on #{values.inspect}" do
         let(:set) { Hamster.set(*values) }
 
-        describe "with a block" do
+        context "with a block" do
           let(:result)  { set.partition(&:odd?) }
           let(:matches) { result.first }
           let(:remainder) { result.last }
