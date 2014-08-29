@@ -19,7 +19,8 @@ module Hamster
   # Like the `Set` class in Ruby's standard library, which we will call RubySet,
   # `Hamster::Set` defines equivalency of objects using `#hash` and `#eql?`. No two
   # objects with the same `#hash` code, and which are also `#eql?`, can coexist in the
-  # same `Set`. If one is added, it will replace the other.
+  # same `Set`. If one is already in the `Set`, attempts to add another one will have
+  # no effect.
   #
   # `Set`s have no natural ordering and cannot be compared using `#<=>`. However, they
   # define {#<}, {#>}, {#<=}, and {#>=} as shorthand for {#proper_subset?},
