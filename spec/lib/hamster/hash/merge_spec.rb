@@ -39,6 +39,14 @@ describe Hamster::Hash do
         end
       end
 
+      context "when called on a subclass" do
+        it "returns an instance of the subclass" do
+          subclass = Class.new(Hamster::Hash)
+          instance = subclass.new(a: 1, b: 2)
+          instance.merge(c: 3, d: 4).class.should be(subclass)
+        end
+      end
+
       it "sets any duplicate key to the value of block if passed a block" do
         h1 = Hamster.hash(:a => 2, :b => 1, :d => 5)
         h2 = Hamster.hash(:a => -2, :b => 4, :c => -3)
