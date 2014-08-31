@@ -28,6 +28,12 @@ describe Hamster::Hash do
           yielded.size.should == 2
           yielded.map { |x| x.value }.sort.should == ['a', 'b']
         end
+
+        it "yields only the key to a block expecting |key,|" do
+          keys = []
+          hash.each { |key,| keys << key }
+          keys.sort.should == ["A", "B", "C"]
+        end
       end
 
       context "with no block" do
