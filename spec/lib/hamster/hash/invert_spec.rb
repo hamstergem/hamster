@@ -19,5 +19,13 @@ describe Hamster::Hash do
       hash.invert
       hash.should eql(Hamster.hash(a: 3, b: 2, c: 1))
     end
+
+    context "from a subclass of Hash" do
+      it "returns an instance of the subclass" do
+        subclass = Class.new(Hamster::Hash)
+        instance = subclass.new(a: 1, b: 2)
+        instance.invert.class.should be(subclass)
+      end
+    end
   end
 end
