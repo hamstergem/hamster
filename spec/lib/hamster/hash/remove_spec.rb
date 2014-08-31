@@ -24,6 +24,14 @@ describe Hamster::Hash do
           it "returns a set with the matching values" do
             result.should eql(Hamster.hash("B" => "bee", "C" => "see"))
           end
+
+          it "yields entries in the same order as #each" do
+            each_pairs = []
+            remove_pairs = []
+            hash.each_pair { |k,v| each_pairs << [k,v] }
+            hash.send(method) { |k,v| remove_pairs << [k,v] }
+            each_pairs.should == remove_pairs
+          end
         end
 
         context "with no block" do

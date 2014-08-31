@@ -63,6 +63,15 @@ describe Hamster::Hash do
         r = h1.merge(h1) { |k,x,y| :x }
         r.should eql(Hamster.hash(:a => :x, :b => :x, :d => :x))
       end
+
+      it "yields key/value pairs in the same order as #each" do
+        hash = Hamster.hash(a: 1, b: 2, c: 3)
+        each_pairs = []
+        merge_pairs = []
+        hash.each { |k, v| each_pairs << [k, v] }
+        hash.merge(hash) { |k, v1, v2| merge_pairs << [k, v1] }
+        each_pairs.should == merge_pairs
+      end
     end
   end
 end
