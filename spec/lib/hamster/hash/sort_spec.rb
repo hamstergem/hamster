@@ -13,6 +13,10 @@ describe Hamster::Hash do
       array = (1..1000).map { |n| [n,n] }
       Hamster::Hash.new(array.shuffle).sort.should eql(Hamster::Vector.new(array))
     end
+
+    it "uses block as comparator to sort if passed a block" do
+      hash.sort { |a,b| b <=> a }.should eql(V[[:c, 1], [:b, 2], [:a, 3]])
+    end
   end
 
   describe "#sort_by" do
