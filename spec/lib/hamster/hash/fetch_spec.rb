@@ -49,5 +49,10 @@ describe Hamster::Hash do
     it "gives precedence to default block over default argument if passed both" do
       Hamster.hash("A" => "aye").fetch("B", 'one') { 'two' }.should == 'two'
     end
+
+    it "raises an ArgumentError when not passed one or 2 arguments" do
+      -> { Hamster.hash.fetch }.should raise_error(ArgumentError)
+      -> { Hamster.hash.fetch(1, 2, 3) }.should raise_error(ArgumentError)
+    end
   end
 end
