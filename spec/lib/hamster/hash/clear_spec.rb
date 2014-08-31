@@ -24,6 +24,13 @@ describe Hamster::Hash do
       end
     end
 
+    it "maintains the default Proc, if there is one" do
+      hash = Hamster::Hash.new(a: 1) { 1 }
+      hash.clear[:b].should == 1
+      hash.clear[:c].should == 1
+      hash.clear.default_proc.should_not be_nil
+    end
+
     context "on a subclass" do
       it "returns an empty instance of the subclass" do
         subclass = Class.new(Hamster::Hash)

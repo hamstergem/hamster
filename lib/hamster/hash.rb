@@ -500,10 +500,15 @@ module Hamster
 
     # Return an empty `Hash` instance, of the same class as this one. Useful if you
     # have multiple subclasses of `Hash` and want to treat them polymorphically.
+    # Maintains the default block, if there is one.
     #
     # @return [Hash]
     def clear
-      self.class.empty
+      if @default
+        self.class.alloc(EmptyTrie, @default)
+      else
+        self.class.empty
+      end
     end
 
     # Return true if `other` has the same type and contents as this `Hash`.
