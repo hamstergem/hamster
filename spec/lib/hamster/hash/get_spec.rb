@@ -9,7 +9,11 @@ describe Hamster::Hash do
 
         context "when the key exists" do
           it "returns the value associated with the key" do
-            hash.get("A").should == "aye"
+            hash.send(method, "A").should == "aye"
+          end
+
+          it "does not call the default block even if the key is 'nil'" do
+            Hamster.hash(nil => 'something') { fail }.send(method, nil)
           end
         end
 
@@ -21,8 +25,8 @@ describe Hamster::Hash do
             end
           end
 
-          it "returns the value associated with the key" do
-            hash.get("B").should == "bee"
+          it "returns the value from the default block" do
+            hash.send(method, "B").should == "bee"
           end
         end
       end
@@ -44,6 +48,32 @@ describe Hamster::Hash do
         it "returns nil for a non-existing key" do
           hash.send(method, "D").should be_nil
         end
+      end
+
+      it "uses #hash to look up keys" do
+        x = double('0')
+        x.should_receive(:hash).and_return(0)
+        Hamster.hash(foo: :bar).send(method, x).should be_nil
+      end
+
+      it "uses #eql? to compare keys with the same hash code" do
+        x = double('x', hash: 42)
+        x.should_not_receive(:eql?)
+
+        y = double('y', hash: 42)
+        y.should_receive(:eql?).and_return(true)
+
+        Hamster.hash(y => 1)[x].should == 1
+      end
+
+      it "does not use #eql? to compare keys with different hash codes" do
+        x = double('x', hash: 0)
+        x.should_not_receive(:eql?)
+
+        y = double('y', hash: 1)
+        y.should_not_receive(:eql?)
+
+        Hamster.hash(y => 1)[x].should be_nil
       end
     end
   end
