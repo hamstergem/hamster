@@ -19,6 +19,7 @@ describe Hamster::Hash do
          [:b, 2, :c, 3, :a, 1],
          [:c, 3, :a, 1, :b, 2],
          [:c, 3, :b, 2, :a, 1]]
+        possibilities.include?(hash.flatten).should == true
         possibilities.include?(hash.flatten(1)).should == true
         possibilities.include?(hash.flatten(2)).should == true
         hash.flatten(2).class.should be(Hamster::Vector)
@@ -33,10 +34,17 @@ describe Hamster::Hash do
       end
     end
 
+    context "on an empty Hash" do
+      it "returns an empty Vector" do
+        Hamster.hash.flatten.should eql(V[])
+      end
+    end
+
     context "with array keys" do
       it "flattens array keys into returned vector if flatten depth is sufficient" do
         hash = Hamster.hash([1, 2] => 3, [4, 5] => 6)
         [[[1, 2], 3, [4, 5], 6], [[4, 5], 6, [1, 2], 3]].include?(hash.flatten(1)).should == true
+        [[[1, 2], 3, [4, 5], 6], [[4, 5], 6, [1, 2], 3]].include?(hash.flatten).should == true
         hash.flatten(1).class.should be(Hamster::Vector)
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
@@ -54,6 +62,7 @@ describe Hamster::Hash do
       it "flattens array values into returned vector if flatten depth is sufficient" do
         hash = Hamster.hash(1 => [2, 3], 4 => [5, 6])
         [[1, [2, 3], 4, [5, 6]], [4, [5, 6], 1, [2, 3]]].include?(hash.flatten(1)).should == true
+        [[1, [2, 3], 4, [5, 6]], [4, [5, 6], 1, [2, 3]]].include?(hash.flatten).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
         hash.flatten(3).class.should be(Hamster::Vector)
@@ -70,6 +79,7 @@ describe Hamster::Hash do
     context "with vector keys" do
       it "flattens vector keys into returned vector if flatten depth is sufficient" do
         hash = Hamster.hash(V[1, 2] => 3, V[4, 5] => 6)
+        [[V[1, 2], 3, V[4, 5], 6], [V[4, 5], 6, V[1, 2], 3]].include?(hash.flatten).should == true
         [[V[1, 2], 3, V[4, 5], 6], [V[4, 5], 6, V[1, 2], 3]].include?(hash.flatten(1)).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
@@ -80,6 +90,7 @@ describe Hamster::Hash do
       it "flattens vector values into returned vector if flatten depth is sufficient" do
         hash = Hamster.hash(1 => V[2, 3], 4 => V[5, 6])
         [[1, V[2, 3], 4, V[5, 6]], [4, V[5, 6], 1, V[2, 3]]].include?(hash.flatten(1)).should == true
+        [[1, V[2, 3], 4, V[5, 6]], [4, V[5, 6], 1, V[2, 3]]].include?(hash.flatten).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(2)).should == true
         [[1, 2, 3, 4, 5, 6], [4, 5, 6, 1, 2, 3]].include?(hash.flatten(3)).should == true
       end
