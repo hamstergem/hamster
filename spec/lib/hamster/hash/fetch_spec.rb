@@ -38,8 +38,9 @@ describe Hamster::Hash do
         end
       end
 
-      describe "when the key does not exist" do
-        it "returns the default value" do
+      context "when the key does not exist" do
+        it "invokes the default block with the missing key as paramter" do
+          Hamster.hash("A" => "aye").fetch("B") { |key| key.should == "B" }
           Hamster.hash("A" => "aye").fetch("B") { "default".upcase }.should == "DEFAULT"
         end
       end

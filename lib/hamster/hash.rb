@@ -196,7 +196,7 @@ module Hamster
       if entry
         entry[1]
       elsif block_given?
-        yield
+        yield(key)
       elsif default != Undefined
         default
       else
