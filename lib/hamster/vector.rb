@@ -858,6 +858,17 @@ module Hamster
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
+    # @return [::Array]
+    # @private
+    def marshal_dump
+      to_a
+    end
+
+    # @private
+    def marshal_load(array)
+      initialize(array.freeze)
+    end
+
     private
 
     def traverse_depth_first(node, level, &block)
