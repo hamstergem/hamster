@@ -56,37 +56,28 @@ require "hamster/list"
 require "hamster/deque"
 ```
 
-**Hash**
+<h2>Hash <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Hash">API Documentation</a>)</span></h2>
 
-Constructing a Hamster `Hash` is almost as simple as a
-regular one:
+Constructing a Hamster `Hash` is almost as simple as a regular one:
 
 ``` ruby
-person = Hamster.hash(:name => "Simon", :gender => :male)
-  # => {:name => "Simon", :gender => :male}
+person = Hamster.hash(:name => "Simon", :gender => :male) # => Hamster::Hash[:name => "Simon", :gender => :male]
 ```
 
 Accessing the contents will be familiar to you:
 
 ``` ruby
-person[:name]
-  # => "Simon"
-person.get(:gender)
-  # => :male
+person[:name]                       # => "Simon"
+person.get(:gender)                 # => :male
 ```
 
-Updating the contents is a little different than you are
-used to:
+Updating the contents is a little different than you are used to:
 
 ``` ruby
-friend = person.put(:name, "James")
-  # => {:name => "James", :gender => :male}
-person
-  # => {:name => "Simon", :gender => :male}
-friend[:name]
-  # => "James"
-person[:name]
-  # => "Simon"
+friend = person.put(:name, "James") # => Hamster::Hash[:name => "James", :gender => :male]
+person                              # => Hamster::Hash[:name => "Simon", :gender => :male]
+friend[:name]                       # => "James"
+person[:name]                       # => "Simon"
 ```
 
 As you can see, updating the hash returned a copy leaving
@@ -94,68 +85,69 @@ the original intact. Similarly, deleting a key returns
 yet another copy:
 
 ``` ruby
-male = person.delete(:name)
-  # => {:gender => :male}
-person
-  # => {:name => "Simon", :gender => :male}
-male.key?(:name)
-  # => false
-person.key?(:name)
-  # => true
+male = person.delete(:name)         # => Hamster::Hash[:gender => :male]
+person                              # => Hamster::Hash[:name => "Simon", :gender => :male]
+male.key?(:name)                    # => false
+person.key?(:name)                  # => true
 ```
 
-Hamster's `Hash` doesn't provide an assignment (`Hash#[]=`)
-method. The reason for this is simple yet irritating: Ruby
-assignment methods always return the assigned value, no
-matter what the method itself returns. For example:
+Since it is immutable, Hamster's `Hash` doesn't provide an assignment
+(`Hash#[]=`) method. However, `Hash#put` can accept a block which
+transforms the value associated with a given key:
 
 ``` ruby
-counters = Hamster.hash(:odds => 0, :evens => 0)
-counters[:odds] += 1
-  # => 1
-```
-
-Because of this, the returned copy would be lost, thus
-making the construct useless. Instead `Hash#put` accepts a
-block instead of an explicit value so we can still do
-something similar:
-
-``` ruby
-counters.put(:odds) { |value| value + 1 }
-  # => {:odds => 1, :evens => 0}
+counters.put(:odds) { |value| value + 1 } # => Hamster::Hash[:odds => 1, :evens => 0]
 ```
 
 Or more succinctly:
 
 ``` ruby
-counters.put(:odds, &:next)
-  # => {:odds => 1, :evens => 0}
+counters.put(:odds, &:next)         # => {:odds => 1, :evens => 0}
 ```
 
-**List**
+This is just the beginning; see the [API documentation][HASH-DOC] for details on all `Hash` methods.
 
-Hamster `List`s have a head -- the value of the item at the
-head of the list -- and a tail -- containing the remaining
-items:
+
+<h2>Vector <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Vector">API Documentation</a>)</span></h2>
+
+A `Vector` is an integer-indexed collection much like an immutable `Array`. Examples:
+
+``` ruby
+vector = Hamster.vector(1, 2, 3, 4) # => Hamster::Vector[1, 2, 3, 4]
+vector[0]                           # => 1
+vector[-1]                          # => 4
+vector.set(1, :a)                   # => Hamster::Vector[1, :a, 3, 4]
+vector.add(:b)                      # => Hamster::Vector[1, 2, 3, 4, :b]
+vector.insert(2, :a, :b)            # => Hamster::Vector[1, 2, :a, :b, 3, 4]
+vector.delete_at(0)                 # => Hamster::Vector[2, 3, 4]
+```
+
+Other `Array`-like methods like `#select`, `#map`, `#shuffle`, `#uniq`, `#reverse`,
+`#rotate`, `#flatten`, `#sort`, `#sort_by`, `#take`, `#drop`, `#take_while`,
+`#drop_while`, `#fill`, `#product`, and `#transpose` are also supported. See the
+[API documentation][VECTOR-DOC] for details on all `Vector` methods.
+
+
+<h2>List <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/List">API Documentation</a>)</span></h2>
+
+Hamster `List`s have a "head" (the value at the front of the list),
+and a "tail" (a list of the remaining items):
 
 ``` ruby
 list = Hamster.list(1, 2, 3)
-list.head
-  # => 1
-list.tail
-  # => Hamster.list(2, 3)
+list.head                    # => 1
+list.tail                    # => Hamster.list(2, 3)
 ```
 
 To add to a list, you use `List#cons`:
 
 ``` ruby
 original = Hamster.list(1, 2, 3)
-copy = original.cons(0)
-  # => Hamster.list(0, 1, 2, 3)
+copy = original.cons(0)      # => Hamster.list(0, 1, 2, 3)
 ```
 
 Notice how modifying a list actually returns a new list.
-That's because Hamster `List` are immutable. Thankfully,
+That's because Hamster `List`s are immutable. Thankfully,
 just like other Hamster collections, they're also very
 efficient at making copies!
 
