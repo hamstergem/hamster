@@ -25,7 +25,7 @@ And lastly, Hamster lists are lazy, making it possible to (among other things)
 process "infinitely large" lists.
 
 Where possible, Hamster collections offer an interface compatible with Ruby's
-built-in `Hash`, `Array`, and `Enumerable`, to ease code migration.
+built-in `Hash`, `Array`, and `Enumerable`, to ease code migration. Also, Hamster methods accept regular Ruby collections as arguments, so code which uses `Hamster` can easily interoperate with your other Ruby code.
 
 [PDS]: http://en.wikipedia.org/wiki/Persistent_data_structure
 [HASH-DOC]: http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Hash
