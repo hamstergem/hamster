@@ -34,6 +34,12 @@ describe Hamster::Set do
             set_b.should eql(Hamster::Set.new(b))
           end
         end
+
+        context "when passed a Ruby Array" do
+          it "returns the expected Set" do
+            Hamster.set(*a).send(method, b.freeze).should eql(Hamster.set(*expected))
+          end
+        end
       end
     end
   end

@@ -27,6 +27,12 @@ describe Hamster::Set do
             result.should eql(Hamster.set(*expected))
           end
         end
+
+        context "when passed a Ruby Array" do
+          it "returns the expected Set" do
+            Hamster.set(*a).exclusion(b.freeze).should eql(Hamster.set(*expected))
+          end
+        end
       end
 
       it "works for a wide variety of inputs" do
