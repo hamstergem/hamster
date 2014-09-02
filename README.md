@@ -248,7 +248,7 @@ You also get `Enumerable#to_list` so you can slowly
 transition from built-in collection classes to Hamster.
 
 And finally, you get `IO#to_list` allowing you to lazily
-processes huge files. For example, imagine the following
+process huge files. For example, imagine the following
 code to process a 100MB file:
 
 ``` ruby
