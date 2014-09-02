@@ -6,7 +6,7 @@ describe Hamster::Set do
   let(:set) { Hamster.set(*values) }
   let(:comparison) { Hamster.set(*comparison_values) }
 
-  describe "#==" do
+  describe "#eql?" do
     let(:eql?) { set.eql?(comparison) }
 
     shared_examples "comparing non-sets" do
