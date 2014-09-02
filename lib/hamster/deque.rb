@@ -207,6 +207,17 @@ module Hamster
         pp.seplist(self.to_a) { |obj| obj.pretty_print(pp) }
       end
     end
+
+    # @return [::Array]
+    # @private
+    def marshal_dump
+      to_a
+    end
+
+    # @private
+    def marshal_load(array)
+      initialize(array)
+    end
   end
 
   # The canonical empty `Deque`. Returned by `Hamster.deque` and `Deque[]` when
