@@ -5,30 +5,30 @@ describe Hamster::Vector do
   let(:vector) { Hamster.vector([:a, 3], [:b, 2], [:c, 1]) }
 
   describe "#assoc" do
-    it "searches for an key/val pair with a given key" do
+    it "searches for a 2-element array with a given 1st item" do
       vector.assoc(:b).should == [:b, 2]
     end
 
-    it "returns nil if a matching key is not found" do
+    it "returns nil if a matching 1st item is not found" do
       vector.assoc(:d).should be_nil
     end
 
-    it "uses #== to compare keys with provided object" do
+    it "uses #== to compare 1st items with provided object" do
       vector.assoc(EqualNotEql.new).should_not be_nil
       vector.assoc(EqlNotEqual.new).should be_nil
     end
   end
 
   describe "#rassoc" do
-    it "searches for a key/val pair with a given value" do
+    it "searches for a 2-element array with a given 2nd item" do
       vector.rassoc(1).should == [:c, 1]
     end
 
-    it "returns nil if a matching value is not found" do
+    it "returns nil if a matching 2nd item is not found" do
       vector.rassoc(4).should be_nil
     end
 
-    it "uses #== to compare values with provided object" do
+    it "uses #== to compare 2nd items with provided object" do
       vector.rassoc(EqualNotEql.new).should_not be_nil
       vector.rassoc(EqlNotEqual.new).should be_nil
     end
