@@ -12,7 +12,7 @@ describe Hamster::Set do
         [%w[A B C], %w[B C D], %w[A D]],
         [%w[A B C], %w[D E F], %w[A B C D E F]],
       ].each do |a, b, expected|
-        describe "for #{a.inspect} and #{b.inspect}" do
+        context "for #{a.inspect} and #{b.inspect}" do
           let(:set_a) { Hamster.set(*a) }
           let(:set_b) { Hamster.set(*b) }
           let(:result) { set_a.send(method, set_b) }
