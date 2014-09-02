@@ -19,6 +19,13 @@ describe Hamster::Set do
       it "returns nil if only member of set is nil" do
         Hamster.set(nil).send(method).should be(nil)
       end
+
+      it "returns the first item yielded by #each" do
+        10.times do
+          set = Hamster::Set.new((rand(10)+1).times.collect { rand(10000 )})
+          set.each { |item| break item }.should be(set.send(method))
+        end
+      end
     end
   end
 end
