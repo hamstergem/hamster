@@ -314,6 +314,23 @@ example without all the syntactic, imperative, noise.
 See the API documentation for details on all [`List`][LIST-DOC] methods.
 
 
+<h2>Deque <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Deque">API Documentation</a>)</span></h2>
+
+A `Deque` (or "double-ended queue") is an ordered collection, which allows you to push and pop items from both front and back. This makes it perfect as an immutable stack *or* queue. Examples:
+
+``` ruby
+deque = Hamster.deque(1, 2, 3) # => Hamster::Deque[1, 2, 3]
+deque.first                    # 1
+deque.last                     # 3
+deque.pop                      # => Hamster::Deque[1, 2]
+deque.push(:a)                 # => Hamster::Deque[1, 2, 3, :a]
+deque.shift                    # => Hamster::Deque[2, 3]
+deque.unshift(:a)              # => Hamster::Deque[:a, 1, 2, 3]
+```
+
+Of course, you can do the same thing with a `Vector`, but a `Deque` is more efficient. See the API documentation for details on all [`Deque`][DEQUE-DOC] methods.
+
+
 Installing
 ==========
 
