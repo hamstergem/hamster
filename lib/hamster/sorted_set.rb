@@ -16,6 +16,11 @@ module Hamster
   # equivalent. If the comparator indicates that an existing item and a new item are
   # equal, any attempt to insert the new item will have no effect.
   #
+  # This means that *all* the items inserted into any one `SortedSet` must all be
+  # comparable. For example, you cannot put `String`s and `Integer`s in the same
+  # `SortedSet`. This is unlike {Set}, which can store items of any type, as long
+  # as they all support `#hash` and `#eql?`.
+  #
   # A `SortedSet` can be created in any of the following ways:
   #
   #     Hamster.sorted_set('Tom', 'Dick', 'Harry')
