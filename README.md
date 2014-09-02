@@ -128,6 +128,25 @@ Other `Array`-like methods like `#select`, `#map`, `#shuffle`, `#uniq`, `#revers
 [API documentation][VECTOR-DOC] for details on all `Vector` methods.
 
 
+<h2>Set <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Set">API Documentation</a>)</span></h2>
+
+A `Set` is an unordered collection of values with no duplicates. It is much like the Ruby standard library's `Set`, but immutable. Examples:
+
+``` ruby
+set = Hamster.set(:red, :blue, :yellow) # => Hamster::Set[:red, :blue, :yellow]
+set.include? :red                       # => true
+set.add :green                          # => Hamster::Set[:red, :blue, :yellow, :green]
+set.delete :blue                        # => Hamster::Set[:red, :yellow]
+set.superset? Hamster.set(:red, :blue)  # => true
+set.union([:red, :blue, :pink])         # => Hamster::Set[:red, :blue, :yellow, :pink]
+set.intersection([:red, :blue, :pink])  # => Hamster::Set[:red, :blue]
+```
+
+Like most Hamster methods, the set-theoretic methods `#union`, `#intersection`, `#difference`, and `#exclusion` (aliased as `#|`, `#&`, `#-`, and `#^`) all work with regular Ruby collections, or indeed any `Enumerable` object. So just like all the other Hamster collections, `Hamster::Set` can easily be used in combination with "ordinary" Ruby code.
+
+See the [API documentation][SET-DOC] for details on all `Set` methods.
+
+
 <h2>List <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/List">API Documentation</a>)</span></h2>
 
 Hamster `List`s have a "head" (the value at the front of the list),
