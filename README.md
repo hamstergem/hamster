@@ -311,6 +311,8 @@ creates a lazy list whereby each line is only ever read and
 processed as needed, in effect converting it to the first
 example without all the syntactic, imperative, noise.
 
+See the API documentation for details on all [`List`][LIST-DOC] methods.
+
 
 Installing
 ==========
