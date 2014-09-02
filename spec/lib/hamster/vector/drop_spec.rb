@@ -26,5 +26,10 @@ describe Hamster::Vector do
         end
       end
     end
+
+    it "raises an ArgumentError if number of elements specified is negative" do
+      -> { V[1, 2, 3].drop(-1) }.should raise_error(ArgumentError)
+      -> { V[1, 2, 3].drop(-3) }.should raise_error(ArgumentError)
+    end
   end
 end
