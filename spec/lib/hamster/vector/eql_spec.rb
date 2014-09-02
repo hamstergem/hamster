@@ -16,6 +16,10 @@ describe Hamster::Vector do
     it "returns false when comparing an empty vector with an empty array" do
       Hamster.vector.eql?([]).should == false
     end
+
+    it "returns false when comparing with a subclass of Hamster::Vector" do
+      vector.eql?(Class.new(Hamster::Vector).new(%w[A B C])).should == false
+    end
   end
 
   describe "#==" do
@@ -31,6 +35,10 @@ describe Hamster::Vector do
 
     it "returns true when comparing an empty vector with an empty array" do
       (Hamster.vector == []).should == true
+    end
+
+    it "returns true when comparing with a subclass of Hamster::Vector" do
+      (vector == Class.new(Hamster::Vector).new(%w[A B C])).should == true
     end
 
     it "works on larger vectors" do
