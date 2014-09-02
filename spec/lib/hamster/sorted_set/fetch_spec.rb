@@ -48,8 +48,10 @@ describe Hamster::SortedSet do
         end
       end
 
-      context "when the key does not exist" do
-        it "returns the default value" do
+      context "when the index does not exist" do
+        it "invokes the block with the missing index as parameter" do
+          sorted_set.fetch(3) { |index| index.should == 3 }
+          sorted_set.fetch(-4) { |index| index.should == -4 }
           sorted_set.fetch(3) { "default".upcase }.should == "DEFAULT"
           sorted_set.fetch(-4) { "default".upcase }.should == "DEFAULT"
         end

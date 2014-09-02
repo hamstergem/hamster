@@ -206,11 +206,10 @@ module Hamster
     #
     # @return [Object]
     def fetch(index, default = (missing_default = true))
-      index += @node.size if index < 0
-      if index >= 0 && index < size
+      if index >= -@node.size && index < @node.size
         at(index)
       elsif block_given?
-        yield
+        yield(index)
       elsif !missing_default
         default
       else
