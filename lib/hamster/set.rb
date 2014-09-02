@@ -403,6 +403,7 @@ module Hamster
     # @param other [Object] The object to compare with
     # @return [Boolean]
     def eql?(other)
+      return true if other.equal?(self)
       return false if not instance_of?(other.class)
       other_trie = other.instance_variable_get(:@trie)
       return false if @trie.size != other_trie.size

@@ -549,6 +549,7 @@ module Hamster
     # @param other [Object] The object to compare with
     # @return [Boolean]
     def eql?(other)
+      return true if other.equal?(self)
       return false if not instance_of?(other.class)
       return false if size != other.size
       a, b = self.to_enum, other.to_enum

@@ -169,6 +169,7 @@ module Hamster
     # @param other [Object] The collection to compare with
     # @return [Boolean]
     def eql?(other)
+      return true if other.equal?(self)
       instance_of?(other.class) && to_ary.eql?(other.to_ary)
     end
     def_delegator :self, :eql?, :==
