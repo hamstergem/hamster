@@ -101,7 +101,6 @@ module Hamster
         end
         items = items.sort(&@comparator)
       else
-        @comparator = lambda { |a,b| a <=> b }
         items = items.sort
       end
       @node = AVLNode.from_items(items, 0, items.size-1)
@@ -357,7 +356,7 @@ module Hamster
         node = @node
         index = node.left.size
         while !node.empty?
-          direction = @comparator.call(obj, node.item)
+          direction = node.direction(obj, @comparator)
           if direction > 0
             node = node.right
             index += node.left.size
@@ -607,10 +606,10 @@ module Hamster
       end
 
       def insert(item, comparator)
-        direction = comparator.call(item, @item)
-        if direction == 0
+        dir = direction(item, comparator)
+        if dir == 0
           self
-        elsif direction > 0
+        elsif dir > 0
           rebalance_right(@left, @right.insert(item, comparator))
         else
           rebalance_left(@left.insert(item, comparator), @right)
@@ -631,8 +630,8 @@ module Hamster
       end
 
       def delete(item, comparator)
-        direction = comparator.call(item, @item)
-        if direction == 0
+        dir = direction(item, comparator)
+        if dir == 0
           if @right.empty?
             return @left # replace this node with its only child
           elsif @left.empty?
@@ -648,7 +647,7 @@ module Hamster
             replace_with = @right.min
             AVLNode.new(replace_with, @left, @right.delete(replace_with, comparator))
           end
-        elsif direction > 0
+        elsif dir > 0
           rebalance_left(@left, @right.delete(item, comparator))
         else
           rebalance_right(@left.delete(item, comparator), @right)
@@ -661,10 +660,10 @@ module Hamster
 
         left, right, keep_item = [], [], true
         items.each do |item|
-          direction = comparator.call(item, @item)
-          if direction > 0
+          dir = direction(item, comparator)
+          if dir > 0
             right << item
-          elsif direction < 0
+          elsif dir < 0
             left << item
           else
             keep_item = false
@@ -681,10 +680,10 @@ module Hamster
 
         left, right, keep_item = [], [], false
         items.each do |item|
-          direction = comparator.call(item, @item)
-          if direction > 0
+          dir = direction(item, comparator)
+          if dir > 0
             right << item
-          elsif direction < 0
+          elsif dir < 0
             left << item
           else
             keep_item = true
@@ -733,10 +732,10 @@ module Hamster
       end
 
       def include?(item, comparator)
-        direction = comparator.call(item, @item)
-        if direction == 0
+        dir = direction(item, comparator)
+        if dir == 0
           true
-        elsif direction > 0
+        elsif dir > 0
           @right.include?(item, comparator)
         else
           @left.include?(item, comparator)
@@ -786,10 +785,10 @@ module Hamster
       def partition(items, comparator)
         left, right = [], []
         items.each do |item|
-          direction = comparator.call(item, @item)
-          if direction > 0
+          dir = direction(item, comparator)
+          if dir > 0
             right << item
-          elsif direction < 0
+          elsif dir < 0
             left << item
           end
         end
@@ -825,6 +824,14 @@ module Hamster
           end
         else
           AVLNode.new(@item, left, right)
+        end
+      end
+
+      def direction(item, comparator)
+        if comparator
+          comparator.call(item, @item)
+        else
+          item <=> @item
         end
       end
     end
