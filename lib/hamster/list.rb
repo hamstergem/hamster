@@ -78,7 +78,7 @@ module Hamster
     # using the provided block
     #
     # @example
-    #   Hamster.iterate(0) {|i| i.next }.take(5)
+    #   Hamster.iterate(0) { |i| i.next }.take(5)
     #   # => [0, 1, 2, 3, 4]
     #
     # @param item [Object] Starting value
