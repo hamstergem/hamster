@@ -63,7 +63,6 @@ module Hamster
 
     class << self
       # Create a new `Vector` populated with the given items.
-      #
       # @return [Vector]
       def [](*items)
         new(items.freeze)

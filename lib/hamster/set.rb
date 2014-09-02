@@ -59,7 +59,6 @@ module Hamster
 
     class << self
       # Create a new `Set` populated with the given items.
-      #
       # @return [Set]
       def [](*items)
         new(items)
@@ -89,7 +88,6 @@ module Hamster
     end
 
     # Return `true` if this `Set` contains no items.
-    #
     # @return [Boolean]
     def empty?
       @trie.empty?
@@ -97,7 +95,6 @@ module Hamster
     def_delegator :self, :empty?, :null?
 
     # Return the number of items in this `Set`.
-    #
     # @return [Integer]
     def size
       @trie.size

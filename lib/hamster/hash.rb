@@ -529,7 +529,6 @@ module Hamster
     end
 
     # See `Object#hash`.
-    #
     # @return [Integer]
     def hash
       keys.to_a.sort.reduce(0) do |hash, key|
