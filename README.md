@@ -10,7 +10,7 @@ Hamster
 Efficient, immutable, and thread-safe collection classes for Ruby.
 
 Hamster provides 6 [Persistent Data
-Structures][PDS]: `Hash`, `Vector`, `Set`, `SortedSet`, `List`, and [`Deque`][DQ] (which works as an immutable queue or stack).
+Structures][PDS]: [`Hash`][HASH-DOC], [`Vector`][VECTOR-DOC], [`Set`][SET-DOC], [`SortedSet`][SORTED-SET-DOC], [`List`][LIST-DOC], and [`Deque`][DEQUE-DOC] (which works as an immutable queue or stack).
 
 Hamster collections are **immutable**. Whenever you modify a Hamster
 collection, the original is preserved and a modified copy is returned. This
@@ -28,7 +28,12 @@ Where possible, Hamster collections offer an interface compatible with Ruby's
 built-in `Hash`, `Array`, and `Enumerable`, to ease code migration.
 
 [PDS]: http://en.wikipedia.org/wiki/Persistent_data_structure
-[DQ]:  http://en.wikipedia.org/wiki/Deque
+[HASH-DOC]: http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Hash
+[SET-DOC]: http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Set
+[VECTOR-DOC]: http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Vector
+[LIST-DOC]: http://rubydoc.info/github/hamstergem/hamster/master/Hamster/List
+[SORTED-SET-DOC]: http://rubydoc.info/github/hamstergem/hamster/master/Hamster/SortedSet
+[DEQUE-DOC]: http://rubydoc.info/github/hamstergem/hamster/master/Hamster/Deque
 
 
 Using
