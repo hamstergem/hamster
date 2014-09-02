@@ -29,6 +29,12 @@ describe Hamster::Set do
       include_examples "comparing non-sets"
     end
 
+    context "when comparing with a subclass of Hamster::Set" do
+      let(:comparison) { Class.new(Hamster::Set).new(%w[A B C]) }
+
+      include_examples "comparing non-sets"
+    end
+
     context "with an empty set for each comparison" do
       let(:values) { [] }
       let(:comparison_values) { [] }
