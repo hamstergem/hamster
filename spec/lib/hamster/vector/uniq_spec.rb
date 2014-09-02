@@ -14,8 +14,23 @@ describe Hamster::Vector do
       vector.should eql(Hamster.vector('a', 'b', 'a', 'a', 'c', 'b'))
     end
 
-    it "uses eql? semantics" do
+    it "uses #eql? semantics" do
       Hamster.vector(1.0, 1).uniq.should eql(Hamster.vector(1.0, 1))
+    end
+
+    it "also uses #hash when determining which values are duplicates" do
+      x = double(1)
+      x.should_receive(:hash).at_least(1).times.and_return(1)
+      y = double(2)
+      y.should_receive(:hash).at_least(1).times.and_return(2)
+      Hamster.vector(x, y).uniq
+    end
+
+    it "keeps the first of each group of duplicate values" do
+      x, y, z = 'a', 'a', 'a'
+      result = Hamster.vector(x, y, z).uniq
+      result.size.should == 1
+      result[0].should be(x)
     end
 
     [10, 31, 32, 33, 1000, 1023, 1024, 1025, 2000].each do |size|
