@@ -35,7 +35,7 @@ module Hamster
   #
   # = Creating Modified Vectors
   #
-  #     vector.add(6)  # => Hamster::Vector[1, 2, 3, 4, 5, 6]
+  #     vector.add(6)            # => Hamster::Vector[1, 2, 3, 4, 5, 6]
   #     vector.insert(1, :a, :b) # => Hamster::Vector[1, :a, :b, 2, 3, 4, 5]
   #     vector.delete_at(2)      # => Hamster::Vector[1, 2, 4, 5]
   #     vector + [6, 7]          # => Hamster::Vector[1, 2, 3, 4, 5, 6, 7]
