@@ -12,6 +12,12 @@ describe Hamster::Hash do
     it "returns false when comparing with an arbitrary object" do
       hash.eql?(Object.new).should == false
     end
+
+    it "returns false when comparing with a subclass of Hamster::Hash" do
+      subclass = Class.new(Hamster::Hash)
+      instance = subclass.new("A" => "aye", "B" => "bee", "C" => "see")
+      hash.eql?(instance).should == false
+    end
   end
 
   describe "#==" do
@@ -21,6 +27,12 @@ describe Hamster::Hash do
 
     it "returns false when comparing with an arbitrary object" do
       (hash == Object.new).should == false
+    end
+
+    it "returns true when comparing with a subclass of Hamster::Hash" do
+      subclass = Class.new(Hamster::Hash)
+      instance = subclass.new("A" => "aye", "B" => "bee", "C" => "see")
+      (hash == instance).should == true
     end
   end
 
