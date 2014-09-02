@@ -1,5 +1,5 @@
 Hamster
--------
+=======
 
   - [![Version](https://badge.fury.io/rb/hamster.png)](https://rubygems.org/gems/hamster)
   - [![Climate](https://codeclimate.com/github/hamstergem/hamster.png)](https://codeclimate.com/github/hamstergem/hamster)
