@@ -2,7 +2,6 @@ Hamster
 =======
 
   - [![Version](https://badge.fury.io/rb/hamster.png)](https://rubygems.org/gems/hamster)
-  - [![Climate](https://codeclimate.com/github/hamstergem/hamster.png)](https://codeclimate.com/github/hamstergem/hamster)
   - [![Build](http://img.shields.io/travis-ci/hamstergem/hamster.png)](https://travis-ci.org/hamstergem/hamster)
   - [![Dependencies](https://gemnasium.com/hamstergem/hamster.png)](https://gemnasium.com/hamstergem/hamster)
   - [![License](http://img.shields.io/license/MIT.png?color=green)](http://opensource.org/licenses/MIT)
