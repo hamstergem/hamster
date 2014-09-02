@@ -147,6 +147,29 @@ Like most Hamster methods, the set-theoretic methods `#union`, `#intersection`, 
 See the [API documentation][SET-DOC] for details on all `Set` methods.
 
 
+<h2>SortedSet <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/SortedSet">API Documentation</a>)</span></h2>
+
+A `SortedSet` is like a `Set`, but ordered. You can do everything with it that you can
+do with a `Set`. Additionally, you can get the `#first` and `#last` item, or retrieve
+an item using an integral index:
+
+``` ruby
+set = Hamster.sorted_set('toast', 'jam', 'bacon') # => Hamster::SortedSet["bacon", "jam", "toast"]
+set.first                                         # => "bacon"
+set.last                                          # => "toast"
+set[1]                                            # => "jam"
+```
+
+You can also specify the sort order using a block:
+
+``` ruby
+Hamster.sorted_set('toast', 'jam', 'bacon') { |a,b| b <=> a }
+Hamster.sorted_set('toast', 'jam', 'bacon') { |str| str.chars.last }
+```
+
+See the [API documentation][SORTED-SET-DOC] for details on all `SortedSet` methods.
+
+
 <h2>List <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/List">API Documentation</a>)</span></h2>
 
 Hamster `List`s have a "head" (the value at the front of the list),
