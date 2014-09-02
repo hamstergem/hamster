@@ -569,6 +569,21 @@ module Hamster
     def_delegator :self, :dup, :nub
     def_delegator :self, :dup, :remove_duplicates
 
+    # @return [::Array]
+    # @private
+    def marshal_dump
+      if @comparator
+        raise TypeError, "can't dump SortedSet with custom sort order"
+      else
+        to_a
+      end
+    end
+
+    # @private
+    def marshal_load(array)
+      initialize(array)
+    end
+
     private
 
     def subsequence(from, length)
