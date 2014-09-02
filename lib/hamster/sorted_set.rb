@@ -243,7 +243,6 @@ module Hamster
           from += @node.size if from < 0
           to   += @node.size if to < 0
           to   += 1     if !arg.exclude_end?
-          to    = @node.size if to > @node.size
           length = to - from
           length = 0 if length < 0
           subsequence(from, length)

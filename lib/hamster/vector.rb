@@ -220,7 +220,6 @@ module Hamster
           from += @size if from < 0
           to   += @size if to < 0
           to   += 1     if !arg.exclude_end?
-          to    = @size if to > @size
           length = to - from
           length = 0 if length < 0
           subsequence(from, length)
