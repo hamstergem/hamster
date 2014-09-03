@@ -27,12 +27,12 @@ describe Hamster::Vector do
 
             it "replaces the value with the result of the block" do
               result = vector.set(1) { |value| "FLIBBLE" }
-              result.should == Hamster.vector("A", "FLIBBLE", "C")
+              result.should eql(Hamster.vector("A", "FLIBBLE", "C"))
             end
 
             it "supports to_proc methods" do
               result = vector.set(1, &:downcase)
-              result.should == Hamster.vector("A", "b", "C")
+              result.should eql(Hamster.vector("A", "b", "C"))
             end
           end
 
@@ -58,12 +58,12 @@ describe Hamster::Vector do
 
             it "replaces the value with the result of the block" do
               result = vector.set(-2) { |value| "FLIBBLE" }
-              result.should == Hamster.vector("A", "FLIBBLE", "C")
+              result.should eql(Hamster.vector("A", "FLIBBLE", "C"))
             end
 
             it "supports to_proc methods" do
               result = vector.set(-2, &:downcase)
-              result.should == Hamster.vector("A", "b", "C")
+              result.should eql(Hamster.vector("A", "b", "C"))
             end
           end
 
@@ -81,11 +81,11 @@ describe Hamster::Vector do
             let(:set) { vector.set(1, "FLIBBLE") }
 
             it "preserves the original" do
-              vector.should == Hamster.vector("A", "B", "C")
+              vector.should eql(Hamster.vector("A", "B", "C"))
             end
 
             it "sets the new value at the specified index" do
-              set.should == Hamster.vector("A", "FLIBBLE", "C")
+              set.should eql(Hamster.vector("A", "FLIBBLE", "C"))
             end
           end
 
@@ -108,11 +108,11 @@ describe Hamster::Vector do
 
           it "preserves the original" do
             set
-            vector.should == Hamster.vector("A", "B", "C")
+            vector.should eql(Hamster.vector("A", "B", "C"))
           end
 
           it "sets the new value at the specified index" do
-            set.should == Hamster.vector("A", "FLIBBLE", "C")
+            set.should eql(Hamster.vector("A", "FLIBBLE", "C"))
           end
         end
 
