@@ -282,6 +282,13 @@ module Hamster
     def unshift(obj)
       insert(0, obj)
     end
+
+    # Return a new `Vector` with the first element removed. If empty, just return `self`.
+    # @return [Vector]
+    def shift
+      delete_at(0)
+    end
+
     # Call the given block once for each item in the vector, passing each
     # item from first to last successively to the block.
     #
