@@ -1014,7 +1014,7 @@ module Hamster
           levels += 1
         end
       else
-        while root.size == 1
+        while root.size == 1 && levels > 0
           root = root[0]
           levels -= 1
         end

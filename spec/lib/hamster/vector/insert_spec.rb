@@ -47,6 +47,10 @@ describe Hamster::Vector do
       vector.to_a.size.should == 34
     end
 
+    it "works when adding to an empty Vector" do
+      Hamster.vector.insert(0, :a).should eql(Hamster.vector(:a))
+    end
+
     it "has the right size and contents after many insertions" do
       array  = (1..4000).to_a # we use an Array as standard of correctness
       vector = Hamster::Vector.new(array)
