@@ -275,6 +275,13 @@ module Hamster
       replace_suffix(@size-1, [])
     end
 
+    # Return a new `Vector` with `obj` inserted before the first element, moving
+    # the other elements upwards.
+    # @param obj [Object] The value to prepend
+    # @return [Vector]
+    def unshift(obj)
+      insert(0, obj)
+    end
     # Call the given block once for each item in the vector, passing each
     # item from first to last successively to the block.
     #
