@@ -138,6 +138,7 @@ module Hamster
     def_delegator :self, :add, :<<
     def_delegator :self, :add, :conj
     def_delegator :self, :add, :conjoin
+    def_delegator :self, :add, :push
 
     # Return a new `Vector` with the item at `index` replaced by `item`. If the
     # `item` argument is missing, but an optional code block is provided, it will
