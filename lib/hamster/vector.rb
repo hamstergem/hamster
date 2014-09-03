@@ -268,6 +268,13 @@ module Hamster
       replace_suffix(index, suffix.tap { |a| a.shift })
     end
 
+    # Return a new `Vector` with the last element removed. If empty, just return `self`.
+    # @return [Vector]
+    def pop
+      return self if @size == 0
+      replace_suffix(@size-1, [])
+    end
+
     # Call the given block once for each item in the vector, passing each
     # item from first to last successively to the block.
     #
