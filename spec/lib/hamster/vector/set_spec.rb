@@ -36,9 +36,16 @@ describe Hamster::Vector do
             end
           end
 
-          context "outside the absolute bounds of the vector" do
+          context "just past the end of the vector" do
+            it "passes nil to the block and adds a new value" do
+              result = vector.set(3) { |value| value.should be_nil; "D" }
+              result.should eql(Hamster.vector("A", "B", "C", "D"))
+            end
+          end
+
+          context "further outside the bounds of the vector" do
             it "raises an error" do
-              expect { vector.set(vector.size) {} }.to raise_error
+              expect { vector.set(4) {} }.to raise_error
             end
           end
         end
@@ -82,9 +89,16 @@ describe Hamster::Vector do
             end
           end
 
+          context "just past the end of the vector" do
+            it "adds a new value" do
+              result = vector.set(3, "FLIBBLE")
+              result.should eql(Hamster.vector("A", "B", "C", "FLIBBLE"))
+            end
+          end
+
           context "outside the absolute bounds of the vector" do
             it "raises an error" do
-              expect { vector.set(vector.size, "FLIBBLE") }.to raise_error
+              expect { vector.set(4, "FLIBBLE") }.to raise_error
             end
           end
         end

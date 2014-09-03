@@ -149,7 +149,7 @@ module Hamster
     def set(index, item = yield(get(index)))
       raise IndexError if @size == 0
       index += @size if index < 0
-      raise IndexError if index >= @size || index < 0
+      raise IndexError if index > @size || index < 0
       update_root(index, item)
     end
 
