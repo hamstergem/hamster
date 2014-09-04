@@ -1020,8 +1020,8 @@ module Hamster
     end
   end
 
-  # A +LazyList+ takes a block that returns a +List+, i.e. an object that responds
-  # to +head+, +tail+ and +empty?+. The list is only realized (i.e. the block is
+  # A `LazyList` takes a block that returns a `List`, i.e. an object that responds
+  # to `#head`, `#tail` and `#empty?`. The list is only realized (i.e. the block is
   # only called) when one of these operations is performed.
   #
   # By returning a `Cons` that in turn has a {LazyList} as its tail, one can
