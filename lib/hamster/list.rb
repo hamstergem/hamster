@@ -885,29 +885,36 @@ module Hamster
     #
     # @private
     class Partitioner
-      def initialize(collection, block)
-        @enum, @block, @left, @right, @done = collection.to_enum, block, [], [], false
+      def initialize(list, block)
+        @list, @block, @left, @right = list, block, [], []
       end
 
       def left
         Stream.new do
-          next_item while !@done && @left.empty?
-          @left.empty? ? EmptyList : Sequence.new(@left.shift, self.left)
+          while true
+            break Sequence.new(@left.shift, self.left) if !@left.empty?
+            break EmptyList if @list.empty?
+            next_item
+          end
         end
       end
 
       def right
         Stream.new do
-          next_item while !@done && @right.empty?
-          @right.empty? ? EmptyList : Sequence.new(@right.shift, self.right)
+          while true
+            break Sequence.new(@right.shift, self.right) if !@right.empty?
+            break EmptyList if @list.empty?
+            next_item
+          end
         end
       end
 
       def next_item
-        item = @enum.next
-        (@block.call(item) ? @left : @right) << item
-      rescue StopIteration
-        @done = true
+        unless @list.empty?
+          item = @list.head
+          (@block.call(item) ? @left : @right) << item
+          @list = @list.tail
+        end
       end
     end
 
