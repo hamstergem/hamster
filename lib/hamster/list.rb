@@ -879,45 +879,6 @@ module Hamster
       self
     end
 
-    # This class can divide a collection into 2 lazy streams, one of items
-    #   for which the block returns true, and another for false
-    # At the same time, it guarantees the block will only be called ONCE for each item
-    #
-    # @private
-    class Partitioner
-      def initialize(list, block)
-        @list, @block, @left, @right = list, block, [], []
-      end
-
-      def left
-        LazyList.new do
-          while true
-            break Sequence.new(@left.shift, self.left) if !@left.empty?
-            break EmptyList if @list.empty?
-            next_item
-          end
-        end
-      end
-
-      def right
-        LazyList.new do
-          while true
-            break Sequence.new(@right.shift, self.right) if !@right.empty?
-            break EmptyList if @list.empty?
-            next_item
-          end
-        end
-      end
-
-      def next_item
-        unless @list.empty?
-          item = @list.head
-          (@block.call(item) ? @left : @right) << item
-          @list = @list.tail
-        end
-      end
-    end
-
     # Return 2 `List`s, the first containing all the elements for which the block
     # evaluates to true, the second containing the rest.
     #
@@ -925,7 +886,9 @@ module Hamster
     def partition(&block)
       return enum_for(:partition) if not block_given?
       partitioner = Partitioner.new(self, block)
-      [partitioner.left, partitioner.right].freeze
+      mutex = Mutex.new
+      [Partitioned.new(partitioner, partitioner.left, mutex),
+       Partitioned.new(partitioner, partitioner.right, mutex)].freeze
     end
 
     # Return true if `other` has the same type and contents as this `Hash`.
@@ -1134,6 +1097,94 @@ module Hamster
           end
         elsif @atomic.get == 2 # another thread finished the block
           return
+        end
+      end
+    end
+  end
+
+  # Common behavior for other classes which implement various kinds of lazy lists
+  # @private
+  class Realizable
+    include List
+
+    def initialize
+      @head, @tail, @size = Undefined, Undefined, nil
+    end
+
+    def head
+      realize if @head == Undefined
+      @head
+    end
+
+    def tail
+      realize if @tail == Undefined
+      @tail
+    end
+
+    def empty?
+      realize if @head == Undefined
+      @size == 0
+    end
+
+    def size
+      @size ||= super
+    end
+
+    def cached_size?
+      @size != nil
+    end
+
+    def realized?
+      @head != Undefined
+    end
+  end
+
+  # This class can divide a collection into 2 lazy lists, one of items
+  #   for which the block returns true, and another for false
+  # At the same time, it guarantees the block will only be called ONCE for each item
+  #
+  # @private
+  class Partitioner
+    attr_reader :left, :right
+    def initialize(list, block)
+      @list, @block, @left, @right = list, block, [], []
+    end
+
+    def next_item
+      unless @list.empty?
+        item = @list.head
+        (@block.call(item) ? @left : @right) << item
+        @list = @list.tail
+      end
+    end
+
+    def done?
+      @list.empty?
+    end
+  end
+
+  # One of the lazy lists which gets its items from a Partitioner
+  # @private
+  class Partitioned < Realizable
+    def initialize(partitioner, buffer, mutex)
+      super()
+      @partitioner, @buffer, @mutex = partitioner, buffer, mutex
+    end
+
+    def realize
+      @mutex.synchronize do
+        return if @head != Undefined
+        while true
+          if !@buffer.empty?
+            @head = @buffer.shift
+            @tail = Partitioned.new(@partitioner, @buffer, @mutex)
+            return
+          elsif @partitioner.done?
+            @head, @size, @tail = nil, 0, self
+            return
+          else
+            @partitioner.next_item
+          end
         end
       end
     end

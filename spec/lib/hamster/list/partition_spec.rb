@@ -1,5 +1,6 @@
 require "spec_helper"
 require "hamster/list"
+require "thread"
 
 describe Hamster::List do
   describe "#partition" do
@@ -33,6 +34,37 @@ describe Hamster::List do
       count.should be(4) # would be 2 if lists were lazier
       b.take(2).should == [2, 4]
       count.should be(4)
+    end
+
+    it "calls the passed block only once for each item, even with multiple threads" do
+      mutex = Mutex.new
+      yielded = [] # record all the numbers yielded to the block, to make sure each is yielded only once
+      list = Hamster.iterate(0) do |n|
+        sleep(rand / 500) # give another thread a chance to get in
+        mutex.synchronize { yielded << n }
+        sleep(rand / 500)
+        n + 1
+      end
+      left, right = list.partition(&:odd?)
+
+      10.times.collect do |i|
+        Thread.new do
+          # half of the threads will consume the "left" lazy list, while half consume
+          # the "right" lazy list
+          # make sure that only one thread will run the above "iterate" block at a
+          # time, regardless
+          if i % 2 == 0
+            left.take(100).sum.should == 10000
+          else
+            right.take(100).sum.should == 9900
+          end
+        end
+      end.each(&:join)
+
+      # if no threads "stepped on" each other, the following should be true
+      # make some allowance for "lazy" lists which actually realize a little bit ahead:
+      (200..203).include?(yielded.size).should == true
+      yielded.should == (0..(yielded.size-1)).to_a
     end
 
     [
