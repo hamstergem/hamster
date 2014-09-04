@@ -1119,15 +1119,11 @@ module Hamster
               @head, @tail = list.head, list.tail
             end
           rescue
-            # CAS is here only because we need a memory barrier
-            # when Atomic#set is amended to provide a memory barrier, it can be used
-            @atomic.compare_and_swap(1,0)
+            @atomic.set(0)
             MUTEX.synchronize { QUEUE.broadcast }
             raise
           end
-          # CAS is here only because we need a memory barrier
-          # when Atomic#set is amended to provide a memory barrier, it can be used
-          @atomic.compare_and_swap(1,2)
+          @atomic.set(2)
           MUTEX.synchronize { QUEUE.broadcast }
           return
         end
