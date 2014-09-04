@@ -1021,13 +1021,11 @@ module Hamster
   end
 
   # A +LazyList+ takes a block that returns a +List+, i.e. an object that responds
-  # to +head+, +tail+ and +empty?+. The list is only realized when one of these
-  # operations is performed.
+  # to +head+, +tail+ and +empty?+. The list is only realized (i.e. the block is
+  # only called) when one of these operations is performed.
   #
   # By returning a +Sequence+ that in turn has a {LazyList} as its +tail+, one can
   # construct infinite lazy lists.
-  #
-  # The recommended interface for using this is through {Hamster.stream Hamster.stream}
   #
   # @private
   class LazyList
