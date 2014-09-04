@@ -9,7 +9,7 @@ class IO
   #
   # @return [List]
   def to_list(sep = $/) # global input record separator
-    Hamster::Stream.new do
+    Hamster::LazyList.new do
       line = gets(sep)
       if line
         Hamster::Sequence.new(line, to_list)

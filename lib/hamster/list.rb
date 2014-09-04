@@ -34,7 +34,7 @@ module Hamster
     # @return [List]
     def stream(&block)
       return EmptyList unless block_given?
-      Stream.new { Sequence.new(yield, stream(&block)) }
+      LazyList.new { Sequence.new(yield, stream(&block)) }
     end
 
     # Construct a list of consecutive integers.
@@ -60,7 +60,7 @@ module Hamster
     #
     # @return [List]
     def repeat(item)
-      Stream.new { Sequence.new(item, repeat(item)) }
+      LazyList.new { Sequence.new(item, repeat(item)) }
     end
 
     # Create a list that contains a given item a fixed number of times
@@ -86,7 +86,7 @@ module Hamster
     # @yieldreturn [Object] The next value
     # @return [List]
     def iterate(item, &block)
-      Stream.new { Sequence.new(item, iterate(yield(item), &block)) }
+      LazyList.new { Sequence.new(item, iterate(yield(item), &block)) }
     end
 
     # Turn an Enumerator into a `Hamster::List`.
@@ -101,7 +101,7 @@ module Hamster
     # @param enum [Enumerator] The object to iterate over
     # @return [List]
     def enumerate(enum)
-      Stream.new do
+      LazyList.new do
         begin
           Sequence.new(enum.next, enumerate(enum))
         rescue StopIteration
@@ -114,7 +114,7 @@ module Hamster
 
     def interval_exclusive(from, to)
       return EmptyList if from == to
-      Stream.new { Sequence.new(from, interval_exclusive(from.next, to)) }
+      LazyList.new { Sequence.new(from, interval_exclusive(from.next, to)) }
     end
   end
 
@@ -196,7 +196,7 @@ module Hamster
     # @return [List]
     def map(&block)
       return enum_for(:map) unless block_given?
-      Stream.new do
+      LazyList.new do
         next self if empty?
         Sequence.new(yield(head), tail.map(&block))
       end
@@ -209,7 +209,7 @@ module Hamster
     # @return [List]
     def flat_map(&block)
       return enum_for(:flat_map) unless block_given?
-      Stream.new do
+      LazyList.new do
         next self if empty?
         head_list = Hamster.list(*yield(head))
         next tail.flat_map(&block) if head_list.empty?
@@ -223,7 +223,7 @@ module Hamster
     # @return [List]
     def filter(&block)
       return enum_for(:filter) unless block_given?
-      Stream.new do
+      LazyList.new do
         list = self
         while true
           break list if list.empty?
@@ -239,7 +239,7 @@ module Hamster
     # @return [List, Enumerator]
     def take_while(&block)
       return enum_for(:take_while) unless block_given?
-      Stream.new do
+      LazyList.new do
         next self if empty?
         next Sequence.new(head, tail.take_while(&block)) if yield(head)
         EmptyList
@@ -252,7 +252,7 @@ module Hamster
     # @return [List, Enumerator]
     def drop_while(&block)
       return enum_for(:drop_while) unless block_given?
-      Stream.new do
+      LazyList.new do
         list = self
         list = list.tail while !list.empty? && yield(list.head)
         list
@@ -263,7 +263,7 @@ module Hamster
     # @param number [Integer] The number of items to retain
     # @return [List]
     def take(number)
-      Stream.new do
+      LazyList.new do
         next self if empty?
         next Sequence.new(head, tail.take(number - 1)) if number > 0
         EmptyList
@@ -273,7 +273,7 @@ module Hamster
     # Return a lazy list containing all but the last item from this `List`.
     # @return [List]
     def pop
-      Stream.new do
+      LazyList.new do
         next self if empty?
         new_size = size - 1
         next Sequence.new(head, tail.take(new_size - 1)) if new_size >= 1
@@ -286,7 +286,7 @@ module Hamster
     # @param number [Integer] The number of items to skip over
     # @return [List]
     def drop(number)
-      Stream.new do
+      LazyList.new do
         list = self
         while !list.empty? && number > 0
           number -= 1
@@ -302,7 +302,7 @@ module Hamster
     # @param other [List] The list to add onto the end of this one
     # @return [List]
     def append(other)
-      Stream.new do
+      LazyList.new do
         next other if empty?
         Sequence.new(head, tail.append(other))
       end
@@ -314,7 +314,7 @@ module Hamster
     # Return a `List` with the same items, but in reverse order.
     # @return [List]
     def reverse
-      Stream.new { reduce(EmptyList) { |list, item| list.cons(item) } }
+      LazyList.new { reduce(EmptyList) { |list, item| list.cons(item) }}
     end
 
     # Gather the corresponding elements from this `List` and `others` (that is,
@@ -324,7 +324,7 @@ module Hamster
     # @param others [List] A list of the lists to zip together with this one
     # @return [List]
     def zip(others)
-      Stream.new do
+      LazyList.new do
         next self if empty? && others.empty?
         Sequence.new(Sequence.new(head, Sequence.new(others.head)), tail.zip(others.tail))
       end
@@ -356,7 +356,7 @@ module Hamster
     # @return [List]
     def transpose
       return EmptyList if empty?
-      Stream.new do
+      LazyList.new do
         next EmptyList if any? { |list| list.empty? }
         heads, tails = EmptyList, EmptyList
         reverse_each { |list| heads, tails = heads.cons(list.head), tails.cons(list.tail) }
@@ -369,7 +369,7 @@ module Hamster
     #
     # @return [List]
     def cycle
-      Stream.new do
+      LazyList.new do
         next self if empty?
         Sequence.new(head, tail.append(cycle))
       end
@@ -429,7 +429,7 @@ module Hamster
     #
     # @return [List]
     def sort(&comparator)
-      Stream.new { super(&comparator).to_list }
+      LazyList.new { super(&comparator).to_list }
     end
 
     # Return a new `List` with the same items, but sorted. The sort order will be
@@ -439,7 +439,7 @@ module Hamster
     # @return [List]
     def sort_by(&transformer)
       return sort unless block_given?
-      Stream.new { super(&transformer).to_list }
+      LazyList.new { super(&transformer).to_list }
     end
 
     # Return a new `List` with `sep` inserted between each of the existing elements.
@@ -450,7 +450,7 @@ module Hamster
     #
     # @return [List]
     def intersperse(sep)
-      Stream.new do
+      LazyList.new do
         next self if tail.empty?
         Sequence.new(head, Sequence.new(sep, tail.intersperse(sep)))
       end
@@ -461,7 +461,7 @@ module Hamster
     #
     # @return [List]
     def uniq(items = ::Set.new)
-      Stream.new do
+      LazyList.new do
         next self if empty?
         next tail.uniq(items) if items.include?(head)
         Sequence.new(head, tail.uniq(items.add(head)))
@@ -476,7 +476,7 @@ module Hamster
     # @param other [List] The list to merge with
     # @return [List]
     def union(other, items = ::Set.new)
-      Stream.new do
+      LazyList.new do
         next other.uniq(items) if empty?
         next tail.union(other, items) if items.include?(head)
         Sequence.new(head, tail.union(other, items.add(head)))
@@ -488,7 +488,7 @@ module Hamster
     # @return [List]
     def init
       return EmptyList if tail.empty?
-      Stream.new { Sequence.new(head, tail.init) }
+      LazyList.new { Sequence.new(head, tail.init) }
     end
 
     # Return the last item in this list.
@@ -510,7 +510,7 @@ module Hamster
     #
     # @return [List]
     def tails
-      Stream.new do
+      LazyList.new do
         next self if empty?
         Sequence.new(self, tail.tails)
       end
@@ -527,7 +527,7 @@ module Hamster
     #
     # @return [List]
     def inits
-      Stream.new do
+      LazyList.new do
         next self if empty?
         Sequence.new(Hamster.list(head), tail.inits.map { |list| list.cons(head) })
       end
@@ -545,7 +545,7 @@ module Hamster
     # @return [List]
     def combination(n)
       return Sequence.new(EmptyList) if n == 0
-      Stream.new do
+      LazyList.new do
         next self if empty?
         tail.combination(n - 1).map { |list| list.cons(head) }.append(tail.combination(n))
       end
@@ -554,7 +554,7 @@ module Hamster
     # Split the items in this list in groups of `number`. Return a list of lists.
     # @return [List]
     def chunk(number)
-      Stream.new do
+      LazyList.new do
         next self if empty?
         first, remainder = split_at(number)
         Sequence.new(first, remainder.chunk(number))
@@ -577,7 +577,7 @@ module Hamster
     #
     # @return [List]
     def flatten
-      Stream.new do
+      LazyList.new do
         next self if empty?
         next head.append(tail.flatten) if head.is_a?(List)
         Sequence.new(head, tail.flatten)
@@ -667,7 +667,7 @@ module Hamster
     # @return [List]
     def find_indices(i = 0, &block)
       return EmptyList if empty? || !block_given?
-      Stream.new do
+      LazyList.new do
         node = self
         while true
           break Sequence.new(i, node.tail.find_indices(i + 1, &block)) if yield(node.head)
@@ -712,7 +712,7 @@ module Hamster
     # @return [List]
     def merge(&comparator)
       return merge_by unless block_given?
-      Stream.new do
+      LazyList.new do
         sorted = remove(&:empty?).sort do |a, b|
           yield(a.head, b.head)
         end
@@ -730,7 +730,7 @@ module Hamster
     # @return [List]
     def merge_by(&transformer)
       return merge_by { |item| item } unless block_given?
-      Stream.new do
+      LazyList.new do
         sorted = remove(&:empty?).sort_by do |list|
           yield(list.head)
         end
@@ -754,7 +754,7 @@ module Hamster
       if index == 0
         return items.to_list.append(self)
       elsif index > 0
-        Stream.new do
+        LazyList.new do
           Sequence.new(head, tail.insert(index-1, *items))
         end
       else
@@ -771,7 +771,7 @@ module Hamster
       list = self
       list = list.tail while list.head == obj && !list.empty?
       return EmptyList if list.empty?
-      Stream.new { Sequence.new(list.head, list.tail.delete(obj)) }
+      LazyList.new { Sequence.new(list.head, list.tail.delete(obj)) }
     end
 
     # Return a lazy list containing the same items, minus the one at `index`.
@@ -787,7 +787,7 @@ module Hamster
         return self if index < 0
         delete_at(index)
       else
-        Stream.new { Sequence.new(head, tail.delete_at(index - 1)) }
+        LazyList.new { Sequence.new(head, tail.delete_at(index - 1)) }
       end
     end
 
@@ -807,14 +807,14 @@ module Hamster
       if index == 0
         length ||= size
         if length > 0
-          Stream.new do
+          LazyList.new do
             Sequence.new(obj, tail.fill(obj, 0, length-1))
           end
         else
           self
         end
       elsif index > 0
-        Stream.new do
+        LazyList.new do
           Sequence.new(head, tail.fill(obj, index-1, length))
         end
       else
@@ -890,7 +890,7 @@ module Hamster
       end
 
       def left
-        Stream.new do
+        LazyList.new do
           while true
             break Sequence.new(@left.shift, self.left) if !@left.empty?
             break EmptyList if @list.empty?
@@ -900,7 +900,7 @@ module Hamster
       end
 
       def right
-        Stream.new do
+        LazyList.new do
           while true
             break Sequence.new(@right.shift, self.right) if !@right.empty?
             break EmptyList if @list.empty?
@@ -1057,19 +1057,17 @@ module Hamster
     end
   end
 
-  # Lazy list stream
-  #
-  # A +Stream+ takes a block that returns a +List+, i.e. an object that responds
+  # A +LazyList+ takes a block that returns a +List+, i.e. an object that responds
   # to +head+, +tail+ and +empty?+. The list is only realized when one of these
   # operations is performed.
   #
-  # By returning a +Sequence+ that in turn has a {Stream} as its +tail+, one can
+  # By returning a +Sequence+ that in turn has a {LazyList} as its +tail+, one can
   # construct infinite lazy lists.
   #
   # The recommended interface for using this is through {Hamster.stream Hamster.stream}
   #
   # @private
-  class Stream
+  class LazyList
     include List
 
     def initialize(&block)
