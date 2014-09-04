@@ -12,7 +12,7 @@ class IO
     Hamster::LazyList.new do
       line = gets(sep)
       if line
-        Hamster::Sequence.new(line, to_list)
+        Hamster::Cons.new(line, to_list)
       else
         EmptyList
       end

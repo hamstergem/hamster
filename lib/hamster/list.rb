@@ -34,7 +34,7 @@ module Hamster
     # @return [List]
     def stream(&block)
       return EmptyList unless block_given?
-      LazyList.new { Sequence.new(yield, stream(&block)) }
+      LazyList.new { Cons.new(yield, stream(&block)) }
     end
 
     # Construct a list of consecutive integers.
@@ -60,7 +60,7 @@ module Hamster
     #
     # @return [List]
     def repeat(item)
-      LazyList.new { Sequence.new(item, repeat(item)) }
+      LazyList.new { Cons.new(item, repeat(item)) }
     end
 
     # Create a list that contains a given item a fixed number of times
@@ -86,7 +86,7 @@ module Hamster
     # @yieldreturn [Object] The next value
     # @return [List]
     def iterate(item, &block)
-      LazyList.new { Sequence.new(item, iterate(yield(item), &block)) }
+      LazyList.new { Cons.new(item, iterate(yield(item), &block)) }
     end
 
     # Turn an Enumerator into a `Hamster::List`.
@@ -103,7 +103,7 @@ module Hamster
     def enumerate(enum)
       LazyList.new do
         begin
-          Sequence.new(enum.next, enumerate(enum))
+          Cons.new(enum.next, enumerate(enum))
         rescue StopIteration
           EmptyList
         end
@@ -114,7 +114,7 @@ module Hamster
 
     def interval_exclusive(from, to)
       return EmptyList if from == to
-      LazyList.new { Sequence.new(from, interval_exclusive(from.next, to)) }
+      LazyList.new { Cons.new(from, interval_exclusive(from.next, to)) }
     end
   end
 
@@ -163,7 +163,7 @@ module Hamster
     # @param item [Object] The item to add
     # @return [List]
     def cons(item)
-      Sequence.new(item, self)
+      Cons.new(item, self)
     end
     def_delegator :self, :cons, :>>
     def_delegator :self, :cons, :conj
@@ -198,7 +198,7 @@ module Hamster
       return enum_for(:map) unless block_given?
       LazyList.new do
         next self if empty?
-        Sequence.new(yield(head), tail.map(&block))
+        Cons.new(yield(head), tail.map(&block))
       end
     end
     def_delegator :self, :map, :collect
@@ -213,7 +213,7 @@ module Hamster
         next self if empty?
         head_list = Hamster.list(*yield(head))
         next tail.flat_map(&block) if head_list.empty?
-        Sequence.new(head_list.first, head_list.drop(1).append(tail.flat_map(&block)))
+        Cons.new(head_list.first, head_list.drop(1).append(tail.flat_map(&block)))
       end
     end
 
@@ -227,7 +227,7 @@ module Hamster
         list = self
         while true
           break list if list.empty?
-          break Sequence.new(list.head, list.tail.filter(&block)) if yield(list.head)
+          break Cons.new(list.head, list.tail.filter(&block)) if yield(list.head)
           list = list.tail
         end
       end
@@ -241,7 +241,7 @@ module Hamster
       return enum_for(:take_while) unless block_given?
       LazyList.new do
         next self if empty?
-        next Sequence.new(head, tail.take_while(&block)) if yield(head)
+        next Cons.new(head, tail.take_while(&block)) if yield(head)
         EmptyList
       end
     end
@@ -265,7 +265,7 @@ module Hamster
     def take(number)
       LazyList.new do
         next self if empty?
-        next Sequence.new(head, tail.take(number - 1)) if number > 0
+        next Cons.new(head, tail.take(number - 1)) if number > 0
         EmptyList
       end
     end
@@ -276,7 +276,7 @@ module Hamster
       LazyList.new do
         next self if empty?
         new_size = size - 1
-        next Sequence.new(head, tail.take(new_size - 1)) if new_size >= 1
+        next Cons.new(head, tail.take(new_size - 1)) if new_size >= 1
         EmptyList
       end
     end
@@ -304,7 +304,7 @@ module Hamster
     def append(other)
       LazyList.new do
         next other if empty?
-        Sequence.new(head, tail.append(other))
+        Cons.new(head, tail.append(other))
       end
     end
     def_delegator :self, :append, :concat
@@ -326,7 +326,7 @@ module Hamster
     def zip(others)
       LazyList.new do
         next self if empty? && others.empty?
-        Sequence.new(Sequence.new(head, Sequence.new(others.head)), tail.zip(others.tail))
+        Cons.new(Cons.new(head, Cons.new(others.head)), tail.zip(others.tail))
       end
     end
 
@@ -360,7 +360,7 @@ module Hamster
         next EmptyList if any? { |list| list.empty? }
         heads, tails = EmptyList, EmptyList
         reverse_each { |list| heads, tails = heads.cons(list.head), tails.cons(list.tail) }
-        Sequence.new(heads, tails.transpose)
+        Cons.new(heads, tails.transpose)
       end
     end
 
@@ -371,7 +371,7 @@ module Hamster
     def cycle
       LazyList.new do
         next self if empty?
-        Sequence.new(head, tail.append(cycle))
+        Cons.new(head, tail.append(cycle))
       end
     end
 
@@ -452,7 +452,7 @@ module Hamster
     def intersperse(sep)
       LazyList.new do
         next self if tail.empty?
-        Sequence.new(head, Sequence.new(sep, tail.intersperse(sep)))
+        Cons.new(head, Cons.new(sep, tail.intersperse(sep)))
       end
     end
 
@@ -464,7 +464,7 @@ module Hamster
       LazyList.new do
         next self if empty?
         next tail.uniq(items) if items.include?(head)
-        Sequence.new(head, tail.uniq(items.add(head)))
+        Cons.new(head, tail.uniq(items.add(head)))
       end
     end
     def_delegator :self, :uniq, :nub
@@ -479,7 +479,7 @@ module Hamster
       LazyList.new do
         next other.uniq(items) if empty?
         next tail.union(other, items) if items.include?(head)
-        Sequence.new(head, tail.union(other, items.add(head)))
+        Cons.new(head, tail.union(other, items.add(head)))
       end
     end
     def_delegator :self, :union, :|
@@ -488,7 +488,7 @@ module Hamster
     # @return [List]
     def init
       return EmptyList if tail.empty?
-      LazyList.new { Sequence.new(head, tail.init) }
+      LazyList.new { Cons.new(head, tail.init) }
     end
 
     # Return the last item in this list.
@@ -512,7 +512,7 @@ module Hamster
     def tails
       LazyList.new do
         next self if empty?
-        Sequence.new(self, tail.tails)
+        Cons.new(self, tail.tails)
       end
     end
 
@@ -529,7 +529,7 @@ module Hamster
     def inits
       LazyList.new do
         next self if empty?
-        Sequence.new(Hamster.list(head), tail.inits.map { |list| list.cons(head) })
+        Cons.new(Hamster.list(head), tail.inits.map { |list| list.cons(head) })
       end
     end
 
@@ -544,7 +544,7 @@ module Hamster
     #
     # @return [List]
     def combination(n)
-      return Sequence.new(EmptyList) if n == 0
+      return Cons.new(EmptyList) if n == 0
       LazyList.new do
         next self if empty?
         tail.combination(n - 1).map { |list| list.cons(head) }.append(tail.combination(n))
@@ -557,7 +557,7 @@ module Hamster
       LazyList.new do
         next self if empty?
         first, remainder = split_at(number)
-        Sequence.new(first, remainder.chunk(number))
+        Cons.new(first, remainder.chunk(number))
       end
     end
 
@@ -580,7 +580,7 @@ module Hamster
       LazyList.new do
         next self if empty?
         next head.append(tail.flatten) if head.is_a?(List)
-        Sequence.new(head, tail.flatten)
+        Cons.new(head, tail.flatten)
       end
     end
 
@@ -670,7 +670,7 @@ module Hamster
       LazyList.new do
         node = self
         while true
-          break Sequence.new(i, node.tail.find_indices(i + 1, &block)) if yield(node.head)
+          break Cons.new(i, node.tail.find_indices(i + 1, &block)) if yield(node.head)
           node = node.tail
           break EmptyList if node.empty?
           i += 1
@@ -717,7 +717,7 @@ module Hamster
           yield(a.head, b.head)
         end
         next EmptyList if sorted.empty?
-        Sequence.new(sorted.head.head, sorted.tail.cons(sorted.head.tail).merge(&comparator))
+        Cons.new(sorted.head.head, sorted.tail.cons(sorted.head.tail).merge(&comparator))
       end
     end
 
@@ -735,7 +735,7 @@ module Hamster
           yield(list.head)
         end
         next EmptyList if sorted.empty?
-        Sequence.new(sorted.head.head, sorted.tail.cons(sorted.head.tail).merge_by(&transformer))
+        Cons.new(sorted.head.head, sorted.tail.cons(sorted.head.tail).merge_by(&transformer))
       end
     end
 
@@ -755,7 +755,7 @@ module Hamster
         return items.to_list.append(self)
       elsif index > 0
         LazyList.new do
-          Sequence.new(head, tail.insert(index-1, *items))
+          Cons.new(head, tail.insert(index-1, *items))
         end
       else
         raise IndexError if index < -size
@@ -771,7 +771,7 @@ module Hamster
       list = self
       list = list.tail while list.head == obj && !list.empty?
       return EmptyList if list.empty?
-      LazyList.new { Sequence.new(list.head, list.tail.delete(obj)) }
+      LazyList.new { Cons.new(list.head, list.tail.delete(obj)) }
     end
 
     # Return a lazy list containing the same items, minus the one at `index`.
@@ -787,7 +787,7 @@ module Hamster
         return self if index < 0
         delete_at(index)
       else
-        LazyList.new { Sequence.new(head, tail.delete_at(index - 1)) }
+        LazyList.new { Cons.new(head, tail.delete_at(index - 1)) }
       end
     end
 
@@ -808,14 +808,14 @@ module Hamster
         length ||= size
         if length > 0
           LazyList.new do
-            Sequence.new(obj, tail.fill(obj, 0, length-1))
+            Cons.new(obj, tail.fill(obj, 0, length-1))
           end
         else
           self
         end
       elsif index > 0
         LazyList.new do
-          Sequence.new(head, tail.fill(obj, index-1, length))
+          Cons.new(head, tail.fill(obj, index-1, length))
         end
       else
         raise IndexError if index < -size
@@ -837,7 +837,7 @@ module Hamster
       if length == 0
         yield EmptyList
       elsif length == 1
-        each { |obj| yield Sequence.new(obj, EmptyList) }
+        each { |obj| yield Cons.new(obj, EmptyList) }
       elsif not empty?
         if length < size
           tail.permutation(length, &block)
@@ -987,16 +987,16 @@ module Hamster
 
   # The basic building block for constructing lists
   #
-  # A Sequence, also known as a "cons cell", has a +head+ and a +tail+, where
-  # the +head+ is an element in the list, and the +tail+ is a reference to the
+  # A Cons, also known as a "cons cell", has a "head" and a "tail", where
+  # the head is an element in the list, and the tail is a reference to the
   # rest of the list. This way a singly linked list can be constructed, with
-  # each +Sequence+ holding a single element and a pointer to the next
-  # +Sequence+.
+  # each `Cons` holding a single element and a pointer to the next
+  # `Cons`.
   #
-  # The last +Sequence+ instance in the chain has the {EmptyList} as its tail.
+  # The last `Cons` instance in the chain has the {EmptyList} as its tail.
   #
   # @private
-  class Sequence
+  class Cons
     include List
 
     attr_reader :head, :tail
@@ -1024,7 +1024,7 @@ module Hamster
   # to +head+, +tail+ and +empty?+. The list is only realized (i.e. the block is
   # only called) when one of these operations is performed.
   #
-  # By returning a +Sequence+ that in turn has a {LazyList} as its +tail+, one can
+  # By returning a `Cons` that in turn has a {LazyList} as its tail, one can
   # construct infinite lazy lists.
   #
   # @private

@@ -8,9 +8,9 @@ module Enumerable
   def to_list
     # use destructive operations to build up a new list, like Common Lisp's NCONC
     # this is a very fast way to build up a linked list
-    list = tail = Hamster::Sequence.allocate
+    list = tail = Hamster::Cons.allocate
     each do |item|
-      new_node = Hamster::Sequence.allocate
+      new_node = Hamster::Cons.allocate
       new_node.instance_variable_set(:@head, item)
       tail.instance_variable_set(:@tail, new_node)
       tail = new_node
