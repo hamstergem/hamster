@@ -1064,7 +1064,7 @@ module Hamster
       @size != nil
     end
 
-    protected
+    private
 
     QUEUE = ConditionVariable.new
     MUTEX = Mutex.new
