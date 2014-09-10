@@ -88,7 +88,7 @@ module Hamster
       #
       # @return [Hash]
       def empty
-        @empty ||= self.alloc
+        @empty ||= self.new
       end
 
       # "Raw" allocation of a new `Hash`. Used internally to create a new
