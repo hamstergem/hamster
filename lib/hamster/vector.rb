@@ -73,7 +73,7 @@ module Hamster
       #
       # @return [Vector]
       def empty
-        @empty ||= self.alloc([].freeze, 0, 0)
+        @empty ||= self.new
       end
 
       # "Raw" allocation of a new `Vector`. Used internally to create a new

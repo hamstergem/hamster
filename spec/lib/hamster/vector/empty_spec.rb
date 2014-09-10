@@ -30,6 +30,15 @@ describe Hamster::Vector do
         subclass.empty.class.should be(subclass)
         subclass.empty.should be_empty
       end
+
+      it "calls overridden #initialize when creating empty Hash" do
+        subclass = Class.new(Hamster::Vector) do
+          def initialize
+            @variable = 'value'
+          end
+        end
+        subclass.empty.instance_variable_get(:@variable).should == 'value'
+      end
     end
   end
 end
