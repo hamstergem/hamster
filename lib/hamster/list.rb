@@ -89,13 +89,16 @@ module Hamster
       LazyList.new { Cons.new(item, iterate(yield(item), &block)) }
     end
 
-    # Turn an Enumerator into a `Hamster::List`.
+    # Turn an Enumerator into a `Hamster::List`. The result is a lazy collection
+    # where the values are memoized as they are generated.
     #
-    # The result is a lazy collection where the values are memoized as they are
-    # generated.
+    # If your code uses multiple threads, you need to make sure that the returned
+    # lazy collection is realized on a single thread only. Otherwise, a `FiberError`
+    # will be raised. After the collection is realized, it can be used from other
+    # threads as well.
     #
     # @example
-    #   def rg ; loop { yield rand(100) } ; end
+    #   def rg; loop { yield rand(100) }; end
     #   Hamster.enumerate(to_enum(:rg)).take(10)
     #
     # @param enum [Enumerator] The object to iterate over
