@@ -10,8 +10,7 @@ describe Hamster::Hash do
         end
       end
 
-      hash = SnazzyHash.new
-      hash['snazzy?'].should == 'oh yeah'
+      SnazzyHash.new['snazzy?'].should == 'oh yeah'
     end
 
     context "from a subclass" do
