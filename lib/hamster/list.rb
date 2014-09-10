@@ -1177,7 +1177,7 @@ module Hamster
 
     def realize
       @mutex.synchronize do
-        return if @head != Undefined
+        return if @head != Undefined # another thread got ahead of us
         while true
           if !@buffer.empty?
             @head = @buffer.shift
