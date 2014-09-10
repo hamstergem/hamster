@@ -69,7 +69,7 @@ module Hamster
       #
       # @return [Set]
       def empty
-        @empty ||= self.alloc
+        @empty ||= self.new
       end
 
       # "Raw" allocation of a new `Set`. Used internally to create a new
