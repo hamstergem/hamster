@@ -407,7 +407,10 @@ module Hamster
     # @return [Array]
     def span(&block)
       return [self, EmptyList].freeze unless block_given?
-      [take_while(&block), drop_while(&block)].freeze
+      splitter = Splitter.new(self, block)
+      mutex = Mutex.new
+      [Splitter::Left.new(splitter, splitter.left, mutex),
+       Splitter::Right.new(splitter, mutex)].freeze
     end
 
     # Return 2 `List`s, one up to (but not including) the first item for which the
@@ -1186,6 +1189,82 @@ module Hamster
           else
             @partitioner.next_item
           end
+        end
+      end
+    end
+  end
+
+  # This class can divide a list up into 2 lazy lists, one for the prefix of elements
+  #   for which the block returns true, and another for all the elements after that
+  # It guarantees that the block will only be called ONCE for each item
+  #
+  # @private
+  class Splitter
+    attr_reader :left, :right
+    def initialize(list, block)
+      @list, @block, @left, @right = list, block, [], EmptyList
+    end
+
+    def next_item
+      unless @list.empty?
+        item = @list.head
+        if @block.call(item)
+          @left << item
+          @list = @list.tail
+        else
+          @right = @list
+          @list  = EmptyList
+        end
+      end
+    end
+
+    def done?
+      @list.empty?
+    end
+
+    class Left < Realizable
+      def initialize(splitter, buffer, mutex)
+        super()
+        @splitter, @buffer, @mutex = splitter, buffer, mutex
+      end
+
+      def realize
+        @mutex.synchronize do
+          return if @head != Undefined # another thread got ahead of us
+          while true
+            if !@buffer.empty?
+              @head = @buffer.shift
+              @tail = Left.new(@splitter, @buffer, @mutex)
+              @splitter, @buffer, @mutex = nil, nil, nil
+              return
+            elsif @splitter.done?
+              @head, @size, @tail = nil, 0, self
+              @splitter, @buffer, @mutex = nil, nil, nil
+              return
+            else
+              @splitter.next_item
+            end
+          end
+        end
+      end
+    end
+
+    class Right < Realizable
+      def initialize(splitter, mutex)
+        super()
+        @splitter, @mutex = splitter, mutex
+      end
+
+      def realize
+        @mutex.synchronize do
+          return if @head != Undefined
+          @splitter.next_item until @splitter.done?
+          if @splitter.right.empty?
+            @head, @size, @tail = nil, 0, self
+          else
+            @head, @tail = @splitter.right.head, @splitter.right.tail
+          end
+          @splitter, @mutex = nil, nil
         end
       end
     end

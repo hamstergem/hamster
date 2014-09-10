@@ -44,6 +44,17 @@ DESC
           it "returns the remainder as #{expected_remainder.inspect}" do
             remainder.should eql(Hamster.list(*expected_remainder))
           end
+
+          it "calls the block only once for each element" do
+            count = 0
+            result = list.span { |item| count += 1; item <= 2 }
+            # force realization of lazy lists
+            result.first.size.should == expected_prefix.size
+            result.last.size.should == expected_remainder.size
+            # it may not need to call the block on every element, just up to the
+            # point where the block first returns a false value
+            count.should <= values.size
+          end
         end
 
         context "without a predicate" do
