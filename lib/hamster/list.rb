@@ -1182,9 +1182,13 @@ module Hamster
           if !@buffer.empty?
             @head = @buffer.shift
             @tail = Partitioned.new(@partitioner, @buffer, @mutex)
+            # don't hold onto references
+            # tail will keep references alive until end of list is reached
+            @partitioner, @buffer, @mutex = nil, nil, nil
             return
           elsif @partitioner.done?
             @head, @size, @tail = nil, 0, self
+            @partitioner, @buffer, @mutex = nil, nil, nil # allow them to be GC'd
             return
           else
             @partitioner.next_item
