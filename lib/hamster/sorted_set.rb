@@ -714,11 +714,7 @@ module Hamster
         # deletion of items may have occurred on left and right sides
         # now we may also need to delete the current item
         if keep_item
-          if left.height > right.height
-            rebalance_left(left, right)
-          else
-            rebalance_right(left, right)
-          end
+          rebalance(left, right) # no need to delete the current item
         elsif left.empty?
           right
         elsif right.empty?
