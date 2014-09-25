@@ -719,14 +719,12 @@ module Hamster
           right
         elsif right.empty?
           left
+        elsif left.height > right.height
+          replace_with = left.max
+          AVLNode.new(replace_with, left.delete(replace_with, comparator), right)
         else
-          if left.height > right.height
-            replace_with = left.max
-            AVLNode.new(replace_with, left.delete(replace_with, comparator), right)
-          else
-            replace_with = right.min
-            AVLNode.new(replace_with, left, right.delete(replace_with, comparator))
-          end
+          replace_with = right.min
+          AVLNode.new(replace_with, left, right.delete(replace_with, comparator))
         end
       end
 
