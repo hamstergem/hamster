@@ -789,11 +789,7 @@ module Hamster
         else
           left  = @left.slice(from, @left.size - from)
           right = @right.slice(0, from + length - @left.size - 1)
-          if left.height > right.height
-            rebalance_left(left, right)
-          else
-            rebalance_right(left, right)
-          end
+          rebalance(left, right)
         end
       end
 
@@ -808,6 +804,14 @@ module Hamster
           end
         end
         [left, right]
+      end
+
+      def rebalance(left, right)
+        if left.height > right.height
+          rebalance_left(left, right)
+        else
+          rebalance_right(left, right)
+        end
       end
 
       def rebalance_left(left, right)
