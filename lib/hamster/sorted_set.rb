@@ -552,6 +552,14 @@ module Hamster
       end
     end
 
+    def up_to(item, &block)
+      if block_given?
+        @node.each_less(item, @comparator, true, &block)
+      else
+        self.class.alloc(@node.prefix(item, @comparator, true), @comparator)
+      end
+    end
+
     # Return a randomly chosen item from this set. If the set is empty, return `nil`.
     #
     # @return [Object]
