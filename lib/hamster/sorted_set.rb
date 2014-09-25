@@ -536,6 +536,14 @@ module Hamster
       end
     end
 
+    def below(item, &block)
+      if block_given?
+        @node.each_less(item, @comparator, false, &block)
+      else
+        self.class.alloc(@node.prefix(item, @comparator, false), @comparator)
+      end
+    end
+
     # Return a randomly chosen item from this set. If the set is empty, return `nil`.
     #
     # @return [Object]
@@ -736,12 +744,32 @@ module Hamster
         end
       end
 
+      def prefix(item, comparator, inclusive)
+        dir = direction(item, comparator)
+        if dir > 0 || (inclusive && dir == 0)
+          rebalance_left(@left, @right.prefix(item, comparator, inclusive))
+        else
+          @left.prefix(item, comparator, inclusive)
+        end
+      end
+
       def suffix(item, comparator, inclusive)
         dir = direction(item, comparator)
         if dir < 0 || (inclusive && dir == 0)
           rebalance_right(@left.suffix(item, comparator, inclusive), @right)
         else
           @right.suffix(item, comparator, inclusive)
+        end
+      end
+
+      def each_less(item, comparator, inclusive, &block)
+        dir = direction(item, comparator)
+        if dir > 0 || (inclusive && dir == 0)
+          @left.each(&block)
+          yield @item
+          @right.each_less(item, comparator, inclusive, &block)
+        else
+          @left.each_less(item, comparator, inclusive, &block)
         end
       end
 
@@ -896,8 +924,10 @@ module Hamster
       def e.keep_only(items, comparator); self; end
       def e.delete(item, comparator); self; end
       def e.include?(item, comparator); false; end
+      def e.prefix(item, comparator, inclusive); self; end
       def e.suffix(item, comparator, inclusive); self; end
       def e.each_greater(item, comparator, inclusive); end
+      def e.each_less(item, comparator, inclusive); end
       def e.empty?; true; end
       def e.slice(from, length); self; end
     end.freeze
