@@ -560,6 +560,14 @@ module Hamster
       end
     end
 
+    def between(from, to, &block)
+      if block_given?
+        @node.each_between(from, to, @comparator, &block)
+      else
+        self.class.alloc(@node.between(from, to, @comparator), @comparator)
+      end
+    end
+
     # Return a randomly chosen item from this set. If the set is empty, return `nil`.
     #
     # @return [Object]
@@ -778,6 +786,18 @@ module Hamster
         end
       end
 
+      def between(from, to, comparator)
+        if direction(from, comparator) > 0 # all on the right
+          @right.between(from, to, comparator)
+        elsif direction(to, comparator) < 0 # all on the left
+          @left.between(from, to, comparator)
+        else
+          left = @left.suffix(from, comparator, true)
+          right = @right.prefix(to, comparator, true)
+          rebalance(left, right)
+        end
+      end
+
       def each_less(item, comparator, inclusive, &block)
         dir = direction(item, comparator)
         if dir > 0 || (inclusive && dir == 0)
@@ -797,6 +817,18 @@ module Hamster
           @right.each(&block)
         else
           @right.each_greater(item, comparator, inclusive, &block)
+        end
+      end
+
+      def each_between(from, to, comparator, &block)
+        if direction(from, comparator) > 0 # all on the right
+          @right.each_between(from, to, comparator, &block)
+        elsif direction(to, comparator) < 0 # all on the left
+          @left.each_between(from, to, comparator, &block)
+        else
+          @left.each_greater(from, comparator, true, &block)
+          yield @item
+          @right.each_less(to, comparator, true, &block)
         end
       end
 
@@ -942,8 +974,10 @@ module Hamster
       def e.include?(item, comparator); false; end
       def e.prefix(item, comparator, inclusive); self; end
       def e.suffix(item, comparator, inclusive); self; end
+      def e.between(from, to, comparator); self; end
       def e.each_greater(item, comparator, inclusive); end
       def e.each_less(item, comparator, inclusive); end
+      def e.each_between(item, comparator, inclusive); end
       def e.empty?; true; end
       def e.slice(from, length); self; end
     end.freeze
