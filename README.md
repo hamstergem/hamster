@@ -4,6 +4,7 @@ Hamster
   - [![Version](https://badge.fury.io/rb/hamster.png)](https://rubygems.org/gems/hamster)
   - [![Build](http://img.shields.io/travis-ci/hamstergem/hamster.png)](https://travis-ci.org/hamstergem/hamster)
   - [![Dependencies](https://gemnasium.com/hamstergem/hamster.png)](https://gemnasium.com/hamstergem/hamster)
+  - [![Inline docs](http://inch-ci.org/github/hamstergem/hamster.svg?branch=master)](http://inch-ci.org/github/hamstergem/hamster)
   - [![License](http://img.shields.io/license/MIT.png?color=green)](http://opensource.org/licenses/MIT)
 
 Efficient, immutable, and thread-safe collection classes for Ruby.
