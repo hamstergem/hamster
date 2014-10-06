@@ -528,6 +528,10 @@ module Hamster
     def_delegator :self, :group_by, :group
     def_delegator :self, :group_by, :classify
 
+    # With a block, yield all the items which are "higher" than `item` (as defined
+    # by the set's comparator). Otherwise, return them as a new `SortedSet`.
+    #
+    # @param item [Object]
     def above(item, &block)
       if block_given?
         @node.each_greater(item, @comparator, false, &block)
@@ -536,6 +540,10 @@ module Hamster
       end
     end
 
+    # With a block, yield all the items which are "higher" than `item` (as defined
+    # by the set's comparator). Otherwise, return them as a new `SortedSet`.
+    #
+    # @param item [Object]
     def below(item, &block)
       if block_given?
         @node.each_less(item, @comparator, false, &block)
@@ -544,6 +552,11 @@ module Hamster
       end
     end
 
+    # With a block, yield all the items which are "higher" or equal to `item`
+    # (as determined by the set's comparator). Otherwise, return them as a new
+    # `SortedSet`.
+    #
+    # @param item [Object]
     def from(item, &block)
       if block_given?
         @node.each_greater(item, @comparator, true, &block)
@@ -552,6 +565,10 @@ module Hamster
       end
     end
 
+    # With a block, yield all the items which are "lower" than `item` (as defined
+    # by the set's comparator). Otherwise, return them as a new `SortedSet`.
+    #
+    # @param item [Object]
     def up_to(item, &block)
       if block_given?
         @node.each_less(item, @comparator, true, &block)
@@ -560,6 +577,12 @@ module Hamster
       end
     end
 
+    # With a block, yield all the items which are equal or higher than `from` and
+    # equal or less than `to` (as determined by the set's comparator). Otherwise,
+    # return the specified range of items as a new `SortedSet`.
+    #
+    # @param from [Object]
+    # @param to [Object]
     def between(from, to, &block)
       if block_given?
         @node.each_between(from, to, @comparator, &block)
