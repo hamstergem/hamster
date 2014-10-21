@@ -38,6 +38,15 @@ describe Hamster::Set do
         context "when passed a Ruby Array" do
           it "returns the expected Set" do
             Hamster.set(*a).send(method, b.freeze).should eql(Hamster.set(*expected))
+            Hamster.set(*b).send(method, a.freeze).should eql(Hamster.set(*expected))
+          end
+        end
+
+        context "from a subclass" do
+          it "returns an instance of the subclass" do
+            subclass = Class.new(Hamster::Set)
+            subclass.new(a).union(Hamster::Set.new(b)).class.should be(subclass)
+            subclass.new(b).union(Hamster::Set.new(a)).class.should be(subclass)
           end
         end
       end

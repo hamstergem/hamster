@@ -242,7 +242,14 @@ module Hamster
     # @param other [Enumerable] The collection to merge with
     # @return [Set]
     def union(other)
-      trie = other.reduce(@trie) do |a, element|
+      if other.is_a?(Hamster::Set) && other.size > size
+        small_set = self
+        large_set_trie = other.instance_variable_get(:@trie)
+      else
+        small_set = other
+        large_set_trie = @trie
+      end
+      trie = small_set.reduce(large_set_trie) do |a, element|
         next a if a.key?(element)
         a.put(element, nil)
       end
