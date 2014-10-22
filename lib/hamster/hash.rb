@@ -353,7 +353,7 @@ module Hamster
           end
         end
       else
-        other.reduce(@trie) { |trie, (key, value)| trie.put(key, value) }
+        @trie.bulk_put(other)
       end
 
       derive_new_hash(trie)

@@ -242,17 +242,24 @@ module Hamster
     # @param other [Enumerable] The collection to merge with
     # @return [Set]
     def union(other)
-      if other.is_a?(Hamster::Set) && other.size > size
-        small_set = self
-        large_set_trie = other.instance_variable_get(:@trie)
+      if other.is_a?(Hamster::Set)
+        if other.size > size
+          small_set_pairs = @trie
+          large_set_trie = other.instance_variable_get(:@trie)
+        else
+          small_set_pairs = other.instance_variable_get(:@trie)
+          large_set_trie = @trie
+        end
       else
-        small_set = other
+        if other.respond_to?(:lazy)
+          small_set_pairs = other.lazy.map { |e| [e, nil] }
+        else
+          small_set_pairs = other.map { |e| [e, nil] }
+        end
         large_set_trie = @trie
       end
-      trie = small_set.reduce(large_set_trie) do |a, element|
-        next a if a.key?(element)
-        a.put(element, nil)
-      end
+
+      trie = large_set_trie.bulk_put(small_set_pairs)
       trie.equal?(@trie) ? self : self.class.alloc(trie)
     end
     def_delegator :self, :union, :|

@@ -83,6 +83,53 @@ module Hamster
       end
     end
 
+    # Put multiple elements into a Trie.  This is more effecient than several
+    # calls to `#put`.
+    #
+    # @param key_value_pairs Enumerable of pairs (`[key, value]`)
+    # @return [Trie] A copy of <tt>self</tt> after associated the given keys
+    #         and values.
+    def bulk_put(key_value_pairs)
+      new_entries = nil
+      new_children = nil
+      new_size = @size
+
+      key_value_pairs.each do |key, value|
+        index = index_for(key)
+        entry = (new_entries || @entries)[index]
+
+        if !entry
+          new_entries ||= @entries.dup
+          key = key.dup.freeze if key.is_a?(String) && !key.frozen?
+          new_entries[index] = [key, value].freeze
+          new_size += 1
+        elsif entry[0].eql?(key)
+          if !entry[1].equal?(value)
+            new_entries ||= @entries.dup
+            key = key.dup.freeze if key.is_a?(String) && !key.frozen?
+            new_entries[index] = [key, value].freeze
+          end
+        else
+          new_children ||= @children.dup
+          child = new_children[index]
+          child_size = child ? child.size : 0
+          if child
+            new_children[index] = child.put(key, value)
+          else
+            new_children[index] = Trie.new(@significant_bits + 5).put!(key, value)
+          end
+          new_child_size = new_children[index].size
+          new_size += new_child_size - child_size
+        end
+      end
+
+      if new_entries || new_children
+        Trie.new(@significant_bits, new_size, new_entries || @entries, new_children || @children)
+      else
+        self
+      end
+    end
+
     # Returns <tt>self</tt> after overwriting the element associated with the specified key.
     def put!(key, value)
       index = index_for(key)
