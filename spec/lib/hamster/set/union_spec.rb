@@ -45,8 +45,8 @@ describe Hamster::Set do
         context "from a subclass" do
           it "returns an instance of the subclass" do
             subclass = Class.new(Hamster::Set)
-            subclass.new(a).union(Hamster::Set.new(b)).class.should be(subclass)
-            subclass.new(b).union(Hamster::Set.new(a)).class.should be(subclass)
+            subclass.new(a).send(method, Hamster::Set.new(b)).class.should be(subclass)
+            subclass.new(b).send(method, Hamster::Set.new(a)).class.should be(subclass)
           end
         end
       end
