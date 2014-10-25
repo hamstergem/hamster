@@ -1,5 +1,6 @@
 Hamster
 =======
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/hamstergem/hamster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
   - [![Version](https://badge.fury.io/rb/hamster.png)](https://rubygems.org/gems/hamster)
   - [![Build](http://img.shields.io/travis-ci/hamstergem/hamster.png)](https://travis-ci.org/hamstergem/hamster)
