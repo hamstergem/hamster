@@ -4,3 +4,10 @@ rvm:
   - 2.0
   - 2.1
   - ruby-head
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/c60655646e69e3eba04b
+    on_success: change
+    on_failure: always
+    on_start: false
