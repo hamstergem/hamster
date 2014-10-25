@@ -15,7 +15,13 @@ Structures][PDS]: [`Hash`][HASH-DOC], [`Vector`][VECTOR-DOC], [`Set`][SET-DOC], 
 Hamster collections are **immutable**. Whenever you modify a Hamster
 collection, the original is preserved and a modified copy is returned. This
 makes them inherently thread-safe and shareable. At the same time, they remain
-CPU and memory-efficient by sharing between copies.
+CPU and memory-efficient by sharing between copies. 
+
+While Hamster collections are immutable, you can still mutate objects stored
+in them. We recommend that  you don't do this, unless you are sure you know 
+what you are doing. Hamster collections are thread-safe and can be freely 
+shared between threads, but you are responsible for making sure that the 
+objects stored in them are used in a thread-safe manner.
 
 Hamster collections are almost always closed under a given operation. That is,
 whereas Ruby's collection methods always return arrays, Hamster collections
