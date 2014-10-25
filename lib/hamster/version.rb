@@ -1,3 +1,3 @@
 module Hamster
-  VERSION = "1.0.1-rc2"
+  VERSION = "1.0.1-rc3"
 end
