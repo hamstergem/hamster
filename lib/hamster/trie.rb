@@ -94,29 +94,48 @@ module Hamster
       new_children = nil
       new_size = @size
 
-      key_value_pairs.each do |key, value|
-        index = index_for(key)
-        entry = (new_entries || @entries)[index]
+      pairs_by_index = {}
+      key_value_pairs.each do |entry|
+        index = index_for(entry[0])
+        index_entries = pairs_by_index[index]
+        if index_entries
+          index_entries.push(entry)
+        else
+          pairs_by_index[index] = [entry]
+        end
+      end
 
-        if !entry
-          new_entries ||= @entries.dup
-          key = key.dup.freeze if key.is_a?(String) && !key.frozen?
-          new_entries[index] = [key, value].freeze
-          new_size += 1
-        elsif entry[0].eql?(key)
-          if !entry[1].equal?(value)
+      pairs_by_index.each do |index, key_value_pairs_for_index|
+        entry = (new_entries || @entries)[index]
+        pairs_for_child = []
+        key_value_pairs_for_index.each do |key, value|
+          if !entry
             new_entries ||= @entries.dup
             key = key.dup.freeze if key.is_a?(String) && !key.frozen?
             new_entries[index] = [key, value].freeze
+            entry = new_entries[index]
+            new_size += 1
+          elsif entry[0].eql?(key)
+            if !entry[1].equal?(value)
+              new_entries ||= @entries.dup
+              key = key.dup.freeze if key.is_a?(String) && !key.frozen?
+              new_entries[index] = [key, value].freeze
+              entry = new_entries[index]
+            else
+            end
+          else
+            pairs_for_child.push([key, value])
           end
-        else
+        end
+
+        if !pairs_for_child.empty?
           new_children ||= @children.dup
           child = new_children[index]
           child_size = child ? child.size : 0
           if child
-            new_children[index] = child.put(key, value)
+            new_children[index] = child.bulk_put(pairs_for_child)
           else
-            new_children[index] = Trie.new(@significant_bits + 5).put!(key, value)
+            new_children[index] = Trie.new(@significant_bits + 5).bulk_put(pairs_for_child)
           end
           new_child_size = new_children[index].size
           new_size += new_child_size - child_size
