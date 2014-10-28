@@ -90,39 +90,35 @@ module Hamster
     # @return [Trie] A copy of <tt>self</tt> after associated the given keys
     #         and values.
     def bulk_put(key_value_pairs)
-      #puts "bulk_put(#{key_value_pairs})"
       new_entries = nil
       new_children = nil
       new_size = @size
 
-      pairs_by_index = []
-      key_value_pairs.each do |entry|
-        index = index_for(entry[0])
-        pairs_by_index[index] ||= []
-        pairs_by_index[index].push(entry)
-      end
-
+      pairs_by_index = organize_pairs_by_index(key_value_pairs)
       pairs_by_index.each_with_index do |key_value_pairs_for_index, index|
-        next unless key_value_pairs_for_index
         entry = (new_entries || @entries)[index]
         pairs_for_child = []
+        filled_entry = false
         key_value_pairs_for_index.each do |key, value|
-          if !entry
-            new_entries ||= @entries.dup
-            key = key.dup.freeze if key.is_a?(String) && !key.frozen?
-            new_entries[index] = [key, value].freeze
-            entry = new_entries[index]
-            new_size += 1
-          elsif entry[0].eql?(key)
-            if !entry[1].equal?(value)
+          if filled_entry
+            pairs_for_child.push([key, value])
+          else
+            if !entry
               new_entries ||= @entries.dup
               key = key.dup.freeze if key.is_a?(String) && !key.frozen?
               new_entries[index] = [key, value].freeze
-              entry = new_entries[index]
+              new_size += 1
+              filled_entry = true
+            elsif entry[0].eql?(key)
+              if !entry[1].equal?(value)
+                new_entries ||= @entries.dup
+                key = key.dup.freeze if key.is_a?(String) && !key.frozen?
+                new_entries[index] = [key, value].freeze
+                filled_entry = true
+              end
             else
+              pairs_for_child.push([key, value])
             end
-          else
-            pairs_for_child.push([key, value])
           end
         end
 
@@ -148,38 +144,32 @@ module Hamster
     end
 
     def bulk_put!(key_value_pairs)
-      #puts "bulk_put!(#{key_value_pairs})"
-      #exit
-      pairs_by_index = []
-      key_value_pairs.each do |entry|
-        index = index_for(entry[0])
-        pairs_by_index[index] ||= []
-        pairs_by_index[index].push(entry)
-      end
-
+      pairs_by_index = organize_pairs_by_index(key_value_pairs)
       pairs_by_index.each_with_index do |key_value_pairs_for_index, index|
-        next unless key_value_pairs_for_index
-        #puts "#{self.object_id}: Wokring on index #{index}"
         pairs_for_child = []
         entry = @entries[index]
+        filled_entry = false
         key_value_pairs_for_index.each do |key, value|
-          if !entry
-            key = key.dup.freeze if key.is_a?(String) && !key.frozen?
-            entry = [key, value].freeze
-            @entries[index] = entry
-            @size += 1
-          elsif entry[0].eql?(key)
-            if !entry[1].equal?(value)
-              key = key.dup.freeze if key.is_a?(String) && !key.frozen?
-              entry = [key, value].freeze
-              @entries[index] = entry
-            end
-          else
+          if filled_entry
             pairs_for_child.push([key, value])
+          else
+            if !entry
+              key = key.dup.freeze if key.is_a?(String) && !key.frozen?
+              @entries[index] = [key, value].freeze
+              @size += 1
+              filled_entry = true
+            elsif entry[0].eql?(key)
+              if !entry[1].equal?(value)
+                key = key.dup.freeze if key.is_a?(String) && !key.frozen?
+                @entries[index] = [key, value].freeze
+              end
+              filled_entry = true
+            else
+              pairs_for_child.push([key, value])
+            end
           end
         end
 
-        #puts "#{self.object_id}: pairs_for_child=#{pairs_for_child}"
         if !pairs_for_child.empty?
           child = @children[index]
           child_size = child ? child.size : 0
@@ -193,6 +183,15 @@ module Hamster
         end
       end
       self
+    end
+
+    def organize_pairs_by_index(pairs)
+      pairs_by_index = [ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ]
+      pairs.each do |entry|
+        index = index_for(entry[0])
+        pairs_by_index[index].push(entry)
+      end
+      pairs_by_index
     end
 
     # Returns <tt>self</tt> after overwriting the element associated with the specified key.
