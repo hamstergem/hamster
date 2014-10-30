@@ -442,6 +442,7 @@ module Hamster
     # @param n [Integer] The number of elements to remove
     # @return [Vector]
     def drop(n)
+      return self if n == 0
       self.class.new(super)
     end
 
@@ -449,6 +450,7 @@ module Hamster
     # @param n [Integer] The number of elements to retain
     # @return [Vector]
     def take(n)
+      return self if n >= @size
       self.class.new(super)
     end
 

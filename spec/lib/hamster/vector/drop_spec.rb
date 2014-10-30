@@ -31,5 +31,12 @@ describe Hamster::Vector do
       -> { V[1, 2, 3].drop(-1) }.should raise_error(ArgumentError)
       -> { V[1, 2, 3].drop(-3) }.should raise_error(ArgumentError)
     end
+
+    context "when number of elements specified is zero" do
+      let(:vector) { Hamster.vector(1, 2, 3, 4, 5, 6) }
+      it "returns self" do
+        vector.drop(0).should be(vector)
+      end
+    end
   end
 end
