@@ -151,5 +151,20 @@ describe Hamster::Vector do
         end
       end
     end
+
+    context "with an identical value to an existing item" do
+      [1, 2, 5, 31,32, 33, 100, 200].each do |size|
+        context "on a #{size}-item vector" do
+          let(:array) { (0...size).map { |x| x * x} }
+          let(:vector) { Hamster.vector(*array) }
+
+          it "returns self" do
+            (0...size).each do |index|
+              vector.set(index, index * index).should equal(vector)
+            end
+          end
+        end
+      end
+    end
   end
 end

@@ -915,8 +915,12 @@ module Hamster
         root = [root].freeze
         levels += 1
       end
-      root = update_leaf_node(root, levels * BITS_PER_LEVEL, index, item)
-      self.class.alloc(root, @size > index ? @size : index + 1, levels)
+      new_root = update_leaf_node(root, levels * BITS_PER_LEVEL, index, item)
+      if new_root.equal?(root)
+        self
+      else
+        self.class.alloc(new_root, @size > index ? @size : index + 1, levels)
+      end
     end
 
     def update_leaf_node(node, bitshift, index, item)
@@ -925,7 +929,12 @@ module Hamster
         old_child = node[slot_index] || []
         item = update_leaf_node(old_child, bitshift - BITS_PER_LEVEL, index, item)
       end
-      node.dup.tap { |n| n[slot_index] = item }.freeze
+      existing_item = node[slot_index]
+      if existing_item.equal?(item)
+        node
+      else
+        node.dup.tap { |n| n[slot_index] = item }.freeze
+      end
     end
 
     def flatten_range(node, bitshift, from, to)
