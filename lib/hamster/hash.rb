@@ -231,6 +231,41 @@ module Hamster
       end
     end
 
+    # Return a new `Hash` with a deeply nested value modified to the result of
+    # the given code block.  When travesing the nested `Hash`s and `Vector`s,
+    # non-existing keys are created with value of empty `Hash`s.
+    #
+    # The code block receives the existing value of the deeply nested key (or
+    # `nil` if it doesn't exist). This is useful for "transforming" the value
+    # associated with a certain key.
+    #
+    # Note that the original `Hash` and sub-`Hash`s and sub-`Vector`s are left
+    # unmodified; new data structure copies are created along the path wherever
+    # needed.
+    #
+    # @example
+    #   hash = Hamster::Hash["a" => Hamster::Hash["b" => Hamster::Hash["c" => 42]]]
+    #   hash.update_in("a", "b", "c") { |value| value + 5 }
+    #   # => Hamster::Hash["a" => Hamster::Hash["b" => Hamster::Hash["c" => 47]]]
+    #
+    # @param key_path [Object(s)] List of keys which form the path to the key to be modified
+    # @yield [value] The previously stored value
+    # @yieldreturn [Object] The new value to store
+    # @return [Hash]
+    def update_in(*key_path, &block)
+      if key_path.empty?
+        raise ArgumentError, "must have at least one key in path"
+      end
+      key = key_path[0]
+      if key_path.size == 1
+        new_value = block.call(get(key))
+      else
+        value = fetch(key, EmptyHash)
+        new_value = value.update_in(*key_path[1..-1], &block)
+      end
+      put(key, new_value)
+    end
+
     # Return a new `Hash` with the existing key/value associations, plus an association
     # between the provided key and value. If an equivalent key is already present, its
     # associated value will be replaced with the provided one.
