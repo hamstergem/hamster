@@ -50,6 +50,15 @@ describe Hamster::Set do
           end
         end
       end
+
+      context "when receiving a subset" do
+        let(:set_a) { Hamster.set(*(1..300).to_a) }
+        let(:set_b) { Hamster.set(*(1..200).to_a) }
+
+        it "returns self" do
+          set_a.send(method, set_b).should be(set_a)
+        end
+      end
     end
   end
 end

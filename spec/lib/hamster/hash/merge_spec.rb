@@ -39,6 +39,14 @@ describe Hamster::Hash do
         end
       end
 
+      context "when merging with subset Hash" do
+        it "returns self" do
+          big_hash = Hamster.hash((1..300).zip(1..300))
+          small_hash = Hamster.hash((1..200).zip(1..200))
+          big_hash.send(method, small_hash).should be(big_hash)
+        end
+      end
+
       context "when called on a subclass" do
         it "returns an instance of the subclass" do
           subclass = Class.new(Hamster::Hash)
