@@ -25,5 +25,19 @@ describe Hamster::Vector do
         end
       end
     end
+
+    context "when number of elements specified is identical to size" do
+      let(:vector) { Hamster.vector(1, 2, 3, 4, 5, 6) }
+      it "returns self" do
+        vector.take(vector.size).should be(vector)
+      end
+    end
+
+    context "when number of elements specified is bigger than size" do
+      let(:vector) { Hamster.vector(1, 2, 3, 4, 5, 6) }
+      it "returns self" do
+        vector.take(vector.size + 1).should be(vector)
+      end
+    end
   end
 end
