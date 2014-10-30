@@ -129,13 +129,7 @@ module Hamster
     # @return [Set]
     def delete(item)
       trie = @trie.delete(item)
-      if trie.equal?(@trie)
-        self
-      elsif trie.empty?
-        self.class.empty
-      else
-        self.class.alloc(trie)
-      end
+      new_trie(trie)
     end
 
     # If `item` is a member of this `Set`, return a new `Set` with `item` removed.
@@ -173,8 +167,7 @@ module Hamster
     def filter
       return enum_for(:filter) unless block_given?
       trie = @trie.filter { |entry| yield(entry[0]) }
-      return self.class.empty if trie.empty?
-      trie.equal?(@trie) ? self : self.class.alloc(trie)
+      new_trie(trie)
     end
 
     def_delegator :self, :reduce, :foldr # set is not ordered, so foldr is same as reduce
@@ -260,7 +253,7 @@ module Hamster
       end
 
       trie = large_set_trie.bulk_put(small_set_pairs)
-      trie.equal?(@trie) ? self : self.class.alloc(trie)
+      new_trie(trie)
     end
     def_delegator :self, :union, :|
     def_delegator :self, :union, :+
@@ -280,7 +273,7 @@ module Hamster
       else
         trie = @trie.filter { |key, _| other.include?(key) }
       end
-      trie.equal?(@trie) ? self : self.class.alloc(trie)
+      new_trie(trie)
     end
     def_delegator :self, :intersection, :intersect
     def_delegator :self, :intersection, :&
@@ -297,9 +290,9 @@ module Hamster
       trie = if (@trie.size <= other.size) && (other.is_a?(Hamster::Set) || (defined?(::Set) && other.is_a?(::Set)))
         @trie.filter { |key, _| !other.include?(key) }
       else
-        other.reduce(@trie) { |trie, item| trie.delete(item) }
+        @trie.bulk_delete(other)
       end
-      trie.empty? ? self.class.empty : self.class.alloc(trie)
+      new_trie(trie)
     end
     def_delegator :self, :difference, :diff
     def_delegator :self, :difference, :subtract
@@ -461,6 +454,18 @@ module Hamster
     def marshal_load(dictionary)
       @trie = dictionary.reduce(EmptyTrie) do |trie, key_value|
         trie.put(key_value.first, nil)
+      end
+    end
+
+    private
+
+    def new_trie(trie)
+      if trie.empty?
+        self.class.empty
+      elsif trie.equal?(@trie)
+        self
+      else
+        self.class.alloc(trie)
       end
     end
   end

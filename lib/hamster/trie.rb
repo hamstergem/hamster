@@ -94,7 +94,7 @@ module Hamster
       end
     end
 
-    # Put multiple elements into a Trie.  This is more effecient than several
+    # Put multiple elements into a Trie.  This is more efficient than several
     # calls to `#put`.
     #
     # @param key_value_pairs Enumerable of pairs (`[key, value]`)
@@ -184,6 +184,54 @@ module Hamster
     # Returns a copy of <tt>self</tt> with the given key (and associated value) deleted. If not found, returns <tt>self</tt>.
     def delete(key)
       find_and_delete(key) || Trie.new(@significant_bits)
+    end
+
+    # Delete multiple elements from a Trie.  This is more efficient than
+    # several calls to `#delete`.
+    #
+    # @param keys [Enumerable] The keys to delete
+    # @return [Trie]
+    def bulk_delete(keys)
+      new_entries = nil
+      new_children = nil
+      new_size = @size
+
+      keys.each do |key|
+        index = index_for(key)
+        entry = (new_entries || @entries)[index]
+        if !entry
+          next
+        elsif entry[0].eql?(key)
+          new_entries ||= @entries.dup
+          child = (new_children || @children)[index]
+          if child
+            # Bring up the first entry from the child into entries
+            new_children ||= @children.dup
+            new_children[index] = child.delete_at do |entry|
+              new_entries[index] = entry
+            end
+          else
+            new_entries[index] = nil
+          end
+          new_size -= 1
+        else
+          child = (new_children || @children)[index]
+          if child
+            copy = child.find_and_delete(key)
+            unless copy.equal?(child)
+              new_children ||= @children.dup
+              new_children[index] = copy
+              new_size -= (child.size - copy_size(copy))
+            end
+          end
+        end
+      end
+
+      if new_entries || new_children
+        Trie.new(@significant_bits, new_size, new_entries || @entries, new_children || @children)
+      else
+        self
+      end
     end
 
     def include?(key, value)
