@@ -53,7 +53,9 @@ module Hamster
       reduce(self) { |trie, entry| yield(entry) ? trie : trie.delete(entry[0]) }
     end
 
-    # Returns a copy of <tt>self</tt> with the given value associated with the key.
+    # @return [Trie] A copy of `self` with the given value associated with the
+    #   key (or `self` if no modification was needed because an identical
+    #   key-value pair wes already stored
     def put(key, value)
       index = index_for(key)
       entry = @entries[index]
@@ -64,22 +66,31 @@ module Hamster
         entries[index] = [key, value].freeze
         Trie.new(@significant_bits, @size + 1, entries, @children)
       elsif entry[0].eql?(key)
-        entries = @entries.dup
-        key = key.dup.freeze if key.is_a?(String) && !key.frozen?
-        entries[index] = [key, value].freeze
-        Trie.new(@significant_bits, @size, entries, @children)
-      else
-        children = @children.dup
-        child = children[index]
-        child_size = child ? child.size : 0
-        if child
-          children[index] = child.put(key, value)
+        if entry[1].equal?(value)
+          self
         else
-          children[index] = Trie.new(@significant_bits + 5).put!(key, value)
+          entries = @entries.dup
+          key = key.dup.freeze if key.is_a?(String) && !key.frozen?
+          entries[index] = [key, value].freeze
+          Trie.new(@significant_bits, @size, entries, @children)
         end
-        new_child_size = children[index].size
-        new_self_size = @size + (new_child_size - child_size)
-        Trie.new(@significant_bits, new_self_size, @entries, children)
+      else
+        child = @children[index]
+        if child
+          new_child = child.put(key, value)
+          if new_child.equal?(child)
+            self
+          else
+            children = @children.dup
+            children[index] = new_child
+            new_self_size = @size + (new_child.size - child.size)
+            Trie.new(@significant_bits, new_self_size, @entries, children)
+          end
+        else
+          children = @children.dup
+          children[index] = Trie.new(@significant_bits + 5).put!(key, value)
+          Trie.new(@significant_bits, @size + 1, @entries, children)
+        end
       end
     end
 
@@ -87,8 +98,8 @@ module Hamster
     # calls to `#put`.
     #
     # @param key_value_pairs Enumerable of pairs (`[key, value]`)
-    # @return [Trie] A copy of <tt>self</tt> after associated the given keys
-    #         and values.
+    # @return [Trie] A copy of `self` after associated the given keys and
+    #   values (or `self` if no modifications where needed).
     def bulk_put(key_value_pairs)
       new_entries = nil
       new_children = nil
@@ -110,16 +121,19 @@ module Hamster
             new_entries[index] = [key, value].freeze
           end
         else
-          new_children ||= @children.dup
-          child = new_children[index]
-          child_size = child ? child.size : 0
+          child = (new_children || @children)[index]
           if child
-            new_children[index] = child.put(key, value)
+            new_child = child.put(key, value)
+            if !new_child.equal?(child)
+              new_children ||= @children.dup
+              new_children[index] = new_child
+              new_size += new_child.size - child.size
+            end
           else
+            new_children ||= @children.dup
             new_children[index] = Trie.new(@significant_bits + 5).put!(key, value)
+            new_size += 1
           end
-          new_child_size = new_children[index].size
-          new_size += new_child_size - child_size
         end
       end
 

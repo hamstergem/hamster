@@ -58,6 +58,28 @@ describe Hamster::Hash do
       end
     end
 
+    context "with duplicate key and identical value" do
+      let(:hash) { Hamster::Hash["X" => 1, "Y" => 2] }
+      let(:result) { hash.put("X", 1) }
+
+      it "returns the original hash unmodified" do
+        result.should be(hash)
+      end
+
+      context "with big hash (force nested tries)" do
+        let(:keys) { (0..99).map(&:to_s) }
+        let(:values) { (100..199).to_a }
+        let(:hash) { Hamster::Hash[keys.zip(values)] }
+
+        it "returns the original hash unmodified for all changes" do
+          keys.each_with_index do |key, index|
+            result = hash.put(key, values[index])
+            result.should be(hash)
+          end
+        end
+      end
+    end
+
     context "with unequal keys which hash to the same value" do
       let(:hash) { Hamster.hash(DeterministicHash.new('a', 1) => 'aye') }
 

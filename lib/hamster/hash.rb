@@ -223,7 +223,12 @@ module Hamster
     # @yieldreturn [Object] The new value to store
     # @return [Hash]
     def put(key, value = yield(get(key)))
-      self.class.alloc(@trie.put(key, value), @default)
+      new_trie = @trie.put(key, value)
+      if new_trie.equal?(@trie)
+        self
+      else
+        self.class.alloc(new_trie, @default)
+      end
     end
 
     # Return a new `Hash` with the existing key/value associations, plus an association
@@ -238,7 +243,7 @@ module Hamster
     # @param value [Object] The value to associate it with
     # @return [Hash]
     def store(key, value)
-      self.class.alloc(@trie.put(key, value), @default)
+      put(key, value)
     end
 
     # Return a new `Hash` with the association for `key` removed. If `key` is not
