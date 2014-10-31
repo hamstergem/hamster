@@ -50,7 +50,9 @@ module Hamster
     end
 
     def filter
-      reduce(self) { |trie, entry| yield(entry) ? trie : trie.delete(entry[0]) }
+      keys_to_delete = []
+      each { |entry| keys_to_delete << entry[0] unless yield(entry) }
+      bulk_delete(keys_to_delete)
     end
 
     # @return [Trie] A copy of `self` with the given value associated with the
