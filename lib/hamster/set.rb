@@ -166,7 +166,7 @@ module Hamster
     # @return [Set]
     def filter
       return enum_for(:filter) unless block_given?
-      trie = @trie.filter { |entry| yield(entry[0]) }
+      trie = @trie.filter { |key, _| yield(key) }
       new_trie(trie)
     end
 
