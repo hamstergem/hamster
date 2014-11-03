@@ -21,5 +21,13 @@ describe Hamster::Deque do
         end
       end
     end
+
+    context "on empty subclass" do
+      let(:subclass) { Class.new(Hamster::Deque) }
+      let(:empty_instance) { subclass.new }
+      it "returns emtpy object of same class" do
+        empty_instance.pop.class.should be subclass
+      end
+    end
   end
 end
