@@ -104,6 +104,10 @@ module Hamster
     # Return a new `Set` with `item` added. If `item` is already in the set,
     # return `self`.
     #
+    # @example
+    #   Hamster::Set[1, 2, 3].add(4) # => Hamster::Set[1, 2, 4, 3]
+    #   Hamster::Set[1, 2, 3].add(2) # => Hamster::Set[1, 2, 3]
+    #
     # @param item [Object] The object to add
     # @return [Set]
     def add(item)
@@ -116,6 +120,10 @@ module Hamster
     # If `item` is not a member of this `Set`, return a new `Set` with `item` added.
     # Otherwise, return `false`.
     #
+    # @example
+    #   Hamster::Set[1, 2, 3].add?(4) # => Hamster::Set[1, 2, 4, 3]
+    #   Hamster::Set[1, 2, 3].add?(2) # => false
+    #
     # @param item [Object] The object to add
     # @return [Set, false]
     def add?(item)
@@ -124,6 +132,10 @@ module Hamster
 
     # Return a new `Set` with `item` removed. If `item` is not a member of the set,
     # return `self`.
+    #
+    # @example
+    #   Hamster::Set[1, 2, 3].delete(1)  # => Hamster::Set[2, 3]
+    #   Hamster::Set[1, 2, 3].delete(99) # => Hamster::Set[1, 2, 3]
     #
     # @param item [Object] The object to remove
     # @return [Set]
@@ -135,6 +147,10 @@ module Hamster
     # If `item` is a member of this `Set`, return a new `Set` with `item` removed.
     # Otherwise, return `false`.
     #
+    # @example
+    #   Hamster::Set[1, 2, 3].delete?(1)  # => Hamster::Set[2, 3]
+    #   Hamster::Set[1, 2, 3].delete?(99) # => false
+    #
     # @param item [Object] The object to remove
     # @return [Set, false]
     def delete?(item)
@@ -143,6 +159,13 @@ module Hamster
 
     # Call the block once for each item in this `Set`. No specific iteration order
     # is guaranteed (but the order will be stable for any particular `Set`.)
+    #
+    # @example
+    #   Hamster::Set["Dog", "Elephant", "Lion"].each { |e| puts e }
+    #   Elephant
+    #   Dog
+    #   Lion
+    #   # => Hamster::Set["Dog", "Elephant", "Lion"]
     #
     # @return [self]
     def each
@@ -154,6 +177,13 @@ module Hamster
     # Call the block once for each item in this `Set`. Iteration order will be
     # the opposite of {#each}.
     #
+    # @example
+    #   Hamster::Set["Dog", "Elephant", "Lion"].reverse_each { |e| puts e }
+    #   Lion
+    #   Dog
+    #   Elephant
+    #   # => Hamster::Set["Dog", "Elephant", "Lion"]
+    #
     # @return [self]
     def reverse_each
       return enum_for(:reverse_each) if not block_given?
@@ -162,6 +192,10 @@ module Hamster
     end
 
     # Return a new `Set` with all the items for which the block returns true.
+    #
+    # @example
+    #   Hamster::Set["Elephant", "Dog", "Lion"].filter { |e| e.size >= 4 }
+    #   # => Hamster::Set["Elephant", "Lion"]
     #
     # @return [Set]
     def filter
@@ -175,6 +209,10 @@ module Hamster
     # Call the block once for each item in this `Set`.
     # All the values returned from the block will be gathered into a new `Set`.
     #
+    # @example
+    #   Hamster::Set["Cat", "Elephant", "Dog", "Lion"].map { |e| e.size }
+    #   # => Hamster::Set[8, 4, 3]
+    #
     # @return [Set]
     def map
       return enum_for(:map) if not block_given?
@@ -187,6 +225,10 @@ module Hamster
     # return `true` if an object with the same `#hash` code, and which is also `#eql?`
     # to the given object is present.
     #
+    # @example
+    #   Hamster::Set["A", "B", "C"].include?("B") # => true
+    #   Hamster::Set["A", "B", "C"].include?("Z") # => false
+    #
     # @param object [Object] The object to check for
     # @return [Boolean]
     def include?(object)
@@ -196,6 +238,9 @@ module Hamster
 
     # Return a member of this `Set`. The member chosen will be the first one which
     # would be yielded by {#each}. If the set is empty, return `nil`.
+    #
+    # @example
+    #   Hamster::Set["A", "B", "C"].first # => "C"
     #
     # @return [Object]
     def first
@@ -208,6 +253,10 @@ module Hamster
     # return 0, 1, or -1 depending on whether the first parameter is equal, greater than,
     # or less than the second.
     #
+    # @example
+    #   Hamster::Set["Elephant", "Dog", "Lion"].sort_by { |a,b| a.size <=> b.size }
+    #   # => Hamster::SortedSet["Dog", "Lion", "Elephant"]
+    #
     # @yield [a, b] A pair of items to be compared
     # @yieldreturn [Integer]
     # @return [SortedSet]
@@ -218,6 +267,10 @@ module Hamster
     # Return a {SortedSet} which contains the same items as this `Set`, ordered by
     # mapping each item through the provided block to obtain sort keys, and then
     # sorting the keys.
+    #
+    # @example
+    #   Hamster::Set["Elephant", "Dog", "Lion"].sort_by { |e| e.size }
+    #   # => Hamster::SortedSet["Dog", "Lion", "Elephant"]
     #
     # @yield [item] The item to obtain a sort key for
     # @yieldreturn [Object]
@@ -313,6 +366,9 @@ module Hamster
 
     # Return `true` if all items in this `Set` are also in `other`.
     #
+    # @example
+    #   Hamster::Set[2, 3].subset?(Hamster::Set[1, 2, 3]) # => true
+    #
     # @param other [Set]
     # @return [Boolean]
     def subset?(other)
@@ -323,6 +379,9 @@ module Hamster
 
     # Return `true` if all items in `other` are also in this `Set`.
     #
+    # @example
+    #   Hamster::Set[1, 2, 3].superset?(Hamster::Set[2, 3]) # => true
+    #
     # @param other [Set]
     # @return [Boolean]
     def superset?(other)
@@ -332,6 +391,10 @@ module Hamster
 
     # Returns `true` if `other` contains all the items in this `Set`, plus at least
     # one item which is not in this set.
+    #
+    # @example
+    #   Hamster::Set[2, 3].proper_subset?(Hamster::Set[1, 2, 3])    # => true
+    #   Hamster::Set[1, 2, 3].proper_subset?(Hamster::Set[1, 2, 3]) # => false
     #
     # @param other [Set]
     # @return [Boolean]
@@ -344,6 +407,10 @@ module Hamster
     # Returns `true` if this `Set` contains all the items in `other`, plus at least
     # one item which is not in `other`.
     #
+    # @example
+    #   Hamster::Set[1, 2, 3].proper_superset?(Hamster::Set[2, 3])    # => true
+    #   Hamster::Set[1, 2, 3].proper_superset?(Hamster::Set[1, 2, 3]) # => false
+    #
     # @param other [Set]
     # @return [Boolean]
     def proper_superset?(other)
@@ -352,6 +419,9 @@ module Hamster
     alias :> :proper_superset?
 
     # Return `true` if this `Set` and `other` do not share any items.
+    #
+    # @example
+    #   Hamster::Set[1, 2].disjoint?(Hamster::Set[8, 9]) # => true
     #
     # @param other [Set]
     # @return [Boolean]
@@ -365,6 +435,9 @@ module Hamster
     end
 
     # Return `true` if this `Set` and `other` have at least one item in common.
+    #
+    # @example
+    #   Hamster::Set[1, 2].intersect?(Hamster::Set[2, 3]) # => true
     #
     # @param other [Set]
     # @return [Boolean]
@@ -391,6 +464,9 @@ module Hamster
     def_delegator :self, :group_by, :classify
 
     # Return a randomly chosen item from this `Set`. If the set is empty, return `nil`.
+    #
+    # @example
+    #   Hamster::Set[1, 2, 3, 4, 5].sample # => 3
     #
     # @return [Object]
     def sample
