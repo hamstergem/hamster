@@ -420,7 +420,7 @@ module Hamster
     #
     # @param level [Integer] The depth to which flattening should be applied
     # @return [Vector]
-    def flatten(level = nil)
+    def flatten(level = -1)
       return self if level == 0
       self.class.new(((array = to_a).frozen? ? array.flatten(level) : array.flatten!(level)).freeze)
     end
