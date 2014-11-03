@@ -127,7 +127,7 @@ module Hamster
       front, rear = @front, @rear
 
       if rear.empty?
-        return EmptyDeque if front.empty?
+        return self.class.empty if front.empty?
         front, rear = EmptyList, front.reverse
       end
 
@@ -147,7 +147,7 @@ module Hamster
       front, rear = @front, @rear
 
       if front.empty?
-        return EmptyDeque if rear.empty?
+        return self.class.empty if rear.empty?
         front, rear = rear.reverse, EmptyList
       end
 
