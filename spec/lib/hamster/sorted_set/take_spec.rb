@@ -22,5 +22,13 @@ describe Hamster::SortedSet do
         end
       end
     end
+
+    context "when argument is at least size of receiver" do
+      let(:sorted_set) { Hamster.sorted_set(6, 7, 8, 9) }
+      it "returns self" do
+        sorted_set.take(sorted_set.size).should be(sorted_set)
+        sorted_set.take(sorted_set.size + 1).should be(sorted_set)
+      end
+    end
   end
 end
