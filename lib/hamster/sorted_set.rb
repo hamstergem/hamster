@@ -377,6 +377,7 @@ module Hamster
     # @param n [Integer] The number of elements to remove
     # @return [SortedSet]
     def drop(n)
+      return self if n == 0
       self.class.new(super)
     end
 
@@ -384,6 +385,7 @@ module Hamster
     # @param n [Integer] The number of elements to retain
     # @return [SortedSet]
     def take(n)
+      return self if n >= size
       self.class.new(super)
     end
 

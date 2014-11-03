@@ -25,5 +25,12 @@ describe Hamster::SortedSet do
         end
       end
     end
+
+    context "when argument is zero" do
+      let(:sorted_set) { Hamster.sorted_set(6, 7, 8, 9) }
+      it "returns self" do
+        sorted_set.drop(0).should be(sorted_set)
+      end
+    end
   end
 end
