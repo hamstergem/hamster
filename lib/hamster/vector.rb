@@ -116,6 +116,9 @@ module Hamster
 
     # Return the first item in the `Vector`. If the vector is empty, return `nil`.
     #
+    # @example
+    #   Hamster::Vector["A", "B", "C"].first  # => "A"
+    #
     # @return [Object]
     def first
       get(0)
@@ -124,12 +127,18 @@ module Hamster
 
     # Return the last item in the `Vector`. If the vector is empty, return `nil`.
     #
+    # @example
+    #   Hamster::Vector["A", "B", "C"].last  # => "C"
+    #
     # @return [Object]
     def last
       get(-1)
     end
 
     # Return a new `Vector` with `item` added after the last occupied position.
+    #
+    # @example
+    #   Hamster::Vector[1, 2].add(99)  # => Hamster::Vector[1, 2, 99]
     #
     # @param item [Object] The object to insert at the end of the vector
     # @return [Vector]
@@ -144,6 +153,12 @@ module Hamster
     # Return a new `Vector` with the item at `index` replaced by `item`. If the
     # `item` argument is missing, but an optional code block is provided, it will
     # be passed the existing item and what the block returns will replace it.
+    #
+    # @example
+    #   Hamster::Vector[1, 2, 3, 4].set(2, 99)
+    #   # => Hamster::Vector[1, 2, 99, 4]
+    #   Hamster::Vector[1, 2, 3, 4].set(2) { |v| v * 10 }
+    #   # => Hamster::Vector[1, 2, 30, 4]
     #
     # @param index [Integer] The index to update
     # @param item [Object] The object to insert into that position
@@ -193,6 +208,12 @@ module Hamster
     # Retrieve the item at `index`. If there is none (either the provided index
     # is too high or too low), return `nil`.
     #
+    # @example
+    #   v = Hamster::Vector["A", "B", "C", "D"]
+    #   v.get(2)   # => "C"
+    #   v.get(-1)  # => "D"
+    #   v.get(4)   # => nil
+    #
     # @param index [Integer] The index to retrieve
     # @return [Object]
     def get(index)
@@ -222,6 +243,18 @@ module Hamster
     #   @param index [Integer] The index to look up
     #   @param default [Object] Object to return if the key is not found
     #
+    # @example
+    #   v = Hamster::Vector["A", "B", "C", "D"]
+    #   v.fetch(2)       # => "C"
+    #   v.fetch(-1)      # => "D"
+    #   v.fetch(4)       # => IndexError: index 4 outside of vector bounds
+    #   # With default value:
+    #   v.fetch(2, "Z")  # => "C"
+    #   v.fetch(4, "Z")  # => "Z"
+    #   # With block:
+    #   v.fetch(2) { |i| i * i }   # => "C"
+    #   v.fetch(4) { |i| i * i }   # => 16
+    #
     # @return [Object]
     def fetch(index, default = (missing_default = true))
       if index >= -@size && index < @size
@@ -249,6 +282,14 @@ module Hamster
     #   Return a subvector specified by the given `range` of indices.
     #   @param range [Range] The range of indices to retrieve.
     #
+    # @example
+    #   v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
+    #   v[2]     # => "C"
+    #   v[-1]    # => "D"
+    #   v[6]     # => nil
+    #   v[2, 2]  # => Hamster::Vector["C", "D"]
+    #   v[2..3]  # => Hamster::Vector["C", "D"]
+    #
     # @return [Object]
     def [](arg, length = (missing_length = true))
       if missing_length
@@ -271,6 +312,10 @@ module Hamster
     def_delegator :self, :[], :slice
 
     # Return a new `Vector` with the given values inserted before the element at `index`.
+    #
+    # @example
+    #   Hamster::Vector["A", "B", "C", "D"].insert(2, "X", "Y", "Z")
+    #   # => Hamster::Vector["A", "B", "X", "Y", "Z", "C", "D"]
     #
     # @param index [Integer] The index where the new items should go
     # @param items [Array] The items to add
@@ -295,6 +340,10 @@ module Hamster
     # Return a new `Vector` with the element at `index` removed. If the given `index`
     # does not exist, return `self`.
     #
+    # @example
+    #   Hamster::Vector["A", "B", "C", "D"].delete_at(2)
+    #   # => Hamster::Vector["A", "B", "D"]
+    #
     # @param index [Integer] The index to remove
     # @return [Vector]
     def delete_at(index)
@@ -306,6 +355,10 @@ module Hamster
     end
 
     # Return a new `Vector` with the last element removed. If empty, just return `self`.
+    #
+    # @example
+    #   Hamster::Vector["A", "B", "C"].pop  # => Hamster::Vector["A", "B"]
+    #
     # @return [Vector]
     def pop
       return self if @size == 0
@@ -314,6 +367,10 @@ module Hamster
 
     # Return a new `Vector` with `obj` inserted before the first element, moving
     # the other elements upwards.
+    #
+    # @example
+    #   Hamster::Vector["A", "B"].unshift("Z")  # => Hamster::Vector["Z", "A", "B"]
+    #
     # @param obj [Object] The value to prepend
     # @return [Vector]
     def unshift(obj)
@@ -321,6 +378,10 @@ module Hamster
     end
 
     # Return a new `Vector` with the first element removed. If empty, just return `self`.
+    #
+    # @example
+    #   Hamster::Vector["A", "B", "C"].shift  # => Hamster::Vector["B", "C"]
+    #
     # @return [Vector]
     def shift
       delete_at(0)
@@ -328,6 +389,14 @@ module Hamster
 
     # Call the given block once for each item in the vector, passing each
     # item from first to last successively to the block.
+    #
+    # @example
+    #   Hamster::Vector["A", "B", "C"].each { |e| puts "Element: #{e}" }
+    #
+    #   Element: A
+    #   Element: B
+    #   Element: C
+    #   # => Hamster::Vector["A", "B", "C"]
     #
     # @return [self]
     def each(&block)
@@ -340,6 +409,13 @@ module Hamster
     # item starting from the last, and counting back to the first, successively to
     # the block.
     #
+    # @example
+    #   Hamster::Vector["A", "B", "C"].reverse_each { |e| puts "Element: #{e}" }
+    #
+    #   Element: C
+    #   Element: B
+    #   Element: A
+    #
     # @return [self]
     def reverse_each(&block)
       return enum_for(:reverse_each) unless block_given?
@@ -350,6 +426,10 @@ module Hamster
     # Return a new `Vector` containing all elements for which the given block returns
     # true.
     #
+    # @example
+    #   Hamster::Vector["Bird", "Cow", "Elephant"].filter { |e| e.size >= 4 }
+    #   # => Hamster::Vector["Bird", "Elephant"]
+    #
     # @return [Vector]
     def filter
       return enum_for(:filter) unless block_given?
@@ -359,6 +439,9 @@ module Hamster
     # Return a new `Vector` with all items which are equal to `obj` removed.
     # `#==` is used for checking equality.
     #
+    # @example
+    #   Hamster::Vector["C", "B", "A", "B"].delete("B")  # => Hamster::Vector["C", "A"]
+    #
     # @param obj [Object] The object to remove (every occurrence)
     # @return [Vector]
     def delete(obj)
@@ -367,6 +450,9 @@ module Hamster
 
     # Invoke the given block once for each item in the vector, and return a new
     # `Vector` containing the values returned by the block.
+    #
+    # @example
+    #   Hamster::Vector[3, 2, 1].map { |e| e * e }  # => Hamster::Vector[9, 4, 1]
     #
     # @return [Vector]
     def map
@@ -378,6 +464,9 @@ module Hamster
 
     # Return a new `Vector` with the same elements as this one, but randomly permuted.
     #
+    # @example
+    #   Hamster::Vector[1, 2, 3, 4].shuffle  # => Hamster::Vector[4, 1, 3, 2]
+    #
     # @return [Vector]
     def shuffle
       self.class.new(((array = to_a).frozen? ? array.shuffle : array.shuffle!).freeze)
@@ -386,12 +475,18 @@ module Hamster
     # Return a new `Vector` with no duplicate elements, as determined by `#hash` and
     # `#eql?`. For each group of equivalent elements, only the first will be retained.
     #
+    # @example
+    #   Hamster::Vector["A", "B", "C", "B"].uniq  # => Hamster::Vector["A", "B", "C"]
+    #
     # @return [Vector]
     def uniq
       self.class.new(((array = to_a).frozen? ? array.uniq : array.uniq!).freeze)
     end
 
     # Return a new `Vector` with the same elements as this one, but in reverse order.
+    #
+    # @example
+    #   Hamster::Vector["A", "B", "C"].reverse  # => Hamster::Vector["C", "B", "A"]
     #
     # @return [Vector]
     def reverse
@@ -403,6 +498,11 @@ module Hamster
     # the elements will be shifted left, and those shifted past the lowest position
     # will be moved to the end. If `count` is negative, the elements will be shifted
     # right, and those shifted past the last position will be moved to the beginning.
+    #
+    # @example
+    #   v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
+    #   v.rotate(2)   # => Hamster::Vector["C", "D", "E", "F", "A", "B"]
+    #   v.rotate(-1)  # => Hamster::Vector["F", "A", "B", "C", "D", "E"]
     #
     # @param count [Integer] The number of positions to shift items by
     # @return [Vector]
@@ -418,6 +518,13 @@ module Hamster
     # A `level` of 0 means not to flatten at all, 1 means to only flatten nested
     # arrays/vectors which are directly contained within this `Vector`.
     #
+    # @example
+    #   v = Hamster::Vector["A", Hamster::Vector["B", "C", Hamster::Vector["D"]]]
+    #   v.flatten(1)
+    #   # => Hamster::Vector["A", "B", "C", Hamster::Vector["D"]]
+    #   v.flatten
+    #   # => Hamster::Vector["A", "B", "C", "D"]
+    #
     # @param level [Integer] The depth to which flattening should be applied
     # @return [Vector]
     def flatten(level = -1)
@@ -427,6 +534,10 @@ module Hamster
 
     # Return a new `Vector` built by concatenating this one with `other`. `other`
     # can be any object which is convertible to an `Array` using `#to_a`.
+    #
+    # @example
+    #   Hamster::Vector["A", "B", "C"] + ["D", "E"]
+    #   # => Hamster::Vector["A", "B", "C", "D", "E"]
     #
     # @param other [Enumerable] The collection to concatenate onto this vector
     # @return [Vector]
@@ -444,6 +555,12 @@ module Hamster
     # If an optional block is provided, each such array will be passed successively
     # to the block. Otherwise, a new `Vector` of all those arrays will be returned.
     #
+    # @example
+    #   v1 = Hamster::Vector["A", "B", "C"]
+    #   v2 = Hamster::Vector[1, 2, 3]
+    #   v1.zip(v2)
+    #   # => Hamster::Vector[["A", 1], ["B", 2], ["C", 3]]
+    #
     # @param others [Array] The arrays/vectors to zip together with this one
     # @return [Vector, nil]
     def zip(*others)
@@ -460,6 +577,12 @@ module Hamster
     # and should return 0, 1, or -1 if the first parameter is equal to, greater than,
     # or less than the second parameter (respectively).
     #
+    # @example
+    #   Hamster::Vector["Elephant", "Dog", "Lion"].sort
+    #   # => Hamster::Vector["Dog", "Elephant", "Lion"]
+    #   Hamster::Vector["Elephant", "Dog", "Lion"].sort { |a,b| a.size <=> b.size }
+    #   # => Hamster::Vector["Dog", "Lion", "Elephant"]
+    #
     # @return [Vector]
     def sort
       self.class.new(super)
@@ -469,12 +592,21 @@ module Hamster
     # determined by mapping the items through the given block to obtain sort keys,
     # and then sorting the keys according to their natural sort order.
     #
+    # @example
+    #   Hamster::Vector["Elephant", "Dog", "Lion"].sort_by { |e| e.size }
+    #   # => Hamster::Vector["Dog", "Lion", "Elephant"]
+    #
     # @return [Vector]
     def sort_by
       self.class.new(super)
     end
 
     # Drop the first `n` elements and return the rest in a new `Vector`.
+    #
+    # @example
+    #   Hamster::Vector["A", "B", "C", "D", "E", "F"].drop(2)
+    #   # => Hamster::Vector["C", "D", "E", "F"]
+    #
     # @param n [Integer] The number of elements to remove
     # @return [Vector]
     def drop(n)
@@ -485,6 +617,11 @@ module Hamster
     end
 
     # Return only the first `n` elements in a new `Vector`.
+    #
+    # @example
+    #   Hamster::Vector["A", "B", "C", "D", "E", "F"].take(4)
+    #   # => Hamster::Vector["A", "B", "C", "D"]
+    #
     # @param n [Integer] The number of elements to retain
     # @return [Vector]
     def take(n)
@@ -496,6 +633,10 @@ module Hamster
     # block returns `nil` or `false`. Gather the remaining elements into a new
     # `Vector`. If no block is given, an `Enumerator` is returned instead.
     #
+    # @example
+    #   Hamster::Vector[1, 3, 5, 7, 6, 4, 2].drop_while { |e| e < 5 }
+    #   # => Hamster::Vector[5, 7, 6, 4, 2]
+    #
     # @return [Vector, Enumerator]
     def drop_while
       return enum_for(:drop_while) if not block_given?
@@ -506,6 +647,10 @@ module Hamster
     # block returns `nil` or `false`, and return them in a new `Vector`. If no block
     # is given, an `Enumerator` is returned instead.
     #
+    # @example
+    #   Hamster::Vector[1, 3, 5, 7, 6, 4, 2].take_while { |e| e < 5 }
+    #   # => Hamster::Vector[1, 3]
+    #
     # @return [Vector, Enumerator]
     def take_while
       return enum_for(:take_while) if not block_given?
@@ -514,6 +659,10 @@ module Hamster
 
     # Repetition. Return a new `Vector` built by concatenating `times` copies
     # of this one together.
+    #
+    # @example
+    #   Hamster::Vector["A", "B"] * 3
+    #   # => Hamster::Vector["A", "B", "A", "B", "A", "B"]
     #
     # @param times [Integer] The number of times to repeat the elements in this vector
     # @return [Vector]
@@ -534,6 +683,15 @@ module Hamster
     # @overload fill(obj, start, length)
     #   Return a new `Vector` with `length` indexes, beginning from `start`,
     #   set to `obj`.
+    #
+    # @example
+    #   v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
+    #   v.fill("Z")
+    #   # => Hamster::Vector["Z", "Z", "Z", "Z", "Z", "Z"]
+    #   v.fill("Z", 3)
+    #   # => Hamster::Vector["A", "B", "C", "Z", "Z", "Z"]
+    #   v.fill("Z", 3, 2)
+    #   # => Hamster::Vector["A", "B", "C", "Z", "Z", "F"]
     #
     # @return [Vector]
     def fill(obj, index = 0, length = nil)
@@ -559,6 +717,16 @@ module Hamster
     # which order the combinations will be yielded in.
     #
     # If no block is given, an `Enumerator` is returned instead.
+    #
+    # @example
+    #   v = Hamster::Vector[5, 6, 7, 8]
+    #   v.combination(3) { |c| puts "Combination: #{c}" }
+    #
+    #   Combination: [5, 6, 7]
+    #   Combination: [5, 6, 8]
+    #   Combination: [5, 7, 8]
+    #   Combination: [6, 7, 8]
+    #   #=> Hamster::Vector[5, 6, 7, 8]
     #
     # @return [self, Enumerator]
     def combination(n)
@@ -597,6 +765,22 @@ module Hamster
     #
     # If no block is given, an `Enumerator` is returned instead.
     #
+    # @example
+    #   v = Hamster::Vector[5, 6, 7, 8]
+    #   v.repeated_combination(2) { |c| puts "Combination: #{c}" }
+    #
+    #   Combination: [5, 5]
+    #   Combination: [5, 6]
+    #   Combination: [5, 7]
+    #   Combination: [5, 8]
+    #   Combination: [6, 6]
+    #   Combination: [6, 7]
+    #   Combination: [6, 8]
+    #   Combination: [7, 7]
+    #   Combination: [7, 8]
+    #   Combination: [8, 8]
+    #   # => Hamster::Vector[5, 6, 7, 8]
+    #
     # @return [self, Enumerator]
     def repeated_combination(n)
       return enum_for(:repeated_combination, n) if not block_given?
@@ -634,6 +818,18 @@ module Hamster
     # There is no guarantee about which order the permutations will be yielded in.
     #
     # If no block is given, an `Enumerator` is returned instead.
+    #
+    # @example
+    #   v = Hamster::Vector[5, 6, 7]
+    #   v.permutation(2) { |p| puts "Permutation: #{p}" }
+    #
+    #   Permutation: [5, 6]
+    #   Permutation: [5, 7]
+    #   Permutation: [6, 5]
+    #   Permutation: [6, 7]
+    #   Permutation: [7, 5]
+    #   Permutation: [7, 6]
+    #   # => Hamster::Vector[5, 6, 7]
     #
     # @return [self, Enumerator]
     def permutation(n = @size)
@@ -675,6 +871,21 @@ module Hamster
     #
     # If no block is given, an `Enumerator` is returned instead.
     #
+    # @example
+    #   v = Hamster::Vector[5, 6, 7]
+    #   v.repeated_permutation(2) { |p| puts "Permutation: #{p}" }
+    #
+    #   Permutation: [5, 5]
+    #   Permutation: [5, 6]
+    #   Permutation: [5, 7]
+    #   Permutation: [6, 5]
+    #   Permutation: [6, 6]
+    #   Permutation: [6, 7]
+    #   Permutation: [7, 5]
+    #   Permutation: [7, 6]
+    #   Permutation: [7, 7]
+    #   # => Hamster::Vector[5, 6, 7]
+    #
     # @return [self, Enumerator]
     def repeated_permutation(n = @size)
       return enum_for(:repeated_permutation, n) if not block_given?
@@ -711,6 +922,16 @@ module Hamster
     #   of `self.size` and the size of each argument vector or array.
     # @overload product
     #   Return the result of multiplying all the items in this `Vector` together.
+    #
+    # @example
+    #   # Cartesian product:
+    #   v1 = Hamster::Vector[1, 2, 3]
+    #   v2 = Hamster::Vector["A", "B"]
+    #   v1.product(v2)
+    #   # => [[1, "A"], [1, "B"], [2, "A"], [2, "B"], [3, "A"], [3, "B"]]
+    #
+    #   # Multiply all items:
+    #   Hamster::Vector[1, 2, 3, 4, 5].product  # => 120
     #
     # @return [Vector]
     def product(*vectors)
@@ -766,6 +987,10 @@ module Hamster
     # calling {#zip} on the first nested vector/array with the others supplied as
     # arguments.
     #
+    # @example
+    #   Hamster::Vector[["A", 10], ["B", 20], ["C", 30]].transpose
+    #   # => Hamster::Vector[Hamster::Vector["A", "B", "C"], Hamster::Vector[10, 20, 30]]
+    #
     # @return [Vector]
     def transpose
       return self.class.empty if empty?
@@ -789,6 +1014,13 @@ module Hamster
     # By using binary search, finds a value from this `Vector` which meets the
     # condition defined by the provided block. Behavior is just like `Array#bsearch`.
     # See `Array#bsearch` for details.
+    #
+    # @example
+    #   v = Hamster::Vector[1, 3, 5, 7, 9, 11, 13]
+    #   # Block returns true/false for exact element match:
+    #   v.bsearch { |e| e > 4 }      # => 5
+    #   # Block returns number to match an element in 4 <= e <= 7:
+    #   v.bsearch { |e| 1 - e / 4 }  # => 7
     #
     # @return [Object]
     def bsearch
@@ -827,6 +1059,9 @@ module Hamster
 
     # Return a randomly chosen item from this `Vector`. If the vector is empty, return `nil`.
     #
+    # @example
+    #   Hamster::Vector[1, 2, 3, 4, 5].sample  # => 2
+    #
     # @return [Object]
     def sample
       get(rand(@size))
@@ -835,6 +1070,10 @@ module Hamster
     # Return a new `Vector` with only the elements at the given `indices`, in the
     # order specified by `indices`. If any of the `indices` do not exist, `nil`s will
     # appear in their places.
+    #
+    # @example
+    #   v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
+    #   v.values_at(2, 4, 5)   # => Hamster::Vector["C", "E", "F"]
     #
     # @param indices [Array] The indices to retrieve and gather into a new `Vector`
     # @return [Vector]
@@ -851,6 +1090,11 @@ module Hamster
     #   Return the index of the last element in this `Vector` for which the block
     #   returns true. (Iteration starts from the last element, counts back, and
     #   stops as soon as a matching element is found.)
+    #
+    # @example
+    #   v = Hamster::Vector[7, 8, 9, 7, 8, 9]
+    #   v.rindex(8)               # => 4
+    #   v.rindex { |e| e.even? }  # => 4
     #
     # @return [Index]
     def rindex(obj = (missing_arg = true))
@@ -872,6 +1116,10 @@ module Hamster
     # comparing `obj` with the first element of each nested collection. Return the
     # first nested collection which matches, or `nil` if none is found.
     #
+    # @example
+    #   v = Hamster::Vector[["A", 10], ["B", 20], ["C", 30]]
+    #   v.assoc("B")  # => ["B", 20]
+    #
     # @param obj [Object] The object to search for
     # @return [Object]
     def assoc(obj)
@@ -882,6 +1130,10 @@ module Hamster
     # Assumes all elements are nested, indexable collections, and searches through them,
     # comparing `obj` with the second element of each nested collection. Return the
     # first nested collection which matches, or `nil` if none is found.
+    #
+    # @example
+    #   v = Hamster::Vector[["A", 10], ["B", 20], ["C", 30]]
+    #   v.rassoc(20)  # => ["B", 20]
     #
     # @param obj [Object] The object to search for
     # @return [Object]
