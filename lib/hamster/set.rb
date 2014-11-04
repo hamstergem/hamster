@@ -254,7 +254,9 @@ module Hamster
     # or less than the second.
     #
     # @example
-    #   Hamster::Set["Elephant", "Dog", "Lion"].sort_by { |a,b| a.size <=> b.size }
+    #   Hamster::Set["Elephant", "Dog", "Lion"].sort
+    #   # => Hamster::SortedSet["Dog", "Elephant", "Lion"]
+    #   Hamster::Set["Elephant", "Dog", "Lion"].sort { |a,b| a.size <=> b.size }
     #   # => Hamster::SortedSet["Dog", "Lion", "Elephant"]
     #
     # @yield [a, b] A pair of items to be compared
