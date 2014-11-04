@@ -130,7 +130,6 @@ module Hamster
     def empty?
       @trie.empty?
     end
-    def_delegator :self, :empty?, :null?
 
     # Return `true` if the given key object is present in this `Hash`. More precisely,
     # return `true` if a key with the same `#hash` code, and which is also `#eql?`
@@ -365,9 +364,6 @@ module Hamster
     end
     def_delegator :self, :find, :detect
 
-    def_delegator :self, :max, :maximum
-    def_delegator :self, :min, :minimum
-
     # Return a new `Hash` containing all the key/value pairs from this `Hash` and
     # `other`. If no block is provided, the value for entries with colliding keys
     # will be that from `other`. Otherwie, the value for each duplicate key is
@@ -398,7 +394,6 @@ module Hamster
 
       derive_new_hash(trie)
     end
-    def_delegator :self, :merge, :+
 
     # Return a {Vector} which contains all the `[key, value]` pairs in this `Hash`
     # as 2-element Arrays, either in their natural sorted order as determined by
@@ -576,10 +571,6 @@ module Hamster
         (hash << 32) - hash + key.hash + get(key).hash
       end
     end
-
-    def_delegator :self, :dup, :uniq
-    def_delegator :self, :dup, :nub
-    def_delegator :self, :dup, :remove_duplicates
 
     # Return the contents of this `Hash` as a programmer-readable `String`. If all the
     # keys and values are serializable as Ruby literal strings, the returned string can

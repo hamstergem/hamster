@@ -2,21 +2,19 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  [:empty?, :null?].each do |method|
-    describe "##{method}" do
-      [
-        [[], true],
-        [["A" => "aye"], false],
-        [["A" => "aye", "B" => "bee", "C" => "see"], false],
-      ].each do |pairs, result|
-        it "returns #{result} for #{pairs.inspect}" do
-          Hamster.hash(*pairs).send(method).should == result
-        end
+  describe "#empty?" do
+    [
+      [[], true],
+      [["A" => "aye"], false],
+      [["A" => "aye", "B" => "bee", "C" => "see"], false],
+    ].each do |pairs, result|
+      it "returns #{result} for #{pairs.inspect}" do
+        Hamster.hash(*pairs).empty?.should == result
       end
+    end
 
-      it "returns true for empty hashes which have a default block" do
-        Hamster::Hash.new { 'default' }.empty?.should == true
-      end
+    it "returns true for empty hashes which have a default block" do
+      Hamster::Hash.new { 'default' }.empty?.should == true
     end
   end
 
