@@ -2,19 +2,17 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  [:empty?, :null?].each do |method|
-    describe "##{method}" do
-      [
-        [[], true],
-        [["A"], false],
-        [%w[A B C], false],
-        [[nil], false],
-        [[false], false]
-      ].each do |values, expected|
-        describe "on #{values.inspect}" do
-          it "returns #{expected.inspect}" do
-            Hamster.set(*values).send(method).should == expected
-          end
+  describe "#empty?" do
+    [
+      [[], true],
+      [["A"], false],
+      [%w[A B C], false],
+      [[nil], false],
+      [[false], false]
+    ].each do |values, expected|
+      describe "on #{values.inspect}" do
+        it "returns #{expected.inspect}" do
+          Hamster.set(*values).empty?.should == expected
         end
       end
     end

@@ -92,7 +92,6 @@ module Hamster
     def empty?
       @trie.empty?
     end
-    def_delegator :self, :empty?, :null?
 
     # Return the number of items in this `Set`.
     # @return [Integer]
@@ -507,10 +506,6 @@ module Hamster
 
     undef :"<=>" # Sets are not ordered, so Enumerable#<=> will give a meaningless result
     undef :each_index # Set members cannot be accessed by 'index', so #each_index is not meaningful
-
-    def_delegator :self, :dup, :uniq
-    def_delegator :self, :dup, :nub
-    def_delegator :self, :dup, :remove_duplicates
 
     # Return `self`.
     #
