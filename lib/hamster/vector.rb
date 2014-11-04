@@ -479,7 +479,9 @@ module Hamster
     # @return [Vector]
     def drop(n)
       return self if n == 0
-      self.class.new(super)
+      return self.class.empty if n >= @size
+      raise ArgumentError, "attempt to drop negative size" if n < 0
+      self.class.new(flatten_suffix(@root, @levels * BITS_PER_LEVEL, n, []))
     end
 
     # Return only the first `n` elements in a new `Vector`.
