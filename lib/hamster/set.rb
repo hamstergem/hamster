@@ -329,7 +329,6 @@ module Hamster
       end
       new_trie(trie)
     end
-    def_delegator :self, :intersection, :intersect
     def_delegator :self, :intersection, :&
 
     # Return a new `Set` with all the items in `other` removed. `other` can be
@@ -348,7 +347,6 @@ module Hamster
       end
       new_trie(trie)
     end
-    def_delegator :self, :difference, :diff
     def_delegator :self, :difference, :subtract
     def_delegator :self, :difference, :-
 
