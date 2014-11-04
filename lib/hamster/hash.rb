@@ -78,6 +78,12 @@ module Hamster
     class << self
       # Create a new `Hash` populated with the given key/value pairs.
       #
+      # @example
+      #   Hamster::Hash["A" => 1, "B" => 2]
+      #   # => Hamster::Hash["A" => 1, "B" => 2]
+      #   Hamster::Hash[["A", 1], ["B", 2]]
+      #   # => Hamster::Hash["A" => 1, "B" => 2]
+      #
       # @return [Hash]
       def [](pairs = nil)
         (pairs.nil? || pairs.empty?) ? empty : new(pairs)
@@ -118,6 +124,9 @@ module Hamster
 
     # Return the number of key/value pairs in this `Hash`.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].size  # => 3
+    #
     # @return [Integer]
     def size
       @trie.size
@@ -135,6 +144,9 @@ module Hamster
     # return `true` if a key with the same `#hash` code, and which is also `#eql?`
     # to the given key object is present.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].key?("B")  # => true
+    #
     # @param key [Object] The key to check for
     # @return [Boolean]
     def key?(key)
@@ -145,6 +157,9 @@ module Hamster
     def_delegator :self, :key?, :member?
 
     # Return `true` if this `Hash` has one or more keys which map to the provided value.
+    #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].value?(2)  # => true
     #
     # @param value [Object] The value to check for
     # @return [Boolean]
@@ -157,6 +172,17 @@ module Hamster
     # Retrieve the value corresponding to the provided key object. If not found, and
     # this `Hash` has a default block, the default block is called to provide the
     # value.
+    #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h["B"]             # => 2
+    #   h.get("B")         # => 2
+    #   h.get("Elephant")  # => nil
+    #
+    #   # Hamster Hash with a default proc:
+    #   h = Hamster::Hash.new("A" => 1, "B" => 2, "C" => 3) { |key| key.size }
+    #   h.get("B")         # => 2
+    #   h.get("Elephant")  # => 8
     #
     # @param key [Object] The key to look up
     # @return [Object]
@@ -189,6 +215,19 @@ module Hamster
     #   @param key [Object] The key to look up
     #   @param default [Object] Object to return if the key is not found
     #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.fetch("B")         # => 2
+    #   h.fetch("Elephant")  # => KeyError: key not found: "Elephant"
+    #
+    #   # with a default value:
+    #   h.fetch("B", 99)         # => 2
+    #   h.fetch("Elephant", 99)  # => 99
+    #
+    #   # with a block:
+    #   h.fetch("B") { |key| key.size }         # => 2
+    #   h.fetch("Elephant") { |key| key.size }  # => 8
+    #
     # @return [Object]
     def fetch(key, default = Undefined)
       entry = @trie.get(key)
@@ -215,6 +254,13 @@ module Hamster
     # Avoid mutating objects which are used as keys. `String`s are an exception --
     # unfrozen `String`s which are used as keys are internally duplicated and
     # frozen.
+    #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2]
+    #   h.put("C", 3)
+    #   # => Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.put("B") { |value| value * 10 }
+    #   # => Hamster::Hash["A" => 1, "B" => 20]
     #
     # @param key [Object] The key to store
     # @param value [Object] The value to associate it with
@@ -273,6 +319,10 @@ module Hamster
     # unfrozen `String`s which are used as keys are internally duplicated and
     # frozen.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2].store("C", 3)
+    #   # => Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #
     # @param key [Object] The key to store
     # @param value [Object] The value to associate it with
     # @return [Hash]
@@ -283,6 +333,10 @@ module Hamster
     # Return a new `Hash` with the association for `key` removed. If `key` is not
     # present, return `self`.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].delete("B")
+    #   # => Hamster::Hash["A" => 1, "C" => 3]
+    #
     # @param key [Object] The key to remove
     # @return [Hash]
     def delete(key)
@@ -292,6 +346,14 @@ module Hamster
     # Call the block once for each key/value pair in this `Hash`, passing the key/value
     # pair as parameters. No specific iteration order is guaranteed (but the order will
     # be stable for any particular `Hash`.)
+    #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].each { |k, v| puts "k=#{k} v=#{v}" }
+    #
+    #   k=A v=1
+    #   k=B v=2
+    #   k=C v=3
+    #   # => Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
     #
     # @return [self]
     def each(&block)
@@ -304,6 +366,14 @@ module Hamster
     # Call the block once for each key/value pair in this `Hash`, passing the key/value
     # pair as parameters. Iteration order will be the opposite of {#each}.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].reverse_each { |k, v| puts "k=#{k} v=#{v}" }
+    #
+    #   k=C v=3
+    #   k=B v=2
+    #   k=A v=1
+    #   # => Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #
     # @return [self]
     def reverse_each(&block)
       return enum_for(:reverse_each) if not block_given?
@@ -313,6 +383,14 @@ module Hamster
 
     # Call the block once for each key/value pair in this `Hash`, passing the key as a
     # parameter.
+    #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].each_key { |k| puts "k=#{k}" }
+    #
+    #   k=A
+    #   k=B
+    #   k=C
+    #   # => Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
     #
     # @return [self]
     def each_key
@@ -324,6 +402,14 @@ module Hamster
     # Call the block once for each key/value pair in this `Hash`, passing the value as a
     # parameter.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].each_value { |v| puts "v=#{v}" }
+    #
+    #   v=1
+    #   v=2
+    #   v=3
+    #   # => Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #
     # @return [self]
     def each_value
       return enum_for(:each_value) if not block_given?
@@ -334,6 +420,11 @@ module Hamster
     # Call the block once for each key/value pair in this `Hash`, passing the key/value
     # pair as parameters. The block should return a `[key, value]` array each time.
     # All the returned `[key, value]` arrays will be gathered into a new `Hash`.
+    #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.map { |k, v| ["new-#{k}", v * v] }
+    #   # => Hash["new-C" => 9, "new-B" => 4, "new-A" => 1]
     #
     # @return [Hash]
     def map
@@ -347,6 +438,11 @@ module Hamster
 
     # Return a new `Hash` with all the key/value pairs for which the block returns true.
     #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.filter { |k, v| v >= 2 }
+    #   # => Hamster::Hash["B" => 2, "C" => 3]
+    #
     # @return [Hash]
     def filter(&block)
       return enum_for(:filter) unless block_given?
@@ -355,6 +451,11 @@ module Hamster
 
     # Yield `[key, value]` pairs until one is found for which the block returns true.
     # Return that `[key, value]` pair. If the block never returns true, return `nil`.
+    #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.find { |k, v| v.even? }
+    #   # => ["B", 2]
     #
     # @return [Array]
     def find
@@ -372,6 +473,14 @@ module Hamster
     #
     # `other` can be a `Hamster::Hash`, a built-in Ruby `Hash`, or any `Enumerable`
     # object which yields `[key, value]` pairs.
+    #
+    # @example
+    #   h1 = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h2 = Hamster::Hash["C" => 70, "D" => 80]
+    #   h1.merge(h2)
+    #   # => Hamster::Hash["C" => 70, "A" => 1, "D" => 80, "B" => 2]
+    #   h1.merge(h2) { |key, v1, v2| v1 + v2 }
+    #   # => Hamster::Hash["C" => 73, "A" => 1, "D" => 80, "B" => 2]
     #
     # @param other [Enumerable] The collection to merge with
     # @yieldparam key [Object] The key which was present in both collections
@@ -400,6 +509,11 @@ module Hamster
     # `#<=>`, or if an optional block is supplied, by using the block as a comparator.
     # See `Enumerable#sort`.
     #
+    # @example
+    #   h = Hamster::Hash["Dog" => 1, "Elephant" => 2, "Lion" => 3]
+    #   h.sort { |(k1, v1), (k2, v2)| k1.size  <=> k2.size }
+    #   # => Hamster::Vector[["Dog", 1], ["Lion", 3], ["Elephant", 2]]
+    #
     # @return [Vector]
     def sort
       Vector.new(super)
@@ -411,12 +525,21 @@ module Hamster
     # the sort keys using `#<=>`.
     # See `Enumerable#sort_by`.
     #
+    # @example
+    #   h = Hamster::Hash["Dog" => 1, "Elephant" => 2, "Lion" => 3]
+    #   h.sort_by { |key, value| key.size }
+    #   # => Hamster::Vector[["Dog", 1], ["Lion", 3], ["Elephant", 2]]
+    #
     # @return [Vector]
     def sort_by
       Vector.new(super)
     end
 
     # Return a new `Hash` with the associations for all of the given `keys` removed.
+    #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.except("A", "C")  # => Hamster::Hash["B" => 2]
     #
     # @param keys [Array] The keys to remove
     # @return [Hash]
@@ -427,6 +550,10 @@ module Hamster
     # Return a new `Hash` with only the associations for the `wanted` keys retained.
     # If any of the `wanted` keys are not present in this `Hash`, they will not be present
     # in the returned `Hash` either.
+    #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.slice("B", "C")  # => Hamster::Hash["B" => 2, "C" => 3]
     #
     # @param wanted [Array] The keys to retain
     # @return [Hash]
@@ -439,6 +566,10 @@ module Hamster
     # Return a {Vector} of the values which correspond to the `wanted` keys.
     # If any of the `wanted` keys are not present in this `Hash`, they will be skipped.
     #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.values_at("B", "A")  # => Hamster::Vector[2, 1]
+    #
     # @param wanted [Array] The keys to retrieve
     # @return [Vector]
     def values_at(*wanted)
@@ -449,12 +580,20 @@ module Hamster
 
     # Return a new {Set} populated with the keys from this `Hash`.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3, "D" => 2].keys
+    #   # => Hamster::Set["D", "C", "B", "A"]
+    #
     # @return [Set]
     def keys
       Set.alloc(@trie)
     end
 
     # Return a new {Vector} populated with the values from this `Hash`.
+    #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3, "D" => 2].values
+    #   # => Hamster::Vector[2, 3, 2, 1]
     #
     # @return [Vector]
     def values
@@ -464,6 +603,10 @@ module Hamster
     # Return a new `Hash` created by using our keys as values, and values as keys.
     # If there are multiple values which are equivalent (as determined by `#hash` and
     # `#eql?`), only one out of each group of equivalent values will be retained.
+    #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3, "D" => 2].invert
+    #   # => Hamster::Hash[1 => "A", 3 => "C", 2 => "B"]
     #
     # @return [Hash]
     def invert
@@ -482,6 +625,13 @@ module Hamster
     # As a special case, if `level` is 0, each `[key, value]` pair will be a
     # separate element in the returned {Vector}.
     #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => [2, 3, 4]]
+    #   h.flatten
+    #   # => Hamster::Vector["A", 1, "B", [2, 3, 4]]
+    #   h.flatten(2)
+    #   # => Hamster::Vector["A", 1, "B", 2, 3, 4]
+    #
     # @param level [Integer] The number of times to recursively flatten the `[key, value]` pairs in this `Hash`.
     # @return [Vector]
     def flatten(level = 1)
@@ -496,6 +646,9 @@ module Hamster
     # When a matching key is found, return the `[key, value]` pair as an array.
     # Return `nil` if no match is found.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].assoc("B")  # => ["B", 2]
+    #
     # @param obj [Object] The key to search for (using #==)
     # @return [Array]
     def assoc(obj)
@@ -506,6 +659,9 @@ module Hamster
     # Searches through the `Hash`, comparing `obj` with each value (using `#==`).
     # When a matching value is found, return the `[key, value]` pair as an array.
     # Return `nil` if no match is found.
+    #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].rassoc(2)  # => ["B", 2]
     #
     # @param obj [Object] The value to search for (using #==)
     # @return [Array]
@@ -518,6 +674,9 @@ module Hamster
     # When a matching value is found, return its associated key object.
     # Return `nil` if no match is found.
     #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].key(2)  # => "B"
+    #
     # @param value [Object] The value to search for (using #==)
     # @return [Object]
     def key(value)
@@ -527,6 +686,10 @@ module Hamster
 
     # Return a randomly chosen `[key, value]` pair from this `Hash`. If the hash is empty,
     # return `nil`.
+    #
+    # @example
+    #   Hamster::Hash["A" => 1, "B" => 2, "C" => 3].sample
+    #   # => ["C", 3]
     #
     # @return [Array]
     def sample
