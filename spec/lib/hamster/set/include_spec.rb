@@ -41,7 +41,7 @@ describe Hamster::Set do
         array, set, rb_set = [], Hamster::Set.new, Set.new
 
         1000.times do
-          if rand(1) == 0
+          if rand(2) == 0
             array << (item = rand(10000))
             rb_set.add(item)
             set = set.add(item)
