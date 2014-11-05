@@ -83,7 +83,6 @@ module Hamster
     def empty?
       @front.empty? && @rear.empty?
     end
-    def_delegator :self, :empty?, :null?
 
     # Return the number of items in this `Deque`.
     # @return [Integer]
