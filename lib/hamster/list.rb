@@ -168,7 +168,6 @@ module Hamster
     def cons(item)
       Cons.new(item, self)
     end
-    def_delegator :self, :cons, :>>
     def_delegator :self, :cons, :conj
     def_delegator :self, :cons, :conjoin
 
