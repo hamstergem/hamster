@@ -360,10 +360,10 @@ module Hamster
           direction = node.direction(obj, @comparator)
           if direction > 0
             node = node.right
-            index += node.left.size
+            index += (node.left.size + 1)
           elsif direction < 0
             node = node.left
-            index -= node.right.size
+            index -= (node.right.size + 1)
           else
             return index
           end
