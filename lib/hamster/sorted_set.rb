@@ -308,7 +308,9 @@ module Hamster
     # @return [SortedSet]
     def filter
       return enum_for(:filter) unless block_given?
-      reduce(self) { |set, item| yield(item) ? set : set.delete(item) }
+      items_to_delete = []
+      each { |item| items_to_delete << item unless yield(item) }
+      derive_new_sorted_set(@node.bulk_delete(items_to_delete, @comparator))
     end
 
     # Invoke the given block once for each item in the set, and return a new
