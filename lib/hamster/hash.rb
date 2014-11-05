@@ -2,6 +2,7 @@ require "forwardable"
 
 require "hamster/immutable"
 require "hamster/undefined"
+require "hamster/enumerable"
 require "hamster/trie"
 require "hamster/set"
 require "hamster/vector"
