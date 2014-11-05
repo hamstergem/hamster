@@ -30,5 +30,14 @@ describe Hamster::SortedSet do
         sorted_set.take(sorted_set.size + 1).should be(sorted_set)
       end
     end
+
+    context "when the set has a custom order" do
+      let(:sorted_set) { Hamster.sorted_set(1, 2, 3) { |x| -x }}
+      it "maintains the custom order" do
+        sorted_set.take(1).to_a.should == [3]
+        sorted_set.take(2).to_a.should == [3, 2]
+        sorted_set.take(3).to_a.should == [3, 2, 1]
+      end
+    end
   end
 end
