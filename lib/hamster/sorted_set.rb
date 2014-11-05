@@ -378,7 +378,7 @@ module Hamster
     # @return [SortedSet]
     def drop(n)
       return self if n <= 0
-      return EmptySortedSet if n >= size
+      return self.class.empty if n >= size
       self.class.alloc(@node.drop(n), @comparator)
     end
 
@@ -387,7 +387,7 @@ module Hamster
     # @return [SortedSet]
     def take(n)
       return self if n >= size
-      return EmptySortedSet if n <= 0
+      return self.class.empty if n <= 0
       self.class.alloc(@node.take(n), @comparator)
     end
 

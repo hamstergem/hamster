@@ -40,5 +40,12 @@ describe Hamster::SortedSet do
         sorted_set.drop(2).to_a.should == [1]
       end
     end
+
+    context "when called on a subclass" do
+      it "should return an instance of the subclass" do
+        subclass = Class.new(Hamster::SortedSet)
+        subclass.new([1,2,3]).drop(1).class.should be(subclass)
+      end
+    end
   end
 end
