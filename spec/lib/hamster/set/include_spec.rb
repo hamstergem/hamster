@@ -27,7 +27,7 @@ describe Hamster::Set do
 
       it "returns false for a mutable item which is mutated after adding" do
         item = ['mutable']
-        item = [rand(1000000)] while (item.hash & 31 == [item[0], 'HOSED!'].hash & 31)
+        item = [rand(1000000)] while (item.hash.abs & 31 == [item[0], 'HOSED!'].hash.abs & 31)
         set  = Hamster::Set[item]
         item.push('HOSED!')
         set.include?(item).should == false
