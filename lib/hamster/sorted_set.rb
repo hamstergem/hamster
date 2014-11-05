@@ -398,7 +398,12 @@ module Hamster
     # @return [SortedSet, Enumerator]
     def drop_while
       return enum_for(:drop_while) if not block_given?
-      self.class.new(super)
+      n = 0
+      each do |item|
+        break unless yield item
+        n += 1
+      end
+      drop(n)
     end
 
     # Gather elements up to, but not including, the first element for which the
@@ -408,7 +413,12 @@ module Hamster
     # @return [SortedSet, Enumerator]
     def take_while
       return enum_for(:take_while) if not block_given?
-      self.class.new(super)
+      n = 0
+      each do |item|
+        break unless yield item
+        n += 1
+      end
+      take(n)
     end
 
     # Return a new `SortedSet` which contains all the members of both this set and `other`.
