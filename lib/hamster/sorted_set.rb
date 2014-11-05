@@ -1,6 +1,7 @@
 require "forwardable"
 require "hamster/immutable"
 require "hamster/enumerable"
+require "hamster/hash"
 
 module Hamster
   def self.sorted_set(*items, &block)
