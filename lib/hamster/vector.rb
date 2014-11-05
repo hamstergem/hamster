@@ -112,7 +112,6 @@ module Hamster
     def empty?
       @size == 0
     end
-    def_delegator :self, :empty?, :null?
 
     # Return the first item in the `Vector`. If the vector is empty, return `nil`.
     #

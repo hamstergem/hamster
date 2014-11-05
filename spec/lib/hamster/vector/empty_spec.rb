@@ -2,17 +2,15 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  [:empty?, :null?].each do |method|
-    describe "##{method}" do
-      [
-        [[], true],
-        [["A"], false],
-        [%w[A B C], false],
-      ].each do |values, expected|
-        describe "on #{values.inspect}" do
-          it "returns #{expected.inspect}" do
-            Hamster.vector(*values).send(method).should == expected
-          end
+  describe "#empty?" do
+    [
+      [[], true],
+      [["A"], false],
+      [%w[A B C], false],
+    ].each do |values, expected|
+      describe "on #{values.inspect}" do
+        it "returns #{expected.inspect}" do
+          Hamster.vector(*values).empty?.should == expected
         end
       end
     end
