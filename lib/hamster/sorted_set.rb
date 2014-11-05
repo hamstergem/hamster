@@ -377,8 +377,9 @@ module Hamster
     # @param n [Integer] The number of elements to remove
     # @return [SortedSet]
     def drop(n)
-      return self if n == 0
-      self.class.new(super)
+      return self if n <= 0
+      return EmptySortedSet if n >= size
+      self.class.alloc(@node.drop(n), @comparator)
     end
 
     # Return only the first `n` elements in a new `SortedSet`.
@@ -386,7 +387,8 @@ module Hamster
     # @return [SortedSet]
     def take(n)
       return self if n >= size
-      self.class.new(super)
+      return EmptySortedSet if n <= 0
+      self.class.alloc(@node.take(n), @comparator)
     end
 
     # Drop elements up to, but not including, the first element for which the
@@ -863,6 +865,32 @@ module Hamster
         @left.reverse_each(&block)
       end
 
+      def drop(n)
+        if n >= @size
+          EmptyAVLNode
+        elsif n <= 0
+          self
+        elsif @left.size >= n
+          rebalance_right(@left.drop(n), @right)
+        elsif @left.size + 1 == n
+          @right
+        else
+          @right.drop(n - @left.size - 1)
+        end
+      end
+
+      def take(n)
+        if n >= @size
+          self
+        elsif n <= 0
+          EmptyAVLNode
+        elsif @left.size >= n
+          @left.take(n)
+        else
+          rebalance_left(@left, @right.take(n - @left.size - 1))
+        end
+      end
+
       def include?(item, comparator)
         dir = direction(item, comparator)
         if dir == 0
@@ -997,6 +1025,8 @@ module Hamster
       def e.each_greater(item, comparator, inclusive); end
       def e.each_less(item, comparator, inclusive); end
       def e.each_between(item, comparator, inclusive); end
+      def e.drop(n); self; end
+      def e.take(n); self; end
       def e.empty?; true; end
       def e.slice(from, length); self; end
     end.freeze
