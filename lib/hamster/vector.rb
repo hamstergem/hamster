@@ -163,7 +163,6 @@ module Hamster
     # @param item [Object] The object to insert into that position
     # @return [Vector]
     def set(index, item = yield(get(index)))
-      raise IndexError if @size == 0
       index += @size if index < 0
       raise IndexError if index > @size || index < 0
       update_root(index, item)

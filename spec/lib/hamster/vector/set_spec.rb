@@ -8,10 +8,13 @@ describe Hamster::Vector do
     context "when empty" do
       let(:vector) { Hamster.vector }
 
-      it "always raises an error" do
-        (-1..1).each do |i|
-          expect { vector.set(i) }.to raise_error
-        end
+      it "raises an error for indexes 1 and -1" do
+        expect { vector.set(1, :a) }.to raise_error
+        expect { vector.set(-1, :a) }.to raise_error
+      end
+
+      it "allows index 0 to be set" do
+        vector.set(0, :a).should eql(Hamster.vector(:a))
       end
     end
 
