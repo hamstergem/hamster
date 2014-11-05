@@ -163,9 +163,15 @@ module Hamster
     # @param item [Object] The object to insert into that position
     # @return [Vector]
     def set(index, item = yield(get(index)))
+      raise IndexError, "index #{index} outside of vector bounds" if index < -@size
       index += @size if index < 0
-      raise IndexError if index > @size || index < 0
-      update_root(index, item)
+      if index > @size
+        suffix = Array.new(index - @size, nil)
+        suffix << item
+        replace_suffix(@size, suffix)
+      else
+        update_root(index, item)
+      end
     end
 
     # Return a new `Vector` with a deeply nested value modified to the result

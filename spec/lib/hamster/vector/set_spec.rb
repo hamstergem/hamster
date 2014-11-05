@@ -8,13 +8,13 @@ describe Hamster::Vector do
     context "when empty" do
       let(:vector) { Hamster.vector }
 
-      it "raises an error for indexes 1 and -1" do
-        expect { vector.set(1, :a) }.to raise_error
+      it "raises an error for index -1" do
         expect { vector.set(-1, :a) }.to raise_error
       end
 
-      it "allows index 0 to be set" do
+      it "allows indexes 0 and 1 to be set" do
         vector.set(0, :a).should eql(Hamster.vector(:a))
+        vector.set(1, :a).should eql(Hamster.vector(nil, :a))
       end
     end
 
@@ -47,8 +47,9 @@ describe Hamster::Vector do
           end
 
           context "further outside the bounds of the vector" do
-            it "raises an error" do
-              expect { vector.set(4) {} }.to raise_error
+            it "passes nil to the block, fills up missing nils, and adds a new value" do
+              result = vector.set(5) { |value| value.should be_nil; "D" }
+              result.should eql(Hamster.vector("A", "B", "C", nil, nil, "D"))
             end
           end
         end
@@ -100,8 +101,9 @@ describe Hamster::Vector do
           end
 
           context "outside the absolute bounds of the vector" do
-            it "raises an error" do
-              expect { vector.set(4, "FLIBBLE") }.to raise_error
+            it "fills up with nils" do
+              result = vector.set(5, "FLIBBLE")
+              result.should eql(Hamster.vector("A", "B", "C", nil, nil, "FLIBBLE"))
             end
           end
         end

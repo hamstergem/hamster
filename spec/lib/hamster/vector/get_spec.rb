@@ -54,7 +54,7 @@ describe Hamster::Vector do
             array = size.times.map { rand(10000) }
             vector = V.new(array)
             100.times do
-              if rand(1) == 0
+              if rand(2) == 0
                 value, index = rand(10000), rand(size)
                 array[index] = value
                 vector = vector.set(index, value)
