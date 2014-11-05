@@ -323,8 +323,13 @@ module Hamster
     # @param other [Enumerable] The collection to intersect with
     # @return [Set]
     def intersection(other)
-      if (other.size < @trie.size) && other.is_a?(Hamster::Set)
-        trie = other.instance_variable_get(:@trie).filter { |key, _| include?(key) }
+      if other.size < @trie.size
+        if other.is_a?(Hamster::Set)
+          trie = other.instance_variable_get(:@trie).filter { |key, _| include?(key) }
+        else
+          trie = Trie.new(0)
+          other.each { |obj| trie.put!(obj, nil) if include?(obj) }
+        end
       else
         trie = @trie.filter { |key, _| other.include?(key) }
       end
