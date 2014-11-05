@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  [:intersection, :intersect, :&].each do |method|
+  [:intersection, :&].each do |method|
     describe "##{method}" do
       [
         [[], [], []],

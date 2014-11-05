@@ -2,19 +2,17 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  [:empty?, :null?].each do |method|
-    describe "##{method}" do
-      [
-        [[], true],
-        [["A"], false],
-        [%w[A B C], false],
-      ].each do |values, expected|
-        context "on #{values.inspect}" do
-          let(:sorted_set) { Hamster.sorted_set(*values) }
+  describe "#empty?" do
+    [
+      [[], true],
+      [["A"], false],
+      [%w[A B C], false],
+    ].each do |values, expected|
+      context "on #{values.inspect}" do
+        let(:sorted_set) { Hamster.sorted_set(*values) }
 
-          it "returns #{expected.inspect}" do
-            sorted_set.send(method).should == expected
-          end
+        it "returns #{expected.inspect}" do
+          sorted_set.empty?.should == expected
         end
       end
     end

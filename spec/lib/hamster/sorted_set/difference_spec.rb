@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  [:difference, :diff, :subtract, :-].each do |method|
+  [:difference, :subtract, :-].each do |method|
     describe "##{method}" do
       [
         [[], [], []],

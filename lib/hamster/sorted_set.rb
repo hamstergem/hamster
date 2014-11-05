@@ -113,7 +113,6 @@ module Hamster
     def empty?
       @node.empty?
     end
-    def_delegator :self, :empty?, :null?
 
     # Return the number of items in this `SortedSet`.
     #
@@ -438,7 +437,6 @@ module Hamster
     def intersection(other)
       self.class.alloc(@node.keep_only(other, @comparator), @comparator)
     end
-    def_delegator :self, :intersection, :intersect
     def_delegator :self, :intersection, :&
 
     # Return a new `SortedSet` with all the items in `other` removed. `other` can be
@@ -453,7 +451,6 @@ module Hamster
     def difference(other)
       self.class.alloc(@node.bulk_delete(other, @comparator), @comparator)
     end
-    def_delegator :self, :difference, :diff
     def_delegator :self, :difference, :subtract
     def_delegator :self, :difference, :-
 
@@ -630,10 +627,6 @@ module Hamster
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
-
-    def_delegator :self, :dup, :uniq
-    def_delegator :self, :dup, :nub
-    def_delegator :self, :dup, :remove_duplicates
 
     # @return [::Array]
     # @private
