@@ -39,6 +39,11 @@ describe Hamster::SortedSet do
         sorted_set.drop(1).to_a.should == [2, 1]
         sorted_set.drop(2).to_a.should == [1]
       end
+
+      it "keeps the comparator even when set is cleared" do
+        s = sorted_set.drop(3)
+        s.add(4).add(5).add(6).to_a.should == [6, 5, 4]
+      end
     end
 
     context "when called on a subclass" do

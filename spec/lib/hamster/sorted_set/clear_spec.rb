@@ -31,5 +31,14 @@ describe Hamster::SortedSet do
         instance.clear.should be_empty
       end
     end
+
+    context "with a comparator" do
+      let(:sorted_set) { Hamster::SortedSet.new([1, 2, 3]) { |x| -x } }
+      it "returns an empty instance with same comparator" do
+        e = sorted_set.clear
+        e.should be_empty
+        e.add(4).add(5).add(6).to_a.should == [6, 5, 4]
+      end
+    end
   end
 end

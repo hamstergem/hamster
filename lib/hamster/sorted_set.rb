@@ -76,7 +76,7 @@ module Hamster
       #
       # @return [SortedSet]
       def empty
-        @empty ||= self.alloc(EmptyAVLNode, lambda { |a,b| a <=> b })
+        @empty ||= self.alloc(EmptyAVLNode, nil)
       end
 
       # "Raw" allocation of a new `SortedSet`. Used internally to create a new
@@ -377,18 +377,14 @@ module Hamster
     # @param n [Integer] The number of elements to remove
     # @return [SortedSet]
     def drop(n)
-      return self if n <= 0
-      return self.class.empty if n >= size
-      self.class.alloc(@node.drop(n), @comparator)
+      derive_new_sorted_set(@node.drop(n))
     end
 
     # Return only the first `n` elements in a new `SortedSet`.
     # @param n [Integer] The number of elements to retain
     # @return [SortedSet]
     def take(n)
-      return self if n >= size
-      return self.class.empty if n <= 0
-      self.class.alloc(@node.take(n), @comparator)
+      derive_new_sorted_set(@node.take(n))
     end
 
     # Drop elements up to, but not including, the first element for which the
@@ -613,9 +609,13 @@ module Hamster
     # Return an empty `SortedSet` instance, of the same class as this one. Useful if you
     # have multiple subclasses of `SortedSet` and want to treat them polymorphically.
     #
-    # @return [Hash]
+    # @return [SortedSet]
     def clear
-      self.class.empty
+      if @comparator
+        self.class.alloc(EmptyAVLNode, @comparator)
+      else
+        self.class.empty
+      end
     end
 
     # Return true if `other` has the same type and contents as this `SortedSet`.
@@ -662,6 +662,19 @@ module Hamster
       length = @node.size - from if @node.size < from + length
       return self.class.empty if length == 0
       self.class.alloc(@node.slice(from, length), @comparator)
+    end
+
+    # Return a new `SortedSet` which is derived from this one, using a modified
+    # {AVLNode}.  The new `SortedSet` will retain the existing comparator, if
+    # there is one.
+    def derive_new_sorted_set(node)
+      if node.equal?(@node)
+        self
+      elsif node.empty?
+        clear
+      else
+        self.class.alloc(node, @comparator)
+      end
     end
 
     # @private

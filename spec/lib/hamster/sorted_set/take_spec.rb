@@ -38,6 +38,11 @@ describe Hamster::SortedSet do
         sorted_set.take(2).to_a.should == [3, 2]
         sorted_set.take(3).to_a.should == [3, 2, 1]
       end
+
+      it "keeps the comparator even when set is cleared" do
+        s = sorted_set.take(0)
+        s.add(4).add(5).add(6).to_a.should == [6, 5, 4]
+      end
     end
 
     context "when called on a subclass" do
