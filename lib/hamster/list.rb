@@ -138,7 +138,6 @@ module Hamster
     CADR = /^c([ad]+)r$/
 
     def_delegator :self, :head, :first
-    def_delegator :self, :empty?, :null?
 
     # Create a new `List` populated with the given items.
     # @return [Set]
@@ -310,7 +309,6 @@ module Hamster
       end
     end
     def_delegator :self, :append, :concat
-    def_delegator :self, :append, :cat
     def_delegator :self, :append, :+
 
     # Return a `List` with the same items, but in reverse order.
@@ -472,8 +470,6 @@ module Hamster
         Cons.new(head, tail.uniq(items.add(head)))
       end
     end
-    def_delegator :self, :uniq, :nub
-    def_delegator :self, :uniq, :remove_duplicates
 
     # Return a `List` with all the elements from both this list and `other`,
     # with all duplicates removed.
