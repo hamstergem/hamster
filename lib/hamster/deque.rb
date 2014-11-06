@@ -85,6 +85,10 @@ module Hamster
     end
 
     # Return the number of items in this `Deque`.
+    #
+    # @example
+    #   Hamster::Deque["A", "B", "C"].size  #=> 3
+    #
     # @return [Integer]
     def size
       @front.size + @rear.size
@@ -92,6 +96,10 @@ module Hamster
     def_delegator :self, :size, :length
 
     # Return the first item in the `Deque`. If the deque is empty, return `nil`.
+    #
+    # @example
+    #   Hamster::Deque["A", "B", "C"].first  #=> "A"
+    #
     # @return [Object]
     def first
       return @front.head unless @front.empty?
@@ -101,6 +109,10 @@ module Hamster
     def_delegator :self, :first, :front
 
     # Return the last item in the `Deque`. If the deque is empty, return `nil`.
+    #
+    # @example
+    #   Hamster::Deque["A", "B", "C"].last  #=> "C"
+    #
     # @return [Object]
     def last
       return @rear.head unless @rear.empty?
@@ -109,6 +121,11 @@ module Hamster
     def_delegator :self, :last, :peek
 
     # Return a new `Deque` with `item` added at the end.
+    #
+    # @example
+    #   Hamster::Deque["A", "B", "C"].add("Z")
+    #   # => Hamster::Deque["A", "B", "C", "Z"]
+    #
     # @param item [Object] The item to add
     # @return [Deque]
     def push(item)
@@ -121,6 +138,11 @@ module Hamster
     def_delegator :self, :push, :conjoin
 
     # Return a new `Deque` with the last item removed.
+    #
+    # @example
+    #   Hamster::Deque["A", "B", "C"].pop
+    #   # => Hamster::Deque["A", "B"]
+    #
     # @return [Deque]
     def pop
       front, rear = @front, @rear
@@ -134,6 +156,11 @@ module Hamster
     end
 
     # Return a new `Deque` with `item` added at the front.
+    #
+    # @example
+    #   Hamster::Deque["A", "B", "C"].unshift("Z")
+    #   # => Hamster::Deque["Z", "A", "B", "C"]
+    #
     # @param item [Object] The item to add
     # @return [Deque]
     def unshift(item)
@@ -141,6 +168,11 @@ module Hamster
     end
 
     # Return a new `Deque` with the first item removed.
+    #
+    # @example
+    #   Hamster::Deque["A", "B", "C"].shift
+    #   # => Hamster::Deque["B", "C"]
+    #
     # @return [Deque]
     def shift
       front, rear = @front, @rear
