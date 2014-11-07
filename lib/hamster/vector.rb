@@ -145,8 +145,6 @@ module Hamster
       update_root(@size, item)
     end
     def_delegator :self, :add, :<<
-    def_delegator :self, :add, :conj
-    def_delegator :self, :add, :conjoin
     def_delegator :self, :add, :push
 
     # Return a new `Vector` with the item at `index` replaced by `item`. If the

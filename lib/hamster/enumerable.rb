@@ -71,14 +71,14 @@ module Hamster
     # Groups the collection into sub-collections by the result of yielding them to
     # the block. Returns a {Hash} where the keys are return values from the block,
     # and the values are sub-collections. All the sub-collections are built up from
-    # `empty_group`, which should respond to `#conj` by returning a new collection
+    # `empty_group`, which should respond to `#add` by returning a new collection
     # with an added element.
     def group_by_with(empty_group, &block)
       block ||= lambda { |item| item }
       reduce(EmptyHash) do |hash, item|
         key = block.call(item)
         group = hash.get(key) || empty_group
-        hash.put(key, group.conj(item))
+        hash.put(key, group.add(item))
       end
     end
     protected :group_by_with

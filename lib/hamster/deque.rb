@@ -134,8 +134,6 @@ module Hamster
     def_delegator :self, :push, :enqueue
     def_delegator :self, :push, :<<
     def_delegator :self, :push, :add
-    def_delegator :self, :push, :conj
-    def_delegator :self, :push, :conjoin
 
     # Return a new `Deque` with the last item removed.
     #

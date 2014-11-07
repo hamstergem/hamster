@@ -168,16 +168,14 @@ module Hamster
     def cons(item)
       Cons.new(item, self)
     end
-    def_delegator :self, :cons, :conj
-    def_delegator :self, :cons, :conjoin
+    def_delegator :self, :cons, :add
 
     # Create a new `List` with `item` added at the end.
     # @param item [Object] The item to add
     # @return [List]
-    def add(item)
+    def <<(item)
       append(Hamster.list(item))
     end
-    def_delegator :self, :add, :<<
 
     # Call the given block once for each item in the list, passing each
     # item from first to last successively to the block.

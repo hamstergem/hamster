@@ -140,8 +140,6 @@ module Hamster
       self.class.alloc(node, @comparator)
     end
     def_delegator :self, :add, :<<
-    def_delegator :self, :add, :conj
-    def_delegator :self, :add, :conjoin
 
     # If `item` is not a member of this `SortedSet`, return a new `SortedSet` with
     # `item` added. Otherwise, return `false`.

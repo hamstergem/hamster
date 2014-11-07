@@ -3,17 +3,23 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#add" do
-    it "adds an item onto the end of a list" do
-      list = Hamster.list("a", "b")
-      list.add("c").should eql(Hamster.list("a", "b", "c"))
-      list.should eql(Hamster.list("a", "b"))
-    end
+    [
+      [[], "A", ["A"]],
+      [["A"], "B", %w[B A]],
+      [["A"], "A", %w[A A]],
+      [%w[A B C], "D", %w[D A B C]],
+    ].each do |values, new_value, expected|
+      context "on #{values.inspect} with #{new_value.inspect}" do
+        let(:list) { Hamster.list(*values) }
 
-    context "on an empty list" do
-      it "returns a list with one item" do
-        list = Hamster.list
-        list.add("c").should eql(Hamster.list("c"))
-        list.should eql(Hamster.list)
+        it "preserves the original" do
+          list.add(new_value)
+          list.should eql(Hamster.list(*values))
+        end
+
+        it "returns #{expected.inspect}" do
+          list.add(new_value).should eql(Hamster.list(*expected))
+        end
       end
     end
   end

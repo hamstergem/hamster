@@ -114,8 +114,6 @@ module Hamster
       include?(item) ? self : self.class.alloc(@trie.put(item, nil))
     end
     def_delegator :self, :add, :<<
-    def_delegator :self, :add, :conj
-    def_delegator :self, :add, :conjoin
 
     # If `item` is not a member of this `Set`, return a new `Set` with `item` added.
     # Otherwise, return `false`.

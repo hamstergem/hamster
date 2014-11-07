@@ -4,7 +4,7 @@ require "hamster/vector"
 describe Hamster::Vector do
   let(:vector) { Hamster.vector(*values) }
 
-  [:add, :<<, :conj, :conjoin, :push].each do |method|
+  [:add, :<<, :push].each do |method|
     describe "##{method}" do
       shared_examples "checking adding values" do
         let(:added_vector) { Hamster.vector(*added_values) }
