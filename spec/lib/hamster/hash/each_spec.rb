@@ -4,7 +4,7 @@ require "hamster/hash"
 describe Hamster::Hash do
   let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
 
-  [:each, :foreach, :each_pair].each do |method|
+  [:each, :each_pair].each do |method|
     describe "##{method}" do
       context "with a block (internal iteration)" do
         it "returns self" do
