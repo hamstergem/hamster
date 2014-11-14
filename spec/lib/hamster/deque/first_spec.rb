@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/deque"
 
 describe Hamster::Deque do
-  [:head, :first, :front].each do |method|
+  [:first, :front].each do |method|
     describe "##{method}" do
       [
         [[], nil],

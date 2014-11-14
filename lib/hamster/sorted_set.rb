@@ -368,7 +368,6 @@ module Hamster
       @node.min
     end
     alias :first :min
-    def_delegator :self, :first, :head
 
     # Return the "highest" element in this set, as determined by its sort order.
     #

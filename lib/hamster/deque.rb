@@ -105,7 +105,6 @@ module Hamster
       return @front.head unless @front.empty?
       @rear.last # memoize?
     end
-    def_delegator :self, :first, :head
     def_delegator :self, :first, :front
 
     # Return the last item in the `Deque`. If the deque is empty, return `nil`.

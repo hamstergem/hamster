@@ -6,9 +6,9 @@ describe Hamster::Deque do
     it "accepts a single enumerable argument and creates a new deque" do
       deque = Hamster::Deque.new([1,2,3])
       deque.size.should be(3)
-      deque.head.should be(1)
-      deque.dequeue.head.should be(2)
-      deque.dequeue.dequeue.head.should be(3)
+      deque.first.should be(1)
+      deque.dequeue.first.should be(2)
+      deque.dequeue.dequeue.first.should be(3)
     end
 
     it "is amenable to overriding of #initialize" do
@@ -37,8 +37,8 @@ describe Hamster::Deque do
     it "accepts a variable number of items and creates a new deque" do
       deque = Hamster::Deque['a', 'b']
       deque.size.should be(2)
-      deque.head.should == 'a'
-      deque.dequeue.head.should == 'b'
+      deque.first.should == 'a'
+      deque.dequeue.first.should == 'b'
     end
   end
 end

@@ -244,7 +244,6 @@ module Hamster
     def first
       (entry = @trie.at(0)) && entry[0]
     end
-    def_delegator :self, :first, :head
 
     # Return a {SortedSet} which contains the same items as this `Set`, ordered by
     # the given comparator block. The comparator block should take 2 parameters and

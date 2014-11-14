@@ -122,7 +122,6 @@ module Hamster
     def first
       get(0)
     end
-    def_delegator :self, :first, :head
 
     # Return the last item in the `Vector`. If the vector is empty, return `nil`.
     #
