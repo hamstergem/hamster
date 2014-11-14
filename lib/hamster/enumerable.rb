@@ -145,7 +145,6 @@ module Hamster
       end
     end
 
-    def_delegator :self, :all?, :forall?
     def_delegator :self, :any?, :exist?
     def_delegator :self, :any?, :exists?
     def_delegator :self, :to_a, :to_ary
