@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  [:include?, :member?, :contains?, :elem?].each do |method|
+  [:include?, :member?, :contains?].each do |method|
     describe "##{method}" do
       let(:sorted_set) { Hamster.sorted_set(1, 2, 3, 4.0) }
 

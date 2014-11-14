@@ -153,7 +153,6 @@ module Hamster
     def_delegator :self, :filter, :select # make it return a Hamster collection (and possibly make it lazy)
     def_delegator :self, :filter, :keep_if
     def_delegator :self, :include?, :contains?
-    def_delegator :self, :include?, :elem?
     def_delegator :self, :remove, :reject # make it return a Hamster collection (and possibly make it lazy)
     def_delegator :self, :remove, :delete_if
     def_delegator :self, :reduce, :fold

@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  [:include?, :member?, :contains?, :elem?].each do |method|
+  [:include?, :member?, :contains?].each do |method|
     describe "##{method}" do
       [
         [[], "A", false],
