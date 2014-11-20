@@ -3,7 +3,7 @@ require "hamster/set"
 require 'set'
 
 describe Hamster::Set do
-  [:include?, :member?, :contains?].each do |method|
+  [:include?, :member?].each do |method|
     describe "##{method}" do
       let(:set) { Hamster.set("A", "B", "C", 2.0, nil) }
 

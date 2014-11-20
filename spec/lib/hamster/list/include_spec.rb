@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
-  [:include?, :member?, :contains?].each do |method|
+  [:include?, :member?].each do |method|
     describe "##{method}" do
       context "on a really big list" do
         it "doesn't run out of stack" do
