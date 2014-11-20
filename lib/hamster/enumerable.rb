@@ -145,8 +145,6 @@ module Hamster
       end
     end
 
-    def_delegator :self, :any?, :exist?
-    def_delegator :self, :any?, :exists?
     def_delegator :self, :to_a, :to_ary
     def_delegator :self, :filter, :find_all
     def_delegator :self, :filter, :select # make it return a Hamster collection (and possibly make it lazy)
