@@ -3,11 +3,10 @@ require "forwardable"
 module Hamster
   # Helper module for Hamster's sequential collections
   #
-  # Classes including `Hamster::Enumerable` must implement `#each` (just like `::Enumerable`).
+  # Classes including `Hamster::Enumerable` must implement:
   #
-  # They must also implement:
-  #
-  # - `#filter`, which takes a block, and returns an instance of the same class
+  # - `#each` (just like `::Enumerable`).
+  # - `#select`, which takes a block, and returns an instance of the same class
   #     with only the items for which the block returns a true value
   # - `#reverse` (or else undef `#foldr`, or provide another definition for it)
   #
