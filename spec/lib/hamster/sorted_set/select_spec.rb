@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  [:filter, :select, :find_all].each do |method|
+  [:select, :find_all].each do |method|
     describe "##{method}" do
       let(:sorted_set) { Hamster.sorted_set("A", "B", "C") }
 
@@ -52,9 +52,9 @@ describe Hamster::SortedSet do
         it "returns an instance of the same class" do
           subclass = Class.new(Hamster::SortedSet)
           instance = subclass.new(['A', 'B', 'C'])
-          instance.filter { true }.class.should be(subclass)
-          instance.filter { false }.class.should be(subclass)
-          instance.filter { rand(2) == 0 }.class.should be(subclass)
+          instance.send(method) { true }.class.should be(subclass)
+          instance.send(method) { false }.class.should be(subclass)
+          instance.send(method) { rand(2) == 0 }.class.should be(subclass)
         end
       end
     end

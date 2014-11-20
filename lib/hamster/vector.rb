@@ -428,12 +428,12 @@ module Hamster
     # true.
     #
     # @example
-    #   Hamster::Vector["Bird", "Cow", "Elephant"].filter { |e| e.size >= 4 }
+    #   Hamster::Vector["Bird", "Cow", "Elephant"].select { |e| e.size >= 4 }
     #   # => Hamster::Vector["Bird", "Elephant"]
     #
     # @return [Vector]
-    def filter
-      return enum_for(:filter) unless block_given?
+    def select
+      return enum_for(:select) unless block_given?
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
     end
 
@@ -446,7 +446,7 @@ module Hamster
     # @param obj [Object] The object to remove (every occurrence)
     # @return [Vector]
     def delete(obj)
-      filter { |item| item != obj }
+      select { |item| item != obj }
     end
 
     # Invoke the given block once for each item in the vector, and return a new

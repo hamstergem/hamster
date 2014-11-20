@@ -5,7 +5,7 @@ describe Hamster::List do
   describe "#empty?" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).filter(&:nil?).empty? }.should_not raise_error
+        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).select(&:nil?).empty? }.should_not raise_error
       end
     end
 

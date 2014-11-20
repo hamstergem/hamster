@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  [:remove, :reject, :delete_if].each do |method|
+  [:reject, :delete_if].each do |method|
     describe "##{method}" do
       let(:set) { Hamster.set("A", "B", "C") }
 

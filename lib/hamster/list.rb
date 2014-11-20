@@ -221,13 +221,13 @@ module Hamster
     # returns true.
     #
     # @return [List]
-    def filter(&block)
-      return enum_for(:filter) unless block_given?
+    def select(&block)
+      return enum_for(:select) unless block_given?
       LazyList.new do
         list = self
         while true
           break list if list.empty?
-          break Cons.new(list.head, list.tail.filter(&block)) if yield(list.head)
+          break Cons.new(list.head, list.tail.select(&block)) if yield(list.head)
           list = list.tail
         end
       end
@@ -713,7 +713,7 @@ module Hamster
     def merge(&comparator)
       return merge_by unless block_given?
       LazyList.new do
-        sorted = remove(&:empty?).sort do |a, b|
+        sorted = reject(&:empty?).sort do |a, b|
           yield(a.head, b.head)
         end
         next EmptyList if sorted.empty?
@@ -731,7 +731,7 @@ module Hamster
     def merge_by(&transformer)
       return merge_by { |item| item } unless block_given?
       LazyList.new do
-        sorted = remove(&:empty?).sort_by do |list|
+        sorted = reject(&:empty?).sort_by do |list|
           yield(list.head)
         end
         next EmptyList if sorted.empty?

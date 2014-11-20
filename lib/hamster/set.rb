@@ -192,13 +192,13 @@ module Hamster
     # Return a new `Set` with all the items for which the block returns true.
     #
     # @example
-    #   Hamster::Set["Elephant", "Dog", "Lion"].filter { |e| e.size >= 4 }
+    #   Hamster::Set["Elephant", "Dog", "Lion"].select { |e| e.size >= 4 }
     #   # => Hamster::Set["Elephant", "Lion"]
     #
     # @return [Set]
-    def filter
-      return enum_for(:filter) unless block_given?
-      trie = @trie.filter { |key, _| yield(key) }
+    def select
+      return enum_for(:select) unless block_given?
+      trie = @trie.select { |key, _| yield(key) }
       new_trie(trie)
     end
 
@@ -322,13 +322,13 @@ module Hamster
     def intersection(other)
       if other.size < @trie.size
         if other.is_a?(Hamster::Set)
-          trie = other.instance_variable_get(:@trie).filter { |key, _| include?(key) }
+          trie = other.instance_variable_get(:@trie).select { |key, _| include?(key) }
         else
           trie = Trie.new(0)
           other.each { |obj| trie.put!(obj, nil) if include?(obj) }
         end
       else
-        trie = @trie.filter { |key, _| other.include?(key) }
+        trie = @trie.select { |key, _| other.include?(key) }
       end
       new_trie(trie)
     end
@@ -344,7 +344,7 @@ module Hamster
     # @return [Set]
     def difference(other)
       trie = if (@trie.size <= other.size) && (other.is_a?(Hamster::Set) || (defined?(::Set) && other.is_a?(::Set)))
-        @trie.filter { |key, _| !other.include?(key) }
+        @trie.select { |key, _| !other.include?(key) }
       else
         @trie.bulk_delete(other)
       end

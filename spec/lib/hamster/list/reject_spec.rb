@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
-  [:remove, :reject, :delete_if].each do |method|
+  [:reject, :delete_if].each do |method|
     describe "##{method}" do
       it "is lazy" do
         -> { Hamster.stream { fail }.send(method) { |item| false } }.should_not raise_error

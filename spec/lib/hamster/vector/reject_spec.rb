@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  [:remove, :reject, :delete_if].each do |method|
+  [:reject, :delete_if].each do |method|
     describe "##{method}" do
       [
         [[], []],

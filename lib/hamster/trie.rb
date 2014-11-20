@@ -49,7 +49,7 @@ module Hamster
       memo
     end
 
-    def filter
+    def select
       keys_to_delete = []
       each { |entry| keys_to_delete << entry[0] unless yield(entry) }
       bulk_delete(keys_to_delete)

@@ -16,20 +16,20 @@ module Hamster
     include ::Enumerable
 
     # Return a new collection with all the elements for which the block returns false.
-    def remove
-      return enum_for(:remove) if not block_given?
-      filter { |item| !yield(item) }
+    def reject
+      return enum_for(:reject) if not block_given?
+      select { |item| !yield(item) }
     end
 
     # Return a new collection with all `nil` elements removed.
     def compact
-      filter { |item| !item.nil? }
+      select { |item| !item.nil? }
     end
 
     # Search the collection for elements which are `#===` to `item`. Yield them to
     # the optional code block if provided, and return them as a new collection.
     def grep(pattern, &block)
-      result = filter { |item| pattern === item }
+      result = select { |item| pattern === item }
       result = result.map(&block) if block_given?
       result
     end
@@ -146,11 +146,9 @@ module Hamster
     end
 
     def_delegator :self, :to_a, :to_ary
-    def_delegator :self, :filter, :find_all
-    def_delegator :self, :filter, :select # make it return a Hamster collection (and possibly make it lazy)
-    def_delegator :self, :filter, :keep_if
-    def_delegator :self, :remove, :reject # make it return a Hamster collection (and possibly make it lazy)
-    def_delegator :self, :remove, :delete_if
+    def_delegator :self, :select, :find_all
+    def_delegator :self, :select, :keep_if
+    def_delegator :self, :reject, :delete_if
     def_delegator :self, :reduce, :fold
     def_delegator :self, :find_index, :index
 

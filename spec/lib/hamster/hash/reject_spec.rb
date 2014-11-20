@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  [:remove, :reject, :delete_if].each do |method|
+  [:reject, :delete_if].each do |method|
     describe "##{method}" do
       let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
 

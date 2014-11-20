@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  [:filter, :select, :find_all].each do |method|
+  [:select, :find_all].each do |method|
     describe "##{method}" do
       let(:set) { Hamster.set("A", "B", "C") }
 
@@ -51,9 +51,9 @@ describe Hamster::Set do
         it "returns an instance of the same class" do
           subclass = Class.new(Hamster::Set)
           instance = subclass.new(['A', 'B', 'C'])
-          instance.filter { true }.class.should be(subclass)
-          instance.filter { false }.class.should be(subclass)
-          instance.filter { rand(2) == 0 }.class.should be(subclass)
+          instance.send(method) { true }.class.should be(subclass)
+          instance.send(method) { false }.class.should be(subclass)
+          instance.send(method) { rand(2) == 0 }.class.should be(subclass)
         end
       end
 

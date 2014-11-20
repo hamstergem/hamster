@@ -384,12 +384,12 @@ module Hamster
     # true.
     #
     # @example
-    #   Hamster::SortedSet["Bird", "Cow", "Elephant"].filter { |e| e.size >= 4 }
+    #   Hamster::SortedSet["Bird", "Cow", "Elephant"].select { |e| e.size >= 4 }
     #   # => Hamster::SortedSet["Bird", "Elephant"]
     #
     # @return [SortedSet]
-    def filter
-      return enum_for(:filter) unless block_given?
+    def select
+      return enum_for(:select) unless block_given?
       items_to_delete = []
       each { |item| items_to_delete << item unless yield(item) }
       derive_new_sorted_set(@node.bulk_delete(items_to_delete, @comparator))

@@ -441,13 +441,13 @@ module Hamster
     #
     # @example
     #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
-    #   h.filter { |k, v| v >= 2 }
+    #   h.select { |k, v| v >= 2 }
     #   # => Hamster::Hash["B" => 2, "C" => 3]
     #
     # @return [Hash]
-    def filter(&block)
-      return enum_for(:filter) unless block_given?
-      derive_new_hash(@trie.filter(&block))
+    def select(&block)
+      return enum_for(:select) unless block_given?
+      derive_new_hash(@trie.select(&block))
     end
 
     # Yield `[key, value]` pairs until one is found for which the block returns true.

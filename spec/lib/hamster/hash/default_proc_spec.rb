@@ -24,7 +24,7 @@ describe Hamster::Hash do
 
     context "after all key/val pairs are filtered out" do
       it "doesn't change" do
-        other = hash.remove { true }
+        other = hash.reject { true }
         other.default_proc.should be(hash.default_proc)
         other.default_proc.call(4).should == 8
       end
