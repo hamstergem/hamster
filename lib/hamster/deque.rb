@@ -105,7 +105,6 @@ module Hamster
       return @front.head unless @front.empty?
       @rear.last # memoize?
     end
-    def_delegator :self, :first, :front
 
     # Return the last item in the `Deque`. If the deque is empty, return `nil`.
     #
@@ -117,7 +116,6 @@ module Hamster
       return @rear.head unless @rear.empty?
       @front.last # memoize?
     end
-    def_delegator :self, :last, :peek
 
     # Return a new `Deque` with `item` added at the end.
     #
@@ -131,8 +129,6 @@ module Hamster
       self.class.alloc(@front, @rear.cons(item))
     end
     def_delegator :self, :push, :enqueue
-    def_delegator :self, :push, :<<
-    def_delegator :self, :push, :add
 
     # Return a new `Deque` with the last item removed.
     #
@@ -182,7 +178,6 @@ module Hamster
       self.class.alloc(front.tail, rear)
     end
     def_delegator :self, :shift, :dequeue
-    def_delegator :self, :shift, :tail
 
     # Return an empty `Deque` instance, of the same class as this one. Useful if you
     # have multiple subclasses of `Deque` and want to treat them polymorphically.
