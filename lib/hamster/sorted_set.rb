@@ -483,7 +483,6 @@ module Hamster
         super(&block)
       end
     end
-    def_delegator :self, :find_index, :index
 
     # Drop the first `n` elements and return the rest in a new `SortedSet`.
     #
