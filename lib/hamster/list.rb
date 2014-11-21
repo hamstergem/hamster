@@ -51,7 +51,6 @@ module Hamster
       return EmptyList if from > to
       interval_exclusive(from, to.next)
     end
-    def_delegator :self, :interval, :range
 
     # Create an infinite list repeating the same item indefinitely
     #

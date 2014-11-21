@@ -40,18 +40,16 @@ describe Hamster do
     end
   end
 
-  [:interval, :range].each do |method|
-    describe ".#{method}" do
-      context "for numbers" do
-        it "is equivalent to a list with explicit values" do
-          Hamster.send(method, 98, 102).should eql(Hamster.list(98, 99, 100, 101, 102))
-        end
+  describe ".interval" do
+    context "for numbers" do
+      it "is equivalent to a list with explicit values" do
+        Hamster.interval(98, 102).should eql(Hamster.list(98, 99, 100, 101, 102))
       end
+    end
 
-      context "for strings" do
-        it "is equivalent to a list with explicit values" do
-          Hamster.send(method, "A", "AA").should eql(Hamster.list("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA"))
-        end
+    context "for strings" do
+      it "is equivalent to a list with explicit values" do
+        Hamster.interval("A", "AA").should eql(Hamster.list("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA"))
       end
     end
   end
