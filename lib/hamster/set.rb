@@ -202,8 +202,6 @@ module Hamster
       new_trie(trie)
     end
 
-    def_delegator :self, :reduce, :foldr # set is not ordered, so foldr is same as reduce
-
     # Call the block once for each item in this `Set`.
     # All the values returned from the block will be gathered into a new `Set`.
     #

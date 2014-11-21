@@ -435,8 +435,6 @@ module Hamster
     end
     def_delegator :self, :map, :collect
 
-    def_delegator :self, :reduce, :foldr
-
     # Return a new `Hash` with all the key/value pairs for which the block returns true.
     #
     # @example

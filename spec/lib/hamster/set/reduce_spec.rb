@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  [:reduce, :inject, :fold, :foldr].each do |method|
+  [:reduce, :inject].each do |method|
     describe "##{method}" do
       [
         [[], 10, 10],

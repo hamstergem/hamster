@@ -8,7 +8,6 @@ module Hamster
   # - `#each` (just like `::Enumerable`).
   # - `#select`, which takes a block, and returns an instance of the same class
   #     with only the items for which the block returns a true value
-  # - `#reverse` (or else undef `#foldr`, or provide another definition for it)
   #
   module Enumerable
     extend Forwardable
@@ -58,13 +57,6 @@ module Hamster
       return enum_for(:partition) if not block_given?
       a,b = super
       [self.class.new(a), self.class.new(b)].freeze
-    end
-
-    # Combines all elements by applying a binary operation, like `#reduce`, but unlike
-    # `#reduce`, do so from starting from the last element to the first. In other words,
-    # the order in which elements are yielded is the opposite of `#reduce`.
-    def foldr(*args, &block)
-      reverse.reduce(*args, &block)
     end
 
     # Groups the collection into sub-collections by the result of yielding them to
@@ -148,7 +140,6 @@ module Hamster
     def_delegator :self, :select, :find_all
     def_delegator :self, :select, :keep_if
     def_delegator :self, :reject, :delete_if
-    def_delegator :self, :reduce, :fold
     def_delegator :self, :find_index, :index
 
     ## Compatibility fixes

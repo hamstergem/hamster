@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  [:reduce, :inject, :fold, :foldr].each do |method|
+  [:reduce, :inject].each do |method|
     describe "##{method}" do
       context "when empty" do
         it "returns the memo" do
