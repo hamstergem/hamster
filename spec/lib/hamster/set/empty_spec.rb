@@ -32,7 +32,7 @@ describe Hamster::Set do
         subclass.empty.should be_empty
       end
 
-      it "calls overridden #initialize when creating empty Hash" do
+      it "calls overridden #initialize when creating empty Set" do
         subclass = Class.new(Hamster::Set) do
           def initialize
             @variable = 'value'
