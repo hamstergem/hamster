@@ -1,4 +1,3 @@
-require "forwardable"
 require "hamster/immutable"
 require "hamster/list"
 
@@ -41,7 +40,6 @@ module Hamster
   # @see http://en.wikipedia.org/wiki/Deque "Deque" on Wikipedia
   #
   class Deque
-    extend Forwardable
     include Immutable
 
     class << self
@@ -93,7 +91,7 @@ module Hamster
     def size
       @front.size + @rear.size
     end
-    def_delegator :self, :size, :length
+    alias :length :size
 
     # Return the first item in the `Deque`. If the deque is empty, return `nil`.
     #
@@ -128,7 +126,7 @@ module Hamster
     def push(item)
       self.class.alloc(@front, @rear.cons(item))
     end
-    def_delegator :self, :push, :enqueue
+    alias :enqueue :push
 
     # Return a new `Deque` with the last item removed.
     #
@@ -177,7 +175,7 @@ module Hamster
 
       self.class.alloc(front.tail, rear)
     end
-    def_delegator :self, :shift, :dequeue
+    alias :dequeue :shift
 
     # Return an empty `Deque` instance, of the same class as this one. Useful if you
     # have multiple subclasses of `Deque` and want to treat them polymorphically.
@@ -195,15 +193,15 @@ module Hamster
       return true if other.equal?(self)
       instance_of?(other.class) && to_ary.eql?(other.to_ary)
     end
-    def_delegator :self, :eql?, :==
+    alias :== :eql?
 
     # Return an `Array` with the same elements, in the same order.
     # @return [Array]
     def to_a
       @front.to_a.concat(@rear.to_a.tap { |a| a.reverse! })
     end
-    def_delegator :self, :to_a, :entries
-    def_delegator :self, :to_a, :to_ary
+    alias :entries :to_a
+    alias :to_ary  :to_a
 
     # Return a {List} with the same elements, in the same order.
     # @return [Hamster::List]

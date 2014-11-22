@@ -1,5 +1,3 @@
-require "forwardable"
-
 module Hamster
   # Helper module for Hamster's sequential collections
   #
@@ -10,7 +8,6 @@ module Hamster
   #     with only the items for which the block returns a true value
   #
   module Enumerable
-    extend Forwardable
     include ::Enumerable
 
     # Return a new collection with all the elements for which the block returns false.
@@ -18,6 +15,7 @@ module Hamster
       return enum_for(:reject) if not block_given?
       select { |item| !yield(item) }
     end
+    alias :delete_if :reject
 
     # Return a new collection with all `nil` elements removed.
     def compact
@@ -136,11 +134,8 @@ module Hamster
       end
     end
 
-    def_delegator :self, :to_a, :to_ary
-    def_delegator :self, :select, :find_all
-    def_delegator :self, :select, :keep_if
-    def_delegator :self, :reject, :delete_if
-    def_delegator :self, :find_index, :index
+    alias :to_ary :to_a
+    alias :index :find_index
 
     ## Compatibility fixes
 

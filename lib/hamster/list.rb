@@ -1,4 +1,3 @@
-require "forwardable"
 require "thread"
 require "atomic"
 require "set"
@@ -11,7 +10,6 @@ require "hamster/set"
 
 module Hamster
   class << self
-    extend Forwardable
 
     # Create a list containing the given items.
     #
@@ -131,13 +129,10 @@ module Hamster
   # traversed to find the element.
   #
   module List
-    extend Forwardable
     include Enumerable
 
     # @private
     CADR = /^c([ad]+)r$/
-
-    def_delegator :self, :head, :first
 
     # Create a new `List` populated with the given items.
     # @return [Set]
@@ -159,7 +154,7 @@ module Hamster
       end
       result
     end
-    def_delegator :self, :size, :length
+    alias :length :size
 
     # Create a new `List` with `item` added at the front.
     # @param item [Object] The item to add
@@ -167,7 +162,7 @@ module Hamster
     def cons(item)
       Cons.new(item, self)
     end
-    def_delegator :self, :cons, :add
+    alias :add :cons
 
     # Create a new `List` with `item` added at the end.
     # @param item [Object] The item to add
@@ -200,7 +195,7 @@ module Hamster
         Cons.new(yield(head), tail.map(&block))
       end
     end
-    def_delegator :self, :map, :collect
+    alias :collect :map
 
     # Return a lazy list which is realized by transforming each item into a `List`,
     # and flattening the resulting lists.
@@ -231,6 +226,8 @@ module Hamster
         end
       end
     end
+    alias :find_all :select
+    alias :keep_if  :select
 
     # Return a lazy list which contains all elements up to, but not including, the
     # first element for which the block returns `nil` or `false`.
@@ -306,8 +303,8 @@ module Hamster
         Cons.new(head, tail.append(other))
       end
     end
-    def_delegator :self, :append, :concat
-    def_delegator :self, :append, :+
+    alias :concat :append
+    alias :+ :append
 
     # Return a `List` with the same items, but in reverse order.
     # @return [List]
@@ -481,7 +478,7 @@ module Hamster
         Cons.new(head, tail.union(other, items.add(head)))
       end
     end
-    def_delegator :self, :union, :|
+    alias :| :union
 
     # Return a lazy list with all elements except the last one.
     # @return [List]
@@ -568,7 +565,7 @@ module Hamster
       chunk(number).each(&block)
       self
     end
-    def_delegator :self, :each_chunk, :each_slice
+    alias :each_slice :each_chunk
 
     # Return a new `List` with all nested lists recursively "flattened out",
     # that is, their elements inserted into the new `List` in the place where
@@ -591,7 +588,7 @@ module Hamster
     def group_by(&block)
       group_by_with(EmptyList, &block)
     end
-    def_delegator :self, :group_by, :group
+    alias :group :group_by
 
     # Retrieve the item at `index`. Negative indices count back from the end of
     # the list (-1 is the last item). If `index` is invalid (either too high or
@@ -658,7 +655,7 @@ module Hamster
         list.take(length)
       end
     end
-    def_delegator :self, :[], :slice
+    alias :slice :[]
 
     # Pass each item successively to the block, and return a `List` of indices where
     # the block returns true.
@@ -918,7 +915,7 @@ module Hamster
     def dup
       self
     end
-    def_delegator :self, :dup, :clone
+    alias :clone :dup
 
     # Return `self`.
     # @return [List]
@@ -1013,6 +1010,7 @@ module Hamster
     def size
       @size ||= super
     end
+    alias :length :size
 
     def cached_size?
       @size != nil
@@ -1041,6 +1039,7 @@ module Hamster
       realize if @atomic.get != 2
       @head
     end
+    alias :first :head
 
     def tail
       realize if @atomic.get != 2
@@ -1055,6 +1054,7 @@ module Hamster
     def size
       @size ||= super
     end
+    alias :length :size
 
     def cached_size?
       @size != nil
@@ -1112,6 +1112,7 @@ module Hamster
       realize if @head == Undefined
       @head
     end
+    alias :first :head
 
     def tail
       realize if @tail == Undefined
@@ -1126,6 +1127,7 @@ module Hamster
     def size
       @size ||= super
     end
+    alias :length :size
 
     def cached_size?
       @size != nil
@@ -1278,6 +1280,7 @@ module Hamster
       def head
         nil
       end
+      alias :first :head
 
       # There are no subsequent elements, so return an empty list.
       # @return [self]
@@ -1294,6 +1297,7 @@ module Hamster
       def size
         0
       end
+      alias :length :size
 
       def cached_size?
         true

@@ -1,5 +1,3 @@
-require "forwardable"
-
 require "hamster/immutable"
 require "hamster/undefined"
 require "hamster/enumerable"
@@ -72,7 +70,6 @@ module Hamster
   # do not survive marshalling and unmarshalling.
   #
   class Hash
-    extend Forwardable
     include Immutable
     include Enumerable
 
@@ -132,7 +129,7 @@ module Hamster
     def size
       @trie.size
     end
-    def_delegator :self, :size, :length
+    alias :length :size
 
     # Return `true` if this `Hash` contains no key/value pairs.
     #
@@ -153,9 +150,9 @@ module Hamster
     def key?(key)
       @trie.key?(key)
     end
-    def_delegator :self, :key?, :has_key?
-    def_delegator :self, :key?, :include?
-    def_delegator :self, :key?, :member?
+    alias :has_key? :key?
+    alias :include? :key?
+    alias :member?  :key?
 
     # Return `true` if this `Hash` has one or more keys which map to the provided value.
     #
@@ -168,7 +165,7 @@ module Hamster
       each { |k,v| return true if value == v }
       false
     end
-    def_delegator :self, :value?, :has_value?
+    alias :has_value? :value?
 
     # Retrieve the value corresponding to the provided key object. If not found, and
     # this `Hash` has a default block, the default block is called to provide the
@@ -195,7 +192,7 @@ module Hamster
         @default.call(key)
       end
     end
-    def_delegator :self, :get, :[]
+    alias :[] :get
 
     # Retrieve the value corresponding to the given key object, or use the provided
     # default value or block, or otherwise raise a `KeyError`.
@@ -362,7 +359,7 @@ module Hamster
       @trie.each(&block)
       self
     end
-    def_delegator :self, :each, :each_pair
+    alias :each_pair :each
 
     # Call the block once for each key/value pair in this `Hash`, passing the key/value
     # pair as parameters. Iteration order will be the opposite of {#each}.
@@ -433,7 +430,7 @@ module Hamster
       return self if empty?
       self.class.new(super, &@default)
     end
-    def_delegator :self, :map, :collect
+    alias :collect :map
 
     # Return a new `Hash` with all the key/value pairs for which the block returns true.
     #
@@ -447,6 +444,8 @@ module Hamster
       return enum_for(:select) unless block_given?
       derive_new_hash(@trie.select(&block))
     end
+    alias :find_all :select
+    alias :keep_if  :select
 
     # Yield `[key, value]` pairs until one is found for which the block returns true.
     # Return that `[key, value]` pair. If the block never returns true, return `nil`.
@@ -462,7 +461,7 @@ module Hamster
       each { |entry| return entry if yield entry }
       nil
     end
-    def_delegator :self, :find, :detect
+    alias :detect :find
 
     # Return a new `Hash` containing all the key/value pairs from this `Hash` and
     # `other`. If no block is provided, the value for entries with colliding keys
@@ -783,7 +782,7 @@ module Hamster
       end
       output
     end
-    def_delegator :self, :to_hash, :to_h
+    alias :to_h :to_hash
 
     # @return [::Hash]
     # @private

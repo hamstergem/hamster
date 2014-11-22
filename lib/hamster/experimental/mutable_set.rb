@@ -1,4 +1,3 @@
-require "forwardable"
 require "hamster/set"
 require "hamster/read_copy_update"
 
@@ -8,13 +7,12 @@ module Hamster
   end
 
   class MutableSet
-    extend Forwardable
     include ReadCopyUpdate
 
     def add(item)
       transform { |set| set.add(item) }
     end
-    def_delegator :self, :add, :<<
+    alias :<< :add
 
     def add?(item)
       added = false

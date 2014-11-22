@@ -14,7 +14,7 @@ module Hamster
     def eql?(other)
       instance_of?(other.class) && @content.eql?(other.instance_variable_get(:@content))
     end
-    def_delegator :self, :eql?, :==
+    alias :== :eql?
 
     def_delegator :@content, :inspect
     def_delegator :@content, :to_s

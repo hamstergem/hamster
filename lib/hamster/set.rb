@@ -1,4 +1,3 @@
-require "forwardable"
 require "hamster/immutable"
 require "hamster/undefined"
 require "hamster/enumerable"
@@ -54,7 +53,6 @@ module Hamster
   #   set1.subset?(set3)        # => true
   #
   class Set
-    extend Forwardable
     include Immutable
     include Enumerable
 
@@ -99,7 +97,7 @@ module Hamster
     def size
       @trie.size
     end
-    def_delegator :self, :size, :length
+    alias :length :size
 
     # Return a new `Set` with `item` added. If `item` is already in the set,
     # return `self`.
@@ -113,7 +111,7 @@ module Hamster
     def add(item)
       include?(item) ? self : self.class.alloc(@trie.put(item, nil))
     end
-    def_delegator :self, :add, :<<
+    alias :<< :add
 
     # If `item` is not a member of this `Set`, return a new `Set` with `item` added.
     # Otherwise, return `false`.
@@ -201,6 +199,8 @@ module Hamster
       trie = @trie.select { |key, _| yield(key) }
       new_trie(trie)
     end
+    alias :find_all :select
+    alias :keep_if  :select
 
     # Call the block once for each item in this `Set`.
     # All the values returned from the block will be gathered into a new `Set`.
@@ -215,7 +215,7 @@ module Hamster
       return self if empty?
       self.class.new(super)
     end
-    def_delegator :self, :map, :collect
+    alias :collect :map
 
     # Return `true` if the given item is present in this `Set`. More precisely,
     # return `true` if an object with the same `#hash` code, and which is also `#eql?`
@@ -230,7 +230,7 @@ module Hamster
     def include?(object)
       @trie.key?(object)
     end
-    def_delegator :self, :include?, :member?
+    alias :member? :include?
 
     # Return a member of this `Set`. The member chosen will be the first one which
     # would be yielded by {#each}. If the set is empty, return `nil`.
@@ -305,9 +305,9 @@ module Hamster
       trie = large_set_trie.bulk_put(small_set_pairs)
       new_trie(trie)
     end
-    def_delegator :self, :union, :|
-    def_delegator :self, :union, :+
-    def_delegator :self, :union, :merge
+    alias :| :union
+    alias :+ :union
+    alias :merge :union
 
     # Return a new `Set` which contains all the items which are members of both
     # this `Set` and `other`. `other` can be any `Enumerable` object.
@@ -330,7 +330,7 @@ module Hamster
       end
       new_trie(trie)
     end
-    def_delegator :self, :intersection, :&
+    alias :& :intersection
 
     # Return a new `Set` with all the items in `other` removed. `other` can be
     # any `Enumerable` object.
@@ -348,8 +348,8 @@ module Hamster
       end
       new_trie(trie)
     end
-    def_delegator :self, :difference, :subtract
-    def_delegator :self, :difference, :-
+    alias :subtract :difference
+    alias :- :difference
 
     # Return a new `Set` which contains all the items which are members of this
     # `Set` or of `other`, but not both. `other` can be any `Enumerable` object.
@@ -362,7 +362,7 @@ module Hamster
     def exclusion(other)
       ((self | other) - (self & other))
     end
-    def_delegator :self, :exclusion, :^
+    alias :^ :exclusion
 
     # Return `true` if all items in this `Set` are also in `other`.
     #
@@ -460,8 +460,8 @@ module Hamster
       end
     end
 
-    def_delegator :self, :group_by, :group
-    def_delegator :self, :group_by, :classify
+    alias :group :group_by
+    alias :classify :group_by
 
     # Return a randomly chosen item from this `Set`. If the set is empty, return `nil`.
     #
@@ -495,7 +495,7 @@ module Hamster
       end
       true
     end
-    def_delegator :self, :eql?, :==
+    alias :== :eql?
 
     # See `Object#hash`.
     # @return [Integer]

@@ -1,4 +1,3 @@
-require "forwardable"
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
@@ -46,7 +45,6 @@ module Hamster
   # {#drop_while}, {#fill}, {#product}, and {#transpose} are also supported.
   #
   class Vector
-    extend Forwardable
     include Immutable
     include Enumerable
 
@@ -60,7 +58,7 @@ module Hamster
     # Return the number of items in this `Vector`
     # @return [Integer]
     attr_reader :size
-    def_delegator :self, :size, :length
+    alias :length :size
 
     class << self
       # Create a new `Vector` populated with the given items.
@@ -143,8 +141,8 @@ module Hamster
     def add(item)
       update_root(@size, item)
     end
-    def_delegator :self, :add, :<<
-    def_delegator :self, :add, :push
+    alias :<< :add
+    alias :push :add
 
     # Return a new `Vector` with the item at `index` replaced by `item`. If the
     # `item` argument is missing, but an optional code block is provided, it will
@@ -223,7 +221,7 @@ module Hamster
       return nil if index >= @size || index < 0
       leaf_node_for(@root, @levels * BITS_PER_LEVEL, index)[index & INDEX_MASK]
     end
-    def_delegator :self, :get, :at
+    alias :at :get
 
     # Retrieve the value at `index`, or use the provided default value or block,
     # or otherwise raise an `IndexError`.
@@ -310,7 +308,7 @@ module Hamster
         subsequence(arg, length)
       end
     end
-    def_delegator :self, :[], :slice
+    alias :slice :[]
 
     # Return a new `Vector` with the given values inserted before the element at `index`.
     #
@@ -436,6 +434,8 @@ module Hamster
       return enum_for(:select) unless block_given?
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
     end
+    alias :find_all :select
+    alias :keep_if  :select
 
     # Return a new `Vector` with all items which are equal to `obj` removed.
     # `#==` is used for checking equality.
@@ -461,7 +461,7 @@ module Hamster
       return self if empty?
       self.class.new(super)
     end
-    def_delegator :self, :map, :collect
+    alias :collect :map
 
     # Return a new `Vector` with the same elements as this one, but randomly permuted.
     #
@@ -547,7 +547,7 @@ module Hamster
       other = other.dup if other.frozen?
       replace_suffix(@size, other)
     end
-    def_delegator :self, :+, :concat
+    alias :concat :+
 
     # `others` should be arrays and/or vectors. The corresponding elements from this
     # `Vector` and each of `others` (that is, the elements with the same indices)
@@ -1154,6 +1154,7 @@ module Hamster
         flatten_node(@root, @levels * BITS_PER_LEVEL, [])
       end
     end
+    alias :to_ary :to_a
 
     # Return true if `other` has the same type and contents as this `Vector`.
     #

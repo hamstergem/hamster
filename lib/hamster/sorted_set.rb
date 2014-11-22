@@ -1,4 +1,3 @@
-require "forwardable"
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
@@ -58,7 +57,6 @@ module Hamster
   # is very efficient.
   #
   class SortedSet
-    extend Forwardable
     include Immutable
     include Enumerable
 
@@ -123,7 +121,7 @@ module Hamster
     def size
       @node.size
     end
-    def_delegator :self, :size, :length
+    alias :length :size
 
     # Return a new `SortedSet` with `item` added. If `item` is already in the set,
     # return `self`.
@@ -139,7 +137,7 @@ module Hamster
       node = @node.insert(item, @comparator)
       self.class.alloc(node, @comparator)
     end
-    def_delegator :self, :add, :<<
+    alias :<< :add
 
     # If `item` is not a member of this `SortedSet`, return a new `SortedSet` with
     # `item` added. Otherwise, return `false`.
@@ -305,7 +303,7 @@ module Hamster
         subsequence(arg, length)
       end
     end
-    def_delegator :self, :[], :slice
+    alias :slice :[]
 
     # Return a new `SortedSet` with only the elements at the given `indices`.
     # If any of the `indices` do not exist, they will be skipped.
@@ -394,6 +392,8 @@ module Hamster
       each { |item| items_to_delete << item unless yield(item) }
       derive_new_sorted_set(@node.bulk_delete(items_to_delete, @comparator))
     end
+    alias :find_all :select
+    alias :keep_if  :select
 
     # Invoke the given block once for each item in the set, and return a new
     # `SortedSet` containing the values returned by the block.
@@ -408,7 +408,7 @@ module Hamster
       return self if empty?
       self.class.new(super, &@comparator)
     end
-    def_delegator :self, :map, :collect
+    alias :collect :map
 
     # Return `true` if the given item is present in this `SortedSet`. More precisely,
     # return `true` if an object which compares as "equal" using this set's
@@ -422,7 +422,7 @@ module Hamster
     def include?(item)
       @node.include?(item, @comparator)
     end
-    def_delegator :self, :include?, :member?
+    alias :member? :include?
 
     # Return a new `SortedSet` with the same items, but a sort order determined by
     # the given block.
@@ -483,6 +483,7 @@ module Hamster
         super(&block)
       end
     end
+    alias :index :find_index
 
     # Drop the first `n` elements and return the rest in a new `SortedSet`.
     #
@@ -558,9 +559,9 @@ module Hamster
     def union(other)
       self.class.alloc(@node.bulk_insert(other, @comparator), @comparator)
     end
-    def_delegator :self, :union, :|
-    def_delegator :self, :union, :+
-    def_delegator :self, :union, :merge
+    alias :| :union
+    alias :+ :union
+    alias :merge :union
 
     # Return a new `SortedSet` which contains all the items which are members of both
     # this set and `other`. `other` can be any `Enumerable` object.
@@ -574,7 +575,7 @@ module Hamster
     def intersection(other)
       self.class.alloc(@node.keep_only(other, @comparator), @comparator)
     end
-    def_delegator :self, :intersection, :&
+    alias :& :intersection
 
     # Return a new `SortedSet` with all the items in `other` removed. `other` can be
     # any `Enumerable` object.
@@ -588,8 +589,8 @@ module Hamster
     def difference(other)
       self.class.alloc(@node.bulk_delete(other, @comparator), @comparator)
     end
-    def_delegator :self, :difference, :subtract
-    def_delegator :self, :difference, :-
+    alias :subtract :difference
+    alias :- :difference
 
     # Return a new `SortedSet` with all the items which are members of this
     # set or of `other`, but not both. `other` can be any `Enumerable` object.
@@ -603,7 +604,7 @@ module Hamster
     def exclusion(other)
       ((self | other) - (self & other))
     end
-    def_delegator :self, :exclusion, :^
+    alias :^ :exclusion
 
     # Return `true` if all items in this set are also in `other`.
     #
@@ -682,8 +683,8 @@ module Hamster
       !disjoint?(other)
     end
 
-    def_delegator :self, :group_by, :group
-    def_delegator :self, :group_by, :classify
+    alias :group :group_by
+    alias :classify :group_by
 
     # With a block, yield all the items which are greater than `item` (as defined
     # by the set's comparator). Otherwise, return them as a new `SortedSet`.
