@@ -15,7 +15,7 @@ module Hamster
     #
     # @example
     #   list = Hamster.list(:a, :b, :c)
-    #   # => [:a, :b, :c]
+    #   # => Hamster::List[:a, :b, :c]
     #
     # @return [List]
     def list(*items)
@@ -28,7 +28,7 @@ module Hamster
     #
     # @example
     #   Hamster.stream { :hello }.take(3)
-    #   # => [:hello, :hello, :hello]
+    #   # => Hamster::List[:hello, :hello, :hello]
     #
     # @return [List]
     def stream(&block)
@@ -40,7 +40,7 @@ module Hamster
     #
     # @example
     #   Hamster.interval(5,9)
-    #   # => [5, 6, 7, 8, 9]
+    #   # => Hamster::List[5, 6, 7, 8, 9]
     #
     # @param from [Integer] Start value, inclusive
     # @param to [Integer] End value, inclusive
@@ -54,7 +54,7 @@ module Hamster
     #
     # @example
     #   Hamster.repeat(:chunky).take(4)
-    #   => [:chunky, :chunky, :chunky, :chunky]
+    #   => Hamster::List[:chunky, :chunky, :chunky, :chunky]
     #
     # @return [List]
     def repeat(item)
@@ -65,7 +65,7 @@ module Hamster
     #
     # @example
     #   Hamster.replicate(3).(:hamster)
-    #   #=> [:hamster, :hamster, :hamster]
+    #   #=> Hamster::List[:hamster, :hamster, :hamster]
     #
     # @return [List]
     def replicate(number, item)
@@ -77,7 +77,7 @@ module Hamster
     #
     # @example
     #   Hamster.iterate(0) { |i| i.next }.take(5)
-    #   # => [0, 1, 2, 3, 4]
+    #   # => Hamster::List[0, 1, 2, 3, 4]
     #
     # @param item [Object] Starting value
     # @yieldparam [Object] The previous value
