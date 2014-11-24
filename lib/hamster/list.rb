@@ -135,7 +135,7 @@ module Hamster
     CADR = /^c([ad]+)r$/
 
     # Create a new `List` populated with the given items.
-    # @return [Set]
+    # @return [List]
     def self.[](*items)
       items.to_list
     end
