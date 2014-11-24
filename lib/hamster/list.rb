@@ -174,7 +174,8 @@ module Hamster
     end
     alias :add :cons
 
-    # Create a new `List` with `item` added at the end.
+    # Create a new `List` with `item` added at the end. This is much less efficient
+    # than adding items at the front.
     #
     # @example
     #   Hamster.list(:a, :b) << :c
