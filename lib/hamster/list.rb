@@ -135,6 +135,11 @@ module Hamster
     CADR = /^c([ad]+)r$/
 
     # Create a new `List` populated with the given items.
+    #
+    # @example
+    #   list = Hamster::List[:a, :b, :c]
+    #   # => Hamster::List[:a, :b, :c]
+    #
     # @return [List]
     def self.[](*items)
       items.to_list
@@ -157,6 +162,11 @@ module Hamster
     alias :length :size
 
     # Create a new `List` with `item` added at the front.
+    #
+    # @example
+    #   Hamster.list(:b, :c).cons(:a)
+    #   # => Hamster::List[:a, :b, :c]
+    #
     # @param item [Object] The item to add
     # @return [List]
     def cons(item)
@@ -165,6 +175,11 @@ module Hamster
     alias :add :cons
 
     # Create a new `List` with `item` added at the end.
+    #
+    # @example
+    #   Hamster.list(:a, :b) << :c
+    #   # => Hamster::List[:a, :b, :c]
+    #
     # @param item [Object] The item to add
     # @return [List]
     def <<(item)
@@ -200,6 +215,10 @@ module Hamster
     # Return a lazy list which is realized by transforming each item into a `List`,
     # and flattening the resulting lists.
     #
+    # @example
+    #   Hamster.list(1, 2, 3).flat_map { |x| Hamster.list(x, 100) }
+    #   # => Hamster::List[1, 100, 2, 100, 3, 100]
+    #
     # @return [List]
     def flat_map(&block)
       return enum_for(:flat_map) unless block_given?
@@ -231,6 +250,10 @@ module Hamster
 
     # Return a lazy list which contains all elements up to, but not including, the
     # first element for which the block returns `nil` or `false`.
+    #
+    # @example
+    #   Hamster.list(1, 3, 5, 7, 6, 4, 2).take_while { |e| e < 5 }
+    #   # => Hamster::List[1, 3]
     #
     # @return [List, Enumerator]
     def take_while(&block)
