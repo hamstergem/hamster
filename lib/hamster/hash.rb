@@ -275,14 +275,14 @@ module Hamster
     end
 
     # Return a new `Hash` with a deeply nested value modified to the result of
-    # the given code block.  When travesing the nested `Hash`s and `Vector`s,
-    # non-existing keys are created with value of empty `Hash`s.
+    # the given code block.  When traversing the nested `Hash`es and `Vector`s,
+    # non-existing keys are created with empty `Hash` values.
     #
     # The code block receives the existing value of the deeply nested key (or
     # `nil` if it doesn't exist). This is useful for "transforming" the value
     # associated with a certain key.
     #
-    # Note that the original `Hash` and sub-`Hash`s and sub-`Vector`s are left
+    # Note that the original `Hash` and sub-`Hash`es and sub-`Vector`s are left
     # unmodified; new data structure copies are created along the path wherever
     # needed.
     #
