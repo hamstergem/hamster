@@ -463,6 +463,20 @@ module Hamster
     end
     alias :collect :map
 
+    # Return a new `Vector` with the concatenated results of running the block once
+    # for every element in this `Vector`.
+    #
+    # @example
+    #   Hamster.vector(1, 2, 3).flat_map { |x| [x, -x] }
+    #   # => Hamster::Vector[1, -1, 2, -2, 3, -3]
+    #
+    # @return [Vector]
+    def flat_map
+      return enum_for(:flat_map) if not block_given?
+      return self if empty?
+      self.class.new(super)
+    end
+
     # Return a new `Vector` with the same elements as this one, but randomly permuted.
     #
     # @example
