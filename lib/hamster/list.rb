@@ -269,6 +269,10 @@ module Hamster
     # Return a lazy list which contains all elements starting from the
     # first element for which the block returns `nil` or `false`.
     #
+    # @example
+    #   Hamster.list(1, 3, 5, 7, 6, 4, 2).drop_while { |e| e < 5 }
+    #   # => Hamster::List[5, 7, 6, 4, 2]
+    #
     # @return [List, Enumerator]
     def drop_while(&block)
       return enum_for(:drop_while) unless block_given?
@@ -280,6 +284,11 @@ module Hamster
     end
 
     # Return a lazy list containing the first `number` items from this `List`.
+    #
+    # @example
+    #   Hamster.list(1, 3, 5, 7, 6, 4, 2).take(3)
+    #   # => Hamster::List[1, 3, 5]
+    #
     # @param number [Integer] The number of items to retain
     # @return [List]
     def take(number)
@@ -303,6 +312,11 @@ module Hamster
 
     # Return a lazy list containing all items after the first `number` items from
     # this `List`.
+    #
+    # @example
+    #   Hamster.list(1, 3, 5, 7, 6, 4, 2).drop(3)
+    #   # => Hamster::List[7, 6, 4, 2]
+    #
     # @param number [Integer] The number of items to skip over
     # @return [List]
     def drop(number)
