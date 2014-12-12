@@ -203,6 +203,9 @@ module Hamster
     # Return a lazy list in which each element is derived from the corresponding
     # element in this `List`, transformed through the given block.
     #
+    # @example
+    #   Hamster.list(3, 2, 1).map { |e| e * e }  # => Hamster::List[9, 4, 1]
+    #
     # @return [List]
     def map(&block)
       return enum_for(:map) unless block_given?
@@ -233,6 +236,10 @@ module Hamster
 
     # Return a lazy list which contains all the items for which the given block
     # returns true.
+    #
+    # @example
+    #   Hamster.list("Bird", "Cow", "Elephant").select { |e| e.size >= 4 }
+    #   # => Hamster::List["Bird", "Elephant"]
     #
     # @return [List]
     def select(&block)
@@ -300,6 +307,10 @@ module Hamster
     end
 
     # Return a lazy list containing all but the last item from this `List`.
+    #
+    # @example
+    #   Hamster.list("A", "B", "C").pop  # => Hamster::List["A", "B"]
+    #
     # @return [List]
     def pop
       LazyList.new do
@@ -333,6 +344,10 @@ module Hamster
     # Return a lazy list with all items from this `List`, followed by all items from
     # `other`.
     #
+    # @example
+    #   Hamster.list(1, 2, 3).append(Hamster.list(4, 5))
+    #   # => Hamster::List[1, 2, 3, 4, 5]
+    #
     # @param other [List] The list to add onto the end of this one
     # @return [List]
     def append(other)
@@ -345,6 +360,10 @@ module Hamster
     alias :+ :append
 
     # Return a `List` with the same items, but in reverse order.
+    #
+    # @example
+    #   Hamster.list("A", "B", "C").reverse  # => Hamster::List["C", "B", "A"]
+    #
     # @return [List]
     def reverse
       LazyList.new { reduce(EmptyList) { |list, item| list.cons(item) }}
@@ -353,6 +372,11 @@ module Hamster
     # Gather the corresponding elements from this `List` and `others` (that is,
     # the elements with the same indices) into new 2-element lists. Return a
     # lazy list of these 2-element lists.
+    #
+    #
+    # @example
+    #   Hamster.list("A", "B", "C").zip(Hamster.list(1, 2, 3))
+    #   # => Hamster::List[Hamster::List["A", 1], Hamster::List["B", 2], Hamster::List["C", 3]]
     #
     # @param others [List] A list of the lists to zip together with this one
     # @return [List]
