@@ -378,7 +378,7 @@ module Hamster
     #   Hamster.list("A", "B", "C").zip(Hamster.list(1, 2, 3))
     #   # => Hamster::List[Hamster::List["A", 1], Hamster::List["B", 2], Hamster::List["C", 3]]
     #
-    # @param others [List] A list of the lists to zip together with this one
+    # @param others [List] The list to zip together with this one
     # @return [List]
     def zip(others)
       LazyList.new do
