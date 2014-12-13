@@ -424,6 +424,10 @@ module Hamster
     # Concatenate an infinite series of copies of this `List` together (into a
     # new lazy list). Or, if empty, just return an empty list.
     #
+    # @example
+    #   Hamster.list(1, 2, 3).cycle.take(10)
+    #   # => Hamster::List[1, 2, 3, 1, 2, 3, 1, 2, 3, 1]
+    #
     # @return [List]
     def cycle
       LazyList.new do
@@ -518,6 +522,9 @@ module Hamster
 
     # Return a lazy list with the same items, but all duplicates removed.
     # Use `#hash` and `#eql?` to determine which items are duplicates.
+    #
+    # @example
+    #   Hamster.list(:a, :b, :a, :c, :b).uniq # => Hamster::List[:a, :b, :c]
     #
     # @return [List]
     def uniq(items = ::Set.new)
