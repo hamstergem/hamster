@@ -442,6 +442,12 @@ module Hamster
     # will be moved to the end. If `count` is negative, the elements will be shifted
     # right, and those shifted past the last position will be moved to the beginning.
     #
+    #
+    # @example
+    #   l = Hamster.list("A", "B", "C", "D", "E", "F")
+    #   l.rotate(2)   # => Hamster::List["C", "D", "E", "F", "A", "B"]
+    #   l.rotate(-1)  # => Hamster::List["F", "A", "B", "C", "D", "E"]
+    #
     # @param count [Integer] The number of positions to shift items by
     # @return [Vector]
     def rotate(count = 1)
@@ -537,6 +543,9 @@ module Hamster
 
     # Return a `List` with all the elements from both this list and `other`,
     # with all duplicates removed.
+    #
+    # @example
+    #   Hamster.list(1, 2).union(Hamster.list(2, 3)) # => Hamster::List[1, 2, 3]
     #
     # @param other [List] The list to merge with
     # @return [List]
