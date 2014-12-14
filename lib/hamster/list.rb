@@ -442,7 +442,6 @@ module Hamster
     # will be moved to the end. If `count` is negative, the elements will be shifted
     # right, and those shifted past the last position will be moved to the beginning.
     #
-    #
     # @example
     #   l = Hamster.list("A", "B", "C", "D", "E", "F")
     #   l.rotate(2)   # => Hamster::List["C", "D", "E", "F", "A", "B"]
@@ -468,6 +467,10 @@ module Hamster
     # Return 2 `List`s, one up to (but not including) the first item for which the
     # block returns `nil` or `false`, and another of all the remaining items.
     #
+    # @example
+    #   Hamster.list(4, 3, 5, 2, 1).span { |x| x > 2 }
+    #   # => [Hamster::List[4, 3, 5], Hamster::List[2, 1]]
+    #
     # @return [Array]
     def span(&block)
       return [self, EmptyList].freeze unless block_given?
@@ -479,6 +482,10 @@ module Hamster
 
     # Return 2 `List`s, one up to (but not including) the first item for which the
     # block returns true, and another of all the remaining items.
+    #
+    # @example
+    #   Hamster.list(1, 3, 4, 2, 5).break { |x| x > 3 }
+    #   # => [Hamster::List[1, 3], Hamster::List[4, 2, 5]]
     #
     # @return [Array]
     def break(&block)
@@ -955,6 +962,10 @@ module Hamster
 
     # Return 2 `List`s, the first containing all the elements for which the block
     # evaluates to true, the second containing the rest.
+    #
+    # @example
+    #   Hamster.list(1, 2, 3, 4, 5, 6).partition { |x| x.even? }
+    #   # => [Hamster::List[2, 4, 6], Hamster::List[1, 3, 5]]
     #
     # @return [List]
     def partition(&block)
