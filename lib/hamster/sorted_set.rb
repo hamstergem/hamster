@@ -166,13 +166,15 @@ module Hamster
     # @param item [Object] The object to remove
     # @return [SortedSet]
     def delete(item)
-      return self if not include?(item)
-      node = @node.delete(item, @comparator)
-      if node.empty?
-        self.class.empty
-      else
-        self.class.alloc(node, @comparator)
+      catch :not_present do
+        node = @node.delete(item, @comparator)
+        if node.empty?
+          return self.class.empty
+        else
+          return self.class.alloc(node, @comparator)
+        end
       end
+      self
     end
 
     # If `item` is a member of this `SortedSet`, return a new `SortedSet` with
@@ -987,7 +989,12 @@ module Hamster
 
       def bulk_delete(items, comparator)
         return self if items.empty?
-        return delete(items.first, comparator) if items.size == 1
+        if items.size == 1
+          catch :not_present do
+            return delete(items.first, comparator)
+          end
+          return self
+        end
 
         left, right, keep_item = [], [], true
         items.each do |item|
@@ -1272,7 +1279,7 @@ module Hamster
       end
       def e.bulk_delete(items, comparator); self; end
       def e.keep_only(items, comparator); self; end
-      def e.delete(item, comparator); self; end
+      def e.delete(item, comparator); throw :not_present; end
       def e.include?(item, comparator); false; end
       def e.prefix(item, comparator, inclusive); self; end
       def e.suffix(item, comparator, inclusive); self; end
