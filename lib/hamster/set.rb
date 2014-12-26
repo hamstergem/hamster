@@ -382,7 +382,7 @@ module Hamster
       #   and the break-even point is solely dependent on the size of this collection
       # After doing some benchmarking to estimate the constants, it appears break-even is at around 40 items
       # We also check other.size, to avoid the more expensive #is_a? checks in cases where it doesn't matter
-
+      #
       if other.size > 100 && @trie.size > 40 && !(other.is_a?(Hamster::Set) || other.is_a?(::Set))
         other = Set.new(other)
       end
@@ -413,6 +413,10 @@ module Hamster
     # @return [Boolean]
     def proper_subset?(other)
       return false if other.size <= size
+      # See comments above
+      if other.size > 100 && @trie.size > 40 && !(other.is_a?(Hamster::Set) || other.is_a?(::Set))
+        other = Set.new(other)
+      end
       all? { |item| other.include?(item) }
     end
     alias :< :proper_subset?
