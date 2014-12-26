@@ -522,8 +522,8 @@ module Hamster
     # Return a new `List` with `sep` inserted between each of the existing elements.
     #
     # @example
-    #   Hamster.list('one', 'two', 'three').intersperse(' ')
-    #   # => Hamster::List['one', ' ', 'two', ' ', 'three']
+    #   Hamster.list("one", "two", "three").intersperse(" ")
+    #   # => Hamster::List["one", " ", "two", " ", "three"]
     #
     # @return [List]
     def intersperse(sep)
