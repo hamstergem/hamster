@@ -133,9 +133,11 @@ module Hamster
     # @param item [Object] The object to add
     # @return [SortedSet]
     def add(item)
-      return self if include?(item)
-      node = @node.insert(item, @comparator)
-      self.class.alloc(node, @comparator)
+      catch :present do
+        node = @node.insert(item, @comparator)
+        return self.class.alloc(node, @comparator)
+      end
+      self
     end
     alias :<< :add
 
@@ -933,7 +935,7 @@ module Hamster
       def insert(item, comparator)
         dir = direction(item, comparator)
         if dir == 0
-          self
+          throw :present
         elsif dir > 0
           rebalance_right(@left, @right.insert(item, comparator))
         else
@@ -943,8 +945,12 @@ module Hamster
 
       def bulk_insert(items, comparator)
         return self if items.empty?
-        return insert(items.first, comparator) if items.size == 1
-
+        if items.size == 1
+          catch :present do
+            return insert(items.first, comparator)
+          end
+          return self
+        end
         left, right = partition(items, comparator)
 
         if right.size > left.size
