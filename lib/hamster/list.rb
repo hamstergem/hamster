@@ -458,6 +458,11 @@ module Hamster
 
     # Return 2 `List`s, one of the first `number` items, and another of all the
     # remaining items.
+    #
+    # @example
+    #   Hamster.list("a", "b", "c", "d").split(2)
+    #   # => [Hamster::List["a", "b"], Hamster::List["c", "d"]]
+    #
     # @param number [Integer] The index at which to split this list
     # @return [Array]
     def split_at(number)
@@ -566,6 +571,10 @@ module Hamster
     alias :| :union
 
     # Return a lazy list with all elements except the last one.
+    #
+    # @example
+    #   Hamster.list("a", "b", "c").init # => Hamster::List["a", "b"]
+    #
     # @return [List]
     def init
       return EmptyList if tail.empty?
@@ -633,6 +642,14 @@ module Hamster
     end
 
     # Split the items in this list in groups of `number`. Return a list of lists.
+    #
+    # @example
+    #   Hamster.list(*("a".."o")).chunk(5)
+    #   # => Hamster::List[
+    #   #      Hamster::List["a", "b", "c", "d", "e"],
+    #   #      Hamster::List["f", "g", "h", "i", "j"],
+    #   #      Hamster::List["k", "l", "m", "n", "o"]]
+    #
     # @return [List]
     def chunk(number)
       LazyList.new do
