@@ -357,26 +357,40 @@ module Hamster
     end
 
     # Return the "lowest" element in this set, as determined by its sort order.
+    # Or, if a block is provided, use the block as a comparator to find the
+    # "lowest" element. (See `Enumerable#min`.)
     #
     # @example
     #   Hamster::SortedSet["A", "B", "C"].min  # => "A"
     #
     # @return [Object]
     def min
+      block_given? ? super : @node.min
+    end
+
+    # Return the "lowest" element in this set, as determined by its sort order.
+    # @return [Object]
+    def first
       @node.min
     end
-    alias :first :min
 
     # Return the "highest" element in this set, as determined by its sort order.
+    # Or, if a block is provided, use the block as a comparator to find the
+    # "highest" element. (See `Enumerable#max`.)
     #
     # @example
     #   Hamster::SortedSet["A", "B", "C"].max  # => "C"
     #
     # @return [Object]
     def max
+      block_given? ? super : @node.max
+    end
+
+    # Return the "highest" element in this set, as determined by its sort order.
+    # @return [Object]
+    def last
       @node.max
     end
-    alias :last :max
 
     # Return a new `SortedSet` containing all elements for which the given block returns
     # true.
