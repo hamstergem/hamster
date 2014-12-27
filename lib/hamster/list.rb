@@ -673,6 +673,10 @@ module Hamster
     # that is, their elements inserted into the new `List` in the place where
     # the nested list originally was.
     #
+    # @example
+    #   Hamster.list(Hamster.list(1, 2), Hamster.list(3, 4)).flatten
+    #   # => Hamster::List[1, 2, 3, 4]
+    #
     # @return [List]
     def flatten
       LazyList.new do
@@ -845,6 +849,9 @@ module Hamster
 
     # Return a new `List` with the given items inserted before the item at `index`.
     #
+    # @example
+    #   Hamster.list("A", "D", "E").insert(1, "B", "C") # => Hamster::List["A", "B", "C", "D", "E"]
+    #
     # @param index [Integer] The index where the new items should go
     # @param items [Array] The items to add
     # @return [List]
@@ -863,6 +870,10 @@ module Hamster
 
     # Return a lazy list with all elements equal to `obj` removed. `#==` is used
     # for testing equality.
+    #
+    # @example
+    #   Hamster.list(:a, :b, :a, :a, :c).delete(:a) # => Hamster::List[:b, :c]
+    #
     # @param obj [Object] The object to remove.
     # @return [List]
     def delete(obj)
@@ -874,6 +885,10 @@ module Hamster
 
     # Return a lazy list containing the same items, minus the one at `index`.
     # If `index` is negative, it counts back from the end of the list.
+    #
+    # @example
+    #   Hamster.list(1, 2, 3).delete_at(1) # => Hamster::List[1, 3]
+    #   Hamster.list(1, 2, 3).delete_at(-1) # => Hamster::List[1, 2]
     #
     # @param index [Integer] The index of the item to remove
     # @return [List]
@@ -928,6 +943,15 @@ module Hamster
     # There is no guarantee about which order the permutations will be yielded in.
     #
     # If no block is given, an `Enumerator` is returned instead.
+    #
+    # @example
+    #   Hamster.list(1, 2, 3).permutation.to_a
+    #   # => [Hamster::List[1, 2, 3],
+    #   #     Hamster::List[2, 1, 3],
+    #   #     Hamster::List[2, 3, 1],
+    #   #     Hamster::List[1, 3, 2],
+    #   #     Hamster::List[3, 1, 2],
+    #   #     Hamster::List[3, 2, 1]]
     #
     # @return [self, Enumerator]
     def permutation(length = size, &block)
