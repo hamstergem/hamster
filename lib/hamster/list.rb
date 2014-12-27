@@ -915,6 +915,12 @@ module Hamster
     #   Return a new `List` with `length` indexes, beginning from `start`,
     #   set to `obj`.
     #
+    # @example
+    #   list = Hamster.list("a", "b", "c", "d")
+    #   list.fill("x")       # => Hamster::List["x", "x", "x", "x"]
+    #   list.fill("z", 2)    # => Hamster::List["a", "b", "z", "z"]
+    #   list.fill("y", 0, 2) # => Hamster::List["y", "y", "c", "d"]
+    #
     # @return [List]
     def fill(obj, index = 0, length = nil)
       if index == 0
