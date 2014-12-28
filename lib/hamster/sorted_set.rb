@@ -74,7 +74,7 @@ module Hamster
       #
       # @return [SortedSet]
       def empty
-        @empty ||= self.alloc(EmptyAVLNode, nil)
+        @empty ||= self.alloc(EmptyNode)
       end
 
       # "Raw" allocation of a new `SortedSet`. Used internally to create a new
@@ -82,10 +82,9 @@ module Hamster
       #
       # @return [Set]
       # @private
-      def alloc(node, comparator)
+      def alloc(node)
         result = allocate
         result.instance_variable_set(:@node, node)
-        result.instance_variable_set(:@comparator, comparator)
         result
       end
     end
@@ -93,16 +92,17 @@ module Hamster
     def initialize(items=[], &block)
       items = items.to_a
       if block
-        @comparator = if block.arity == 1
+        comparator = if block.arity == 1
           lambda { |a,b| block.call(a) <=> block.call(b) }
         else
           block
         end
-        items = items.sort(&@comparator)
+        items = items.sort(&comparator)
+        @node = AVLNode.from_items(items, comparator)
       else
         items = items.sort
+        @node = AVLNode.from_items(items, nil)
       end
-      @node = AVLNode.from_items(items, 0, items.size-1)
     end
 
     # Return `true` if this `SortedSet` contains no items.
@@ -134,8 +134,8 @@ module Hamster
     # @return [SortedSet]
     def add(item)
       catch :present do
-        node = @node.insert(item, @comparator)
-        return self.class.alloc(node, @comparator)
+        node = @node.insert(item)
+        return self.class.alloc(node)
       end
       self
     end
@@ -167,11 +167,11 @@ module Hamster
     # @return [SortedSet]
     def delete(item)
       catch :not_present do
-        node = @node.delete(item, @comparator)
-        if node.empty? && !@comparator
+        node = @node.delete(item)
+        if node.empty? && node.natural_order?
           return self.class.empty
         else
-          return self.class.alloc(node, @comparator)
+          return self.class.alloc(node)
         end
       end
       self
@@ -408,7 +408,7 @@ module Hamster
       return enum_for(:select) unless block_given?
       items_to_delete = []
       each { |item| items_to_delete << item unless yield(item) }
-      derive_new_sorted_set(@node.bulk_delete(items_to_delete, @comparator))
+      derive_new_sorted_set(@node.bulk_delete(items_to_delete))
     end
     alias :find_all :select
     alias :keep_if  :select
@@ -424,7 +424,7 @@ module Hamster
     def map
       return enum_for(:map) if not block_given?
       return self if empty?
-      self.class.new(super, &@comparator)
+      self.class.alloc(@node.from_items(super))
     end
     alias :collect :map
 
@@ -438,7 +438,7 @@ module Hamster
     # @param item [Object] The object to check for
     # @return [Boolean]
     def include?(item)
-      @node.include?(item, @comparator)
+      @node.include?(item)
     end
     alias :member? :include?
 
@@ -453,8 +453,11 @@ module Hamster
     #
     # @return [SortedSet]
     def sort(&block)
-      block ||= lambda { |a,b| a <=> b }
-      self.class.new(self.to_a, &block)
+      if block
+        self.class.new(self.to_a, &block)
+      else
+        self.class.new(self.to_a.sort)
+      end      
     end
     alias :sort_by :sort
 
@@ -485,7 +488,7 @@ module Hamster
         node = @node
         index = node.left.size
         while !node.empty?
-          direction = node.direction(obj, @comparator)
+          direction = node.direction(obj)
           if direction > 0
             node = node.right
             index += (node.left.size + 1)
@@ -575,7 +578,7 @@ module Hamster
     # @param other [Enumerable] The collection to merge with
     # @return [SortedSet]
     def union(other)
-      self.class.alloc(@node.bulk_insert(other, @comparator), @comparator)
+      self.class.alloc(@node.bulk_insert(other))
     end
     alias :| :union
     alias :+ :union
@@ -591,7 +594,7 @@ module Hamster
     # @param other [Enumerable] The collection to intersect with
     # @return [SortedSet]
     def intersection(other)
-      self.class.alloc(@node.keep_only(other, @comparator), @comparator)
+      self.class.alloc(@node.keep_only(other))
     end
     alias :& :intersection
 
@@ -605,7 +608,7 @@ module Hamster
     # @param other [Enumerable] The collection to subtract from this set
     # @return [SortedSet]
     def difference(other)
-      self.class.alloc(@node.bulk_delete(other, @comparator), @comparator)
+      self.class.alloc(@node.bulk_delete(other))
     end
     alias :subtract :difference
     alias :- :difference
@@ -721,9 +724,9 @@ module Hamster
     # @param item [Object]
     def above(item, &block)
       if block_given?
-        @node.each_greater(item, @comparator, false, &block)
+        @node.each_greater(item, false, &block)
       else
-        self.class.alloc(@node.suffix(item, @comparator, false), @comparator)
+        self.class.alloc(@node.suffix(item, false))
       end
     end
 
@@ -744,9 +747,9 @@ module Hamster
     # @param item [Object]
     def below(item, &block)
       if block_given?
-        @node.each_less(item, @comparator, false, &block)
+        @node.each_less(item, false, &block)
       else
-        self.class.alloc(@node.prefix(item, @comparator, false), @comparator)
+        self.class.alloc(@node.prefix(item, false))
       end
     end
 
@@ -769,9 +772,9 @@ module Hamster
     # @param item [Object]
     def from(item, &block)
       if block_given?
-        @node.each_greater(item, @comparator, true, &block)
+        @node.each_greater(item, true, &block)
       else
-        self.class.alloc(@node.suffix(item, @comparator, true), @comparator)
+        self.class.alloc(@node.suffix(item, true))
       end
     end
 
@@ -794,9 +797,9 @@ module Hamster
     # @param item [Object]
     def up_to(item, &block)
       if block_given?
-        @node.each_less(item, @comparator, true, &block)
+        @node.each_less(item, true, &block)
       else
-        self.class.alloc(@node.prefix(item, @comparator, true), @comparator)
+        self.class.alloc(@node.prefix(item, true))
       end
     end
 
@@ -820,9 +823,9 @@ module Hamster
     # @param to [Object]
     def between(from, to, &block)
       if block_given?
-        @node.each_between(from, to, @comparator, &block)
+        @node.each_between(from, to, &block)
       else
-        self.class.alloc(@node.between(from, to, @comparator), @comparator)
+        self.class.alloc(@node.between(from, to))
       end
     end
 
@@ -841,10 +844,10 @@ module Hamster
     #
     # @return [SortedSet]
     def clear
-      if @comparator
-        self.class.alloc(EmptyAVLNode, @comparator)
-      else
+      if @node.natural_order?
         self.class.empty
+      else
+        self.class.alloc(@node.clear)
       end
     end
 
@@ -873,10 +876,10 @@ module Hamster
     # @return [::Array]
     # @private
     def marshal_dump
-      if @comparator
-        raise TypeError, "can't dump SortedSet with custom sort order"
-      else
+      if @node.natural_order?
         to_a
+      else
+        raise TypeError, "can't dump SortedSet with custom sort order"
       end
     end
 
@@ -891,13 +894,13 @@ module Hamster
       return nil if from > @node.size || from < 0 || length < 0
       length = @node.size - from if @node.size < from + length
       if length == 0
-        if @comparator
-          return self.class.alloc(EmptyAVLNode, @comparator)
-        else
+        if @node.natural_order?
           return self.class.empty
+        else
+          return self.class.alloc(@node.clear)
         end
       end
-      self.class.alloc(@node.slice(from, length), @comparator)
+      self.class.alloc(@node.slice(from, length))
     end
 
     # Return a new `SortedSet` which is derived from this one, using a modified
@@ -909,67 +912,86 @@ module Hamster
       elsif node.empty?
         clear
       else
-        self.class.alloc(node, @comparator)
+        self.class.alloc(node)
       end
     end
 
     # @private
     class AVLNode
-      def self.from_items(items, from, to) # items must be sorted
+      def self.from_items(items, comparator, from = 0, to = items.size-1) # items must be sorted
         size = to - from + 1
         if size >= 3
           middle = (to + from) / 2
-          AVLNode.new(items[middle], AVLNode.from_items(items, from, middle-1), AVLNode.from_items(items, middle+1, to))
+          AVLNode.new(items[middle], comparator, AVLNode.from_items(items, comparator, from, middle-1), AVLNode.from_items(items, comparator, middle+1, to))
         elsif size == 2
-          AVLNode.new(items[from], EmptyAVLNode, AVLNode.new(items[from+1], EmptyAVLNode, EmptyAVLNode))
+          empty = comparator ? EmptyAVLNode.new(comparator) : EmptyNode
+          AVLNode.new(items[from], comparator, empty, AVLNode.new(items[from+1], comparator, empty, empty))
         elsif size == 1
-          AVLNode.new(items[from], EmptyAVLNode, EmptyAVLNode)
+          empty = comparator ? EmptyAVLNode.new(comparator) : EmptyNode
+          AVLNode.new(items[from], comparator, empty, empty)
         elsif size == 0
-          EmptyAVLNode
+          comparator ? EmptyAVLNode.new(comparator) : EmptyNode
         end
       end
 
-      def initialize(item, left, right)
-        @item, @left, @right = item, left, right
+      def initialize(item, comparator, left, right)
+        @item, @comparator, @left, @right = item, comparator, left, right
         @height = ((@right.height > @left.height) ? @right.height : @left.height) + 1
         @size   = @right.size + @left.size + 1
       end
       attr_reader :item, :left, :right, :height, :size
 
+      def from_items(items)
+        items = items.sort(&@comparator)
+        AVLNode.from_items(items, @comparator)
+      end
+
+      def natural_order?
+        !@comparator
+      end
+
       def empty?
         false
       end
 
-      def insert(item, comparator)
-        dir = direction(item, comparator)
+      def clear
+        if @comparator
+          EmptyAVLNode.new(@comparator)
+        else
+          EmptyNode
+        end
+      end
+
+      def insert(item)
+        dir = direction(item)
         if dir == 0
           throw :present
         elsif dir > 0
-          rebalance_right(@left, @right.insert(item, comparator))
+          rebalance_right(@left, @right.insert(item))
         else
-          rebalance_left(@left.insert(item, comparator), @right)
+          rebalance_left(@left.insert(item), @right)
         end
       end
 
-      def bulk_insert(items, comparator)
+      def bulk_insert(items)
         return self if items.empty?
         if items.size == 1
           catch :present do
-            return insert(items.first, comparator)
+            return insert(items.first)
           end
           return self
         end
-        left, right = partition(items, comparator)
+        left, right = partition(items)
 
         if right.size > left.size
-          rebalance_right(@left.bulk_insert(left, comparator), @right.bulk_insert(right, comparator))
+          rebalance_right(@left.bulk_insert(left), @right.bulk_insert(right))
         else
-          rebalance_left(@left.bulk_insert(left, comparator), @right.bulk_insert(right, comparator))
+          rebalance_left(@left.bulk_insert(left), @right.bulk_insert(right))
         end
       end
 
-      def delete(item, comparator)
-        dir = direction(item, comparator)
+      def delete(item)
+        dir = direction(item)
         if dir == 0
           if @right.empty?
             return @left # replace this node with its only child
@@ -980,31 +1002,31 @@ module Hamster
           if balance > 0
             # tree is leaning to the left. replace with highest node on that side
             replace_with = @left.max
-            AVLNode.new(replace_with, @left.delete(replace_with, comparator), @right)
+            AVLNode.new(replace_with, @comparator, @left.delete(replace_with), @right)
           else
             # tree is leaning to the right. replace with lowest node on that side
             replace_with = @right.min
-            AVLNode.new(replace_with, @left, @right.delete(replace_with, comparator))
+            AVLNode.new(replace_with, @comparator, @left, @right.delete(replace_with))
           end
         elsif dir > 0
-          rebalance_left(@left, @right.delete(item, comparator))
+          rebalance_left(@left, @right.delete(item))
         else
-          rebalance_right(@left.delete(item, comparator), @right)
+          rebalance_right(@left.delete(item), @right)
         end
       end
 
-      def bulk_delete(items, comparator)
+      def bulk_delete(items)
         return self if items.empty?
         if items.size == 1
           catch :not_present do
-            return delete(items.first, comparator)
+            return delete(items.first)
           end
           return self
         end
 
         left, right, keep_item = [], [], true
         items.each do |item|
-          dir = direction(item, comparator)
+          dir = direction(item)
           if dir > 0
             right << item
           elsif dir < 0
@@ -1014,17 +1036,17 @@ module Hamster
           end
         end
 
-        left  = @left.bulk_delete(left, comparator)
-        right = @right.bulk_delete(right, comparator)
-        finish_removal(keep_item, left, right, comparator)
+        left  = @left.bulk_delete(left)
+        right = @right.bulk_delete(right)
+        finish_removal(keep_item, left, right)
       end
 
-      def keep_only(items, comparator)
-        return EmptyAVLNode if items.empty?
+      def keep_only(items)
+        return clear if items.empty?
 
         left, right, keep_item = [], [], false
         items.each do |item|
-          dir = direction(item, comparator)
+          dir = direction(item)
           if dir > 0
             right << item
           elsif dir < 0
@@ -1034,12 +1056,12 @@ module Hamster
           end
         end
 
-        left  = @left.keep_only(left, comparator)
-        right = @right.keep_only(right, comparator)
-        finish_removal(keep_item, left, right, comparator)
+        left  = @left.keep_only(left)
+        right = @right.keep_only(right)
+        finish_removal(keep_item, left, right)
       end
 
-      def finish_removal(keep_item, left, right, comparator)
+      def finish_removal(keep_item, left, right)
         # deletion of items may have occurred on left and right sides
         # now we may also need to delete the current item
         if keep_item
@@ -1050,74 +1072,74 @@ module Hamster
           left
         elsif left.height > right.height
           replace_with = left.max
-          AVLNode.new(replace_with, left.delete(replace_with, comparator), right)
+          AVLNode.new(replace_with, @comparator, left.delete(replace_with), right)
         else
           replace_with = right.min
-          AVLNode.new(replace_with, left, right.delete(replace_with, comparator))
+          AVLNode.new(replace_with, @comparator, left, right.delete(replace_with))
         end
       end
 
-      def prefix(item, comparator, inclusive)
-        dir = direction(item, comparator)
+      def prefix(item, inclusive)
+        dir = direction(item)
         if dir > 0 || (inclusive && dir == 0)
-          rebalance_left(@left, @right.prefix(item, comparator, inclusive))
+          rebalance_left(@left, @right.prefix(item, inclusive))
         else
-          @left.prefix(item, comparator, inclusive)
+          @left.prefix(item, inclusive)
         end
       end
 
-      def suffix(item, comparator, inclusive)
-        dir = direction(item, comparator)
+      def suffix(item, inclusive)
+        dir = direction(item)
         if dir < 0 || (inclusive && dir == 0)
-          rebalance_right(@left.suffix(item, comparator, inclusive), @right)
+          rebalance_right(@left.suffix(item, inclusive), @right)
         else
-          @right.suffix(item, comparator, inclusive)
+          @right.suffix(item, inclusive)
         end
       end
 
-      def between(from, to, comparator)
-        if direction(from, comparator) > 0 # all on the right
-          @right.between(from, to, comparator)
-        elsif direction(to, comparator) < 0 # all on the left
-          @left.between(from, to, comparator)
+      def between(from, to)
+        if direction(from) > 0 # all on the right
+          @right.between(from, to)
+        elsif direction(to) < 0 # all on the left
+          @left.between(from, to)
         else
-          left = @left.suffix(from, comparator, true)
-          right = @right.prefix(to, comparator, true)
+          left = @left.suffix(from, true)
+          right = @right.prefix(to, true)
           rebalance(left, right)
         end
       end
 
-      def each_less(item, comparator, inclusive, &block)
-        dir = direction(item, comparator)
+      def each_less(item, inclusive, &block)
+        dir = direction(item)
         if dir > 0 || (inclusive && dir == 0)
           @left.each(&block)
           yield @item
-          @right.each_less(item, comparator, inclusive, &block)
+          @right.each_less(item, inclusive, &block)
         else
-          @left.each_less(item, comparator, inclusive, &block)
+          @left.each_less(item, inclusive, &block)
         end
       end
 
-      def each_greater(item, comparator, inclusive, &block)
-        dir = direction(item, comparator)
+      def each_greater(item, inclusive, &block)
+        dir = direction(item)
         if dir < 0 || (inclusive && dir == 0)
-          @left.each_greater(item, comparator, inclusive, &block)
+          @left.each_greater(item, inclusive, &block)
           yield @item
           @right.each(&block)
         else
-          @right.each_greater(item, comparator, inclusive, &block)
+          @right.each_greater(item, inclusive, &block)
         end
       end
 
-      def each_between(from, to, comparator, &block)
-        if direction(from, comparator) > 0 # all on the right
-          @right.each_between(from, to, comparator, &block)
-        elsif direction(to, comparator) < 0 # all on the left
-          @left.each_between(from, to, comparator, &block)
+      def each_between(from, to, &block)
+        if direction(from) > 0 # all on the right
+          @right.each_between(from, to, &block)
+        elsif direction(to) < 0 # all on the left
+          @left.each_between(from, to, &block)
         else
-          @left.each_greater(from, comparator, true, &block)
+          @left.each_greater(from, true, &block)
           yield @item
-          @right.each_less(to, comparator, true, &block)
+          @right.each_less(to, true, &block)
         end
       end
 
@@ -1135,7 +1157,7 @@ module Hamster
 
       def drop(n)
         if n >= @size
-          EmptyAVLNode
+          clear
         elsif n <= 0
           self
         elsif @left.size >= n
@@ -1151,7 +1173,7 @@ module Hamster
         if n >= @size
           self
         elsif n <= 0
-          EmptyAVLNode
+          clear
         elsif @left.size >= n
           @left.take(n)
         else
@@ -1159,14 +1181,14 @@ module Hamster
         end
       end
 
-      def include?(item, comparator)
-        dir = direction(item, comparator)
+      def include?(item)
+        dir = direction(item)
         if dir == 0
           true
         elsif dir > 0
-          @right.include?(item, comparator)
+          @right.include?(item)
         else
-          @left.include?(item, comparator)
+          @left.include?(item)
         end
       end
 
@@ -1194,7 +1216,7 @@ module Hamster
 
       def slice(from, length)
         if length <= 0
-          EmptyAVLNode
+          clear
         elsif from + length <= @left.size
           @left.slice(from, length)
         elsif from > @left.size
@@ -1206,10 +1228,10 @@ module Hamster
         end
       end
 
-      def partition(items, comparator)
+      def partition(items)
         left, right = [], []
         items.each do |item|
-          dir = direction(item, comparator)
+          dir = direction(item)
           if dir > 0
             right << item
           elsif dir < 0
@@ -1233,13 +1255,13 @@ module Hamster
         if balance >= 2
           if left.balance > 0
             # single right rotation
-            AVLNode.new(left.item, left.left, AVLNode.new(@item, left.right, right))
+            AVLNode.new(left.item, @comparator, left.left, AVLNode.new(@item, @comparator, left.right, right))
           else
             # left rotation, then right
-            AVLNode.new(left.right.item, AVLNode.new(left.item, left.left, left.right.left), AVLNode.new(@item, left.right.right, right))
+            AVLNode.new(left.right.item, @comparator, AVLNode.new(left.item, @comparator, left.left, left.right.left), AVLNode.new(@item, @comparator, left.right.right, right))
           end
         else
-          AVLNode.new(@item, left, right)
+          AVLNode.new(@item, @comparator, left, right)
         end
       end
 
@@ -1249,56 +1271,62 @@ module Hamster
         if balance <= -2
           if right.balance > 0
             # right rotation, then left
-            AVLNode.new(right.left.item, AVLNode.new(@item, left, right.left.left), AVLNode.new(right.item, right.left.right, right.right))
+            AVLNode.new(right.left.item, @comparator, AVLNode.new(@item, @comparator, left, right.left.left), AVLNode.new(right.item, @comparator, right.left.right, right.right))
           else
             # single left rotation
-            AVLNode.new(right.item, AVLNode.new(@item, left, right.left), right.right)
+            AVLNode.new(right.item, @comparator, AVLNode.new(@item, @comparator, left, right.left), right.right)
           end
         else
-          AVLNode.new(@item, left, right)
+          AVLNode.new(@item, @comparator, left, right)
         end
       end
 
-      def direction(item, comparator)
-        if comparator
-          comparator.call(item, @item)
+      def direction(item)
+        if @comparator
+          @comparator.call(item, @item)
         else
           item <=> @item
         end
       end
     end
 
-    EmptyAVLNode = Object.new.tap do |e|
-      def e.left;  self; end
-      def e.right; self; end
-      def e.height;   0; end
-      def e.size;     0; end
-      def e.min;    nil; end
-      def e.max;    nil; end
-      def e.each;        end
-      def e.reverse_each; end
-      def e.at(index); nil; end
-      def e.insert(item, comparator); AVLNode.new(item, self, self); end
-      def e.bulk_insert(items, comparator)
-        items = items.to_a if !items.is_a?(Array)
-        AVLNode.from_items(items.sort(&comparator), 0, items.size-1)
+    class EmptyAVLNode
+      def initialize(comparator); @comparator = comparator; end
+      def natural_order?; !@comparator; end
+      def left;  self;    end
+      def right; self;    end
+      def height;   0;    end
+      def size;     0;    end
+      def min;    nil;    end
+      def max;    nil;    end
+      def each;           end
+      def reverse_each;   end
+      def at(index); nil; end
+      def insert(item)
+        AVLNode.new(item, @comparator, self, self)
       end
-      def e.bulk_delete(items, comparator); self; end
-      def e.keep_only(items, comparator); self; end
-      def e.delete(item, comparator); throw :not_present; end
-      def e.include?(item, comparator); false; end
-      def e.prefix(item, comparator, inclusive); self; end
-      def e.suffix(item, comparator, inclusive); self; end
-      def e.between(from, to, comparator); self; end
-      def e.each_greater(item, comparator, inclusive); end
-      def e.each_less(item, comparator, inclusive); end
-      def e.each_between(item, comparator, inclusive); end
-      def e.drop(n); self; end
-      def e.take(n); self; end
-      def e.empty?; true; end
-      def e.slice(from, length); self; end
-    end.freeze
+      def bulk_insert(items)
+        items = items.to_a if !items.is_a?(Array)
+        AVLNode.from_items(items.sort(&@comparator), @comparator)
+      end
+      def bulk_delete(items); self; end
+      def keep_only(items);   self; end
+      def delete(item);       throw :not_present; end
+      def include?(item);     false; end
+      def prefix(item, inclusive); self; end
+      def suffix(item, inclusive); self; end
+      def between(from, to);       self; end
+      def each_greater(item, inclusive); end
+      def each_less(item, inclusive);    end
+      def each_between(item, inclusive); end
+      def drop(n);             self; end
+      def take(n);             self; end
+      def empty?;              true; end
+      def slice(from, length); self; end
+    end
   end
+
+  EmptyNode = SortedSet::EmptyAVLNode.new(nil)
 
   # The canonical empty `SortedSet`. Returned by `Hamster.sorted_set` and `SortedSet[]`
   # when invoked with no arguments; also returned by `SortedSet.empty`. Prefer using
