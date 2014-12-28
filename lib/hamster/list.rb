@@ -763,31 +763,6 @@ module Hamster
     end
     alias :slice :[]
 
-    # Pass each item successively to the block, and return a `List` of indices where
-    # the block returns true.
-    #
-    # @return [List]
-    def find_indices(i = 0, &block)
-      return EmptyList if empty? || !block_given?
-      LazyList.new do
-        node = self
-        while true
-          break Cons.new(i, node.tail.find_indices(i + 1, &block)) if yield(node.head)
-          node = node.tail
-          break EmptyList if node.empty?
-          i += 1
-        end
-      end
-    end
-
-    # Return a `List` of indices where `object` is found. Use `#==` for testing equality.
-    #
-    # @param object [Object] The object to search for
-    # @return [List]
-    def elem_indices(object)
-      find_indices { |item| item == object }
-    end
-
     # Return a `List` of indices where the given object is found, or where the given
     # block returns true.
     #
@@ -798,9 +773,18 @@ module Hamster
     #   block returns true.
     #
     # @return [List]
-    def indices(object = Undefined, &block)
-      return elem_indices(object) unless object.equal?(Undefined)
-      find_indices(&block)
+    def indices(object = Undefined, i = 0, &block)
+      return indices { |item| item == object } if not block_given?
+      return EmptyList if empty?
+      LazyList.new do
+        node = self
+        while true
+          break Cons.new(i, node.tail.indices(Undefined, i + 1, &block)) if yield(node.head)
+          node = node.tail
+          break EmptyList if node.empty?
+          i += 1
+        end
+      end
     end
 
     # Merge all the nested lists into a single list, using the given comparator
