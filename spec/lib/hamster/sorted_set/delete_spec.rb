@@ -34,8 +34,17 @@ describe Hamster::SortedSet do
     end
 
     context "when removing the last value in a sorted set" do
-      it "returns the canonical empty set" do
-        sorted_set.delete("B").delete("C").delete("A").should be(Hamster::EmptySortedSet)
+      it "maintains the set order" do
+        ss = Hamster.sorted_set("peanuts", "jam", "milk") { |word| word.length }
+        ss = ss.delete("jam").delete("peanuts").delete("milk")
+        ss = ss.add("banana").add("sugar").add("spam")
+        ss.to_a.should == ['spam', 'sugar', 'banana']
+      end
+
+      context "when the set is in natural order" do
+        it "returns the canonical empty set" do
+          sorted_set.delete("B").delete("C").delete("A").should be(Hamster::EmptySortedSet)
+        end
       end
     end
 

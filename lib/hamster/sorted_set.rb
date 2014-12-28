@@ -168,7 +168,7 @@ module Hamster
     def delete(item)
       catch :not_present do
         node = @node.delete(item, @comparator)
-        if node.empty?
+        if node.empty? && !@comparator
           return self.class.empty
         else
           return self.class.alloc(node, @comparator)
