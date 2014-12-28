@@ -219,6 +219,22 @@ describe Hamster::SortedSet do
       end
     end
 
+    context "when passed an empty Range" do
+      it "does not lose custom sort order" do
+        ss = Hamster.sorted_set("yogurt", "cake", "pistachios") { |word| word.length }
+        ss = ss.send(method, 1...1).add("tea").add("fruitcake").add("toast")
+        ss.to_a.should == ["tea", "toast", "fruitcake"]
+      end
+    end
+
+    context "when passed a length of zero" do
+      it "does not lose custom sort order" do
+        ss = Hamster.sorted_set("yogurt", "cake", "pistachios") { |word| word.length }
+        ss = ss.send(method, 0, 0).add("tea").add("fruitcake").add("toast")
+        ss.to_a.should == ["tea", "toast", "fruitcake"]
+      end
+    end
+
     context "when passed a subclass of Range" do
       it "works the same as with a Range" do
         subclass = Class.new(Range)

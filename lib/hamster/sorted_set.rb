@@ -890,7 +890,13 @@ module Hamster
     def subsequence(from, length)
       return nil if from > @node.size || from < 0 || length < 0
       length = @node.size - from if @node.size < from + length
-      return self.class.empty if length == 0
+      if length == 0
+        if @comparator
+          return self.class.alloc(EmptyAVLNode, @comparator)
+        else
+          return self.class.empty
+        end
+      end
       self.class.alloc(@node.slice(from, length), @comparator)
     end
 
