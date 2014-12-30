@@ -74,7 +74,7 @@ module Hamster
       #
       # @return [SortedSet]
       def empty
-        @empty ||= self.alloc(EmptyNode)
+        @empty ||= self.alloc(PlainAVLNode::EmptyNode)
       end
 
       # "Raw" allocation of a new `SortedSet`. Used internally to create a new
@@ -100,8 +100,7 @@ module Hamster
         items = items.sort(&comparator)
         @node = AVLNode.from_items(items, comparator)
       else
-        items = items.sort
-        @node = AVLNode.from_items(items, nil)
+        @node = PlainAVLNode.from_items(items.sort)
       end
     end
 
@@ -924,30 +923,29 @@ module Hamster
           middle = (to + from) / 2
           AVLNode.new(items[middle], comparator, AVLNode.from_items(items, comparator, from, middle-1), AVLNode.from_items(items, comparator, middle+1, to))
         elsif size == 2
-          empty = comparator ? EmptyAVLNode.new(comparator) : EmptyNode
+          empty = AVLNode::Empty.new(comparator)
           AVLNode.new(items[from], comparator, empty, AVLNode.new(items[from+1], comparator, empty, empty))
         elsif size == 1
-          empty = comparator ? EmptyAVLNode.new(comparator) : EmptyNode
+          empty = AVLNode::Empty.new(comparator)
           AVLNode.new(items[from], comparator, empty, empty)
         elsif size == 0
-          comparator ? EmptyAVLNode.new(comparator) : EmptyNode
+          AVLNode::Empty.new(comparator)
         end
       end
 
       def initialize(item, comparator, left, right)
         @item, @comparator, @left, @right = item, comparator, left, right
-        @height = ((@right.height > @left.height) ? @right.height : @left.height) + 1
-        @size   = @right.size + @left.size + 1
+        @height = ((right.height > left.height) ? right.height : left.height) + 1
+        @size   = right.size + left.size + 1
       end
       attr_reader :item, :left, :right, :height, :size
 
       def from_items(items)
-        items = items.sort(&@comparator)
-        AVLNode.from_items(items, @comparator)
+        AVLNode.from_items(items.sort(&@comparator), @comparator)
       end
 
       def natural_order?
-        !@comparator
+        false
       end
 
       def empty?
@@ -955,11 +953,11 @@ module Hamster
       end
 
       def clear
-        if @comparator
-          EmptyAVLNode.new(@comparator)
-        else
-          EmptyNode
-        end
+        AVLNode::Empty.new(@comparator)
+      end
+
+      def derive(item, left, right)
+        AVLNode.new(item, @comparator, left, right)
       end
 
       def insert(item)
@@ -1002,11 +1000,11 @@ module Hamster
           if balance > 0
             # tree is leaning to the left. replace with highest node on that side
             replace_with = @left.max
-            AVLNode.new(replace_with, @comparator, @left.delete(replace_with), @right)
+            derive(replace_with, @left.delete(replace_with), @right)
           else
             # tree is leaning to the right. replace with lowest node on that side
             replace_with = @right.min
-            AVLNode.new(replace_with, @comparator, @left, @right.delete(replace_with))
+            derive(replace_with, @left, @right.delete(replace_with))
           end
         elsif dir > 0
           rebalance_left(@left, @right.delete(item))
@@ -1072,10 +1070,10 @@ module Hamster
           left
         elsif left.height > right.height
           replace_with = left.max
-          AVLNode.new(replace_with, @comparator, left.delete(replace_with), right)
+          derive(replace_with, left.delete(replace_with), right)
         else
           replace_with = right.min
-          AVLNode.new(replace_with, @comparator, left, right.delete(replace_with))
+          derive(replace_with, left, right.delete(replace_with))
         end
       end
 
@@ -1255,13 +1253,13 @@ module Hamster
         if balance >= 2
           if left.balance > 0
             # single right rotation
-            AVLNode.new(left.item, @comparator, left.left, AVLNode.new(@item, @comparator, left.right, right))
+            derive(left.item, left.left, derive(@item, left.right, right))
           else
             # left rotation, then right
-            AVLNode.new(left.right.item, @comparator, AVLNode.new(left.item, @comparator, left.left, left.right.left), AVLNode.new(@item, @comparator, left.right.right, right))
+            derive(left.right.item, derive(left.item, left.left, left.right.left), derive(@item, left.right.right, right))
           end
         else
-          AVLNode.new(@item, @comparator, left, right)
+          derive(@item, left, right)
         end
       end
 
@@ -1271,62 +1269,116 @@ module Hamster
         if balance <= -2
           if right.balance > 0
             # right rotation, then left
-            AVLNode.new(right.left.item, @comparator, AVLNode.new(@item, @comparator, left, right.left.left), AVLNode.new(right.item, @comparator, right.left.right, right.right))
+            derive(right.left.item, derive(@item, left, right.left.left), derive(right.item, right.left.right, right.right))
           else
             # single left rotation
-            AVLNode.new(right.item, @comparator, AVLNode.new(@item, @comparator, left, right.left), right.right)
+            derive(right.item, derive(@item, left, right.left), right.right)
           end
         else
-          AVLNode.new(@item, @comparator, left, right)
+          derive(@item, left, right)
         end
       end
 
       def direction(item)
-        if @comparator
-          @comparator.call(item, @item)
-        else
-          item <=> @item
+        @comparator.call(item, @item)
+      end
+
+      class Empty
+        def initialize(comparator); @comparator = comparator; end
+        def natural_order?; false; end
+        def left;  self;    end
+        def right; self;    end
+        def height;   0;    end
+        def size;     0;    end
+        def min;    nil;    end
+        def max;    nil;    end
+        def each;           end
+        def reverse_each;   end
+        def at(index); nil; end
+        def insert(item)
+          AVLNode.new(item, @comparator, self, self)
+        end
+        def bulk_insert(items)
+          items = items.to_a if !items.is_a?(Array)
+          AVLNode.from_items(items.sort(&@comparator), @comparator)
+        end
+        def bulk_delete(items); self; end
+        def keep_only(items);   self; end
+        def delete(item);       throw :not_present; end
+        def include?(item);     false; end
+        def prefix(item, inclusive); self; end
+        def suffix(item, inclusive); self; end
+        def between(from, to);       self; end
+        def each_greater(item, inclusive); end
+        def each_less(item, inclusive);    end
+        def each_between(item, inclusive); end
+        def drop(n);             self; end
+        def take(n);             self; end
+        def empty?;              true; end
+        def slice(from, length); self; end
+      end
+    end
+
+    # @private
+    # AVL node which does not use a comparator function; it keeps items sorted
+    #   in their natural order
+    class PlainAVLNode < AVLNode
+      def self.from_items(items, from = 0, to = items.size-1) # items must be sorted
+        size = to - from + 1
+        if size >= 3
+          middle = (to + from) / 2
+          PlainAVLNode.new(items[middle], PlainAVLNode.from_items(items, from, middle-1), PlainAVLNode.from_items(items, middle+1, to))
+        elsif size == 2
+          PlainAVLNode.new(items[from], PlainAVLNode::EmptyNode, PlainAVLNode.new(items[from+1], PlainAVLNode::EmptyNode, PlainAVLNode::EmptyNode))
+        elsif size == 1
+          PlainAVLNode.new(items[from], PlainAVLNode::EmptyNode, PlainAVLNode::EmptyNode)
+        elsif size == 0
+          PlainAVLNode::EmptyNode
         end
       end
-    end
 
-    class EmptyAVLNode
-      def initialize(comparator); @comparator = comparator; end
-      def natural_order?; !@comparator; end
-      def left;  self;    end
-      def right; self;    end
-      def height;   0;    end
-      def size;     0;    end
-      def min;    nil;    end
-      def max;    nil;    end
-      def each;           end
-      def reverse_each;   end
-      def at(index); nil; end
-      def insert(item)
-        AVLNode.new(item, @comparator, self, self)
+      def initialize(item, left, right)
+        @item,  @left, @right = item, left, right
+        @height = ((right.height > left.height) ? right.height : left.height) + 1
+        @size   = right.size + left.size + 1
       end
-      def bulk_insert(items)
-        items = items.to_a if !items.is_a?(Array)
-        AVLNode.from_items(items.sort(&@comparator), @comparator)
+      attr_reader :item, :left, :right, :height, :size
+
+      def from_items(items)
+        PlainAVLNode.from_items(items.sort)
       end
-      def bulk_delete(items); self; end
-      def keep_only(items);   self; end
-      def delete(item);       throw :not_present; end
-      def include?(item);     false; end
-      def prefix(item, inclusive); self; end
-      def suffix(item, inclusive); self; end
-      def between(from, to);       self; end
-      def each_greater(item, inclusive); end
-      def each_less(item, inclusive);    end
-      def each_between(item, inclusive); end
-      def drop(n);             self; end
-      def take(n);             self; end
-      def empty?;              true; end
-      def slice(from, length); self; end
+
+      def natural_order?
+        true
+      end
+
+      def clear
+        PlainAVLNode::EmptyNode
+      end
+
+      def derive(item, left, right)
+        PlainAVLNode.new(item, left, right)
+      end
+
+      def direction(item)
+        item <=> @item
+      end
+
+      class Empty < AVLNode::Empty
+        def initialize;           end
+        def natural_order?; true; end
+        def insert(item)
+          PlainAVLNode.new(item, self, self)
+        end
+        def bulk_insert(items)
+          items = items.to_a if !items.is_a?(Array)
+          PlainAVLNode.from_items(items.sort)
+        end
+      end
+
+      EmptyNode = PlainAVLNode::Empty.new
     end
   end
-
-  EmptyNode = SortedSet::EmptyAVLNode.new(nil)
 
   # The canonical empty `SortedSet`. Returned by `Hamster.sorted_set` and `SortedSet[]`
   # when invoked with no arguments; also returned by `SortedSet.empty`. Prefer using
