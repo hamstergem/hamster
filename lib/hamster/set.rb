@@ -4,6 +4,7 @@ require "hamster/enumerable"
 require "hamster/hash"
 require "hamster/trie"
 require "hamster/sorted_set"
+require "set"
 
 module Hamster
   def self.set(*items)
@@ -384,7 +385,7 @@ module Hamster
       # We also check other.size, to avoid the more expensive #is_a? checks in cases where it doesn't matter
       #
       if other.size > 100 && @trie.size > 40 && !(other.is_a?(Hamster::Set) || other.is_a?(::Set))
-        other = Set.new(other)
+        other = ::Set.new(other)
       end
       all? { |item| other.include?(item) }
     end
@@ -415,7 +416,7 @@ module Hamster
       return false if other.size <= size
       # See comments above
       if other.size > 100 && @trie.size > 40 && !(other.is_a?(Hamster::Set) || other.is_a?(::Set))
-        other = Set.new(other)
+        other = ::Set.new(other)
       end
       all? { |item| other.include?(item) }
     end
