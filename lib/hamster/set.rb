@@ -444,10 +444,14 @@ module Hamster
     # @param other [Set]
     # @return [Boolean]
     def disjoint?(other)
-      if size < other.size
-        each { |item| return false if other.include?(item) }
-      else
+      if other.size <= size
         other.each { |item| return false if include?(item) }
+      else
+        # See comment on #subset?
+        if other.size >= 150 && @trie.size >= 190 && !(other.is_a?(Hamster::Set) || other.is_a?(::Set))
+          other = ::Set.new(other)
+        end
+        each { |item| return false if other.include?(item) }
       end
       true
     end
