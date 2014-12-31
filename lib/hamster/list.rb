@@ -795,6 +795,12 @@ module Hamster
     # determined to be "lowest" according to the comparator will be the first in
     # the merged `List`.
     #
+    # @example
+    #   list_1 = Hamster::List[1, -3, -5]
+    #   list_2 = Hamster::List[-2, 4, 6]
+    #   Hamster::List[list_1, list_2].merge { |a,b| a.abs <=> b.abs }
+    #   # => Hamster::List[1, -2, -3, 4, -5, 6]
+    #
     # @return [List]
     def merge(&comparator)
       return merge_by unless block_given?
@@ -812,6 +818,12 @@ module Hamster
     # order which items should be shifted out of the nested lists and into the output
     # list. Whichever nested list's `#head` has the "lowest" sort key (according to
     # their natural order) will be the first in the merged `List`.
+    #
+    # @example
+    #   list_1 = Hamster::List[1, -3, -5]
+    #   list_2 = Hamster::List[-2, 4, 6]
+    #   Hamster::List[list_1, list_2].merge_by { |x| x.abs }
+    #   # => Hamster::List[1, -2, -3, 4, -5, 6]
     #
     # @return [List]
     def merge_by(&transformer)
