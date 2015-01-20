@@ -2,6 +2,8 @@ require "hamster/immutable"
 require "hamster/list"
 
 module Hamster
+  # Create a new `Deque` populated with the given items.
+  # @return [Deque]
   def self.deque(*items)
     items.empty? ? EmptyDeque : Deque.new(items)
   end

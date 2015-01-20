@@ -3,6 +3,8 @@ require "hamster/enumerable"
 require "hamster/hash"
 
 module Hamster
+  # Create a new `Vector` populated with the given items.
+  # [Vector]
   def self.vector(*items)
     items.empty? ? EmptyVector : Vector.new(items.freeze)
   end

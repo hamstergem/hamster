@@ -3,6 +3,13 @@ require "hamster/enumerable"
 require "hamster/hash"
 
 module Hamster
+  # Create a new `SortedSet` populated with the given items. If a block is provided,
+  # it will determine the sort order of the set. Such a block can accept either 1
+  # parameter (and will be used to derived sort keys, like a `Enumerable#sort_by`
+  # block) or 2 parameters (and will act as a comparator, like a `Enumerable#sort`
+  # block).
+  #
+  # @return [SortedSet]
   def self.sorted_set(*items, &block)
     (items.empty? && block.nil?) ? EmptySortedSet : SortedSet.new(items, &block)
   end
