@@ -360,6 +360,16 @@ Or install it yourself as:
     $ gem install hamster
 
 
+Contributing
+============
+
+  1. Fork it
+  2. Create your feature branch (`git checkout -b my-new-feature`)
+  3. Commit your changes (`git commit -am "Add some feature"`)
+  4. Push to the branch (`git push origin my-new-feature`)
+  5. Create new Pull Request
+
+
 Other Reading
 =============
 
@@ -370,16 +380,6 @@ Other Reading
 
 [HAMT]: http://lampwww.epfl.ch/papers/idealhashtrees.pdf
 [FO]: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf
-
-
-Contributing
-============
-
-  1. Fork it
-  2. Create your feature branch (`git checkout -b my-new-feature`)
-  3. Commit your changes (`git commit -am "Add some feature"`)
-  4. Push to the branch (`git push origin my-new-feature`)
-  5. Create new Pull Request
 
 
 Code of Conduct
