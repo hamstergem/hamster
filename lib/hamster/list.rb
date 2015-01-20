@@ -1353,6 +1353,7 @@ module Hamster
       @list.empty?
     end
 
+    # @private
     class Left < Realizable
       def initialize(splitter, buffer, mutex)
         super()
@@ -1380,6 +1381,7 @@ module Hamster
       end
     end
 
+    # @private
     class Right < Realizable
       def initialize(splitter, mutex)
         super()

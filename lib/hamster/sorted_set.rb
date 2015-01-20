@@ -1283,6 +1283,7 @@ module Hamster
         @comparator.call(item, @item)
       end
 
+      # @private
       class Empty
         def initialize(comparator); @comparator = comparator; end
         def natural_order?; false; end
@@ -1364,6 +1365,7 @@ module Hamster
         item <=> @item
       end
 
+      # @private
       class Empty < AVLNode::Empty
         def initialize;           end
         def natural_order?; true; end
