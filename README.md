@@ -459,6 +459,7 @@ Other Reading
 
 - The structure which is used for Hamster's `Hash` and `Set`: [Hash Array Mapped Tries][HAMT]
 - An interesting perspective on why immutability itself is inherently a good thing: Matthias Felleisen's [Function Objects presentation][FO].
+- [Changelog](CHANGELOG.md)
 
 [HAMT]: http://lampwww.epfl.ch/papers/idealhashtrees.pdf
 [FO]: http://www.ccs.neu.edu/home/matthias/Presentations/ecoop2004.pdf
@@ -472,17 +473,6 @@ Contributing
   3. Commit your changes (`git commit -am "Add some feature"`)
   4. Push to the branch (`git push origin my-new-feature`)
   5. Create new Pull Request
-
-
-Changelog
-=========
-
-  - 1.0.0 [wip]
-    * Added code climate coverage tool [developer]
-    * Removed specification for patch level in ruby version [developer]
-    * Specified benchmark-ips version
-    * Added changelog [developer]
-    * Added a CoC [developer]
 
 
 Conduct
