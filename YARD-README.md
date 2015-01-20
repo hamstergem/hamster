@@ -225,11 +225,11 @@ end.take(3)
 
 Besides `Hamster.list` there are other ways to construct lists:
 
-  - `Hamster.interval(from, to)` creates a lazy list
+  - {Hamster.interval Hamster.interval(from, to)} creates a lazy list
     equivalent to a list containing all the values between
     `from` and `to` without actually creating a list that big.
 
-  - `Hamster.stream { ... }` allows you to creates infinite
+  - {Hamster.stream Hamster.stream { ... }} allows you to creates infinite
     lists. Each time a new value is required, the supplied
     block is called. To generate a list of integers you
     could do:
@@ -239,13 +239,13 @@ Besides `Hamster.list` there are other ways to construct lists:
     Hamster.stream { count += 1 }
     ```
 
-  - `Hamster.repeat(x)` creates an infinite list with `x` the
+  - {Hamster.repeat Hamster.repeat(x)} creates an infinite list with `x` the
     value for every element.
 
-  - `Hamster.replicate(n, x)` creates a list of size `n` with
+  - {Hamster.replicate Hamster.replicate(n, x)} creates a list of size `n` with
     `x` the value for every element.
 
-  - `Hamster.iterate(x) { |x| ... }` creates an infinite
+  - {Hamster.iterate Hamster.iterate(x) { |x| ... }} creates an infinite
     list where the first item is calculated by applying the
     block on the initial argument, the second item by applying
     the function on the previous result and so on. For
