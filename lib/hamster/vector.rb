@@ -18,13 +18,13 @@ module Hamster
   # (like {#insert} or {#delete_at}) are included, but they return new `Vectors`
   # and leave the existing one unchanged.
   #
-  # = Creating New Vectors
+  # ### Creating New Vectors
   #
   #     Hamster.vector('a', 'b', 'c')
   #     Hamster::Vector.new([:first, :second, :third])
   #     Hamster::Vector[1, 2, 3, 4, 5]
   #
-  # = Retrieving Items from Vectors
+  # ### Retrieving Items from Vectors
   #
   #     require 'hamster/vector'
   #     vector = Hamster.vector(1, 2, 3, 4, 5)
@@ -35,7 +35,7 @@ module Hamster
   #     vector.first   # => 1
   #     vector.last    # => 5
   #
-  # = Creating Modified Vectors
+  # ### Creating Modified Vectors
   #
   #     vector.add(6)            # => Hamster::Vector[1, 2, 3, 4, 5, 6]
   #     vector.insert(1, :a, :b) # => Hamster::Vector[1, :a, :b, 2, 3, 4, 5]
