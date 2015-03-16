@@ -1,6 +1,7 @@
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
+require "hamster/nested"
 
 module Hamster
   # Create a new `SortedSet` populated with the given items. If a block is provided,
@@ -1395,3 +1396,4 @@ module Hamster
   #
   EmptySortedSet = Hamster::SortedSet.empty
 end
+

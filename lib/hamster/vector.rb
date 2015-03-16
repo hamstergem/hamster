@@ -1,6 +1,7 @@
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
+require "hamster/nested"
 
 module Hamster
   # Create a new `Vector` populated with the given items.
@@ -1171,6 +1172,13 @@ module Hamster
       end
     end
     alias :to_ary :to_a
+
+    # Deeply convert to Ruby Array.
+    #
+    # @return [::Array]
+    def to_ruby
+      Hamster.to_ruby(self)
+    end
 
     # Return true if `other` has the same type and contents as this `Vector`.
     #
