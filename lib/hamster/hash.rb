@@ -4,6 +4,7 @@ require "hamster/enumerable"
 require "hamster/trie"
 require "hamster/set"
 require "hamster/vector"
+require "hamster/nested"
 
 module Hamster
   def self.hash(pairs = nil, &block)
@@ -783,6 +784,13 @@ module Hamster
       output
     end
     alias :to_h :to_hash
+
+    # Deeply convert to Ruby Hash.
+    #
+    # @return [::Hash]
+    def to_ruby
+      Hamster.to_ruby(self)
+    end
 
     # @return [::Hash]
     # @private
