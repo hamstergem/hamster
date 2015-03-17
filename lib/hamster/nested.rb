@@ -26,6 +26,10 @@ module Hamster
       when ::Array
         res = obj.map { |element| from(element) }
         Hamster::Vector.new(res)
+      when ::SortedSet
+        # This clause must go before ::Set clause, since ::SortedSet is a ::Set.
+        res = obj.map { |element| from(element) }
+        Hamster::SortedSet.new(res)
       when ::Set
         res = obj.map { |element| from(element) }
         Hamster::Set.new(res)
@@ -52,6 +56,8 @@ module Hamster
         obj.each_with_object([]) { |element, arr| arr << to_ruby(element) }
       when Hamster::Set
         obj.each_with_object(::Set.new) { |element, set| set << to_ruby(element) }
+      when Hamster::SortedSet
+        obj.each_with_object(::SortedSet.new) { |element, set| set << to_ruby(element) }
       else
         obj
       end

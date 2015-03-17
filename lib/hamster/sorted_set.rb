@@ -880,6 +880,13 @@ module Hamster
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
+    # Deeply convert to Ruby SortedSet.
+    #
+    # @return [::SortedSet]
+    def to_ruby
+      Hamster.to_ruby(self)
+    end
+
     # @return [::Array]
     # @private
     def marshal_dump
