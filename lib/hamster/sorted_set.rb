@@ -1,6 +1,7 @@
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
+require "hamster/nested"
 
 module Hamster
   # Create a new `SortedSet` populated with the given items. If a block is provided,
@@ -879,6 +880,13 @@ module Hamster
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
+    # Deeply convert to Ruby SortedSet.
+    #
+    # @return [::SortedSet]
+    def to_ruby
+      Hamster.to_ruby(self)
+    end
+
     # @return [::Array]
     # @private
     def marshal_dump
@@ -1395,3 +1403,4 @@ module Hamster
   #
   EmptySortedSet = Hamster::SortedSet.empty
 end
+
