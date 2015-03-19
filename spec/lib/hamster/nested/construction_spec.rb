@@ -41,8 +41,16 @@ describe Hamster do
 
     context "with mixed object" do
       it "should return Hamster data" do
-        input = {"a" => "b", "c" => {"d" => "e"}, "f" => Hamster::Vector["g", "h"]}
-        expected_result = Hamster::Hash["a" => "b", "c" => Hamster::Hash["d" => "e"], "f" => Hamster::Vector["g", "h"]]
+        input = {
+          "a" => "b",
+          "c" => {"d" => "e"},
+          "f" => Hamster::Vector["g", "h", []],
+          "i" => Hamster::Hash["j" => {}, "k" => Hamster::Set[[], {}]] }
+        expected_result = Hamster::Hash[
+          "a" => "b",
+          "c" => Hamster::Hash["d" => "e"],
+          "f" => Hamster::Vector["g", "h", Hamster::EmptyVector],
+          "i" => Hamster::Hash["j" => Hamster::EmptyHash, "k" => Hamster::Set[Hamster::EmptyVector, Hamster::EmptyHash]] ]
         Hamster.from(input).should eql(expected_result)
       end
     end
@@ -59,8 +67,16 @@ describe Hamster do
 
     context "with mixed object" do
       it "should return Ruby data structures" do
-        input = Hamster::Hash["a" => "b", "c" => {"d" => "e"}, "f" => Hamster::Vector["g", "h"]]
-        expected_result = {"a" => "b", "c" => {"d" => "e"}, "f" => ["g", "h"]}
+        input = Hamster::Hash[
+          "a" => "b",
+          "c" => {"d" => "e"},
+          "f" => Hamster::Vector["g", "h"],
+          "i" => {"j" => Hamster::EmptyHash, "k" => Set.new([Hamster::EmptyVector, Hamster::EmptyHash])}]
+        expected_result = {
+          "a" => "b",
+          "c" => {"d" => "e"},
+          "f" => ["g", "h"],
+          "i" => {"j" => {}, "k" => Set.new([[], {}])} }
         Hamster.to_ruby(input).should eql(expected_result)
       end
     end

@@ -23,6 +23,8 @@ module Hamster
       when ::Hash
         res = obj.map { |key, value| [from(key), from(value)] }
         Hamster::Hash.new(res)
+      when Hamster::Hash
+        obj.map { |key, value| [from(key), from(value)] }
       when ::Array
         res = obj.map { |element| from(element) }
         Hamster::Vector.new(res)
@@ -33,6 +35,8 @@ module Hamster
       when ::Set
         res = obj.map { |element| from(element) }
         Hamster::Set.new(res)
+      when Hamster::Vector, Hamster::Set, Hamster::SortedSet
+        obj.map { |element| from(element) }
       else
         obj
       end
@@ -50,13 +54,13 @@ module Hamster
     # @return [Hash, Vector, Set, Object]
     def to_ruby(obj)
       case obj
-      when Hamster::Hash
+      when Hamster::Hash, ::Hash
         obj.each_with_object({}) { |keyval, hash| hash[to_ruby(keyval[0])] = to_ruby(keyval[1]) }
-      when Hamster::Vector
+      when Hamster::Vector, ::Array
         obj.each_with_object([]) { |element, arr| arr << to_ruby(element) }
-      when Hamster::Set
+      when Hamster::Set, ::Set
         obj.each_with_object(::Set.new) { |element, set| set << to_ruby(element) }
-      when Hamster::SortedSet
+      when Hamster::SortedSet, ::SortedSet
         obj.each_with_object(::SortedSet.new) { |element, set| set << to_ruby(element) }
       else
         obj
