@@ -224,7 +224,7 @@ necessary to generate the first 3 prime numbers between 10,000
 and 1,000,000:
 
 ``` ruby
-Hamster.interval(10_000, 1_000_000).filter do |number|
+Hamster.interval(10_000, 1_000_000).select do |number|
   prime?(number)
 end.take(3)
   # => 0.0009s
