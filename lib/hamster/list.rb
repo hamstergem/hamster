@@ -1,6 +1,6 @@
 require "thread"
-require "atomic"
 require "set"
+require "concurrent/atomics"
 
 require "hamster/core_ext/enumerable"
 require "hamster/undefined"
@@ -1163,7 +1163,7 @@ module Hamster
     def initialize(&block)
       @head   = block # doubles as storage for block while yet unrealized
       @tail   = nil
-      @atomic = Atomic.new(0) # haven't yet run block
+      @atomic = Concurrent::Atomic.new(0) # haven't yet run block
       @size   = nil
     end
 
