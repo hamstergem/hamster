@@ -21,12 +21,12 @@ Structures][PDS]: [`Hash`][HASH-DOC], [`Vector`][VECTOR-DOC], [`Set`][SET-DOC], 
 Hamster collections are **immutable**. Whenever you modify a Hamster
 collection, the original is preserved and a modified copy is returned. This
 makes them inherently thread-safe and shareable. At the same time, they remain
-CPU and memory-efficient by sharing between copies. 
+CPU and memory-efficient by sharing between copies.
 
 While Hamster collections are immutable, you can still mutate objects stored
-in them. We recommend that  you don't do this, unless you are sure you know 
-what you are doing. Hamster collections are thread-safe and can be freely 
-shared between threads, but you are responsible for making sure that the 
+in them. We recommend that  you don't do this, unless you are sure you know
+what you are doing. Hamster collections are thread-safe and can be freely
+shared between threads, but you are responsible for making sure that the
 objects stored in them are used in a thread-safe manner.
 
 Hamster collections are almost always closed under a given operation. That is,
@@ -146,11 +146,11 @@ Other `Array`-like methods like `#select`, `#map`, `#shuffle`, `#uniq`, `#revers
 A `Set` is an unordered collection of values with no duplicates. It is much like the Ruby standard library's `Set`, but immutable. Examples:
 
 ``` ruby
-set = Hamster.set(:red, :blue, :yellow) # => Hamster::Set[:red, :blue, :yellow]
+set = Hamster::Set.new(:red, :blue, :yellow) # => Hamster::Set[:red, :blue, :yellow]
 set.include? :red                       # => true
 set.add :green                          # => Hamster::Set[:red, :blue, :yellow, :green]
 set.delete :blue                        # => Hamster::Set[:red, :yellow]
-set.superset? Hamster.set(:red, :blue)  # => true
+set.superset? Hamster::Set.new(:red, :blue)  # => true
 set.union([:red, :blue, :pink])         # => Hamster::Set[:red, :blue, :yellow, :pink]
 set.intersection([:red, :blue, :pink])  # => Hamster::Set[:red, :blue]
 ```
@@ -167,7 +167,7 @@ do with a `Set`. Additionally, you can get the `#first` and `#last` item, or ret
 an item using an integral index:
 
 ``` ruby
-set = Hamster.sorted_set('toast', 'jam', 'bacon') # => Hamster::SortedSet["bacon", "jam", "toast"]
+set = Hamster::SortedSet.new('toast', 'jam', 'bacon') # => Hamster::SortedSet["bacon", "jam", "toast"]
 set.first                                         # => "bacon"
 set.last                                          # => "toast"
 set[1]                                            # => "jam"
@@ -176,8 +176,8 @@ set[1]                                            # => "jam"
 You can also specify the sort order using a block:
 
 ``` ruby
-Hamster.sorted_set('toast', 'jam', 'bacon') { |a,b| b <=> a }
-Hamster.sorted_set('toast', 'jam', 'bacon') { |str| str.chars.last }
+Hamster::SortedSet.new('toast', 'jam', 'bacon') { |a,b| b <=> a }
+Hamster::SortedSet.new('toast', 'jam', 'bacon') { |str| str.chars.last }
 ```
 
 See the [API documentation][SORTED-SET-DOC] for details on all `SortedSet` methods.
@@ -189,7 +189,7 @@ Hamster `List`s have a "head" (the value at the front of the list),
 and a "tail" (a list of the remaining items):
 
 ``` ruby
-list = Hamster.list(1, 2, 3)
+list = Hamster::List(1, 2, 3)
 list.head                    # => 1
 list.tail                    # => Hamster.list(2, 3)
 ```
@@ -197,7 +197,7 @@ list.tail                    # => Hamster.list(2, 3)
 To add to a list, you use `List#cons`:
 
 ``` ruby
-original = Hamster.list(1, 2, 3)
+original = Hamster::List(1, 2, 3)
 copy = original.cons(0)      # => Hamster.list(0, 1, 2, 3)
 ```
 
