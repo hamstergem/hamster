@@ -10,18 +10,6 @@ require "hamster/set"
 
 module Hamster
   class << self
-
-    # Create a list containing the given items.
-    #
-    # @example
-    #   list = Hamster.list(:a, :b, :c)
-    #   # => Hamster::List[:a, :b, :c]
-    #
-    # @return [List]
-    def list(*items)
-      items.to_list
-    end
-
     # Create a lazy, infinite list.
     #
     # The given block is called as necessary to return successive elements of the list.

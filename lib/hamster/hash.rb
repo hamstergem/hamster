@@ -6,10 +6,6 @@ require "hamster/set"
 require "hamster/vector"
 
 module Hamster
-  def self.hash(pairs = nil, &block)
-    (pairs.nil? && block.nil?) ? EmptyHash : Hash.new(pairs, &block)
-  end
-
   # A `Hamster::Hash` maps from a set of unique keys to corresponding values,
   # much like a dictionary maps from words to definitions. Given a key, it can
   # efficiently store and retrieve values. Looking up a key given its value is also

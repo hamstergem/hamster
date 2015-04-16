@@ -7,10 +7,6 @@ require "hamster/sorted_set"
 require "set"
 
 module Hamster
-  def self.set(*items)
-    items.empty? ? EmptySet : Set.new(items)
-  end
-
   # `Hamster::Set` is a collection of unordered values with no duplicates. Testing whether
   # an object is present in the `Set` is fast. `Set` is also `Enumerable`, so you can
   # iterate over the members of the set with {#each}, transform them with {#map}, filter
