@@ -196,9 +196,12 @@ module Hamster
     #
     # @return [Set]
     def select
-      return enum_for(:select) unless block_given?
-      trie = @trie.select { |key, _| yield(key) }
-      new_trie(trie)
+      if block_given?
+        trie = @trie.select { |key, _| yield(key) }
+        new_trie(trie)
+      else
+        enum_for(:select)
+      end
     end
     alias :find_all :select
     alias :keep_if  :select
