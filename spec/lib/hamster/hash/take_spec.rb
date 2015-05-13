@@ -29,7 +29,7 @@ describe Hamster::Hash do
 
     it "passes all elements if the block never returns nil/false" do
       passed = []
-      hash.take_while { |pair| passed << pair; true }.should == hash.to_a
+      hash.take_while { |k,v| passed << [k, v]; true }.should == hash.to_a
       passed.sort.should == [['A', 'aye'], ['B', 'bee'], ['C', 'see']]
     end
   end
