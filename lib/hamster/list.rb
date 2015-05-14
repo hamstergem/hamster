@@ -1363,7 +1363,9 @@ module Hamster
       end
 
       def realize
-        @mutex.synchronize do
+        # another thread may get ahead of us and null out @mutex
+        mutex = @mutex
+        mutex && mutex.synchronize do
           return if @head != Undefined # another thread got ahead of us
           while true
             if !@buffer.empty?
@@ -1391,7 +1393,8 @@ module Hamster
       end
 
       def realize
-        @mutex.synchronize do
+        mutex = @mutex
+        mutex && mutex.synchronize do
           return if @head != Undefined
           @splitter.next_item until @splitter.done?
           if @splitter.right.empty?
