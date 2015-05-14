@@ -1311,7 +1311,8 @@ module Hamster
             @tail = Partitioned.new(@partitioner, @buffer, @mutex)
             # don't hold onto references
             # tail will keep references alive until end of list is reached
-            @partitioner, @buffer, @mutex = nil, nil, nil
+            @partitioner, @buffer = nil, nil
+            @mutex = nil unless RUBY_ENGINE == 'jruby' # look at https://github.com/jruby/jruby/issues/2925
             return
           elsif @partitioner.done?
             @head, @size, @tail = nil, 0, self
@@ -1367,7 +1368,8 @@ module Hamster
             if !@buffer.empty?
               @head = @buffer.shift
               @tail = Left.new(@splitter, @buffer, @mutex)
-              @splitter, @buffer, @mutex = nil, nil, nil
+              @splitter, @buffer = nil, nil
+              @mutex = nil unless RUBY_ENGINE == 'jruby' # look at https://github.com/jruby/jruby/issues/2925
               return
             elsif @splitter.done?
               @head, @size, @tail = nil, 0, self
