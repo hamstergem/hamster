@@ -31,6 +31,26 @@ describe Hamster::SortedSet do
       sorted_set.to_a.should == ['SNAZZY!!!']
     end
 
+    it "accepts a block with arity 1" do
+      sorted_set = Hamster::SortedSet.new(1..3) { |a| -a }
+      sorted_set[0].should be(3)
+      sorted_set[1].should be(2)
+      sorted_set[2].should be(1)
+    end
+
+    it "accepts a block with arity 2" do
+      sorted_set = Hamster::SortedSet.new(1..3) { |a,b| b <=> a }
+      sorted_set[0].should be(3)
+      sorted_set[1].should be(2)
+      sorted_set[2].should be(1)
+    end
+
+    it "can use a block produced by Symbol#to_proc" do
+      sorted_set = Hamster::SortedSet.new([Object, BasicObject], &:name.to_proc)
+      sorted_set[0].should be(BasicObject)
+      sorted_set[1].should be(Object)
+    end
+
     context "from a subclass" do
       it "returns a frozen instance of the subclass" do
         subclass = Class.new(Hamster::SortedSet)
