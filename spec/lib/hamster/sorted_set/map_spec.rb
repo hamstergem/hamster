@@ -31,6 +31,14 @@ describe Hamster::SortedSet do
           end
         end
       end
+
+      context "on a set ordered by a comparator" do
+        let(:sorted_set) { Hamster.sorted_set("A", "B", "C") { |a,b| b <=> a }}
+
+        it "returns a new set with the mapped values" do
+          sorted_set.send(method, &:downcase).should == ['c', 'b', 'a']
+        end
+      end
     end
   end
 end
