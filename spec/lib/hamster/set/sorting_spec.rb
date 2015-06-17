@@ -46,4 +46,15 @@ describe Hamster::Set do
       end
     end
   end
+
+  describe "#sort_by" do
+    it "only calls the passed block once for each item" do
+      count = 0
+      fn    = lambda { |x| count += 1; -x }
+      items = 100.times.collect { rand(10000) }.uniq
+
+      Hamster.set(*items).sort_by(&fn).to_a.should == items.sort.reverse
+      count.should == items.length
+    end
+  end
 end

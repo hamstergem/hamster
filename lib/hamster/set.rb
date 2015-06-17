@@ -267,6 +267,10 @@ module Hamster
     # mapping each item through the provided block to obtain sort keys, and then
     # sorting the keys.
     #
+    # It is recommended that the provided block should be a pure function, since
+    # it may be called again later when certain operations are performed on the
+    # returned {SortedSet}.
+    #
     # @example
     #   Hamster::Set["Elephant", "Dog", "Lion"].sort_by { |e| e.size }
     #   # => Hamster::SortedSet["Dog", "Lion", "Elephant"]

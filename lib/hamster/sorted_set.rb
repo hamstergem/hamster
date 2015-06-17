@@ -100,12 +100,13 @@ module Hamster
     def initialize(items=[], &block)
       items = items.to_a
       if block
-        comparator = if block.arity == 1 || block.arity == -1
-          lambda { |a,b| block.call(a) <=> block.call(b) }
+        if block.arity == 1 || block.arity == -1
+          comparator = lambda { |a,b| block.call(a) <=> block.call(b) }
+          items = items.sort_by(&block)
         else
-          block
+          comparator = block
+          items = items.sort(&block)
         end
-        items = items.sort(&comparator)
         @node = AVLNode.from_items(items, comparator)
       else
         @node = PlainAVLNode.from_items(items.sort)
