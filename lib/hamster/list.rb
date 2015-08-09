@@ -64,7 +64,7 @@ module Hamster
     # Create a list that contains a given item a fixed number of times
     #
     # @example
-    #   Hamster.replicate(3).(:hamster)
+    #   Hamster.replicate(3, :hamster)
     #   #=> Hamster::List[:hamster, :hamster, :hamster]
     #
     # @return [List]
