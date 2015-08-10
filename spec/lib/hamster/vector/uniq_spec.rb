@@ -33,6 +33,22 @@ describe Hamster::Vector do
       result[0].should be(x)
     end
 
+    context "on a vector with no duplicates" do
+      it "returns an unchanged vector" do
+        Hamster.vector(1, 2, 3).uniq.should.eql? Hamster.vector(1, 2, 3)
+      end
+
+      context "if the vector has more than 32 elements and is initialized with Vector.new" do
+        # Regression test for GitHub issue #182
+        it "returns an unchanged vector" do
+          vector1,vector2 = 2.times.collect { Hamster::Vector.new(0..36) }
+          p vector1.uniq
+          p vector2
+          vector1.uniq.should eql(vector2)
+        end
+      end
+    end
+
     [10, 31, 32, 33, 1000, 1023, 1024, 1025, 2000].each do |size|
       context "on a #{size}-item vector" do
         it "behaves like Array#uniq" do
