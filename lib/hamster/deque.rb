@@ -2,12 +2,6 @@ require "hamster/immutable"
 require "hamster/list"
 
 module Hamster
-  # Create a new `Deque` populated with the given items.
-  # @return [Deque]
-  def self.deque(*items)
-    items.empty? ? EmptyDeque : Deque.new(items)
-  end
-
   # A `Deque` (or double-ended queue) is an ordered, sequential collection of objects,
   # which allows elements to be efficiently added and removed at the front and end of
   # the sequence. Retrieving the elements at the front and end is also efficient. This

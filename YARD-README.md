@@ -128,11 +128,11 @@ Other `Array`-like methods like `#select`, `#map`, `#shuffle`, `#uniq`, `#revers
 A `Set` is an unordered collection of values with no duplicates. It is much like the Ruby standard library's `Set`, but immutable. Examples:
 
 ``` ruby
-set = Hamster.set(:red, :blue, :yellow) # => Hamster::Set[:red, :blue, :yellow]
+set = Hamster::Set.new(:red, :blue, :yellow) # => Hamster::Set[:red, :blue, :yellow]
 set.include? :red                       # => true
 set.add :green                          # => Hamster::Set[:red, :blue, :yellow, :green]
 set.delete :blue                        # => Hamster::Set[:red, :yellow]
-set.superset? Hamster.set(:red, :blue)  # => true
+set.superset? Hamster::Set.new(:red, :blue)  # => true
 set.union([:red, :blue, :pink])         # => Hamster::Set[:red, :blue, :yellow, :pink]
 set.intersection([:red, :blue, :pink])  # => Hamster::Set[:red, :blue]
 ```

@@ -2,10 +2,6 @@ require "hamster/hash"
 require "hamster/read_copy_update"
 
 module Hamster
-  def self.mutable_hash(pairs = {}, &block)
-    MutableHash.new(hash(pairs, &block))
-  end
-
   class MutableHash
     include ReadCopyUpdate
 

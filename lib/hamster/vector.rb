@@ -4,12 +4,6 @@ require "hamster/hash"
 require "hamster/nested"
 
 module Hamster
-  # Create a new `Vector` populated with the given items.
-  # [Vector]
-  def self.vector(*items)
-    items.empty? ? EmptyVector : Vector.new(items.freeze)
-  end
-
   # A `Vector` is an ordered, integer-indexed collection of objects. Like `Array`,
   # `Vector` indexing starts at 0. Also like `Array`, negative indexes count back
   # from the end of the `Vector`.
