@@ -1173,6 +1173,8 @@ module Hamster
     # @return [Array]
     def to_a
       if @levels == 0
+        # When initializing a Vector with 32 or less items, we always make
+        # sure @root is frozen, so we can return it directly here
         @root
       else
         flatten_node(@root, @levels * BITS_PER_LEVEL, [])
