@@ -6,6 +6,17 @@ require "rspec"
 require "hamster/vector"
 require "hamster/list"
 
+# Suppress warnings from use of old RSpec expectation and mock syntax
+# If all tests are eventually updated to use the new syntax, this can be removed
+RSpec.configure do |config|
+  config.expect_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+  config.mock_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+end
+
 V = Hamster::Vector
 L = Hamster::List
 EmptyList = Hamster::EmptyList
