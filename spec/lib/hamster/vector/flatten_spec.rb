@@ -35,6 +35,21 @@ describe Hamster::Vector do
       end
     end
 
+    context "on a vector with no nested vectors" do
+      it "returns an unchanged vector" do
+        vector = V[1,2,3]
+        vector.flatten.should.eql?(V[1,2,3])
+      end
+
+      context "on a Vector larger than 32 items initialized with Vector.new" do
+        # Regression test, for problem discovered while working on GH issue #182
+        it "returns an unchanged vector" do
+          vector1,vector2 = 2.times.collect { V.new(0..33) }
+          vector1.flatten.should eql(vector2)
+        end
+      end
+    end
+
     it "leaves the original unmodified" do
       vector = V[1,2,3]
       vector.flatten

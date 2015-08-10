@@ -554,7 +554,14 @@ module Hamster
     # @return [Vector]
     def flatten(level = -1)
       return self if level == 0
-      self.class.new(((array = to_a).frozen? ? array.flatten(level) : array.flatten!(level)).freeze)
+      array = self.to_a
+      if array.frozen?
+        self.class.new(array.flatten(level).freeze)
+      elsif array.flatten!(level) # returns nil if no changes were made
+        self.class.new(array.freeze)
+      else
+        self
+      end
     end
 
     # Return a new `Vector` built by concatenating this one with `other`. `other`
