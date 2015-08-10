@@ -42,8 +42,6 @@ describe Hamster::Vector do
         # Regression test for GitHub issue #182
         it "returns an unchanged vector" do
           vector1,vector2 = 2.times.collect { Hamster::Vector.new(0..36) }
-          p vector1.uniq
-          p vector2
           vector1.uniq.should eql(vector2)
         end
       end
