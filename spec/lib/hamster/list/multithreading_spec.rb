@@ -24,7 +24,7 @@ describe Hamster::List do
 
     threads = 10.times.collect do
       Thread.new do
-        -> { list.head }.should raise_error
+        -> { list.head }.should raise_error(RuntimeError)
       end
     end
     threads.each(&:join)
