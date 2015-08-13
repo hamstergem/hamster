@@ -62,6 +62,8 @@ module Hamster
         obj.each_with_object(::Set.new) { |element, set| set << to_ruby(element) }
       when Hamster::SortedSet, ::SortedSet
         obj.each_with_object(::SortedSet.new) { |element, set| set << to_ruby(element) }
+      when Hamster::Deque
+        obj.to_a.tap { |arr| arr.map! { |element| to_ruby(element) }}
       else
         obj
       end

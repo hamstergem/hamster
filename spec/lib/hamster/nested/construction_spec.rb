@@ -1,5 +1,6 @@
 require "spec_helper"
 require "hamster/nested"
+require "hamster/deque"
 require "set"
 
 describe Hamster do
@@ -62,6 +63,18 @@ describe Hamster do
         it "should return #{expected_result.inspect}" do
           Hamster.to_ruby(input).should eql(expected_result)
         end
+      end
+    end
+
+    context "with Hamster::Deque[] as input" do
+      it "should return []" do
+        Hamster.to_ruby(Hamster::Deque[]).should eql([])
+      end
+    end
+
+    context "with Hamster::Deque[Hamster::Hash[\"a\" => 1]] as input" do
+      it "should return [{\"a\" => 1}]" do
+        Hamster.to_ruby(Hamster::Deque[Hamster::Hash["a" => 1]]).should eql([{"a" => 1}])
       end
     end
 
