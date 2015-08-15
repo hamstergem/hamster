@@ -10,14 +10,14 @@ module Hamster
     items.empty? ? EmptyVector : Vector.new(items.freeze)
   end
 
-  # A `Vector` is an ordered, integer-indexed collection of objects. Like `Array`,
-  # `Vector` indexing starts at 0. Also like `Array`, negative indexes count back
-  # from the end of the `Vector`.
+  # A `Vector` is an ordered, integer-indexed collection of objects. Like
+  # Ruby's `Array`, `Vector` indexing starts at zero and negative indexes count
+  # back from the end.
   #
-  # `Vector`'s interface is modeled after that of `Array`, minus all the methods
-  # which do destructive updates. Some methods which modify `Array`s destructively
-  # (like {#insert} or {#delete_at}) are included, but they return new `Vectors`
-  # and leave the existing one unchanged.
+  # `Vector` has a similar interface to `Array`. The main difference is methods
+  # that would destructively update an `Array` (such as {#insert} or
+  # {#delete_at}) instead return new `Vectors` and leave the existing one
+  # unchanged.
   #
   # ### Creating New Vectors
   #
@@ -27,8 +27,8 @@ module Hamster
   #
   # ### Retrieving Items from Vectors
   #
-  #     require 'hamster/vector'
   #     vector = Hamster.vector(1, 2, 3, 4, 5)
+  #
   #     vector[0]      # => 1
   #     vector[-1]     # => 5
   #     vector[0,3]    # => Hamster::Vector[1, 2, 3]
@@ -42,10 +42,6 @@ module Hamster
   #     vector.insert(1, :a, :b) # => Hamster::Vector[1, :a, :b, 2, 3, 4, 5]
   #     vector.delete_at(2)      # => Hamster::Vector[1, 2, 4, 5]
   #     vector + [6, 7]          # => Hamster::Vector[1, 2, 3, 4, 5, 6, 7]
-  #
-  # Other `Array`-like methods like {#select}, {#map}, {#shuffle}, {#uniq}, {#reverse},
-  # {#rotate}, {#flatten}, {#sort}, {#sort_by}, {#take}, {#drop}, {#take_while},
-  # {#drop_while}, {#fill}, {#product}, and {#transpose} are also supported.
   #
   class Vector
     include Immutable
@@ -147,18 +143,32 @@ module Hamster
     alias :<< :add
     alias :push :add
 
-    # Return a new `Vector` with the item at `index` replaced by `item`. If the
-    # `item` argument is missing, but an optional code block is provided, it will
-    # be passed the existing item and what the block returns will replace it.
+    # Return a new `Vector` with a new value at the given `index`. If `index`
+    # is greater than the length of the vector, the returned vector will be
+    # padded with `nil`s to the correct size.
     #
-    # @example
-    #   Hamster::Vector[1, 2, 3, 4].set(2, 99)
-    #   # => Hamster::Vector[1, 2, 99, 4]
-    #   Hamster::Vector[1, 2, 3, 4].set(2) { |v| v * 10 }
-    #   # => Hamster::Vector[1, 2, 30, 4]
+    # @overload set(index, item)
+    #   Return a new `Vector` with the item at `index` replaced by `item`.
     #
-    # @param index [Integer] The index to update
-    # @param item [Object] The object to insert into that position
+    #   @param item [Object] The object to insert into that position
+    #   @example
+    #     Hamster::Vector[1, 2, 3, 4].set(2, 99)
+    #     # => Hamster::Vector[1, 2, 99, 4]
+    #     Hamster::Vector[1, 2, 3, 4].set(-1, 99)
+    #     # => Hamster::Vector[1, 2, 3, 99]
+    #     Hamster::Vector[].set(2, 99)
+    #     # => Hamster::Vector[nil, nil, 99]
+    #
+    # @overload set(index)
+    #   Return a new `Vector` with the item at `index` replaced by the return
+    #   value of the block.
+    #
+    #   @yield (existing) Once with the existing value at the given `index`.
+    #   @example
+    #     Hamster::Vector[1, 2, 3, 4].set(2) { |v| v * 10 }
+    #     # => Hamster::Vector[1, 2, 30, 4]
+    #
+    # @param index [Integer] The index to update. May be negative.
     # @return [Vector]
     def set(index, item = yield(get(index)))
       raise IndexError, "index #{index} outside of vector bounds" if index < -@size
@@ -192,7 +202,7 @@ module Hamster
     # @param key_path [Object(s)] List of keys which form the path to the key to be modified
     # @yield [value] The previously stored value
     # @yieldreturn [Object] The new value to store
-    # @return [Hash]
+    # @return [Vector]
     def update_in(*key_path, &block)
       if key_path.empty?
         raise ArgumentError, "must have at least one key in path"
@@ -226,36 +236,43 @@ module Hamster
     end
     alias :at :get
 
-    # Retrieve the value at `index`, or use the provided default value or block,
-    # or otherwise raise an `IndexError`.
+    # Retrieve the value at `index` with optional default.
     #
     # @overload fetch(index)
-    #   Retrieve the value at the given index, or raise an `IndexError` if it is
-    #   not found.
+    #   Retrieve the value at the given index, or raise an `IndexError` if not
+    #   found.
+    #
     #   @param index [Integer] The index to look up
+    #   @raise [IndexError] if index does not exist
+    #   @example
+    #     v = Hamster::Vector["A", "B", "C", "D"]
+    #     v.fetch(2)       # => "C"
+    #     v.fetch(-1)      # => "D"
+    #     v.fetch(4)       # => IndexError: index 4 outside of vector bounds
+    #
     # @overload fetch(index) { |index| ... }
-    #   Retrieve the value at the given index, or call the optional
-    #   code block (with the non-existent index) and get its return value.
-    #   @yield [index] The index which does not exist
-    #   @yieldreturn [Object] Object to return instead
+    #   Retrieve the value at the given index, or return the result of yielding
+    #   the block if not found.
+    #
+    #   @yield Once if the index is not found.
+    #   @yieldparam [Integer] index The index which does not exist
+    #   @yieldreturn [Object] Default value to return
     #   @param index [Integer] The index to look up
+    #   @example
+    #     v = Hamster::Vector["A", "B", "C", "D"]
+    #     v.fetch(2) { |i| i * i }   # => "C"
+    #     v.fetch(4) { |i| i * i }   # => 16
+    #
     # @overload fetch(index, default)
-    #   Retrieve the value at the given index, or else return the provided
-    #   `default` value.
+    #   Retrieve the value at the given index, or return the provided `default`
+    #   value if not found.
+    #
     #   @param index [Integer] The index to look up
     #   @param default [Object] Object to return if the key is not found
-    #
-    # @example
-    #   v = Hamster::Vector["A", "B", "C", "D"]
-    #   v.fetch(2)       # => "C"
-    #   v.fetch(-1)      # => "D"
-    #   v.fetch(4)       # => IndexError: index 4 outside of vector bounds
-    #   # With default value:
-    #   v.fetch(2, "Z")  # => "C"
-    #   v.fetch(4, "Z")  # => "Z"
-    #   # With block:
-    #   v.fetch(2) { |i| i * i }   # => "C"
-    #   v.fetch(4) { |i| i * i }   # => 16
+    #   @example
+    #     v = Hamster::Vector["A", "B", "C", "D"]
+    #     v.fetch(2, "Z")  # => "C"
+    #     v.fetch(4, "Z")  # => "Z"
     #
     # @return [Object]
     def fetch(index, default = (missing_default = true))
@@ -270,30 +287,47 @@ module Hamster
       end
     end
 
-    # Element reference. Return the item at a specific index, or a specified,
-    # contiguous range of items (as a new `Vector`).
+    # Return specific objects from the `Vector`. All overloads return `nil` if
+    # the starting index is out of range.
     #
-    # @overload vector[index]
-    #   Return the item at `index`.
-    #   @param index [Integer] The index to retrieve.
-    # @overload vector[start, length]
-    #   Return a subvector starting at index `start` and continuing for `length` elements.
-    #   @param start [Integer] The index to start retrieving items from.
+    # @overload vector.slice(index)
+    #   Returns a single object at the given `index`. If `index` is negative,
+    #   count backwards from the end.
+    #
+    #   @param index [Integer] The index to retrieve. May be negative.
+    #   @return [Object]
+    #   @example
+    #     v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
+    #     v[2]  # => "C"
+    #     v[-1] # => "F"
+    #     v[6]  # => nil
+    #
+    # @overload vector.slice(index, length)
+    #   Return a subvector starting at `index` and continuing for `length`
+    #   elements or until the end of the `Vector`, whichever occurs first.
+    #
+    #   @param start [Integer] The index to start retrieving items from. May be
+    #                          negative.
     #   @param length [Integer] The number of items to retrieve.
-    # @overload vector[range]
-    #   Return a subvector specified by the given `range` of indices.
+    #   @return [Vector]
+    #   @example
+    #     v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
+    #     v[2, 3]  # => Hamster::Vector["C", "D", "E"]
+    #     v[-2, 3] # => Hamster::Vector["E", "F"]
+    #     v[20, 1] # => nil
+    #
+    # @overload vector.slice(index..end)
+    #   Return a subvector starting at `index` and continuing to index
+    #   `end` or the end of the `Vector`, whichever occurs first.
+    #
     #   @param range [Range] The range of indices to retrieve.
-    #
-    # @example
-    #   v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
-    #   v[2]     # => "C"
-    #   v[-1]    # => "D"
-    #   v[6]     # => nil
-    #   v[2, 2]  # => Hamster::Vector["C", "D"]
-    #   v[2..3]  # => Hamster::Vector["C", "D"]
-    #
-    # @return [Object]
-    def [](arg, length = (missing_length = true))
+    #   @return [Vector]
+    #   @example
+    #     v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
+    #     v[2..3]    # => Hamster::Vector["C", "D"]
+    #     v[-2..100] # => Hamster::Vector["E", "F"]
+    #     v[20..21]  # => nil
+    def slice(arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
           from, to = arg.begin, arg.end
@@ -311,17 +345,22 @@ module Hamster
         subsequence(arg, length)
       end
     end
-    alias :slice :[]
+    alias :[] :slice
 
-    # Return a new `Vector` with the given values inserted before the element at `index`.
+    # Return a new `Vector` with the given values inserted before the element
+    # at `index`. If `index` is greater than the current length, `nil` values
+    # are added to pad the `Vector` to the required size.
     #
     # @example
     #   Hamster::Vector["A", "B", "C", "D"].insert(2, "X", "Y", "Z")
     #   # => Hamster::Vector["A", "B", "X", "Y", "Z", "C", "D"]
+    #   Hamster::Vector[].insert(2, "X", "Y", "Z")
+    #   # => Hamster::Vector[nil, nil, "X", "Y", "Z"]
     #
     # @param index [Integer] The index where the new items should go
     # @param items [Array] The items to add
     # @return [Vector]
+    # @raise [IndexError] if index exceeds negative range.
     def insert(index, *items)
       raise IndexError if index < -@size
       index += @size if index < 0
@@ -356,7 +395,8 @@ module Hamster
       replace_suffix(index, suffix.tap { |a| a.shift })
     end
 
-    # Return a new `Vector` with the last element removed. If empty, just return `self`.
+    # Return a new `Vector` with the last element removed. Return `self` if
+    # empty.
     #
     # @example
     #   Hamster::Vector["A", "B", "C"].pop  # => Hamster::Vector["A", "B"]
@@ -367,19 +407,21 @@ module Hamster
       replace_suffix(@size-1, [])
     end
 
-    # Return a new `Vector` with `obj` inserted before the first element, moving
-    # the other elements upwards.
+    # Return a new `Vector` with `object` inserted before the first element,
+    # moving the other elements upwards.
     #
     # @example
-    #   Hamster::Vector["A", "B"].unshift("Z")  # => Hamster::Vector["Z", "A", "B"]
+    #   Hamster::Vector["A", "B"].unshift("Z")
+    #   # => Hamster::Vector["Z", "A", "B"]
     #
-    # @param obj [Object] The value to prepend
+    # @param object [Object] The value to prepend
     # @return [Vector]
     def unshift(obj)
       insert(0, obj)
     end
 
-    # Return a new `Vector` with the first element removed. If empty, just return `self`.
+    # Return a new `Vector` with the first element removed. If empty, return
+    # `self`.
     #
     # @example
     #   Hamster::Vector["A", "B", "C"].shift  # => Hamster::Vector["B", "C"]
@@ -390,7 +432,8 @@ module Hamster
     end
 
     # Call the given block once for each item in the vector, passing each
-    # item from first to last successively to the block.
+    # item from first to last successively to the block. If no block is given,
+    # an `Enumerator` is returned instead.
     #
     # @example
     #   Hamster::Vector["A", "B", "C"].each { |e| puts "Element: #{e}" }
@@ -400,16 +443,15 @@ module Hamster
     #   Element: C
     #   # => Hamster::Vector["A", "B", "C"]
     #
-    # @return [self]
+    # @return [self, Enumerator]
     def each(&block)
       return to_enum unless block_given?
       traverse_depth_first(@root, @levels, &block)
       self
     end
 
-    # Call the given block once for each item in the vector, passing each
-    # item starting from the last, and counting back to the first, successively to
-    # the block.
+    # Call the given block once for each item in the vector, from last to
+    # first.
     #
     # @example
     #   Hamster::Vector["A", "B", "C"].reverse_each { |e| puts "Element: #{e}" }
@@ -433,6 +475,7 @@ module Hamster
     #   # => Hamster::Vector["Bird", "Elephant"]
     #
     # @return [Vector]
+    # @yield [element] Once for each element.
     def select
       return enum_for(:select) unless block_given?
       reduce(self.class.empty) { |vector, item| yield(item) ? vector.add(item) : vector }
@@ -453,12 +496,13 @@ module Hamster
     end
 
     # Invoke the given block once for each item in the vector, and return a new
-    # `Vector` containing the values returned by the block.
+    # `Vector` containing the values returned by the block. If no block is
+    # provided, return an enumerator.
     #
     # @example
     #   Hamster::Vector[3, 2, 1].map { |e| e * e }  # => Hamster::Vector[9, 4, 1]
     #
-    # @return [Vector]
+    # @return [Vector, Enumerator]
     def map
       return enum_for(:map) if not block_given?
       return self if empty?
@@ -546,7 +590,7 @@ module Hamster
     end
 
     # Return a new `Vector` with all nested vectors and arrays recursively "flattened
-    # out", that is, their elements inserted into the new `Vector` in the place where
+    # out". That is, their elements inserted into the new `Vector` in the place where
     # the nested array/vector originally was. If an optional `level` argument is
     # provided, the flattening will only be done recursively that number of times.
     # A `level` of 0 means not to flatten at all, 1 means to only flatten nested
@@ -589,21 +633,31 @@ module Hamster
     end
     alias :concat :+
 
-    # `others` should be arrays and/or vectors. The corresponding elements from this
-    # `Vector` and each of `others` (that is, the elements with the same indices)
-    # will be gathered into arrays.
+    # Combine two vectors by "zipping" them together. `others` should be arrays
+    # and/or vectors. The corresponding elements from this `Vector` and each of
+    # `others` (that is, the elements with the same indices) will be gathered
+    # into arrays.
     #
-    # If an optional block is provided, each such array will be passed successively
-    # to the block. Otherwise, a new `Vector` of all those arrays will be returned.
+    # If `others` contains fewer elements than this vector, `nil` will be used
+    # for padding.
+    #
+    # @overload zip(*others)
+    #   Return a new vector containing the new arrays.
+    #
+    #   @return [Vector]
+    #
+    # @overload zip(*others)
+    #   @yield [pair] once for each array
+    #   @return [nil]
     #
     # @example
     #   v1 = Hamster::Vector["A", "B", "C"]
-    #   v2 = Hamster::Vector[1, 2, 3]
+    #   v2 = Hamster::Vector[1, 2]
     #   v1.zip(v2)
-    #   # => Hamster::Vector[["A", 1], ["B", 2], ["C", 3]]
+    #   # => Hamster::Vector[["A", 1], ["B", 2], ["C", nil]]
     #
     # @param others [Array] The arrays/vectors to zip together with this one
-    # @return [Vector, nil]
+    # @return [Vector]
     def zip(*others)
       if block_given?
         super
@@ -612,27 +666,38 @@ module Hamster
       end
     end
 
-    # Return a new `Vector` with the same items, but sorted. The sort order will
-    # be determined by comparing items using `#<=>`, or if an optional code block
-    # is provided, by using it as a comparator. The block should accept 2 parameters,
-    # and should return 0, 1, or -1 if the first parameter is equal to, greater than,
-    # or less than the second parameter (respectively).
+    # Return a new `Vector` with the same items, but sorted.
     #
-    # @example
-    #   Hamster::Vector["Elephant", "Dog", "Lion"].sort
-    #   # => Hamster::Vector["Dog", "Elephant", "Lion"]
-    #   Hamster::Vector["Elephant", "Dog", "Lion"].sort { |a,b| a.size <=> b.size }
-    #   # => Hamster::Vector["Dog", "Lion", "Elephant"]
+    # @overload sort
+    #   Compare elements with their natural sort key (`#<=>`).
+    #
+    #   @example
+    #     Hamster::Vector["Elephant", "Dog", "Lion"].sort
+    #     # => Hamster::Vector["Dog", "Elephant", "Lion"]
+    #
+    # @overload sort
+    #   Uses the block as a comparator to determine sorted order.
+    #
+    #   @yield [a, b] Any number of times with different pairs of elements.
+    #   @yieldreturn [Integer] Negative if the first element should be sorted
+    #                          lower, positive if the latter element, or 0 if
+    #                          equal.
+    #   @example
+    #     Hamster::Vector["Elephant", "Dog", "Lion"].sort { |a,b| a.size <=> b.size }
+    #     # => Hamster::Vector["Dog", "Lion", "Elephant"]
     #
     # @return [Vector]
     def sort
       self.class.new(super)
     end
 
-    # Return a new `Vector` with the same items, but sorted. The sort order will be
-    # determined by mapping the items through the given block to obtain sort keys,
-    # and then sorting the keys according to their natural sort order.
+    # Return a new `Vector` with the same items, but sorted. The sort order is
+    # determined by mapping the items through the given block to obtain sort
+    # keys, and then sorting the keys according to their natural sort order
+    # (`#<=>`).
     #
+    # @yield [element] Once for each element.
+    # @yieldreturn a sort key object for the yielded element.
     # @example
     #   Hamster::Vector["Elephant", "Dog", "Lion"].sort_by { |e| e.size }
     #   # => Hamster::Vector["Dog", "Lion", "Elephant"]
@@ -650,6 +715,7 @@ module Hamster
     #
     # @param n [Integer] The number of elements to remove
     # @return [Vector]
+    # @raise ArgumentError if `n` is negative.
     def drop(n)
       return self if n == 0
       return self.class.empty if n >= @size
@@ -716,25 +782,40 @@ module Hamster
 
     # Replace a range of indexes with the given object.
     #
-    # @overload fill(obj)
+    # @overload fill(object)
     #   Return a new `Vector` of the same size, with every index set to `obj`.
-    # @overload fill(obj, start)
-    #   Return a new `Vector` with all indexes from `start` to the end of the
-    #   vector set to `obj`.
-    # @overload fill(obj, start, length)
-    #   Return a new `Vector` with `length` indexes, beginning from `start`,
-    #   set to `obj`.
     #
-    # @example
-    #   v = Hamster::Vector["A", "B", "C", "D", "E", "F"]
-    #   v.fill("Z")
-    #   # => Hamster::Vector["Z", "Z", "Z", "Z", "Z", "Z"]
-    #   v.fill("Z", 3)
-    #   # => Hamster::Vector["A", "B", "C", "Z", "Z", "Z"]
-    #   v.fill("Z", 3, 2)
-    #   # => Hamster::Vector["A", "B", "C", "Z", "Z", "F"]
+    #   @param [Object] object Fill value.
+    #   @example
+    #     Hamster::Vector["A", "B", "C", "D", "E", "F"].fill("Z")
+    #     # => Hamster::Vector["Z", "Z", "Z", "Z", "Z", "Z"]
+    #
+    # @overload fill(object, index)
+    #   Return a new `Vector` with all indexes from `index` to the end of the
+    #   vector set to `obj`.
+    #
+    #   @param [Object] object Fill value.
+    #   @param [Integer] index Starting index. May be negative.
+    #   @example
+    #     Hamster::Vector["A", "B", "C", "D", "E", "F"].fill("Z", 3)
+    #     # => Hamster::Vector["A", "B", "C", "Z", "Z", "Z"]
+    #
+    # @overload fill(object, index, length)
+    #   Return a new `Vector` with `length` indexes, beginning from `index`,
+    #   set to `obj`. Expands the `Vector` if `length` would extend beyond the
+    #   current length.
+    #
+    #   @param [Object] object Fill value.
+    #   @param [Integer] index Starting index. May be negative.
+    #   @param [Integer] length
+    #   @example
+    #     Hamster::Vector["A", "B", "C", "D", "E", "F"].fill("Z", 3, 2)
+    #     # => Hamster::Vector["A", "B", "C", "Z", "Z", "F"]
+    #     Hamster::Vector["A", "B"].fill("Z", 1, 5)
+    #     # => Hamster::Vector["A", "Z", "Z", "Z", "Z", "Z"]
     #
     # @return [Vector]
+    # @raise [IndexError] if index is out of negative range.
     def fill(obj, index = 0, length = nil)
       raise IndexError if index < -@size
       index += @size if index < 0
@@ -755,7 +836,7 @@ module Hamster
 
     # When invoked with a block, yields all combinations of length `n` of items
     # from the `Vector`, and then returns `self`. There is no guarantee about
-    # which order the combinations will be yielded in.
+    # which order the combinations will be yielded.
     #
     # If no block is given, an `Enumerator` is returned instead.
     #
@@ -953,26 +1034,22 @@ module Hamster
       self
     end
 
-    # With one or more vector or array arguments, return the cartesian product of
-    # this vector's elements and those of each argument; with no arguments, return the
-    # result of multiplying all this vector's items together.
+    # Cartesian product or multiplication.
     #
     # @overload product(*vectors)
     #   Return a `Vector` of all combinations of elements from this `Vector` and each
     #   of the given vectors or arrays. The length of the returned `Vector` is the product
     #   of `self.size` and the size of each argument vector or array.
+    #   @example
+    #     v1 = Hamster::Vector[1, 2, 3]
+    #     v2 = Hamster::Vector["A", "B"]
+    #     v1.product(v2)
+    #     # => [[1, "A"], [1, "B"], [2, "A"], [2, "B"], [3, "A"], [3, "B"]]
     # @overload product
     #   Return the result of multiplying all the items in this `Vector` together.
     #
-    # @example
-    #   # Cartesian product:
-    #   v1 = Hamster::Vector[1, 2, 3]
-    #   v2 = Hamster::Vector["A", "B"]
-    #   v1.product(v2)
-    #   # => [[1, "A"], [1, "B"], [2, "A"], [2, "B"], [3, "A"], [3, "B"]]
-    #
-    #   # Multiply all items:
-    #   Hamster::Vector[1, 2, 3, 4, 5].product  # => 120
+    #   @example
+    #     Hamster::Vector[1, 2, 3, 4, 5].product  # => 120
     #
     # @return [Vector]
     def product(*vectors)
@@ -1033,6 +1110,8 @@ module Hamster
     #   # => Hamster::Vector[Hamster::Vector["A", "B", "C"], Hamster::Vector[10, 20, 30]]
     #
     # @return [Vector]
+    # @raise [IndexError] if elements are not of the same size.
+    # @raise [TypeError] if an element can not be implicitly converted to an array (using `#to_ary`)
     def transpose
       return self.class.empty if empty?
       result = Array.new(first.size) { [] }
@@ -1052,9 +1131,10 @@ module Hamster
       self.class.new(result)
     end
 
-    # By using binary search, finds a value from this `Vector` which meets the
-    # condition defined by the provided block. Behavior is just like `Array#bsearch`.
-    # See `Array#bsearch` for details.
+    # Finds a value from this `Vector` which meets the condition defined by the
+    # provided block, using a binary search. The vector must already be sorted
+    # with respect to the block.  See Ruby's `Array#bsearch` for details,
+    # behaviour is equivalent.
     #
     # @example
     #   v = Hamster::Vector[1, 3, 5, 7, 9, 11, 13]
@@ -1063,7 +1143,14 @@ module Hamster
     #   # Block returns number to match an element in 4 <= e <= 7:
     #   v.bsearch { |e| 1 - e / 4 }  # => 7
     #
-    # @return [Object]
+    # @yield Once for at most `log n` elements, where `n` is the size of the
+    #        vector. The exact elements and ordering are undefined.
+    # @yieldreturn [Boolean] `true` if this element matches the criteria, `false` otherwise.
+    # @yieldreturn [Integer] See `Array#bsearch` for details.
+    # @yieldparam [Object] element element to be evaluated
+    # @return [Object] The matched element, or `nil` if none found.
+    # @raise TypeError if the block returns a non-numeric, non-boolean, non-nil
+    #                  value.
     def bsearch
       return enum_for(:bsearch) if not block_given?
       low, high, result = 0, @size, nil
@@ -1123,22 +1210,26 @@ module Hamster
       self.class.new(indices.map { |i| get(i) }.freeze)
     end
 
-    # Return the index of the last element which is equal to the provided object,
-    # or for which the provided block returns true.
+    # Find the index of an element, starting from the end of the vector.
+    # Returns `nil` if no element is found.
     #
     # @overload rindex(obj)
-    #   Return the index of the last element in this `Vector` which is `#==` to `obj`.
-    # @overload rindex { |item| ... }
-    #   Return the index of the last element in this `Vector` for which the block
-    #   returns true. (Iteration starts from the last element, counts back, and
-    #   stops as soon as a matching element is found.)
+    #   Return the index of the last element which is `#==` to `obj`.
     #
-    # @example
-    #   v = Hamster::Vector[7, 8, 9, 7, 8, 9]
-    #   v.rindex(8)               # => 4
-    #   v.rindex { |e| e.even? }  # => 4
+    #   @example
+    #     v = Hamster::Vector[7, 8, 9, 7, 8, 9]
+    #     v.rindex(8) # => 4
     #
-    # @return [Index]
+    # @overload rindex
+    #   Return the index of the last element for which the block returns true.
+    #
+    #   @yield [element] Once for each element, last to first, until the block
+    #                    returns true.
+    #   @example
+    #     v = Hamster::Vector[7, 8, 9, 7, 8, 9]
+    #     v.rindex { |e| e.even? }  # => 4
+    #
+    # @return [Integer]
     def rindex(obj = (missing_arg = true))
       i = @size - 1
       if missing_arg
@@ -1157,6 +1248,8 @@ module Hamster
     # Assumes all elements are nested, indexable collections, and searches through them,
     # comparing `obj` with the first element of each nested collection. Return the
     # first nested collection which matches, or `nil` if none is found.
+    # Behaviour is undefined when elements do not meet assumptions (i.e. are
+    # not indexable collections).
     #
     # @example
     #   v = Hamster::Vector[["A", 10], ["B", 20], ["C", 30]]
@@ -1170,8 +1263,10 @@ module Hamster
     end
 
     # Assumes all elements are nested, indexable collections, and searches through them,
-    # comparing `obj` with the second element of each nested collection. Return the
-    # first nested collection which matches, or `nil` if none is found.
+    # comparing `obj` with the second element of each nested collection. Return
+    # the first nested collection which matches, or `nil` if none is found.
+    # Behaviour is undefined when elements do not meet assumptions (i.e. are
+    # not indexable collections).
     #
     # @example
     #   v = Hamster::Vector[["A", 10], ["B", 20], ["C", 30]]
@@ -1199,7 +1294,8 @@ module Hamster
     end
     alias :to_ary :to_a
 
-    # Deeply convert to Ruby Array.
+    # Deeply convert to Ruby Array and other primitives. No `Hamster` objects
+    # of any type will remain anywhere in the data structure.
     #
     # @return [::Array]
     def to_ruby
