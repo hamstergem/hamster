@@ -13,7 +13,7 @@ module Hamster
   end
 
   # `Hamster::Set` is a collection of unordered values with no duplicates. Testing whether
-  # an object is present in the `Set` is fast. `Set` is also `Enumerable`, so you can
+  # an object is present in the `Set` can be done in constant time. `Set` is also `Enumerable`, so you can
   # iterate over the members of the set with {#each}, transform them with {#map}, filter
   # them with {#select}, and so on. Some of the `Enumerable` methods are overridden to
   # return Hamster collections.
@@ -26,11 +26,10 @@ module Hamster
   #
   # `Set`s have no natural ordering and cannot be compared using `#<=>`. However, they
   # define {#<}, {#>}, {#<=}, and {#>=} as shorthand for {#proper_subset?},
-  # {#proper_superset?}, {#subset?}, and {#superset?} (respectively).
+  # {#proper_superset?}, {#subset?}, and {#superset?} respectively.
   #
   # The basic set-theoretic operations {#union}, {#intersection}, {#difference}, and
-  # {#exclusion} work with any `Enumerable` object. They may be more efficient when used
-  # with another `Hamster::Set`, or a RubySet.
+  # {#exclusion} work with any `Enumerable` object.
   #
   # A `Set` can be created in any of the following ways:
   #
@@ -45,7 +44,6 @@ module Hamster
   # actually return a new set and leave the existing one unchanged.
   #
   # @example
-  #   require 'hamster/set'
   #   set1 = Hamster.set(1, 2)  # => Hamster::Set[1, 2]
   #   set2 = Hamster::Set[1, 2] # => Hamster::Set[1, 2]
   #   set1 == set2              # => true
@@ -156,7 +154,8 @@ module Hamster
     end
 
     # Call the block once for each item in this `Set`. No specific iteration order
-    # is guaranteed (but the order will be stable for any particular `Set`.)
+    # is guaranteed, but the order will be stable for any particular `Set`. If
+    # no block is given, an `Enumerator` is returned instead.
     #
     # @example
     #   Hamster::Set["Dog", "Elephant", "Lion"].each { |e| puts e }
@@ -165,7 +164,8 @@ module Hamster
     #   Lion
     #   # => Hamster::Set["Dog", "Elephant", "Lion"]
     #
-    # @return [self]
+    # @yield [item] Once for each item.
+    # @return [self, Enumerator]
     def each
       return to_enum if not block_given?
       @trie.each { |key, _| yield(key) }
@@ -173,7 +173,8 @@ module Hamster
     end
 
     # Call the block once for each item in this `Set`. Iteration order will be
-    # the opposite of {#each}.
+    # the opposite of {#each}. If no block is given, an `Enumerator` is
+    # returned instead.
     #
     # @example
     #   Hamster::Set["Dog", "Elephant", "Lion"].reverse_each { |e| puts e }
@@ -182,6 +183,7 @@ module Hamster
     #   Elephant
     #   # => Hamster::Set["Dog", "Elephant", "Lion"]
     #
+    # @yield [item] Once for each item.
     # @return [self]
     def reverse_each
       return enum_for(:reverse_each) if not block_given?
@@ -194,7 +196,7 @@ module Hamster
     # @example
     #   Hamster::Set["Elephant", "Dog", "Lion"].select { |e| e.size >= 4 }
     #   # => Hamster::Set["Elephant", "Lion"]
-    #
+    # @yield [item] Once for each item.
     # @return [Set]
     def select
       return enum_for(:select) unless block_given?
@@ -204,13 +206,15 @@ module Hamster
     alias :find_all :select
     alias :keep_if  :select
 
-    # Call the block once for each item in this `Set`.
-    # All the values returned from the block will be gathered into a new `Set`.
+    # Call the block once for each item in this `Set`. All the values returned
+    # from the block will be gathered into a new `Set`. If no block is given,
+    # an `Enumerator` is returned instead.
     #
     # @example
     #   Hamster::Set["Cat", "Elephant", "Dog", "Lion"].map { |e| e.size }
     #   # => Hamster::Set[8, 4, 3]
     #
+    # @yield [item] Once for each item.
     # @return [Set]
     def map
       return enum_for(:map) if not block_given?
@@ -246,9 +250,7 @@ module Hamster
     end
 
     # Return a {SortedSet} which contains the same items as this `Set`, ordered by
-    # the given comparator block. The comparator block should take 2 parameters and
-    # return 0, 1, or -1 depending on whether the first parameter is equal, greater than,
-    # or less than the second.
+    # the given comparator block.
     #
     # @example
     #   Hamster::Set["Elephant", "Dog", "Lion"].sort
@@ -256,27 +258,28 @@ module Hamster
     #   Hamster::Set["Elephant", "Dog", "Lion"].sort { |a,b| a.size <=> b.size }
     #   # => Hamster::SortedSet["Dog", "Lion", "Elephant"]
     #
-    # @yield [a, b] A pair of items to be compared
-    # @yieldreturn [Integer]
+    # @yield [a, b] Any number of times with different pairs of elements.
+    # @yieldreturn [Integer] Negative if the first element should be sorted
+    #                        lower, positive if the latter element, or 0 if
+    #                        equal.
     # @return [SortedSet]
     def sort(&comparator)
       SortedSet.new(self.to_a, &comparator)
     end
 
-    # Return a {SortedSet} which contains the same items as this `Set`, ordered by
-    # mapping each item through the provided block to obtain sort keys, and then
-    # sorting the keys.
-    #
-    # It is recommended that the provided block should be a pure function, since
-    # it may be called again later when certain operations are performed on the
-    # returned {SortedSet}.
+    # Return a {SortedSet} which contains the same items as this `Set`, ordered
+    # by mapping each item through the provided block to obtain sort keys, and
+    # then sorting the keys.
     #
     # @example
     #   Hamster::Set["Elephant", "Dog", "Lion"].sort_by { |e| e.size }
     #   # => Hamster::SortedSet["Dog", "Lion", "Elephant"]
     #
-    # @yield [item] The item to obtain a sort key for
-    # @yieldreturn [Object]
+    # @yield [item] Once for each item to create the set, and then potentially
+    #               again depending on what operations are performed on the
+    #               returned {SortedSet}. As such, it is recommended that the
+    #               block be a pure function.
+    # @yieldreturn [Object] sort key for the item
     # @return [SortedSet]
     def sort_by(&mapper)
       SortedSet.new(self.to_a, &mapper)
@@ -503,7 +506,7 @@ module Hamster
     # Return an empty `Set` instance, of the same class as this one. Useful if you
     # have multiple subclasses of `Set` and want to treat them polymorphically.
     #
-    # @return [Hash]
+    # @return [Set]
     def clear
       self.class.empty
     end
@@ -540,7 +543,9 @@ module Hamster
       self
     end
 
-    # Deeply convert to Ruby Set.
+    # Deeply convert to Ruby Set and other primitives. No `Hamster` objects of
+    # any type will remain anywhere in the data structure.
+    #
     #
     # @return [::Set]
     def to_ruby
