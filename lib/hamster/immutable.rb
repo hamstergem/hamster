@@ -11,7 +11,7 @@ module Hamster
     # @private
     module ClassMethods
       def new(*args)
-        super.immutable!
+        super.__send__(:immutable!)
       end
 
       def memoize(*names)
