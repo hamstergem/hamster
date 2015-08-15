@@ -42,7 +42,7 @@ module Hamster
   #     Hamster::SortedSet.new([1,2,3]) { |a, b| -a <=> -b }
   #     Hamster::SortedSet.new([1, 2, 3]) { |num| -num }
   #
-  # As you can see, `SortedSet` can use a 2-parameter block which returns 0, 1, or -1
+  # `SortedSet` can use a 2-parameter block which returns 0, 1, or -1
   # as a comparator (like `Array#sort`), *or* use a 1-parameter block to derive sort
   # keys (like `Array#sort_by`) which will be compared using `#<=>`.
   #
@@ -53,16 +53,16 @@ module Hamster
   # `SortedSet` supports the same basic set-theoretic operations as {Set}, including
   # {#union}, {#intersection}, {#difference}, and {#exclusion}, as well as {#subset?},
   # {#superset?}, and so on. Unlike {Set}, it does not define comparison operators like
-  # {#>} or {#<} as aliases for the superset/subset predicates. Instead, these comparison
+  # `#>` or `#<` as aliases for the superset/subset predicates. Instead, these comparison
   # operators do a item-by-item comparison between the `SortedSet` and another sequential
   # collection. (See `Array#<=>` for details.)
   #
   # Additionally, since `SortedSet`s are ordered, they also support indexed retrieval
-  # of items (or slices of items) using {#at} or {#[]}. Like {Vector} (or `Array`),
+  # of items using {#at} or {#[]}. Like {Vector},
   # negative indices count back from the end of the `SortedSet`.
   #
   # Getting the {#max} or {#min} item from a `SortedSet`, as defined by its comparator,
-  # is very efficient.
+  # is a constant time operation.
   #
   class SortedSet
     include Immutable
@@ -230,36 +230,43 @@ module Hamster
       @node.at(index)
     end
 
-    # Retrieve the value at `index`, or use the provided default value or block,
-    # or otherwise raise an `IndexError`.
+    # Retrieve the value at `index` with optional default.
     #
     # @overload fetch(index)
-    #   Retrieve the value at the given index, or raise an `IndexError` if it is
-    #   not found.
+    #   Retrieve the value at the given index, or raise an `IndexError` if not
+    #   found.
+    #
     #   @param index [Integer] The index to look up
+    #   @raise [IndexError] if index does not exist
+    #   @example
+    #     v = Hamster::SortedSet["A", "B", "C", "D"]
+    #     v.fetch(2)       # => "C"
+    #     v.fetch(-1)      # => "D"
+    #     v.fetch(4)       # => IndexError: index 4 outside of vector bounds
+    #
     # @overload fetch(index) { |index| ... }
-    #   Retrieve the value at the given index, or call the optional
-    #   code block (with the non-existent index) and get its return value.
-    #   @yield [index] The index which does not exist
-    #   @yieldreturn [Object] Object to return instead
+    #   Retrieve the value at the given index, or return the result of yielding
+    #   the block if not found.
+    #
+    #   @yield Once if the index is not found.
+    #   @yieldparam [Integer] index The index which does not exist
+    #   @yieldreturn [Object] Default value to return
     #   @param index [Integer] The index to look up
+    #   @example
+    #     v = Hamster::SortedSet["A", "B", "C", "D"]
+    #     v.fetch(2) { |i| i * i }   # => "C"
+    #     v.fetch(4) { |i| i * i }   # => 16
+    #
     # @overload fetch(index, default)
-    #   Retrieve the value at the given index, or else return the provided
-    #   `default` value.
+    #   Retrieve the value at the given index, or return the provided `default`
+    #   value if not found.
+    #
     #   @param index [Integer] The index to look up
     #   @param default [Object] Object to return if the key is not found
-    #
-    # @example
-    #   s = Hamster::SortedSet["A", "B", "C", "D"]
-    #   s.fetch(2)       # => "C"
-    #   s.fetch(-1)      # => "D"
-    #   s.fetch(4)       # => IndexError: index 4 outside of sorted set bounds
-    #   # With default value:
-    #   s.fetch(2, "Z")  # => "C"
-    #   s.fetch(4, "Z")  # => "Z"
-    #   # With block:
-    #   s.fetch(2) { |i| i * i }   # => "C"
-    #   s.fetch(4) { |i| i * i }   # => 16
+    #   @example
+    #     v = Hamster::SortedSet["A", "B", "C", "D"]
+    #     v.fetch(2, "Z")  # => "C"
+    #     v.fetch(4, "Z")  # => "Z"
     #
     # @return [Object]
     def fetch(index, default = (missing_default = true))
@@ -274,29 +281,46 @@ module Hamster
       end
     end
 
-    # Element reference. Return the item at a specific index, or a specified,
-    # contiguous range of items (as a new `SortedSet`).
+    # Return specific objects from the `Vector`. All overloads return `nil` if
+    # the starting index is out of range.
     #
-    # @overload set[index]
-    #   Return the item at `index`.
-    #   @param index [Integer] The index to retrieve.
-    # @overload set[start, length]
-    #   Return a subset starting at index `start` and continuing for `length` elements.
-    #   @param start [Integer] The index to start retrieving items from.
+    # @overload set.slice(index)
+    #   Returns a single object at the given `index`. If `index` is negative,
+    #   count backwards from the end.
+    #
+    #   @param index [Integer] The index to retrieve. May be negative.
+    #   @return [Object]
+    #   @example
+    #     v = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
+    #     v[2]  # => "C"
+    #     v[-1] # => "F"
+    #     v[6]  # => nil
+    #
+    # @overload set.slice(index, length)
+    #   Return a subset starting at `index` and continuing for `length`
+    #   elements or until the end of the `SortedSet`, whichever occurs first.
+    #
+    #   @param start [Integer] The index to start retrieving items from. May be
+    #                          negative.
     #   @param length [Integer] The number of items to retrieve.
-    # @overload set[range]
-    #   Return a subset specified by the given `range` of indices.
+    #   @return [SortedSet]
+    #   @example
+    #     v = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
+    #     v[2, 3]  # => Hamster::SortedSet["C", "D", "E"]
+    #     v[-2, 3] # => Hamster::SortedSet["E", "F"]
+    #     v[20, 1] # => nil
+    #
+    # @overload set.slice(index..end)
+    #   Return a subset starting at `index` and continuing to index
+    #   `end` or the end of the `SortedSet`, whichever occurs first.
+    #
     #   @param range [Range] The range of indices to retrieve.
-    #
-    # @example
-    #   s = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
-    #   s[2]     # => "C"
-    #   s[-1]    # => "D"
-    #   s[6]     # => nil
-    #   s[2, 2]  # => Hamster::SortedSet["C", "D"]
-    #   s[2..3]  # => Hamster::SortedSet["C", "D"]
-    #
-    # @return [Object]
+    #   @return [SortedSet]
+    #   @example
+    #     v = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
+    #     v[2..3]    # => Hamster::SortedSet["C", "D"]
+    #     v[-2..100] # => Hamster::SortedSet["E", "F"]
+    #     v[20..21]  # => nil
     def [](arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
@@ -332,7 +356,8 @@ module Hamster
     end
 
     # Call the given block once for each item in the set, passing each
-    # item from first to last successively to the block.
+    # item from first to last successively to the block. If no block is
+    # provided, returns an `Enumerator`.
     #
     # @example
     #   Hamster::SortedSet["A", "B", "C"].each { |e| puts "Element: #{e}" }
@@ -342,7 +367,8 @@ module Hamster
     #   Element: C
     #   # => Hamster::SortedSet["A", "B", "C"]
     #
-    # @return [self]
+    # @yield [item]
+    # @return [self, Enumerator]
     def each(&block)
       return @node.to_enum if not block_given?
       @node.each(&block)
@@ -376,6 +402,7 @@ module Hamster
     #   Hamster::SortedSet["A", "B", "C"].min  # => "A"
     #
     # @return [Object]
+    # @yield [a, b] Any number of times with different pairs of elements.
     def min
       block_given? ? super : @node.min
     end
@@ -393,6 +420,7 @@ module Hamster
     # @example
     #   Hamster::SortedSet["A", "B", "C"].max  # => "C"
     #
+    # @yield [a, b] Any number of times with different pairs of elements.
     # @return [Object]
     def max
       block_given? ? super : @node.max
@@ -412,6 +440,7 @@ module Hamster
     #   # => Hamster::SortedSet["Bird", "Elephant"]
     #
     # @return [SortedSet]
+    # @yield [item] Once for each item.
     def select
       return enum_for(:select) unless block_given?
       items_to_delete = []
@@ -422,13 +451,15 @@ module Hamster
     alias :keep_if  :select
 
     # Invoke the given block once for each item in the set, and return a new
-    # `SortedSet` containing the values returned by the block.
+    # `SortedSet` containing the values returned by the block. If no block is
+    # given, returns an `Enumerator`.
     #
     # @example
     #   Hamster::SortedSet[1, 2, 3].map { |e| -(e * e) }
     #   # => Hamster::SortedSet[-9, -4, -1]
     #
-    # @return [SortedSet]
+    # @return [SortedSet, Enumerator]
+    # @yield [item] Once for each item.
     def map
       return enum_for(:map) if not block_given?
       return self if empty?
@@ -450,8 +481,8 @@ module Hamster
     end
     alias :member? :include?
 
-    # Return a new `SortedSet` with the same items, but a sort order determined by
-    # the given block.
+    # Return a new `SortedSet` with the same items, but a sort order determined
+    # by the given block.
     #
     # @example
     #   Hamster::SortedSet["Bird", "Cow", "Elephant"].sort { |a, b| a.size <=> b.size }
@@ -475,19 +506,20 @@ module Hamster
     # @overload find_index(obj)
     #   Return the index of the first object in this set which is equal to
     #   `obj`. Rather than using `#==`, we use `#<=>` (or our comparator block)
-    #   for comparisons. This means we can find the index in O(log N) time,
-    #   rather than O(N).
+    #   for comparisons. This means we can find the index in `O(log N)` time,
+    #   rather than `O(N)`.
     #   @param obj [Object] The object to search for
-    # @overload find_index { |element| ... }
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.find_index(8)  # => 3
+    # @overload find_index
     #   Return the index of the first object in this sorted set for which the
-    #   block returns to true. This is takes O(N) time.
-    #   @yield [Object] An element in the sorted set
+    #   block returns to true. This takes `O(N)` time.
+    #   @yield [element] An element in the sorted set
     #   @yieldreturn [Boolean] True if this is element matches
-    #
-    # @example
-    #   s = Hamster::SortedSet[2, 4, 6, 8, 10]
-    #   s.find_index(8)             # => 3
-    #   s.find_index { |e| e > 7 }  # => 3
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.find_index { |e| e > 7 }  # => 3
     #
     # @return [Integer] The index of the object, or `nil` if not found.
     def find_index(obj = (missing_obj = true), &block)
@@ -546,6 +578,7 @@ module Hamster
     #   Hamster::SortedSet[2, 4, 6, 7, 8, 9].drop_while { |e| e.even? }
     #   # => Hamster::SortedSet[7, 8, 9]
     #
+    # @yield [item]
     # @return [SortedSet, Enumerator]
     def drop_while
       return enum_for(:drop_while) if not block_given?
@@ -566,6 +599,7 @@ module Hamster
     #   # => Hamster::SortedSet[2, 4, 6]
     #
     # @return [SortedSet, Enumerator]
+    # @yield [item]
     def take_while
       return enum_for(:take_while) if not block_given?
       n = 0
@@ -715,19 +749,27 @@ module Hamster
     alias :group :group_by
     alias :classify :group_by
 
-    # With a block, yield all the items which are greater than `item` (as defined
-    # by the set's comparator). Otherwise, return them as a new `SortedSet`.
+    # Select elements greater than a value.
     #
-    # @example
-    #   s = Hamster::SortedSet[2, 4, 6, 8, 10]
-    #   s.above(6)
-    #   # => Hamster::SortedSet[8, 10]
-    #
-    #   s.above(6) { |e| puts "Element: #{e}" }
-    #
-    #   Element: 8
-    #   Element: 10
-    #   # => nil
+    # @overload above(item)
+    #   Return a new `SortedSet` containing all items greater than `item`.
+    #   @return [SortedSet]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.above(6)
+    #     # => Hamster::SortedSet[8, 10]
+    #  
+    # @overload above(item)
+    #   @yield [item] Once for each item greater than `item`, in order from
+    #                 lowest to highest.
+    #   @return [nil]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.above(6) { |e| puts "Element: #{e}" }
+    #  
+    #     Element: 8
+    #     Element: 10
+    #     # => nil
     #
     # @param item [Object]
     def above(item, &block)
@@ -738,19 +780,27 @@ module Hamster
       end
     end
 
-    # With a block, yield all the items which are less than `item` (as defined
-    # by the set's comparator). Otherwise, return them as a new `SortedSet`.
+    # Select elements less than a value.
     #
-    # @example
-    #   s = Hamster::SortedSet[2, 4, 6, 8, 10]
-    #   s.below(6)
-    #   # => Hamster::SortedSet[2, 4]
-    #
-    #   s.below(6) { |e| puts "Element: #{e}" }
-    #
-    #   Element: 2
-    #   Element: 4
-    #   # => nil
+    # @overload below(item)
+    #   Return a new `SortedSet` containing all items less than `item`.
+    #   @return [SortedSet]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.below(6)
+    #     # => Hamster::SortedSet[2, 4]
+    #  
+    # @overload below(item)
+    #   @yield [item] Once for each item less than `item`, in order from lowest
+    #                 to highest.
+    #   @return [nil]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.below(6) { |e| puts "Element: #{e}" }
+    #  
+    #     Element: 2
+    #     Element: 4 
+    #     # => nil
     #
     # @param item [Object]
     def below(item, &block)
@@ -761,21 +811,28 @@ module Hamster
       end
     end
 
-    # With a block, yield all the items which are equal or greater than `item`
-    # (as determined by the set's comparator). Otherwise, return them as a new
-    # `SortedSet`.
+    # Select elements greater than or equal to a value.
     #
-    # @example
-    #   s = Hamster::SortedSet[2, 4, 6, 8, 10]
-    #   s.from(6)
-    #   # => Hamster::SortedSet[6, 8, 10]
-    #
-    #   s.from(6) { |e| puts "Element: #{e}" }
-    #
-    #   Element: 6
-    #   Element: 8
-    #   Element: 10
-    #   # => nil
+    # @overload from(item)
+    #   Return a new `SortedSet` containing all items greater than or equal `item`.
+    #   @return [SortedSet]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.from(6)
+    #     # => Hamster::SortedSet[6, 8, 10]
+    #  
+    # @overload from(item)
+    #   @yield [item] Once for each item greater than or equal to `item`, in
+    #                 order from lowest to highest.
+    #   @return [nil]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.from(6) { |e| puts "Element: #{e}" }
+    #  
+    #     Element: 6
+    #     Element: 8
+    #     Element: 10
+    #     # => nil
     #
     # @param item [Object]
     def from(item, &block)
@@ -786,21 +843,30 @@ module Hamster
       end
     end
 
-    # With a block, yield all the items which are equal or less than `item` (as
-    # defined by the set's comparator). Otherwise, return them as a new
-    # `SortedSet`.
+    # Select elements less than or equal to a value.
     #
-    # @example
-    #   s = Hamster::SortedSet[2, 4, 6, 8, 10]
-    #   s.up_to(6)
-    #   # => Hamster::SortedSet[2, 4, 6]
+    # @overload up_to(item)
+    #   Return a new `SortedSet` containing all items less than or equal to 
+    #   `item`.
     #
-    #   s.up_to(6) { |e| puts "Element: #{e}" }
-    #
-    #   Element: 2
-    #   Element: 4
-    #   Element: 6
-    #   # => nil
+    #   @return [SortedSet]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.upto(6)
+    #     # => Hamster::SortedSet[2, 4, 6]
+    #  
+    # @overload up_to(item)
+    #   @yield [item] Once for each item less than or equal to `item`, in order
+    #                 from lowest to highest.
+    #   @return [nil]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.up_to(6) { |e| puts "Element: #{e}" }
+    #  
+    #     Element: 2
+    #     Element: 4 
+    #     Element: 6 
+    #     # => nil
     #
     # @param item [Object]
     def up_to(item, &block)
@@ -811,21 +877,29 @@ module Hamster
       end
     end
 
-    # With a block, yield all the items which are equal or higher than `from` and
-    # equal or less than `to` (as determined by the set's comparator). Otherwise,
-    # return the specified range of items as a new `SortedSet`.
+    # Select elements between two values.
     #
-    # @example
-    #   s = Hamster::SortedSet[2, 4, 6, 7, 8, 9]
-    #   s.between(5, 8)
-    #   # => Hamster::SortedSet[6, 7, 8]
+    # @overload between(from, to)
+    #   Return a new `SortedSet` containing all items less than or equal to
+    #   `to` and greater than or equal to `from`.
     #
-    #   s.between(5, 8) { |e| puts "Element: #{e}" }
-    #
-    #   Element: 6
-    #   Element: 7
-    #   Element: 8
-    #   # => nil
+    #   @return [SortedSet]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.between(5, 8)
+    #     # => Hamster::SortedSet[6, 8]
+    #  
+    # @overload between(item)
+    #   @yield [item] Once for each item less than or equal to `to` and greater
+    #                 than or equal to `from`, in order from lowest to highest.
+    #   @return [nil]
+    #   @example
+    #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
+    #     s.between(5, 8) { |e| puts "Element: #{e}" }
+    #  
+    #     Element: 6
+    #     Element: 8 
+    #     # => nil
     #
     # @param from [Object]
     # @param to [Object]
@@ -881,7 +955,8 @@ module Hamster
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
-    # Deeply convert to Ruby SortedSet.
+    # Deeply convert to Ruby SortedSet and other primitives. No `Hamster`
+    # objects of any type will remain anywhere in the data structure.
     #
     # @return [::SortedSet]
     def to_ruby
