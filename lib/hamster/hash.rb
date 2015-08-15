@@ -513,7 +513,7 @@ module Hamster
     # @overload sort
     #   Uses `#<=>` to determine sorted order.
     # @overload sort { |(k1, v1), (k2, v2)| ... }
-    #   Uses the block as a comparator to determined sorted order.
+    #   Uses the block as a comparator to determine sorted order.
     #
     #   @example
     #     h = Hamster::Hash["Dog" => 1, "Elephant" => 2, "Lion" => 3]
