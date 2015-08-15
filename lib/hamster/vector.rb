@@ -810,18 +810,18 @@ module Hamster
     #
     # @return [Vector]
     # @raise [IndexError] if index is out of negative range.
-    def fill(obj, index = 0, length = nil)
+    def fill(object, index = 0, length = nil)
       raise IndexError if index < -@size
       index += @size if index < 0
       length ||= @size - index # to the end of the array, if no length given
 
       if index < @size
         suffix = flatten_suffix(@root, @levels * BITS_PER_LEVEL, index, [])
-        suffix.fill(obj, 0, length)
+        suffix.fill(object, 0, length)
       elsif index == @size
-        suffix = Array.new(length, obj)
+        suffix = Array.new(length, object)
       else
-        suffix = Array.new(index - @size, nil).concat(Array.new(length, obj))
+        suffix = Array.new(index - @size, nil).concat(Array.new(length, object))
         index = @size
       end
 
