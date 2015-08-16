@@ -291,10 +291,10 @@ module Hamster
     #   @param index [Integer] The index to retrieve. May be negative.
     #   @return [Object]
     #   @example
-    #     v = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
-    #     v[2]  # => "C"
-    #     v[-1] # => "F"
-    #     v[6]  # => nil
+    #     s = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
+    #     s[2]  # => "C"
+    #     s[-1] # => "F"
+    #     s[6]  # => nil
     #
     # @overload set.slice(index, length)
     #   Return a subset starting at `index` and continuing for `length`
@@ -305,10 +305,10 @@ module Hamster
     #   @param length [Integer] The number of items to retrieve.
     #   @return [SortedSet]
     #   @example
-    #     v = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
-    #     v[2, 3]  # => Hamster::SortedSet["C", "D", "E"]
-    #     v[-2, 3] # => Hamster::SortedSet["E", "F"]
-    #     v[20, 1] # => nil
+    #     s = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
+    #     s[2, 3]  # => Hamster::SortedSet["C", "D", "E"]
+    #     s[-2, 3] # => Hamster::SortedSet["E", "F"]
+    #     s[20, 1] # => nil
     #
     # @overload set.slice(index..end)
     #   Return a subset starting at `index` and continuing to index
@@ -317,11 +317,11 @@ module Hamster
     #   @param range [Range] The range of indices to retrieve.
     #   @return [SortedSet]
     #   @example
-    #     v = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
-    #     v[2..3]    # => Hamster::SortedSet["C", "D"]
-    #     v[-2..100] # => Hamster::SortedSet["E", "F"]
-    #     v[20..21]  # => nil
-    def [](arg, length = (missing_length = true))
+    #     s = Hamster::SortedSet["A", "B", "C", "D", "E", "F"]
+    #     s[2..3]    # => Hamster::SortedSet["C", "D"]
+    #     s[-2..100] # => Hamster::SortedSet["E", "F"]
+    #     s[20..21]  # => nil
+    def slice(arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
           from, to = arg.begin, arg.end
@@ -339,7 +339,7 @@ module Hamster
         subsequence(arg, length)
       end
     end
-    alias :slice :[]
+    alias :[] :slice
 
     # Return a new `SortedSet` with only the elements at the given `indices`.
     # If any of the `indices` do not exist, they will be skipped.

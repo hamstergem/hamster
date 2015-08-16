@@ -783,7 +783,8 @@ module Hamster
     # Replace a range of indexes with the given object.
     #
     # @overload fill(object)
-    #   Return a new `Vector` of the same size, with every index set to `obj`.
+    #   Return a new `Vector` of the same size, with every index set to
+    #   `object`.
     #
     #   @param [Object] object Fill value.
     #   @example
@@ -792,7 +793,7 @@ module Hamster
     #
     # @overload fill(object, index)
     #   Return a new `Vector` with all indexes from `index` to the end of the
-    #   vector set to `obj`.
+    #   vector set to `object`.
     #
     #   @param [Object] object Fill value.
     #   @param [Integer] index Starting index. May be negative.
@@ -802,8 +803,8 @@ module Hamster
     #
     # @overload fill(object, index, length)
     #   Return a new `Vector` with `length` indexes, beginning from `index`,
-    #   set to `obj`. Expands the `Vector` if `length` would extend beyond the
-    #   current length.
+    #   set to `object`. Expands the `Vector` if `length` would extend beyond
+    #   the current length.
     #
     #   @param [Object] object Fill value.
     #   @param [Integer] index Starting index. May be negative.
