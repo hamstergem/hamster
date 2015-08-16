@@ -518,7 +518,9 @@ module Hamster
       span { |item| !yield(item) }
     end
 
-    # Return an empty `List`.
+    # Return an empty `List`. If used on a subclass, returns an empty instance
+    # of that class.
+    #
     # @return [List]
     def clear
       EmptyList
