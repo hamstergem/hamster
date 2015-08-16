@@ -8,15 +8,15 @@ module Hamster
     items.empty? ? EmptyDeque : Deque.new(items)
   end
 
-  # A `Deque` (or double-ended queue) is an ordered, sequential collection of objects,
-  # which allows elements to be efficiently added and removed at the front and end of
-  # the sequence. Retrieving the elements at the front and end is also efficient. This
-  # makes `Deque` perfect for use as an immutable queue *or* stack.
+  # A `Deque` (or double-ended queue) is an ordered, sequential collection of
+  # objects, which allows elements to be retrieved, added and removed at the
+  # front and end of the sequence in constant time. This makes `Deque` perfect
+  # for use as an immutable queue or stack.
   #
-  # A `Deque` differs from a {Vector} in that vectors allow indexed access to any
-  # element in the collection. `Deque`s only allow access to the first and last
-  # element. But adding and removing from the ends of a `Deque` is faster than
-  # adding and removing from the ends of a {Vector}.
+  # A `Deque` differs from a {Vector} in that vectors allow indexed access to
+  # any element in the collection. `Deque`s only allow access to the first and
+  # last element. But adding and removing from the ends of a `Deque` is faster
+  # than adding and removing from the ends of a {Vector}.
   #
   # To create a new `Deque`:
   #
@@ -28,9 +28,10 @@ module Hamster
   #
   #     Hamster::Deque.empty.push('b').push('c').unshift('a')
   #
-  # Like all Hamster collections, `Deque` is immutable. The 4 basic operations which
-  # "modify" deques ({#push}, {#pop}, {#shift}, and {#unshift}) all return a new
-  # collection and leave the existing one unchanged.
+  # Like all Hamster collections, `Deque` is immutable. The four basic
+  # operations that "modify" deques ({#push}, {#pop}, {#shift}, and
+  # {#unshift}) all return a new collection and leave the existing one
+  # unchanged.
   #
   # @example
   #   deque = Hamster::Deque.empty                 # => Hamster::Deque[]
