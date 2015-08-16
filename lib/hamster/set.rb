@@ -8,6 +8,9 @@ require "hamster/nested"
 require "set"
 
 module Hamster
+  # Create a new set.
+  # @return [Set]
+  # @see Set#initialize
   def self.set(*items)
     items.empty? ? EmptySet : Set.new(items)
   end
@@ -585,5 +588,6 @@ module Hamster
   # invoked with no arguments; also returned by `Set.empty`. Prefer using this
   # one rather than creating many empty sets using `Set.new`.
   #
+  # @private
   EmptySet = Hamster::Set.empty
 end

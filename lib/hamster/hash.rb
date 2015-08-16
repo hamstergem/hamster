@@ -7,6 +7,11 @@ require "hamster/vector"
 require "hamster/nested"
 
 module Hamster
+  # Create a new hash.
+  #
+  # @see Hash#initialize
+  # @yield [key] Optional _default block_ to be stored and used to calculate the default value of a missing key. It will not be yielded during this method. It will not be preserved when marshalling.
+  # @return [Hash]
   def self.hash(pairs = nil, &block)
     (pairs.nil? && block.nil?) ? EmptyHash : Hash.new(pairs, &block)
   end
@@ -842,5 +847,6 @@ module Hamster
   # invoked with no arguments; also returned by `Hash.empty`. Prefer using this
   # one rather than creating many empty hashes using `Hash.new`.
   #
+  # @private
   EmptyHash = Hamster::Hash.empty
 end

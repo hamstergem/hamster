@@ -1,6 +1,6 @@
 require "hamster/list"
 
-# Ruby's built-in `IO` class.
+# Monkey-patches to Ruby's built-in `IO` class.
 # @see http://www.ruby-doc.org/core/IO.html
 class IO
   # Return a lazy list of "records" read from this IO stream.

@@ -5,7 +5,9 @@ require "hamster/nested"
 
 module Hamster
   # Create a new `Vector` populated with the given items.
-  # [Vector]
+  #
+  # @return [Vector]
+  # @see Vector#initialize
   def self.vector(*items)
     items.empty? ? EmptyVector : Vector.new(items.freeze)
   end
@@ -1536,5 +1538,6 @@ module Hamster
   # invoked with no arguments; also returned by `Vector.empty`. Prefer using this
   # one rather than creating many empty vectors using `Vector.new`.
   #
+  # @private
   EmptyVector = Hamster::Vector.empty
 end

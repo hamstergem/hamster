@@ -78,16 +78,16 @@ module Hamster
     #   Hamster.iterate(0) { |i| i.next }.take(5)
     #   # => Hamster::List[0, 1, 2, 3, 4]
     #
-    # @param item [Object] Starting value
-    # @yieldparam [Object] The previous value
+    # @param [Object] item Starting value
+    # @yieldparam [Object] previous The previous value
     # @yieldreturn [Object] The next value
     # @return [List]
     def iterate(item, &block)
       LazyList.new { Cons.new(item, iterate(yield(item), &block)) }
     end
 
-    # Turn an Enumerator into a `Hamster::List`. The result is a lazy collection
-    # where the values are memoized as they are generated.
+    # Turn an `Enumerator` into a `Hamster::List`. The result is a lazy
+    # collection where the values are memoized as they are generated.
     #
     # If your code uses multiple threads, you need to make sure that the returned
     # lazy collection is realized on a single thread only. Otherwise, a `FiberError`
@@ -1443,7 +1443,7 @@ module Hamster
   end
 
   # A list without any elements. This is a singleton, since all empty lists are equivalent.
-  #
+  # @private
   module EmptyList
     class << self
       include List

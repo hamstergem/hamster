@@ -6,7 +6,6 @@ module Hamster
   # - `#each` (just like `::Enumerable`).
   # - `#select`, which takes a block, and returns an instance of the same class
   #     with only the items for which the block returns a true value
-  #
   module Enumerable
     include ::Enumerable
 

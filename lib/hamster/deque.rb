@@ -248,5 +248,6 @@ module Hamster
   # invoked with no arguments; also returned by `Deque.empty`. Prefer using this
   # one rather than creating many empty deques using `Deque.new`.
   #
+  # @private
   EmptyDeque = Hamster::Deque.empty
 end

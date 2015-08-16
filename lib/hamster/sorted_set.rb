@@ -11,6 +11,7 @@ module Hamster
   # block).
   #
   # @return [SortedSet]
+  # @see SortedSet#initialize
   def self.sorted_set(*items, &block)
     (items.empty? && block.nil?) ? EmptySortedSet : SortedSet.new(items, &block)
   end
@@ -1477,5 +1478,6 @@ module Hamster
   # when invoked with no arguments; also returned by `SortedSet.empty`. Prefer using
   # this one rather than creating many empty sorted sets using `SortedSet.new`.
   #
+  # @private
   EmptySortedSet = Hamster::SortedSet.empty
 end

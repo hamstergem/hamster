@@ -17,7 +17,7 @@ module Hamster
     #   h = Hamster.from({ "a" => [1, 2], "b" => "c" })
     #   # => Hamster::Hash["a" => Hamster::Vector[1, 2], "b" => "c"]
     #
-    # @return [Hamster::Hash, Hamster::Vector, Hamster::Set, Object]
+    # @return [Hash, Vector, Set, SortedSet, Object]
     def from(obj)
       case obj
       when ::Hash
@@ -51,7 +51,7 @@ module Hamster
     #   h = Hamster.to_ruby(Hamster.from({ "a" => [1, 2], "b" => "c" }))
     #   # => { "a" => [1, 2], "b" => "c" }
     #
-    # @return [Hash, Vector, Set, Object]
+    # @return [::Hash, ::Array, ::Set, ::SortedSet, Object]
     def to_ruby(obj)
       case obj
       when Hamster::Hash, ::Hash
