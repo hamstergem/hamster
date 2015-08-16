@@ -4,21 +4,13 @@ require "hamster/deque"
 require "set"
 
 describe Hamster do
+  # https://github.com/hamstergem/hamster/issues/189
+  def self.segfault_bug_expected?
+    RUBY_VERSION >= '2.2.0'
+  end
+
   expectations = [
     # [Ruby, Hamster]
-    [ { "a" => 1,
-        "b" => [2, {"c" => 3}, 4],
-        "d" => ::Set.new([5, 6, 7]),
-        "e" => {"f" => 8, "g" => 9},
-        "h" => Regexp.new("ijk"),
-        "l" => ::SortedSet.new([1, 2, 3]) },
-      Hamster::Hash[
-        "a" => 1,
-        "b" => Hamster::Vector[2, Hamster::Hash["c" => 3], 4],
-        "d" => Hamster::Set[5, 6, 7],
-        "e" => Hamster::Hash["f" => 8, "g" => 9],
-        "h" => Regexp.new("ijk"),
-        "l" => Hamster::SortedSet.new([1, 2, 3])] ],
     [ {}, Hamster::Hash[] ],
     [ {"a" => 1, "b" => 2, "c" => 3}, Hamster::Hash["a" => 1, "b" => 2, "c" => 3] ],
     [ [], Hamster::Vector[] ],
@@ -31,6 +23,23 @@ describe Hamster do
     [ STDOUT, STDOUT ]
   ]
 
+  unless segfault_bug_expected?
+    expectations <<
+      [ { "a" => 1,
+          "b" => [2, {"c" => 3}, 4],
+          "d" => ::Set.new([5, 6, 7]),
+          "e" => {"f" => 8, "g" => 9},
+          "h" => Regexp.new("ijk"),
+          "l" => ::SortedSet.new([1, 2, 3]) },
+        Hamster::Hash[
+          "a" => 1,
+          "b" => Hamster::Vector[2, Hamster::Hash["c" => 3], 4],
+          "d" => Hamster::Set[5, 6, 7],
+          "e" => Hamster::Hash["f" => 8, "g" => 9],
+          "h" => Regexp.new("ijk"),
+          "l" => Hamster::SortedSet.new([1, 2, 3])] ]
+  end
+
   describe ".from" do
     expectations.each do |input, expected_result|
       context "with #{input.inspect} as input" do
@@ -41,18 +50,26 @@ describe Hamster do
     end
 
     context "with mixed object" do
-      it "should return Hamster data" do
-        input = {
-          "a" => "b",
-          "c" => {"d" => "e"},
-          "f" => Hamster::Vector["g", "h", []],
-          "i" => Hamster::Hash["j" => {}, "k" => Hamster::Set[[], {}]] }
-        expected_result = Hamster::Hash[
-          "a" => "b",
-          "c" => Hamster::Hash["d" => "e"],
-          "f" => Hamster::Vector["g", "h", Hamster::EmptyVector],
-          "i" => Hamster::Hash["j" => Hamster::EmptyHash, "k" => Hamster::Set[Hamster::EmptyVector, Hamster::EmptyHash]] ]
-        Hamster.from(input).should eql(expected_result)
+      if segfault_bug_expected?
+        it "should return Hamster data" do
+          pending "segfaults, see #189"
+          raise
+        end
+      else
+        it "should return Hamster data" do
+
+          input = {
+            "a" => "b",
+            "c" => {"d" => "e"},
+            "f" => Hamster::Vector["g", "h", []],
+            "i" => Hamster::Hash["j" => {}, "k" => Hamster::Set[[], {}]] }
+          expected_result = Hamster::Hash[
+            "a" => "b",
+            "c" => Hamster::Hash["d" => "e"],
+            "f" => Hamster::Vector["g", "h", Hamster::EmptyVector],
+            "i" => Hamster::Hash["j" => Hamster::EmptyHash, "k" => Hamster::Set[Hamster::EmptyVector, Hamster::EmptyHash]] ]
+          Hamster.from(input).should eql(expected_result)
+        end
       end
     end
   end
