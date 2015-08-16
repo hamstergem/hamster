@@ -2,10 +2,12 @@ require "hamster/set"
 require "hamster/read_copy_update"
 
 module Hamster
+  # @api private
   def self.mutable_set(*items)
     MutableSet.new(set(*items))
   end
 
+  # @api private
   class MutableSet
     include ReadCopyUpdate
 
