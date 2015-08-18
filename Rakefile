@@ -55,5 +55,58 @@ end
 desc "Run all benchmarks"
 task bench: bench_suites.map(&method(:bench_task_name))
 
+desc "Generate file dependency graph"
+task :dependency_graph do
+  if `which dot`.empty?
+    raise "dot is not installed or not on your system path"
+  end
+
+  dependencies = Hash.new { |h,k| h[k] = Set.new }
+  trim_fn = ->(fn) { fn.sub(/^lib\//, '').sub(/\.rb$/, '') }
+
+  Dir["lib/**/*.rb"].each do |path|
+    File.readlines(path).each do |line|
+      if line =~ /^\s*require\s+('|")([^'"]*)('|")/
+         dependency = $2
+         dependencies[trim_fn[path]] << dependency
+      end
+    end
+  end
+
+  require 'set'
+  cycles    = Set.new
+  reachable = Hash.new { |h,k| h[k] = Set.new }
+  find_reachable = ->(from, to, pathsofar) do
+    to.each do |t|
+      if t == from
+        reachable[from].add(t)
+        pathsofar.push(t).each_cons(2) { |vector| p vector; cycles << vector }
+      elsif reachable[from].add?(t) && dependencies.key?(t)
+        find_reachable[from, dependencies[t], pathsofar.dup.push(t)]
+      end
+    end
+  end
+  dependencies.each { |from,to| find_reachable[from,to,[from]] }
+
+  dot = %|digraph { graph [label="Hamster srcfile dependencies"]\n|
+  dependencies.each do |from,to|
+    dot << %|"#{from}" [color=red]\n| if reachable[from].include?(from)
+    to.each do |t|
+      dot << %|"#{from}" -> "#{t}" #{'[color=red]' if cycles.include?([from,t])}\n|
+    end
+  end
+  dot << "\n}"
+
+  require "tempfile"
+  Tempfile.open("hamster-depgraph") do |f|
+    f.write(dot)
+    f.flush
+    message = `dot -Tgif #{f.path} -o depgraph.gif`
+    f.unlink
+    puts message unless message.empty?
+    puts "Dependency graph is in depgraph.gif"
+  end
+end
+
 desc "Default: run tests and generate docs"
 task default: [ :spec, :yard ]
