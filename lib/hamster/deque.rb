@@ -74,7 +74,7 @@ module Hamster
     end
 
     def initialize(items=[])
-      @front = items.to_list
+      @front = Hamster::List.from_enum(items)
       @rear  = EmptyList
     end
 
