@@ -2,7 +2,6 @@ require "thread"
 require "set"
 require "concurrent/atomics"
 
-require "hamster/core_ext/enumerable"
 require "hamster/undefined"
 require "hamster/enumerable"
 require "hamster/hash"
@@ -19,7 +18,7 @@ module Hamster
     #
     # @return [List]
     def list(*items)
-      items.to_list
+      List.from_enum(items)
     end
 
     # Create a lazy, infinite list.
@@ -142,7 +141,28 @@ module Hamster
     #
     # @return [List]
     def self.[](*items)
-      items.to_list
+      from_enum(items)
+    end
+
+    # This method exists distinct from `.[]` since it is ~30% faster
+    # than splatting the argument.
+    #
+    # Marking as private only because it was introduced for an internal
+    # refactoring. It could potentially be made public with a good name.
+    #
+    # @private
+    def self.from_enum(items)
+      # use destructive operations to build up a new list, like Common Lisp's NCONC
+      # this is a very fast way to build up a linked list
+      list = tail = Hamster::Cons.allocate
+      items.each do |item|
+        new_node = Hamster::Cons.allocate
+        new_node.instance_variable_set(:@head, item)
+        tail.instance_variable_set(:@tail, new_node)
+        tail = new_node
+      end
+      tail.instance_variable_set(:@tail, Hamster::EmptyList)
+      list.tail
     end
 
     # Return the number of items in this `List`.
@@ -511,7 +531,7 @@ module Hamster
     #
     # @return [List]
     def sort(&comparator)
-      LazyList.new { super(&comparator).to_list }
+      LazyList.new { List.from_enum(super(&comparator)) }
     end
 
     # Return a new `List` with the same items, but sorted. The sort order will be
@@ -521,7 +541,7 @@ module Hamster
     # @return [List]
     def sort_by(&transformer)
       return sort unless block_given?
-      LazyList.new { super(&transformer).to_list }
+      LazyList.new { List.from_enum(super(&transformer)) }
     end
 
     # Return a new `List` with `sep` inserted between each of the existing elements.
@@ -853,7 +873,7 @@ module Hamster
     # @return [List]
     def insert(index, *items)
       if index == 0
-        return items.to_list.append(self)
+        return List.from_enum(items).append(self)
       elsif index > 0
         LazyList.new do
           Cons.new(head, tail.insert(index-1, *items))

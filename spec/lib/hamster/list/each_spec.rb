@@ -32,7 +32,7 @@ describe Hamster::List do
         context "without a block" do
           it "returns an Enumerator" do
             list.each.class.should be(Enumerator)
-            list.each.to_list.should eql(list)
+            Hamster::List[*list.each].should eql(list)
           end
         end
       end
