@@ -80,7 +80,7 @@ task :dependency_graph do
     to.each do |t|
       if t == from
         reachable[from].add(t)
-        pathsofar.push(t).each_cons(2) { |vector| p vector; cycles << vector }
+        pathsofar.push(t).each_cons(2) { |vector| cycles << vector }
       elsif reachable[from].add?(t) && dependencies.key?(t)
         find_reachable[from, dependencies[t], pathsofar.dup.push(t)]
       end
