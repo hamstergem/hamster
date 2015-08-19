@@ -69,4 +69,12 @@ module Hamster
       end
     end
   end
+
+  [Vector, Hash, Set, SortedSet].each do |klass|
+    klass.instance_eval do
+      def to_ruby
+        Hamster.to_ruby(self)
+      end
+    end
+  end
 end

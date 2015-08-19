@@ -4,7 +4,6 @@ require "hamster/enumerable"
 require "hamster/trie"
 require "hamster/set"
 require "hamster/vector"
-require "hamster/nested"
 
 module Hamster
   def self.hash(pairs = nil, &block)
@@ -804,7 +803,7 @@ module Hamster
     #
     # @return [::Hash]
     def to_ruby
-      Hamster.to_ruby(self)
+      raise "Hash#to_ruby requires 'hamster/nested' to be loaded"
     end
 
     # @return [::Hash]
