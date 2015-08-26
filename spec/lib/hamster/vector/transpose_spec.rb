@@ -45,5 +45,13 @@ describe Hamster::Vector do
         instance.transpose.each { |v| expect(v.class).to be(subclass) }
       end
     end
+
+    context "if an item does not respond to #size and #[]" do
+      it "raises TypeError" do
+        expect {
+          V[[1, 2], [2, 3], nil].transpose
+        }.to raise_error(TypeError)
+      end
+    end
   end
 end

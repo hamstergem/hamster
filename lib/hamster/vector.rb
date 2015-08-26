@@ -1100,6 +1100,13 @@ module Hamster
 
       result.map! { |a| self.class.new(a) }
       self.class.new(result)
+    rescue NoMethodError
+      if any? { |x| !x.respond_to?(:size) || !x.respond_to?(:[]) }
+        bad = find { |x| !x.respond_to?(:size) || !x.respond_to?(:[]) }
+        raise TypeError, "'#{bad.inspect}' must respond to #size and #[] to be transposed"
+      else
+        raise
+      end
     end
 
     # Finds a value from this `Vector` which meets the condition defined by the
