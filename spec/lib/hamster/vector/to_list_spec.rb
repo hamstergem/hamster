@@ -1,6 +1,7 @@
 require "spec_helper"
 require "hamster/vector"
 require "hamster/list"
+require "hamster/core_ext"
 
 describe Hamster::Vector do
   describe "#to_list" do

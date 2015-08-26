@@ -1,5 +1,6 @@
 require "spec_helper"
 require "hamster/vector"
+require "hamster/deque"
 
 describe Hamster::Vector do
   describe "#to_ruby" do
