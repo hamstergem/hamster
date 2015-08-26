@@ -47,6 +47,14 @@ describe Hamster::Vector do
           vector.bsearch { |x| x <=> 11 }.should be_nil
         end
       end
+
+      context "if not passed a block" do
+        it "returns an Enumerator" do
+          enum = vector.bsearch
+          enum.should be_a(Enumerator)
+          enum.each { |x| x <=> 10 }.should == 10
+        end
+      end
     end
 
     context "on an empty vector" do

@@ -1065,6 +1065,7 @@ module Hamster
     #
     # @return [Object]
     def bsearch
+      return enum_for(:bsearch) if not block_given?
       low, high, result = 0, @size, nil
       while low < high
         mid = (low + ((high - low) >> 1))
