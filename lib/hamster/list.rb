@@ -562,14 +562,26 @@ module Hamster
     # Use `#hash` and `#eql?` to determine which items are duplicates.
     #
     # @example
-    #   Hamster.list(:a, :b, :a, :c, :b).uniq # => Hamster::List[:a, :b, :c]
+    #   Hamster.list(:a, :b, :a, :c, :b).uniq      # => Hamster::List[:a, :b, :c]
+    #   Hamster.list("a", "A", "b").uniq(&:upcase) # => Hamster::List["a", "b"]
     #
     # @return [List]
-    def uniq(items = ::Set.new)
-      LazyList.new do
-        next self if empty?
-        next tail.uniq(items) if items.include?(head)
-        Cons.new(head, tail.uniq(items.add(head)))
+    def uniq(items = ::Set.new, &block)
+      if block_given?
+        LazyList.new do
+          next self if empty?
+          if items.add?(block.call(head))
+            Cons.new(head, tail.uniq(items, &block))
+          else
+            tail.uniq(items, &block)
+          end
+        end
+      else
+        LazyList.new do
+          next self if empty?
+          next tail.uniq(items) if items.include?(head)
+          Cons.new(head, tail.uniq(items.add(head)))
+        end
       end
     end
 

@@ -7,6 +7,12 @@ describe Hamster::List do
       -> { Hamster.stream { fail }.uniq }.should_not raise_error
     end
 
+    context "when passed a block" do
+      it "uses the block to identify duplicates" do
+        Hamster.list("a", "A", "b").uniq(&:upcase).should eql(Hamster::List["a", "b"])
+      end
+    end
+
     [
       [[], []],
       [["A"], ["A"]],
