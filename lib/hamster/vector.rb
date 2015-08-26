@@ -494,12 +494,21 @@ module Hamster
     # `#eql?`. For each group of equivalent elements, only the first will be retained.
     #
     # @example
-    #   Hamster::Vector["A", "B", "C", "B"].uniq  # => Hamster::Vector["A", "B", "C"]
+    #   Hamster::Vector["A", "B", "C", "B"].uniq      # => Hamster::Vector["A", "B", "C"]
+    #   Hamster::Vector["a", "A", "b"].uniq(&:upcase) # => Hamster::Vector["a", "b"]
     #
     # @return [Vector]
-    def uniq
+    def uniq(&block)
       array = self.to_a
-      if array.frozen?
+      if block_given?
+        if array.frozen?
+          self.class.new(array.uniq(&block).freeze)
+        elsif array.uniq!(&block) # returns nil if no changes were made
+          self.class.new(array.freeze)
+        else
+          self
+        end
+      elsif array.frozen?
         self.class.new(array.uniq.freeze)
       elsif array.uniq! # returns nil if no changes were made
         self.class.new(array.freeze)

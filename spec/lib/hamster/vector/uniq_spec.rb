@@ -33,6 +33,13 @@ describe Hamster::Vector do
       result[0].should be(x)
     end
 
+    context "when passed a block" do
+      it "uses the return value of the block to determine which items are duplicate" do
+        v = Hamster.vector('a', 'A', 'B', 'b')
+        v.uniq(&:upcase).should == Hamster::Vector['a', 'B']
+      end
+    end
+
     context "on a vector with no duplicates" do
       it "returns an unchanged vector" do
         Hamster.vector(1, 2, 3).uniq.should.eql? Hamster.vector(1, 2, 3)
