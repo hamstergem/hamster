@@ -4,7 +4,6 @@ require "hamster/enumerable"
 require "hamster/hash"
 require "hamster/trie"
 require "hamster/sorted_set"
-require "hamster/nested"
 require "set"
 
 module Hamster
@@ -544,7 +543,7 @@ module Hamster
     #
     # @return [::Set]
     def to_ruby
-      Hamster.to_ruby(self)
+      raise "Set#to_ruby requires 'hamster/nested' to be loaded"
     end
 
     # @private

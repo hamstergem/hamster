@@ -1,7 +1,6 @@
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
-require "hamster/nested"
 
 module Hamster
   # Create a new `SortedSet` populated with the given items. If a block is provided,
@@ -885,7 +884,7 @@ module Hamster
     #
     # @return [::SortedSet]
     def to_ruby
-      Hamster.to_ruby(self)
+      raise "SortedSet#to_ruby requires 'hamster/nested' to be loaded"
     end
 
     # @return [::Array]

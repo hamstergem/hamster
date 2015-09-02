@@ -1,7 +1,6 @@
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
-require "hamster/nested"
 
 module Hamster
   # Create a new `Vector` populated with the given items.
@@ -1203,7 +1202,7 @@ module Hamster
     #
     # @return [::Array]
     def to_ruby
-      Hamster.to_ruby(self)
+      raise "Vector#to_ruby requires 'hamster/nested' to be loaded"
     end
 
     # Return true if `other` has the same type and contents as this `Vector`.
