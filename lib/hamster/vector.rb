@@ -418,8 +418,8 @@ module Hamster
     #
     # @param object [Object] The value to prepend
     # @return [Vector]
-    def unshift(obj)
-      insert(0, obj)
+    def unshift(object)
+      insert(0, object)
     end
 
     # Return a new `Vector` with the first element removed. If empty, return
