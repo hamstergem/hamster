@@ -2,12 +2,12 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  let(:vector) { Hamster.vector(*values) }
+  let(:vector) { V[*values] }
 
   describe "#flat_map" do
     let(:block) { ->(item) { [item, item + 1, item * item] } }
     let(:flat_map) { vector.flat_map(&block) }
-    let(:flattened_vector) { Hamster.vector(*flattened_values) }
+    let(:flattened_vector) { V[*flattened_values] }
 
     shared_examples "checking flattened result" do
       it "returns the flattened values as a Hamster::Vector" do

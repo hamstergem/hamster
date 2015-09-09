@@ -11,7 +11,7 @@ describe Hamster::Vector do
       %w[A B C],
     ].each do |values|
       describe "on #{values.inspect}" do
-        let(:vector) { Hamster::Vector.new(values) }
+        let(:vector) { V.new(values) }
         let(:list) { vector.to_list }
 
         it "returns a list" do

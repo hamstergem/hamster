@@ -3,27 +3,27 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#rotate" do
-    let(:vector) { Hamster.vector(1,2,3,4,5) }
+    let(:vector) { V[1,2,3,4,5] }
 
     context "when passed no argument" do
       it "returns a new vector with the first element moved to the end" do
-        vector.rotate.should eql(Hamster.vector(2,3,4,5,1))
+        vector.rotate.should eql(V[2,3,4,5,1])
       end
     end
 
     context "with an integral argument n" do
       it "returns a new vector with the first (n % size) elements moved to the end" do
-        vector.rotate(2).should eql(Hamster.vector(3,4,5,1,2))
-        vector.rotate(3).should eql(Hamster.vector(4,5,1,2,3))
-        vector.rotate(4).should eql(Hamster.vector(5,1,2,3,4))
-        vector.rotate(5).should eql(Hamster.vector(1,2,3,4,5))
-        vector.rotate(-1).should eql(Hamster.vector(5,1,2,3,4))
+        vector.rotate(2).should eql(V[3,4,5,1,2])
+        vector.rotate(3).should eql(V[4,5,1,2,3])
+        vector.rotate(4).should eql(V[5,1,2,3,4])
+        vector.rotate(5).should eql(V[1,2,3,4,5])
+        vector.rotate(-1).should eql(V[5,1,2,3,4])
       end
     end
 
     context "with a floating-point argument n" do
       it "coerces the argument to integer using to_int" do
-        vector.rotate(2.1).should eql(Hamster.vector(3,4,5,1,2))
+        vector.rotate(2.1).should eql(V[3,4,5,1,2])
       end
     end
 
@@ -68,7 +68,7 @@ describe Hamster::Vector do
 
     it "leaves the original unmodified" do
       vector.rotate(3)
-      vector.should eql(Hamster.vector(1,2,3,4,5))
+      vector.should eql(V[1,2,3,4,5])
     end
   end
 end

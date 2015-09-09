@@ -10,7 +10,7 @@ describe Hamster::Vector do
       (1..32),
     ].each do |values|
       describe "on #{values.inspect}" do
-        let(:vector) { Hamster.vector(*values) }
+        let(:vector) { V[*values] }
 
         it "returns self" do
           vector.send(method).should equal(vector)

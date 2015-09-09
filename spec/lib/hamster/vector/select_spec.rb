@@ -4,40 +4,40 @@ require "hamster/vector"
 describe Hamster::Vector do
   [:select, :find_all].each do |method|
     describe "##{method}" do
-      let(:vector) { Hamster.vector("A", "B", "C") }
+      let(:vector) { V["A", "B", "C"] }
 
       describe "with a block" do
         it "preserves the original" do
           vector.send(method) { |item| item == "A" }
-          vector.should eql(Hamster.vector("A", "B", "C"))
+          vector.should eql(V["A", "B", "C"])
         end
 
         it "returns a vector with the matching values" do
-          vector.send(method) { |item| item == "A" }.should eql(Hamster.vector("A"))
+          vector.send(method) { |item| item == "A" }.should eql(V["A"])
         end
       end
 
       describe "with no block" do
         it "returns an Enumerator" do
           vector.send(method).class.should be(Enumerator)
-          vector.send(method).each { |item| item == "A" }.should eql(Hamster.vector("A"))
+          vector.send(method).each { |item| item == "A" }.should eql(V["A"])
         end
       end
 
       describe "when nothing matches" do
         it "preserves the original" do
           vector.send(method) { |item| false }
-          vector.should eql(Hamster.vector("A", "B", "C"))
+          vector.should eql(V["A", "B", "C"])
         end
 
         it "returns an empty vector" do
-          vector.send(method) { |item| false }.should equal(Hamster.vector)
+          vector.send(method) { |item| false }.should equal(V.empty)
         end
       end
 
       context "on an empty vector" do
         it "returns self" do
-          Hamster.vector.send(method) { |item| true }.should be(Hamster.vector)
+          V.empty.send(method) { |item| true }.should be(V.empty)
         end
       end
 

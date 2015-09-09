@@ -10,13 +10,13 @@ describe Hamster::Vector do
       V[1,2,3].delete(0).should eql(V[1,2,3])
       V['a','b','a','c','a','a','d'].delete('a').should eql(V['b','c','d'])
 
-      V[EqualNotEql.new, EqualNotEql.new].delete(:something).should eql(V[])
+      V[EqualNotEql.new, EqualNotEql.new].delete(:something).should eql(V.empty)
       V[EqlNotEqual.new, EqlNotEqual.new].delete(:something).should_not be_empty
     end
 
     context "on an empty vector" do
       it "returns self" do
-        Hamster.vector.delete(1).should be(Hamster.vector)
+        V.empty.delete(1).should be(V.empty)
       end
     end
 

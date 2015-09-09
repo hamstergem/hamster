@@ -5,7 +5,7 @@ describe Hamster::Vector do
   [:map, :collect].each do |method|
     describe "##{method}" do
       context "when empty" do
-        let(:vector) { Hamster.vector }
+        let(:vector) { V.empty }
 
         it "returns self" do
           vector.send(method) {}.should equal(vector)
@@ -13,23 +13,23 @@ describe Hamster::Vector do
       end
 
       context "when not empty" do
-        let(:vector) { Hamster.vector("A", "B", "C") }
+        let(:vector) { V["A", "B", "C"] }
 
         context "with a block" do
           it "preserves the original values" do
             vector.send(method, &:downcase)
-            vector.should eql(Hamster.vector("A", "B", "C"))
+            vector.should eql(V["A", "B", "C"])
           end
 
           it "returns a new vector with the mapped values" do
-            vector.send(method, &:downcase).should eql(Hamster.vector("a", "b", "c"))
+            vector.send(method, &:downcase).should eql(V["a", "b", "c"])
           end
         end
 
         context "with no block" do
           it "returns an Enumerator" do
             vector.send(method).class.should be(Enumerator)
-            vector.send(method).each(&:downcase).should eql(Hamster.vector('a', 'b', 'c'))
+            vector.send(method).each(&:downcase).should eql(V['a', 'b', 'c'])
           end
         end
       end

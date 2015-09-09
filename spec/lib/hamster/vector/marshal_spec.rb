@@ -7,7 +7,7 @@ describe Hamster::Vector do
       File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"])
     end
     let(:child_cmd) do
-      %Q|#{ruby} -I lib -r hamster -e 'vector = Hamster.vector(5, 10, 15); $stdout.write(Marshal.dump(vector))'|
+      %Q|#{ruby} -I lib -r hamster -e 'vector = Hamster::Vector[5, 10, 15]; $stdout.write(Marshal.dump(vector))'|
     end
 
     let(:reloaded_vector) do
@@ -19,7 +19,7 @@ describe Hamster::Vector do
     end
 
     it "can survive dumping and loading into a new process" do
-      expect(reloaded_vector).to eql(Hamster.vector(5, 10, 15))
+      expect(reloaded_vector).to eql(V[5, 10, 15])
     end
 
     it "is still possible to find items by index after loading" do

@@ -2,24 +2,24 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  let(:vector) { Hamster.vector(*values) }
+  let(:vector) { V[*values] }
 
   describe "#set" do
     context "when empty" do
-      let(:vector) { Hamster.vector }
+      let(:vector) { V.empty }
 
       it "raises an error for index -1" do
         expect { vector.set(-1, :a) }.to raise_error
       end
 
       it "allows indexes 0 and 1 to be set" do
-        vector.set(0, :a).should eql(Hamster.vector(:a))
-        vector.set(1, :a).should eql(Hamster.vector(nil, :a))
+        vector.set(0, :a).should eql(V[:a])
+        vector.set(1, :a).should eql(V[nil, :a])
       end
     end
 
     context "when not empty" do
-      let(:vector) { Hamster.vector("A", "B", "C") }
+      let(:vector) { V["A", "B", "C"] }
 
       context "with a block" do
         context "and a positive index" do
@@ -30,26 +30,26 @@ describe Hamster::Vector do
 
             it "replaces the value with the result of the block" do
               result = vector.set(1) { |value| "FLIBBLE" }
-              result.should eql(Hamster.vector("A", "FLIBBLE", "C"))
+              result.should eql(V["A", "FLIBBLE", "C"])
             end
 
             it "supports to_proc methods" do
               result = vector.set(1, &:downcase)
-              result.should eql(Hamster.vector("A", "b", "C"))
+              result.should eql(V["A", "b", "C"])
             end
           end
 
           context "just past the end of the vector" do
             it "passes nil to the block and adds a new value" do
               result = vector.set(3) { |value| value.should be_nil; "D" }
-              result.should eql(Hamster.vector("A", "B", "C", "D"))
+              result.should eql(V["A", "B", "C", "D"])
             end
           end
 
           context "further outside the bounds of the vector" do
             it "passes nil to the block, fills up missing nils, and adds a new value" do
               result = vector.set(5) { |value| value.should be_nil; "D" }
-              result.should eql(Hamster.vector("A", "B", "C", nil, nil, "D"))
+              result.should eql(V["A", "B", "C", nil, nil, "D"])
             end
           end
         end
@@ -62,12 +62,12 @@ describe Hamster::Vector do
 
             it "replaces the value with the result of the block" do
               result = vector.set(-2) { |value| "FLIBBLE" }
-              result.should eql(Hamster.vector("A", "FLIBBLE", "C"))
+              result.should eql(V["A", "FLIBBLE", "C"])
             end
 
             it "supports to_proc methods" do
               result = vector.set(-2, &:downcase)
-              result.should eql(Hamster.vector("A", "b", "C"))
+              result.should eql(V["A", "b", "C"])
             end
           end
 
@@ -85,25 +85,25 @@ describe Hamster::Vector do
             let(:set) { vector.set(1, "FLIBBLE") }
 
             it "preserves the original" do
-              vector.should eql(Hamster.vector("A", "B", "C"))
+              vector.should eql(V["A", "B", "C"])
             end
 
             it "sets the new value at the specified index" do
-              set.should eql(Hamster.vector("A", "FLIBBLE", "C"))
+              set.should eql(V["A", "FLIBBLE", "C"])
             end
           end
 
           context "just past the end of the vector" do
             it "adds a new value" do
               result = vector.set(3, "FLIBBLE")
-              result.should eql(Hamster.vector("A", "B", "C", "FLIBBLE"))
+              result.should eql(V["A", "B", "C", "FLIBBLE"])
             end
           end
 
           context "outside the absolute bounds of the vector" do
             it "fills up with nils" do
               result = vector.set(5, "FLIBBLE")
-              result.should eql(Hamster.vector("A", "B", "C", nil, nil, "FLIBBLE"))
+              result.should eql(V["A", "B", "C", nil, nil, "FLIBBLE"])
             end
           end
         end
@@ -113,11 +113,11 @@ describe Hamster::Vector do
 
           it "preserves the original" do
             set
-            vector.should eql(Hamster.vector("A", "B", "C"))
+            vector.should eql(V["A", "B", "C"])
           end
 
           it "sets the new value at the specified index" do
-            set.should eql(Hamster.vector("A", "FLIBBLE", "C"))
+            set.should eql(V["A", "FLIBBLE", "C"])
           end
         end
 
@@ -161,7 +161,7 @@ describe Hamster::Vector do
       [1, 2, 5, 31,32, 33, 100, 200].each do |size|
         context "on a #{size}-item vector" do
           let(:array) { (0...size).map { |x| x * x} }
-          let(:vector) { Hamster.vector(*array) }
+          let(:vector) { V.new(array) }
 
           it "returns self" do
             (0...size).each do |index|

@@ -13,27 +13,27 @@ describe Hamster::Vector do
         [%w[Ichi Ni San], %w[Ni San Ichi]],
       ].each do |values, expected|
         describe "on #{values.inspect}" do
-          let(:vector) { Hamster.vector(*values) }
+          let(:vector) { V[*values] }
 
           context "with a block" do
             it "preserves the original" do
               vector.send(method, &comparator)
-              vector.should eql(Hamster.vector(*values))
+              vector.should eql(V[*values])
             end
 
             it "returns #{expected.inspect}" do
-              vector.send(method, &comparator).should eql(Hamster.vector(*expected))
+              vector.send(method, &comparator).should eql(V[*expected])
             end
           end
 
           context "without a block" do
             it "preserves the original" do
               vector.send(method)
-              vector.should eql(Hamster.vector(*values))
+              vector.should eql(V[*values])
             end
 
             it "returns #{expected.sort.inspect}" do
-              vector.send(method).should eql(Hamster.vector(*expected.sort))
+              vector.send(method).should eql(V[*expected.sort])
             end
           end
         end

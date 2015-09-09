@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#permutation" do
-    let(:vector) { Hamster.vector(1,2,3,4) }
+    let(:vector) { V[1,2,3,4] }
 
     context "without a block or arguments" do
       it "returns an Enumerator of all permutations" do
@@ -51,7 +51,7 @@ describe Hamster::Vector do
     context "on an empty vector" do
       it "yields the empty permutation" do
         yielded = []
-        Hamster.vector.permutation { |obj| yielded << obj }
+        V.empty.permutation { |obj| yielded << obj }
         yielded.should eql([[]])
       end
     end
@@ -71,13 +71,13 @@ describe Hamster::Vector do
     end
 
     it "handles duplicate elements correctly" do
-      Hamster.vector(1,2,3,1).permutation(2).sort.should eql([[1,1], [1,1], [1,2], [1,2],
+      V[1,2,3,1].permutation(2).sort.should eql([[1,1], [1,1], [1,2], [1,2],
         [1,3], [1,3], [2,1],[2,1],[2,3], [3,1],[3,1],[3,2]])
     end
 
     it "leaves the original unmodified" do
       vector.permutation(2) {}
-      vector.should eql(Hamster.vector(1,2,3,4))
+      vector.should eql(V[1,2,3,4])
     end
 
     it "behaves like Array#permutation" do

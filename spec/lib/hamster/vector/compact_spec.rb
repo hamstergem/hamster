@@ -6,12 +6,12 @@ describe Hamster::Vector do
     it "returns a new Vector with all nils removed" do
       V[1, nil, 2, nil].compact.should eql(V[1, 2])
       V[1, 2, 3].compact.should eql(V[1, 2, 3])
-      V[nil].compact.should eql(V[])
+      V[nil].compact.should eql(V.empty)
     end
 
     context "on an empty vector" do
       it "returns self" do
-        Hamster.vector.compact.should be(Hamster.vector)
+        V.empty.compact.should be(V.empty)
       end
     end
 

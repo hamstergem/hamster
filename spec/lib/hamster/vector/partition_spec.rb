@@ -14,7 +14,7 @@ describe Hamster::Vector do
       [[4], [], [4]],
     ].each do |values, expected_matches, expected_remainder|
       describe "on #{values.inspect}" do
-        let(:vector) { Hamster.vector(*values) }
+        let(:vector) { V[*values] }
 
         describe "with a block" do
           let(:result)    { vector.partition(&:odd?) }
@@ -23,7 +23,7 @@ describe Hamster::Vector do
 
           it "preserves the original" do
             result
-            vector.should eql(Hamster.vector(*values))
+            vector.should eql(V[*values])
           end
 
           it "returns a frozen array with two items" do
@@ -33,18 +33,18 @@ describe Hamster::Vector do
           end
 
           it "correctly identifies the matches" do
-            matches.should eql(Hamster.vector(*expected_matches))
+            matches.should eql(V[*expected_matches])
           end
 
           it "correctly identifies the remainder" do
-            remainder.should eql(Hamster.vector(*expected_remainder))
+            remainder.should eql(V[*expected_remainder])
           end
         end
 
         describe "without a block" do
           it "returns an Enumerator" do
             vector.partition.class.should be(Enumerator)
-            vector.partition.each(&:odd?).should eql([Hamster::Vector.new(expected_matches), Hamster::Vector.new(expected_remainder)])
+            vector.partition.each(&:odd?).should eql([V.new(expected_matches), V.new(expected_remainder)])
           end
         end
       end

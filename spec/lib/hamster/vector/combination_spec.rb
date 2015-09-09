@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#combination" do
-    let(:vector) { Hamster.vector(1,2,3,4) }
+    let(:vector) { V[1,2,3,4] }
 
     context "with a block" do
       it "returns self" do
@@ -59,8 +59,8 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "works the same" do
-        Hamster.vector.combination(0).to_a.should == [[]]
-        Hamster.vector.combination(1).to_a.should == []
+        V.empty.combination(0).to_a.should == [[]]
+        V.empty.combination(1).to_a.should == []
       end
     end
 
@@ -76,7 +76,7 @@ describe Hamster::Vector do
 
     it "leaves the original unmodified" do
       vector.combination(2) {}
-      vector.should eql(Hamster.vector(1,2,3,4))
+      vector.should eql(V[1,2,3,4])
     end
   end
 end

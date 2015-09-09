@@ -22,7 +22,7 @@ describe Hamster::Vector do
       ].each do |values, item, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.vector(*values).send(method, item).should == expected
+            V[*values].send(method, item).should == expected
           end
         end
       end

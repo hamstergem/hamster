@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#*" do
-    let(:vector) { Hamster.vector(1, 2, 3) }
+    let(:vector) { V[1, 2, 3] }
 
     context "with a String argument" do
       it "acts just like #join" do
@@ -13,10 +13,10 @@ describe Hamster::Vector do
 
     context "with an Integer argument" do
       it "concatenates n copies of the array" do
-        (vector * 0).should eql(Hamster.vector)
+        (vector * 0).should eql(V.empty)
         (vector * 1).should eql(vector)
-        (vector * 2).should eql(Hamster.vector(1,2,3,1,2,3))
-        (vector * 3).should eql(Hamster.vector(1,2,3,1,2,3,1,2,3))
+        (vector * 2).should eql(V[1,2,3,1,2,3])
+        (vector * 3).should eql(V[1,2,3,1,2,3,1,2,3])
       end
 
       it "raises an ArgumentError if integer is negative" do

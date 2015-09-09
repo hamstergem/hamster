@@ -13,28 +13,28 @@ describe Hamster::Vector do
       [(1..100), 40, (1..40)]
     ].each do |values, number, expected|
       describe "#{number} from #{values.inspect}" do
-        let(:vector) { Hamster.vector(*values) }
+        let(:vector) { V[*values] }
 
         it "preserves the original" do
           vector.take(number)
-          vector.should eql(Hamster.vector(*values))
+          vector.should eql(V[*values])
         end
 
         it "returns #{expected.inspect}" do
-          vector.take(number).should eql(Hamster.vector(*expected))
+          vector.take(number).should eql(V[*expected])
         end
       end
     end
 
     context "when number of elements specified is identical to size" do
-      let(:vector) { Hamster.vector(1, 2, 3, 4, 5, 6) }
+      let(:vector) { V[1, 2, 3, 4, 5, 6] }
       it "returns self" do
         vector.take(vector.size).should be(vector)
       end
     end
 
     context "when number of elements specified is bigger than size" do
-      let(:vector) { Hamster.vector(1, 2, 3, 4, 5, 6) }
+      let(:vector) { V[1, 2, 3, 4, 5, 6] }
       it "returns self" do
         vector.take(vector.size + 1).should be(vector)
       end

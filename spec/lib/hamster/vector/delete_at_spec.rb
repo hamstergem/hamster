@@ -3,12 +3,12 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#delete_at" do
-    let(:vector) { Hamster.vector(1,2,3,4,5) }
+    let(:vector) { V[1,2,3,4,5] }
 
     it "removes the element at the specified index" do
-      vector.delete_at(0).should eql(Hamster.vector(2,3,4,5))
-      vector.delete_at(2).should eql(Hamster.vector(1,2,4,5))
-      vector.delete_at(-1).should eql(Hamster.vector(1,2,3,4))
+      vector.delete_at(0).should eql(V[2,3,4,5])
+      vector.delete_at(2).should eql(V[1,2,4,5])
+      vector.delete_at(-1).should eql(V[1,2,3,4])
     end
 
     it "makes no modification if the index is out of range" do
@@ -23,13 +23,13 @@ describe Hamster::Vector do
     end
 
     it "works on an empty vector" do
-      Hamster.vector.delete_at(0).should be(Hamster.vector)
-      Hamster.vector.delete_at(1).should be(Hamster.vector)
+      V.empty.delete_at(0).should be(V.empty)
+      V.empty.delete_at(1).should be(V.empty)
     end
 
     it "works on a vector with 1 item" do
-      Hamster.vector(10).delete_at(0).should eql(Hamster.vector)
-      Hamster.vector(10).delete_at(1).should eql(Hamster.vector(10))
+      V[10].delete_at(0).should eql(V.empty)
+      V[10].delete_at(1).should eql(V[10])
     end
 
     it "works on a vector with 32 items" do

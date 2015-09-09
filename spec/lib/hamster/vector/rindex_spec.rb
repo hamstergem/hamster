@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#rindex" do
-    let(:vector) { Hamster.vector(1,2,3,3,2,1) }
+    let(:vector) { V[1,2,3,3,2,1] }
 
     context "when passed an object present in the vector" do
       it "returns the last index where the object is present" do

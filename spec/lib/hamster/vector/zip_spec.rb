@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#zip" do
-    let(:vector) { Hamster.vector(1,2,3,4) }
+    let(:vector) { V[1,2,3,4] }
 
     context "with a block" do
       it "yields arrays of one corresponding element from each input sequence" do
@@ -31,7 +31,7 @@ describe Hamster::Vector do
 
     context "without a block" do
       it "returns a vector of arrays (one corresponding element from each input sequence)" do
-        vector.zip([2,3,4,5]).should eql(Hamster.vector([1,2], [2,3], [3,4], [4,5]))
+        vector.zip([2,3,4,5]).should eql(V[[1,2], [2,3], [3,4], [4,5]])
       end
     end
 

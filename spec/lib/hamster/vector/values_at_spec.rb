@@ -3,23 +3,23 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#values_at" do
-    let(:vector) { Hamster.vector('a', 'b', 'c') }
+    let(:vector) { V['a', 'b', 'c'] }
 
     it "accepts any number of indices, and returns a vector of items at those indices" do
-      vector.values_at(0).should eql(Hamster.vector('a'))
-      vector.values_at(1,2).should eql(Hamster.vector('b', 'c'))
+      vector.values_at(0).should eql(V['a'])
+      vector.values_at(1,2).should eql(V['b', 'c'])
     end
 
     context "when passed invalid indices" do
       it "fills in with nils" do
-        vector.values_at(1,2,3).should eql(Hamster.vector('b', 'c', nil))
-        vector.values_at(-10,10).should eql(Hamster.vector(nil, nil))
+        vector.values_at(1,2,3).should  eql(V['b', 'c', nil])
+        vector.values_at(-10,10).should eql(V[nil, nil])
       end
     end
 
     context "when passed no arguments" do
       it "returns an empty vector" do
-        vector.values_at.should eql(Hamster.vector)
+        vector.values_at.should eql(V.empty)
       end
     end
 

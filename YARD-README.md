@@ -108,13 +108,13 @@ This is just the beginning; see the {Hamster::Hash API documentation} for detail
 A `Vector` is an integer-indexed collection much like an immutable `Array`. Examples:
 
 ``` ruby
-vector = Hamster.vector(1, 2, 3, 4) # => Hamster::Vector[1, 2, 3, 4]
-vector[0]                           # => 1
-vector[-1]                          # => 4
-vector.set(1, :a)                   # => Hamster::Vector[1, :a, 3, 4]
-vector.add(:b)                      # => Hamster::Vector[1, 2, 3, 4, :b]
-vector.insert(2, :a, :b)            # => Hamster::Vector[1, 2, :a, :b, 3, 4]
-vector.delete_at(0)                 # => Hamster::Vector[2, 3, 4]
+vector = Hamster::Vector[1, 2, 3, 4] # => Hamster::Vector[1, 2, 3, 4]
+vector[0]                            # => 1
+vector[-1]                           # => 4
+vector.set(1, :a)                    # => Hamster::Vector[1, :a, 3, 4]
+vector.add(:b)                       # => Hamster::Vector[1, 2, 3, 4, :b]
+vector.insert(2, :a, :b)             # => Hamster::Vector[1, 2, :a, :b, 3, 4]
+vector.delete_at(0)                  # => Hamster::Vector[2, 3, 4]
 ```
 
 Other `Array`-like methods like `#select`, `#map`, `#shuffle`, `#uniq`, `#reverse`,

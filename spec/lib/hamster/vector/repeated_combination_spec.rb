@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#repeated_combination" do
-    let(:vector) { Hamster.vector(1,2,3,4) }
+    let(:vector) { V[1,2,3,4] }
 
     context "with no block" do
       it "returns an Enumerator" do
@@ -44,7 +44,7 @@ describe Hamster::Vector do
     context "on an empty vector, with an argument greater than zero" do
       it "yields nothing" do
         result = []
-        Hamster.vector.repeated_combination(1) { |obj| result << obj }
+        V.empty.repeated_combination(1) { |obj| result << obj }
         result.should eql([])
       end
     end
@@ -55,14 +55,14 @@ describe Hamster::Vector do
         vector.repeated_combination(3).to_a.should == [[1,1,1], [1,1,2], [1,1,3], [1,1,4],
           [1,2,2], [1,2,3], [1,2,4], [1,3,3], [1,3,4], [1,4,4], [2,2,2], [2,2,3],
           [2,2,4], [2,3,3], [2,3,4], [2,4,4], [3,3,3], [3,3,4], [3,4,4], [4,4,4]]
-        Hamster.vector(1,2,3).repeated_combination(3).to_a.should == [[1,1,1], [1,1,2],
+        V[1,2,3].repeated_combination(3).to_a.should == [[1,1,1], [1,1,2],
           [1,1,3], [1,2,2], [1,2,3], [1,3,3], [2,2,2], [2,2,3], [2,3,3], [3,3,3]]
       end
     end
 
     it "leaves the original unmodified" do
       vector.repeated_combination(2) {}
-      vector.should eql(Hamster.vector(1,2,3,4))
+      vector.should eql(V[1,2,3,4])
     end
 
     it "behaves like Array#repeated_combination" do

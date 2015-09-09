@@ -16,8 +16,8 @@ describe Hamster::Vector do
         vector.concat(1..1000).should eql(V.new((1..100).to_a + (1..1000).to_a))
         vector.concat(1..200).size.should == 300
         vector.concat(vector).should eql(V.new((1..100).to_a * 2))
-        vector.concat(Hamster::EmptyVector).should eql(vector)
-        Hamster::EmptyVector.concat(vector).should eql(vector)
+        vector.concat(V.empty).should eql(vector)
+        V.empty.concat(vector).should eql(vector)
       end
 
       [1, 31, 32, 33, 1023, 1024, 1025].each do |size|

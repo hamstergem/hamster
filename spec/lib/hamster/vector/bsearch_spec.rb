@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#bsearch" do
-    let(:vector) { Hamster.vector(5,10,20,30) }
+    let(:vector) { V[5,10,20,30] }
 
     context "with a block which returns false for elements below desired position, and true for those at/above" do
       it "returns the first element for which the predicate is true" do
@@ -59,7 +59,7 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "returns nil" do
-        Hamster.vector.bsearch { |x| x > 5 }.should be_nil
+        V.empty.bsearch { |x| x > 5 }.should be_nil
       end
     end
   end

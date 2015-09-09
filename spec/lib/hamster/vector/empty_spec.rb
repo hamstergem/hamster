@@ -10,7 +10,7 @@ describe Hamster::Vector do
     ].each do |values, expected|
       describe "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          Hamster.vector(*values).empty?.should == expected
+          V[*values].empty?.should == expected
         end
       end
     end
@@ -18,8 +18,8 @@ describe Hamster::Vector do
 
   describe ".empty" do
     it "returns the canonical empty vector" do
-      Hamster::Vector.empty.size.should be(0)
-      Hamster::Vector.empty.object_id.should be(Hamster::Vector.empty.object_id)
+      V.empty.size.should be(0)
+      V.empty.object_id.should be(V.empty.object_id)
     end
 
     context "from a subclass" do

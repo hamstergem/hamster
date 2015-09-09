@@ -14,7 +14,7 @@ describe Hamster::Vector do
     ].each do |initial, expected|
       describe "on #{initial}" do
         it "returns #{expected}" do
-          Hamster::Vector.new(initial).reverse.should eql(Hamster::Vector.new(expected))
+          V.new(initial).reverse.should eql(V.new(expected))
         end
       end
     end

@@ -4,7 +4,7 @@ require 'pry'
 
 describe Hamster::Vector do
   describe "#insert" do
-    let(:original) { Hamster.vector(1, 2, 3) }
+    let(:original) { V[1, 2, 3] }
 
     it "can add items at the beginning of a vector" do
       vector = original.insert(0, :a, :b)
@@ -48,7 +48,7 @@ describe Hamster::Vector do
     end
 
     it "works when adding to an empty Vector" do
-      Hamster.vector.insert(0, :a).should eql(Hamster.vector(:a))
+      V.empty.insert(0, :a).should eql(V[:a])
     end
 
     it "has the right size and contents after many insertions" do

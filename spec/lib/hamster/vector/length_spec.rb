@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  let(:vector) { Hamster.vector(*values) }
+  let(:vector) { V[*values] }
 
   describe "#length" do
     let(:length) { vector.length }

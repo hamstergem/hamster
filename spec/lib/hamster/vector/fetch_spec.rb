@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#fetch" do
-    let(:vector) { Hamster.vector('a', 'b', 'c') }
+    let(:vector) { V['a', 'b', 'c'] }
 
     context "with no default provided" do
       context "when the index exists" do

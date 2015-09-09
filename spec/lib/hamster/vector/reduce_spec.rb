@@ -10,7 +10,7 @@ describe Hamster::Vector do
         [[1, 2, 3], 10, 4],
       ].each do |values, initial, expected|
         describe "on #{values.inspect}" do
-          let(:vector) { Hamster.vector(*values) }
+          let(:vector) { V[*values] }
 
           describe "with an initial value of #{initial}" do
             describe "and a block" do
@@ -28,7 +28,7 @@ describe Hamster::Vector do
         [[1, 2, 3], -4],
       ].each do |values, expected|
         describe "on #{values.inspect}" do
-          let(:vector) { Hamster.vector(*values) }
+          let(:vector) { V[*values] }
 
           describe "with no initial value" do
             describe "and a block" do
@@ -42,13 +42,13 @@ describe Hamster::Vector do
 
       describe "with no block and a symbol argument" do
         it "uses the symbol as the name of a method to reduce with" do
-          Hamster.vector(1, 2, 3).send(method, :+).should == 6
+          V[1, 2, 3].send(method, :+).should == 6
         end
       end
 
       describe "with no block and a string argument" do
         it "uses the string as the name of a method to reduce with" do
-          Hamster.vector(1, 2, 3).send(method, '+').should == 6
+          V[1, 2, 3].send(method, '+').should == 6
         end
       end
     end

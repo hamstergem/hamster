@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  let(:vector) { Hamster.vector([:a, 3], [:b, 2], [:c, 1]) }
+  let(:vector) { V[[:a, 3], [:b, 2], [:c, 1]] }
 
   describe "#assoc" do
     it "searches for a 2-element array with a given 1st item" do

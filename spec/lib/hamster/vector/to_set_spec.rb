@@ -15,7 +15,7 @@ describe Hamster::Vector do
     ].each do |values|
       describe "on #{values.inspect}" do
         it "returns a set with the same values" do
-          Hamster.vector(*values).to_set.should eql(Hamster.set(*values))
+          V[*values].to_set.should eql(Hamster.set(*values))
         end
       end
     end

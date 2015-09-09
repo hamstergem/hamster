@@ -4,14 +4,6 @@ require "hamster/hash"
 require "hamster/nested"
 
 module Hamster
-  # Create a new `Vector` populated with the given items.
-  #
-  # @return [Vector]
-  # @see Vector#initialize
-  def self.vector(*items)
-    items.empty? ? EmptyVector : Vector.new(items.freeze)
-  end
-
   # A `Vector` is an ordered, integer-indexed collection of objects. Like
   # Ruby's `Array`, `Vector` indexing starts at zero and negative indexes count
   # back from the end.
@@ -23,13 +15,12 @@ module Hamster
   #
   # ### Creating New Vectors
   #
-  #     Hamster.vector('a', 'b', 'c')
   #     Hamster::Vector.new([:first, :second, :third])
   #     Hamster::Vector[1, 2, 3, 4, 5]
   #
   # ### Retrieving Items from Vectors
   #
-  #     vector = Hamster.vector(1, 2, 3, 4, 5)
+  #     vector = Hamster::Vector[1, 2, 3, 4, 5]
   #
   #     vector[0]      # => 1
   #     vector[-1]     # => 5
@@ -516,7 +507,7 @@ module Hamster
     # for every element in this `Vector`.
     #
     # @example
-    #   Hamster.vector(1, 2, 3).flat_map { |x| [x, -x] }
+    #   Hamster::Vector[1, 2, 3].flat_map { |x| [x, -x] }
     #   # => Hamster::Vector[1, -1, 2, -2, 3, -3]
     #
     # @return [Vector]
@@ -1534,7 +1525,7 @@ module Hamster
     end
   end
 
-  # The canonical empty `Vector`. Returned by `Hamster.vector` and `Vector[]` when
+  # The canonical empty `Vector`. Returned by `Vector[]` when
   # invoked with no arguments; also returned by `Vector.empty`. Prefer using this
   # one rather than creating many empty vectors using `Vector.new`.
   #

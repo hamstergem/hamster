@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#repeated_permutation" do
-    let(:vector) { Hamster.vector(1,2,3,4) }
+    let(:vector) { V[1,2,3,4] }
 
     context "without a block" do
       context "and without argument" do
@@ -31,7 +31,7 @@ describe Hamster::Vector do
       context "on an empty vector" do
         it "yields the empty permutation" do
           yielded = []
-          Hamster.vector.repeated_permutation { |obj| yielded << obj }
+          V.empty.repeated_permutation { |obj| yielded << obj }
           yielded.should eql([[]])
         end
       end
@@ -47,7 +47,7 @@ describe Hamster::Vector do
       context "with no argument" do
         it "yields all repeated permutations" do
           yielded = []
-          Hamster.vector(1,2,3).repeated_permutation { |obj| yielded << obj }
+          V[1,2,3].repeated_permutation { |obj| yielded << obj }
           yielded.sort.should eql([[1,1,1], [1,1,2], [1,1,3], [1,2,1], [1,2,2],
             [1,2,3], [1,3,1], [1,3,2], [1,3,3], [2,1,1], [2,1,2], [2,1,3], [2,2,1],
             [2,2,2], [2,2,3], [2,3,1], [2,3,2], [2,3,3], [3,1,1], [3,1,2], [3,1,3],
@@ -66,12 +66,12 @@ describe Hamster::Vector do
     end
 
     it "handles duplicate elements correctly" do
-    Hamster.vector(10,11,10).repeated_permutation(2).sort.should eql([[10, 10], [10, 10],
+    V[10,11,10].repeated_permutation(2).sort.should eql([[10, 10], [10, 10],
       [10, 10], [10, 10], [10, 11], [10, 11], [11, 10], [11, 10], [11, 11]])
     end
 
     it "allows permutations larger than the number of elements" do
-      Hamster.vector(1,2).repeated_permutation(3).sort.should eql(
+      V[1,2].repeated_permutation(3).sort.should eql(
         [[1, 1, 1], [1, 1, 2], [1, 2, 1],
          [1, 2, 2], [2, 1, 1], [2, 1, 2],
          [2, 2, 1], [2, 2, 2]])
@@ -79,7 +79,7 @@ describe Hamster::Vector do
 
     it "leaves the original unmodified" do
       vector.repeated_permutation(2) {}
-      vector.should eql(Hamster.vector(1,2,3,4))
+      vector.should eql(V[1,2,3,4])
     end
 
     it "behaves like Array#repeated_permutation" do

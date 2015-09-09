@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#each_index" do
-    let(:vector) { Hamster.vector(1,2,3,4) }
+    let(:vector) { V[1,2,3,4] }
 
     context "with a block" do
       it "yields all the valid indices into the vector" do
@@ -26,7 +26,7 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "doesn't yield anything" do
-        Hamster.vector.each_index { fail }
+        V.empty.each_index { fail }
       end
     end
 

@@ -11,7 +11,7 @@ describe Hamster::Vector do
       ].each do |values, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.vector(*values).max { |maximum, item| maximum.length <=> item.length }.should == expected
+            V[*values].max { |maximum, item| maximum.length <=> item.length }.should == expected
           end
         end
       end
@@ -25,7 +25,7 @@ describe Hamster::Vector do
       ].each do |values, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.vector(*values).max.should == expected
+            V[*values].max.should == expected
           end
         end
       end

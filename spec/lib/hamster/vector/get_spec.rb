@@ -7,13 +7,13 @@ describe Hamster::Vector do
       context "when empty" do
         it "always returns nil" do
           (-1..1).each do |i|
-            Hamster.vector.send(method, i).should be_nil
+            V.empty.send(method, i).should be_nil
           end
         end
       end
 
       context "when not empty" do
-        let(:vector) { Hamster.vector(*(1..1025)) }
+        let(:vector) { V[*(1..1025)] }
 
         context "with a positive index" do
           context "within the absolute bounds of the vector" do

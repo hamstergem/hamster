@@ -36,7 +36,7 @@ describe Hamster::Hash do
 
     context "on an empty Hash" do
       it "returns an empty Vector" do
-        Hamster.hash.flatten.should eql(V[])
+        Hamster.hash.flatten.should eql(V.empty)
       end
     end
 

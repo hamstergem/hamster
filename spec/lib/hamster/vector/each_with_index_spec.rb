@@ -4,7 +4,7 @@ require "hamster/vector"
 describe Hamster::Vector do
   describe "#each_with_index" do
     describe "with no block" do
-      let(:vector) { Hamster.vector("A", "B", "C") }
+      let(:vector) { V["A", "B", "C"] }
 
       it "returns an Enumerator" do
         vector.each_with_index.class.should be(Enumerator)
@@ -33,7 +33,7 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "doesn't yield anything" do
-        Hamster.vector.each_with_index { |item, index| fail }
+        V.empty.each_with_index { |item, index| fail }
       end
     end
   end

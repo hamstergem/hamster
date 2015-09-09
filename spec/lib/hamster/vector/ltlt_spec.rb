@@ -2,13 +2,13 @@ require "spec_helper"
 require "hamster/vector"
 
 describe Hamster::Vector do
-  let(:vector) { Hamster.vector(*values) }
+  let(:vector) { V[*values] }
 
   describe "#<<" do
     let(:ltlt) { vector << added_value }
 
     shared_examples "checking adding values" do
-      let(:added_vector) { Hamster.vector(*added_values) }
+      let(:added_vector) { V[*added_values] }
 
       it "preserves the original" do
         original = vector

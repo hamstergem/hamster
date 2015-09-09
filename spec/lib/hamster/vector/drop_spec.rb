@@ -14,15 +14,15 @@ describe Hamster::Vector do
       [(1..33), 32, [33]]
     ].each do |values, number, expected|
       describe "#{number} from #{values.inspect}" do
-        let(:vector) { Hamster.vector(*values) }
+        let(:vector) { V[*values] }
 
         it "preserves the original" do
           vector.drop(number)
-          vector.should eql(Hamster.vector(*values))
+          vector.should eql(V[*values])
         end
 
         it "returns #{expected.inspect}" do
-          vector.drop(number).should eql(Hamster.vector(*expected))
+          vector.drop(number).should eql(V[*expected])
         end
       end
     end
@@ -33,7 +33,7 @@ describe Hamster::Vector do
     end
 
     context "when number of elements specified is zero" do
-      let(:vector) { Hamster.vector(1, 2, 3, 4, 5, 6) }
+      let(:vector) { V[1, 2, 3, 4, 5, 6] }
       it "returns self" do
         vector.drop(0).should be(vector)
       end

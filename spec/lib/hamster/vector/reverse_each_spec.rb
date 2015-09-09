@@ -5,7 +5,7 @@ describe Hamster::Vector do
   describe "#reverse_each" do
     [2, 31, 32, 33, 1000, 1024, 1025, 2000].each do |size|
       context "on a #{size}-item vector" do
-        let(:vector) { Hamster.vector(1..size) }
+        let(:vector) { V[1..size] }
 
         context "with a block (internal iteration)" do
           it "returns self" do

@@ -12,18 +12,18 @@ describe Hamster::Vector do
         [%w[a b c], []],
       ].each do |values, expected|
         describe "on #{values.inspect}" do
-          let(:vector) { Hamster.vector(*values) }
+          let(:vector) { V[*values] }
 
           context "with a block" do
             it "returns #{expected.inspect}" do
-              vector.send(method) { |item| item == item.downcase }.should eql(Hamster.vector(*expected))
+              vector.send(method) { |item| item == item.downcase }.should eql(V[*expected])
             end
           end
 
           context "without a block" do
             it "returns an Enumerator" do
               vector.send(method).class.should be(Enumerator)
-              vector.send(method).each { |item| item == item.downcase }.should eql(Hamster.vector(*expected))
+              vector.send(method).each { |item| item == item.downcase }.should eql(V[*expected])
             end
           end
         end

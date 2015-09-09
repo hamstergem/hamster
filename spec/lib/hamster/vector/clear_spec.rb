@@ -9,15 +9,15 @@ describe Hamster::Vector do
       %w[A B C],
     ].each do |values|
       describe "on #{values}" do
-        let(:vector) { Hamster.vector(*values) }
+        let(:vector) { V[*values] }
 
         it "preserves the original" do
           vector.clear
-          vector.should eql(Hamster.vector(*values))
+          vector.should eql(V[*values])
         end
 
         it "returns an empty vector" do
-          vector.clear.should equal(Hamster.vector)
+          vector.clear.should equal(V.empty)
         end
       end
 

@@ -3,19 +3,19 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#uniq" do
-    let(:vector) { Hamster.vector('a', 'b', 'a', 'a', 'c', 'b') }
+    let(:vector) { V['a', 'b', 'a', 'a', 'c', 'b'] }
 
     it "returns a vector with no duplicates" do
-      vector.uniq.should eql(Hamster.vector('a', 'b', 'c'))
+      vector.uniq.should eql(V['a', 'b', 'c'])
     end
 
     it "leaves the original unmodified" do
       vector.uniq
-      vector.should eql(Hamster.vector('a', 'b', 'a', 'a', 'c', 'b'))
+      vector.should eql(V['a', 'b', 'a', 'a', 'c', 'b'])
     end
 
     it "uses #eql? semantics" do
-      Hamster.vector(1.0, 1).uniq.should eql(Hamster.vector(1.0, 1))
+      V[1.0, 1].uniq.should eql(V[1.0, 1])
     end
 
     it "also uses #hash when determining which values are duplicates" do
@@ -23,32 +23,32 @@ describe Hamster::Vector do
       x.should_receive(:hash).at_least(1).times.and_return(1)
       y = double(2)
       y.should_receive(:hash).at_least(1).times.and_return(2)
-      Hamster.vector(x, y).uniq
+      V[x, y].uniq
     end
 
     it "keeps the first of each group of duplicate values" do
       x, y, z = 'a', 'a', 'a'
-      result = Hamster.vector(x, y, z).uniq
+      result = V[x, y, z].uniq
       result.size.should == 1
       result[0].should be(x)
     end
 
     context "when passed a block" do
       it "uses the return value of the block to determine which items are duplicate" do
-        v = Hamster.vector('a', 'A', 'B', 'b')
-        v.uniq(&:upcase).should == Hamster::Vector['a', 'B']
+        v = V['a', 'A', 'B', 'b']
+        v.uniq(&:upcase).should == V['a', 'B']
       end
     end
 
     context "on a vector with no duplicates" do
       it "returns an unchanged vector" do
-        Hamster.vector(1, 2, 3).uniq.should.eql? Hamster.vector(1, 2, 3)
+        V[1, 2, 3].uniq.should eql(V[1, 2, 3])
       end
 
       context "if the vector has more than 32 elements and is initialized with Vector.new" do
         # Regression test for GitHub issue #182
         it "returns an unchanged vector" do
-          vector1,vector2 = 2.times.collect { Hamster::Vector.new(0..36) }
+          vector1,vector2 = 2.times.collect { V.new(0..36) }
           vector1.uniq.should eql(vector2)
         end
       end

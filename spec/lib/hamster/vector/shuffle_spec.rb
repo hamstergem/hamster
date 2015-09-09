@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#shuffle" do
-    let(:vector) { Hamster.vector(1,2,3,4) }
+    let(:vector) { V[1,2,3,4] }
 
     it "returns the same values, in a usually different order" do
       different = false
@@ -17,7 +17,7 @@ describe Hamster::Vector do
 
     it "leaves the original unchanged" do
       vector.shuffle
-      vector.should eql(Hamster.vector(1,2,3,4))
+      vector.should eql(V[1,2,3,4])
     end
 
     context "from a subclass" do

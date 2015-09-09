@@ -3,7 +3,7 @@ require "hamster/vector"
 
 describe Hamster::Vector do
   describe "#eql" do
-    let(:vector) { Hamster.vector("A", "B", "C") }
+    let(:vector) { V["A", "B", "C"] }
 
     it "returns false when comparing with an array with the same contents" do
       vector.eql?(%w[A B C]).should == false
@@ -14,7 +14,7 @@ describe Hamster::Vector do
     end
 
     it "returns false when comparing an empty vector with an empty array" do
-      Hamster.vector.eql?([]).should == false
+      V.empty.eql?([]).should == false
     end
 
     it "returns false when comparing with a subclass of Hamster::Vector" do
@@ -23,7 +23,7 @@ describe Hamster::Vector do
   end
 
   describe "#==" do
-    let(:vector) { Hamster.vector("A", "B", "C") }
+    let(:vector) { V["A", "B", "C"] }
 
     it "returns true when comparing with an array with the same contents" do
       (vector == %w[A B C]).should == true
@@ -34,7 +34,7 @@ describe Hamster::Vector do
     end
 
     it "returns true when comparing an empty vector with an empty array" do
-      (Hamster.vector == []).should == true
+      (V.empty == []).should == true
     end
 
     it "returns true when comparing with a subclass of Hamster::Vector" do
@@ -60,8 +60,8 @@ describe Hamster::Vector do
         [%w[C A B], %w[A B C], false],
       ].each do |a, b, expected|
         describe "returns #{expected.inspect}" do
-          let(:vector_a) { Hamster.vector(*a) }
-          let(:vector_b) { Hamster.vector(*b) }
+          let(:vector_a) { V[*a] }
+          let(:vector_b) { V[*b] }
 
           it "for vectors #{a.inspect} and #{b.inspect}" do
             vector_a.send(method, vector_b).should == expected

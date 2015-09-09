@@ -13,15 +13,15 @@ describe Hamster::Vector do
       [1..33, 0, 0..33]
     ].each do |values, new_value, expected|
       context "on #{values.inspect} with #{new_value.inspect}" do
-        let(:vector) { Hamster.vector(*values) }
+        let(:vector) { V[*values] }
 
         it "preserves the original" do
           vector.unshift(new_value)
-          vector.should eql(Hamster.vector(*values))
+          vector.should eql(V[*values])
         end
 
         it "returns #{expected.inspect}" do
-          vector.unshift(new_value).should eql(Hamster.vector(*expected))
+          vector.unshift(new_value).should eql(V[*expected])
         end
       end
     end

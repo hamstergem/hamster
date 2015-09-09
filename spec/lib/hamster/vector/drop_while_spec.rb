@@ -9,25 +9,25 @@ describe Hamster::Vector do
       [%w[A B C], ["C"]],
     ].each do |values, expected|
       describe "on #{values.inspect}" do
-        let(:vector) { Hamster.vector(*values) }
+        let(:vector) { V[*values] }
 
         describe "with a block" do
           let(:result) { vector.drop_while { |item| item < "C" } }
 
           it "preserves the original" do
             result
-            vector.should eql(Hamster.vector(*values))
+            vector.should eql(V[*values])
           end
 
           it "returns #{expected.inspect}" do
-            result.should eql(Hamster.vector(*expected))
+            result.should eql(V[*expected])
           end
         end
 
         describe "without a block" do
           it "returns an Enumerator" do
             vector.drop_while.class.should be(Enumerator)
-            vector.drop_while.each { |item| item < "C" }.should eql(Hamster.vector(*expected))
+            vector.drop_while.each { |item| item < "C" }.should eql(V[*expected])
           end
         end
       end
@@ -35,7 +35,7 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "returns an empty vector" do
-        Hamster.vector.drop_while { false }.should eql(Hamster.vector)
+        V.empty.drop_while { false }.should eql(V.empty)
       end
     end
 

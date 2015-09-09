@@ -6,11 +6,11 @@ describe Hamster::Vector do
     context "with a block" do
       [
         [[], []],
-        [[1], [true => Hamster.vector(1)]],
-        [[1, 2, 3, 4], [true => Hamster.vector(1, 3), false => Hamster.vector(2, 4)]],
+        [[1], [true => V[1]]],
+        [[1, 2, 3, 4], [true => V[1, 3], false => V[2, 4]]],
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:vector) { Hamster.vector(*values) }
+          let(:vector) { V[*values] }
 
           it "returns #{expected.inspect}" do
             vector.group_by(&:odd?).should eql(Hamster.hash(*expected))
@@ -23,11 +23,11 @@ describe Hamster::Vector do
     context "without a block" do
       [
         [[], []],
-        [[1], [1 => Hamster.vector(1)]],
-        [[1, 2, 3, 4], [1 => Hamster.vector(1), 2 => Hamster.vector(2), 3 => Hamster.vector(3), 4 => Hamster.vector(4)]],
+        [[1], [1 => V[1]]],
+        [[1, 2, 3, 4], [1 => V[1], 2 => V[2], 3 => V[3], 4 => V[4]]],
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:vector) { Hamster.vector(*values) }
+          let(:vector) { V[*values] }
 
           it "returns #{expected.inspect}" do
             vector.group_by.should eql(Hamster.hash(*expected))
@@ -39,12 +39,12 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "returns an empty hash" do
-        Hamster.vector.group_by { |x| x }.should eql(Hamster.hash)
+        V.empty.group_by { |x| x }.should eql(Hamster.hash)
       end
     end
 
     it "returns a hash without default proc" do
-      Hamster.vector(1,2,3).group_by { |x| x }.default_proc.should be_nil
+      V[1,2,3].group_by { |x| x }.default_proc.should be_nil
     end
 
     context "from a subclass" do
