@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+  let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
   describe "#flat_map" do
     it "yields each key/val pair" do
@@ -19,7 +19,7 @@ describe Hamster::Hash do
 
     it "doesn't change the receiver" do
       hash.flat_map { |k,v| [k,v] }
-      hash.should eql(Hamster.hash("A" => "aye", "B" => "bee", "C" => "see"))
+      hash.should eql(H["A" => "aye", "B" => "bee", "C" => "see"])
     end
 
     context "with no block" do

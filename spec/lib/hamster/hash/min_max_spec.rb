@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash("a" => 3, "b" => 2, "c" => 1) }
+  let(:hash) { H["a" => 3, "b" => 2, "c" => 1] }
 
   describe "#min" do
     it "returns the smallest key/val pair" do
@@ -26,7 +26,7 @@ describe Hamster::Hash do
     end
 
     it "returns nil if the hash is empty" do
-      Hamster.hash.min_by { |k,v| v }.should be_nil
+      H.empty.min_by { |k,v| v }.should be_nil
     end
   end
 
@@ -40,7 +40,7 @@ describe Hamster::Hash do
     end
 
     it "returns nil if the hash is empty" do
-      Hamster.hash.max_by { |k,v| v }.should be_nil
+      H.empty.max_by { |k,v| v }.should be_nil
     end
   end
 end

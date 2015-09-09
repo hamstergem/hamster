@@ -3,7 +3,7 @@ require "hamster/hash"
 
 describe Hamster::Hash do
   describe "#each_with_index" do
-    let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+    let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
     describe "with a block (internal iteration)" do
       it "returns self" do

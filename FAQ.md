@@ -24,7 +24,7 @@ built-in, native, hand-crafted C-code implementation of Hash.
 For example:
 
 ``` ruby
-hash = Hamster.hash
+hash = Hamster::Hash.empty
 (1..10000).each { |i| hash = hash.put(i, i) }
   # => 0.05s
 (1..10000).each { |i| hash.get(i) }
@@ -51,7 +51,7 @@ writing--the contents things get much better.
 A more realistic comparison might look like:
 
 ``` ruby
-hash = Hamster.hash
+hash = Hamster::Hash.empty
 (1..10000).each { |i| hash = hash.put(i, i) }
   # => 0.05s
 (1..10000).each { |i| hash.get(i) }

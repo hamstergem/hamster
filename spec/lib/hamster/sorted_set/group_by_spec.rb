@@ -19,7 +19,7 @@ describe Hamster::SortedSet do
             end
 
             it "returns #{expected.inspect}" do
-              sorted_set.send(method, &:odd?).should eql(Hamster.hash(*expected))
+              sorted_set.send(method, &:odd?).should eql(H[*expected])
             end
           end
         end
@@ -40,7 +40,7 @@ describe Hamster::SortedSet do
             end
 
             it "returns #{expected.inspect}" do
-              sorted_set.group_by.should eql(Hamster.hash(*expected))
+              sorted_set.group_by.should eql(H[*expected])
             end
           end
         end

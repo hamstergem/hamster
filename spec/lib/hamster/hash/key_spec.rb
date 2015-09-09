@@ -3,7 +3,7 @@ require "hamster/hash"
 
 describe Hamster::Hash do
   describe "#key" do
-    let(:hash) { Hamster.hash(a: 1, b: 1, c: 2, d: 3) }
+    let(:hash) { H[a: 1, b: 1, c: 2, d: 3] }
 
     it "returns a key associated with the given value, if there is one" do
       [:a, :b].include?(hash.key(1)).should == true
@@ -22,7 +22,7 @@ describe Hamster::Hash do
     end
 
     it "doesn't use default block if value is not found" do
-      Hamster.hash(a: 1) { fail }.key(2).should be_nil
+      H.new(a: 1) { fail }.key(2).should be_nil
     end
   end
 end

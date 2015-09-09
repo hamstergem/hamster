@@ -13,8 +13,8 @@ describe Hamster::Vector do
           let(:vector) { V[*values] }
 
           it "returns #{expected.inspect}" do
-            vector.group_by(&:odd?).should eql(Hamster.hash(*expected))
-            vector.should eql(Hamster::Vector.new(values)) # make sure it hasn't changed
+            vector.group_by(&:odd?).should eql(H[*expected])
+            vector.should eql(V.new(values)) # make sure it hasn't changed
           end
         end
       end
@@ -30,8 +30,8 @@ describe Hamster::Vector do
           let(:vector) { V[*values] }
 
           it "returns #{expected.inspect}" do
-            vector.group_by.should eql(Hamster.hash(*expected))
-            vector.should eql(Hamster::Vector.new(values)) # make sure it hasn't changed
+            vector.group_by.should eql(H[*expected])
+            vector.should eql(V.new(values)) # make sure it hasn't changed
           end
         end
       end
@@ -39,7 +39,7 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "returns an empty hash" do
-        V.empty.group_by { |x| x }.should eql(Hamster.hash)
+        V.empty.group_by { |x| x }.should eql(H.empty)
       end
     end
 

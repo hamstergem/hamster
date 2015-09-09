@@ -19,6 +19,7 @@ end
 
 V = Hamster::Vector
 L = Hamster::List
+H = Hamster::Hash
 EmptyList = Hamster::EmptyList
 
 def fixture(name)

@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash(a: 3, b: 2, c: 1) }
+  let(:hash) { H[a: 3, b: 2, c: 1] }
 
   describe "#assoc" do
     it "searches for a key/val pair with a given key" do
@@ -18,7 +18,7 @@ describe Hamster::Hash do
     end
 
     it "returns nil even if there is a default" do
-      Hamster::Hash.new(a: 1, b: 2) { fail }.assoc(:c).should be_nil
+      H.new(a: 1, b: 2) { fail }.assoc(:c).should be_nil
     end
 
     it "uses #== to compare keys with provided object" do
@@ -41,7 +41,7 @@ describe Hamster::Hash do
     end
 
     it "returns nil even if there is a default" do
-      Hamster::Hash.new(a: 1, b: 2) { fail }.rassoc(3).should be_nil
+      H.new(a: 1, b: 2) { fail }.rassoc(3).should be_nil
     end
 
     it "uses #== to compare values with provided object" do

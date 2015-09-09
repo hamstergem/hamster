@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash("a" => 1, "b" => 2, "c" => 3, "d" => 4) }
+  let(:hash) { H["a" => 1, "b" => 2, "c" => 3, "d" => 4] }
   let(:partition) { hash.partition { |k,v| v % 2 == 0 }}
 
   describe "#partition" do
@@ -21,7 +21,7 @@ describe Hamster::Hash do
 
     it "doesn't modify the original Hash" do
       partition
-      hash.should eql(Hamster.hash("a" => 1, "b" => 2, "c" => 3, "d" => 4))
+      hash.should eql(H["a" => 1, "b" => 2, "c" => 3, "d" => 4])
     end
 
     context "from a subclass" do

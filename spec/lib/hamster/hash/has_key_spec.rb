@@ -4,7 +4,7 @@ require "hamster/hash"
 describe Hamster::Hash do
   [:key?, :has_key?, :include?, :member?].each do |method|
     describe "##{method}" do
-      let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL", 2.0 => "two") }
+      let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL", 2.0 => "two"] }
 
       ["A", "B", "C", nil, 2.0].each do |key|
         it "returns true for an existing key (#{key.inspect})" do
@@ -21,11 +21,11 @@ describe Hamster::Hash do
       end
 
       it "returns true if the key is found and maps to nil" do
-        Hamster.hash("A" => nil).send(method, "A").should == true
+        H["A" => nil].send(method, "A").should == true
       end
 
       it "returns true if the key is found and maps to false" do
-        Hamster.hash("A" => false).send(method, "A").should == true
+        H["A" => false].send(method, "A").should == true
       end
     end
   end

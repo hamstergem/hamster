@@ -4,7 +4,7 @@ require "hamster/set"
 
 describe Hamster::Hash do
   describe "#keys" do
-    let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+    let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
     it "returns the keys as a set" do
       hash.keys.should eql(Hamster.set("A", "B", "C"))

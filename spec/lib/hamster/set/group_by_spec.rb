@@ -14,7 +14,7 @@ describe Hamster::Set do
             let(:set) { Hamster.set(*values) }
 
             it "returns #{expected.inspect}" do
-              set.send(method, &:odd?).should eql(Hamster.hash(*expected))
+              set.send(method, &:odd?).should eql(H[*expected])
               set.should eql(Hamster::Set.new(values)) # make sure it hasn't changed
             end
           end
@@ -31,7 +31,7 @@ describe Hamster::Set do
             let(:set) { Hamster.set(*values) }
 
             it "returns #{expected.inspect}" do
-              set.group_by.should eql(Hamster.hash(*expected))
+              set.group_by.should eql(H[*expected])
               set.should eql(Hamster::Set.new(values)) # make sure it hasn't changed
             end
           end
@@ -40,7 +40,7 @@ describe Hamster::Set do
 
       context "on an empty set" do
         it "returns an empty hash" do
-          Hamster.set.group_by { |x| x }.should eql(Hamster.hash)
+          Hamster.set.group_by { |x| x }.should eql(H.empty)
         end
       end
 

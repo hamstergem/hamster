@@ -16,7 +16,7 @@ describe Hamster::Hash do
         [["A" => "aye", "B" => "bee", nil => "NIL"], "C", nil],
       ].each do |values, key, expected|
         describe "on #{values.inspect}" do
-          let(:hash) { Hamster.hash(*values) }
+          let(:hash) { H[*values] }
 
           describe "with a block" do
             it "returns #{expected.inspect}" do
@@ -36,7 +36,7 @@ describe Hamster::Hash do
 
       it "stops iterating when the block returns true" do
         yielded = []
-        Hamster.hash(a: 1, b: 2).find { |k,v| yielded << k; true }
+        H[a: 1, b: 2].find { |k,v| yielded << k; true }
         yielded.size.should == 1
       end
     end

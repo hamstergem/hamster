@@ -4,7 +4,7 @@ require "hamster/set"
 
 describe Hamster::Hash do
   describe "#values" do
-    let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+    let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
     let(:result) { hash.values }
 
     it "returns the keys as a Vector" do
@@ -13,7 +13,7 @@ describe Hamster::Hash do
     end
 
     context "with duplicates" do
-      let(:hash) { Hamster.hash(:A => 15, :B => 19, :C => 15) }
+      let(:hash) { H[:A => 15, :B => 19, :C => 15] }
       let(:result) { hash.values }
 
       it "returns the keys as a Vector" do

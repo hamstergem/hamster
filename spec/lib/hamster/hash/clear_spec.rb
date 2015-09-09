@@ -9,23 +9,23 @@ describe Hamster::Hash do
       ["A" => "aye", "B" => "bee", "C" => "see"],
     ].each do |values|
       context "on #{values}" do
-        let(:original) { Hamster.hash(*values) }
+        let(:original) { H[*values] }
         let(:result)   { original.clear }
 
         it "preserves the original" do
           result
-          original.should eql(Hamster.hash(*values))
+          original.should eql(H[*values])
         end
 
         it "returns an empty hash" do
-          result.should equal(Hamster.hash)
+          result.should equal(H.empty)
           result.should be_empty
         end
       end
     end
 
     it "maintains the default Proc, if there is one" do
-      hash = Hamster::Hash.new(a: 1) { 1 }
+      hash = H.new(a: 1) { 1 }
       hash.clear[:b].should == 1
       hash.clear[:c].should == 1
       hash.clear.default_proc.should_not be_nil

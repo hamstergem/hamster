@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+  let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
   describe "#take" do
     it "returns the first N key/val pairs from hash" do

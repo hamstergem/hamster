@@ -2,11 +2,11 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash(values) }
+  let(:hash) { H[values] }
 
   describe "#all?" do
     context "when empty" do
-      let(:values) { Hash.new }
+      let(:values) { H.new }
 
       context "without a block" do
         it "returns true" do

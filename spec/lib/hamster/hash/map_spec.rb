@@ -6,23 +6,23 @@ describe Hamster::Hash do
     describe "##{method}" do
       context "when empty" do
         it "returns self" do
-          Hamster.hash.send(method) {}.should equal(Hamster.hash)
+          H.empty.send(method) {}.should equal(H.empty)
         end
       end
 
       context "when not empty" do
-        let(:hash) { Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see") }
+        let(:hash) { H["A" => "aye", "B"  => "bee", "C" => "see"] }
 
         context "with a block" do
           let(:mapped) { hash.send(method) { |key, value| [key.downcase, value.upcase] }}
 
           it "preserves the original values" do
             mapped
-            hash.should eql(Hamster.hash("A" => "aye", "B"  => "bee", "C" => "see"))
+            hash.should eql(H["A" => "aye", "B"  => "bee", "C" => "see"])
           end
 
           it "returns a new hash with the mapped values" do
-            mapped.should eql(Hamster.hash("a" => "AYE", "b"  => "BEE", "c" => "SEE"))
+            mapped.should eql(H["a" => "AYE", "b"  => "BEE", "c" => "SEE"])
           end
         end
 

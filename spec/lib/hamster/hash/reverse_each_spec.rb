@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+  let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
   describe "#reverse_each" do
     context "with a block" do

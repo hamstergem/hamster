@@ -4,7 +4,7 @@ require "hamster/hash"
 describe Hamster::Hash do
   [:reject, :delete_if].each do |method|
     describe "##{method}" do
-      let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+      let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
       context "when nothing matches" do
         it "returns self" do
@@ -18,11 +18,11 @@ describe Hamster::Hash do
 
           it "preserves the original" do
             result
-            hash.should eql(Hamster.hash("A" => "aye", "B" => "bee", "C" => "see"))
+            hash.should eql(H["A" => "aye", "B" => "bee", "C" => "see"])
           end
 
           it "returns a set with the matching values" do
-            result.should eql(Hamster.hash("B" => "bee", "C" => "see"))
+            result.should eql(H["B" => "bee", "C" => "see"])
           end
 
           it "yields entries in the same order as #each" do
@@ -38,14 +38,14 @@ describe Hamster::Hash do
           it "returns an Enumerator" do
             hash.send(method).class.should be(Enumerator)
             hash.send(method).to_a.sort.should == [['A', 'aye'], ['B', 'bee'], ['C', 'see']]
-            hash.send(method).each { true }.should eql(Hamster.hash)
+            hash.send(method).each { true }.should eql(H.empty)
           end
         end
 
         context "on a large hash, with many combinations of input" do
           it "still works" do
             array = 1000.times.collect { |n| [n, n] }
-            hash  = Hamster::Hash.new(array)
+            hash  = H.new(array)
             [0, 10, 100, 200, 500, 800, 900, 999, 1000].each do |threshold|
               result = hash.send(method) { |k,v| k >= threshold}
               result.size.should == threshold
@@ -53,7 +53,7 @@ describe Hamster::Hash do
               threshold.upto(1000) { |n| result.key?(n).should == false }
             end
             # shouldn't have changed
-            hash.should eql(Hamster::Hash.new(1000.times.collect { |n| [n, n] }))
+            hash.should eql(H.new(1000.times.collect { |n| [n, n] }))
           end
         end
       end

@@ -6,13 +6,13 @@ describe Hamster::Hash do
     context "with no default provided" do
       context "when the key exists" do
         it "returns the value associated with the key" do
-          Hamster.hash("A" => "aye").fetch("A").should == "aye"
+          H["A" => "aye"].fetch("A").should == "aye"
         end
       end
 
       context "when the key does not exist" do
         it "raises a KeyError" do
-          -> { Hamster.hash("A" => "aye").fetch("B") }.should raise_error(KeyError)
+          -> { H["A" => "aye"].fetch("B") }.should raise_error(KeyError)
         end
       end
     end
@@ -20,13 +20,13 @@ describe Hamster::Hash do
     context "with a default value" do
       context "when the key exists" do
         it "returns the value associated with the key" do
-          Hamster.hash("A" => "aye").fetch("A", "default").should == "aye"
+          H["A" => "aye"].fetch("A", "default").should == "aye"
         end
       end
 
       context "when the key does not exist" do
         it "returns the default value" do
-          Hamster.hash("A" => "aye").fetch("B", "default").should == "default"
+          H["A" => "aye"].fetch("B", "default").should == "default"
         end
       end
     end
@@ -34,25 +34,25 @@ describe Hamster::Hash do
     context "with a default block" do
       context "when the key exists" do
         it "returns the value associated with the key" do
-          Hamster.hash("A" => "aye").fetch("A") { "default".upcase }.should == "aye"
+          H["A" => "aye"].fetch("A") { "default".upcase }.should == "aye"
         end
       end
 
       context "when the key does not exist" do
         it "invokes the default block with the missing key as paramter" do
-          Hamster.hash("A" => "aye").fetch("B") { |key| key.should == "B" }
-          Hamster.hash("A" => "aye").fetch("B") { "default".upcase }.should == "DEFAULT"
+          H["A" => "aye"].fetch("B") { |key| key.should == "B" }
+          H["A" => "aye"].fetch("B") { "default".upcase }.should == "DEFAULT"
         end
       end
     end
 
     it "gives precedence to default block over default argument if passed both" do
-      Hamster.hash("A" => "aye").fetch("B", 'one') { 'two' }.should == 'two'
+      H["A" => "aye"].fetch("B", 'one') { 'two' }.should == 'two'
     end
 
     it "raises an ArgumentError when not passed one or 2 arguments" do
-      -> { Hamster.hash.fetch }.should raise_error(ArgumentError)
-      -> { Hamster.hash.fetch(1, 2, 3) }.should raise_error(ArgumentError)
+      -> { H.empty.fetch }.should raise_error(ArgumentError)
+      -> { H.empty.fetch(1, 2, 3) }.should raise_error(ArgumentError)
     end
   end
 end

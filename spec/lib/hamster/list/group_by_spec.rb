@@ -18,7 +18,7 @@ describe Hamster::List do
         ].each do |values, expected|
           context "on #{values.inspect}" do
             it "returns #{expected.inspect}" do
-              Hamster.list(*values).send(method, &:odd?).should eql(Hamster.hash(*expected))
+              Hamster.list(*values).send(method, &:odd?).should eql(H[*expected])
             end
           end
         end
@@ -32,7 +32,7 @@ describe Hamster::List do
         ].each do |values, expected|
           context "on #{values.inspect}" do
             it "returns #{expected.inspect}" do
-              Hamster.list(*values).send(method).should eql(Hamster.hash(*expected))
+              Hamster.list(*values).send(method).should eql(H[*expected])
             end
           end
         end

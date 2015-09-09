@@ -11,7 +11,7 @@ describe Hamster::Hash do
       ].each do |values, result|
 
         it "returns #{result} for #{values.inspect}" do
-          Hamster.hash(*values).send(method).should == result
+          H[*values].send(method).should == result
         end
       end
 
@@ -20,7 +20,7 @@ describe Hamster::Hash do
       random_things = (lots + lots).sort_by { |x|rand }
 
       it "has the correct size after adding lots of things with colliding keys and such" do
-        h = Hamster.hash
+        h = H.empty
         random_things.each do |thing|
           h = h.put(thing, thing * 2)
         end
@@ -37,7 +37,7 @@ describe Hamster::Hash do
         h
       end.size
       it "has the correct size after lots of addings and removings" do
-        h = Hamster.hash
+        h = H.empty
         random_actions.each do |(act, ob)|
           if act == :add
             h = h.put(ob, ob * 3)

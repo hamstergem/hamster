@@ -3,7 +3,7 @@ require "hamster/hash"
 
 describe Hamster::Hash do
   describe "#default_proc" do
-    let(:hash) { Hamster::Hash.new(1 => 2, 2 => 4) { |k| k * 2 } }
+    let(:hash) { H.new(1 => 2, 2 => 4) { |k| k * 2 } }
 
     it "returns the default block given when the Hash was created" do
       hash.default_proc.class.should be(Proc)
@@ -11,7 +11,7 @@ describe Hamster::Hash do
     end
 
     it "returns nil if no default block was given" do
-      Hamster.hash.default_proc.should be_nil
+      H.empty.default_proc.should be_nil
     end
 
     context "after a key/val pair are inserted" do

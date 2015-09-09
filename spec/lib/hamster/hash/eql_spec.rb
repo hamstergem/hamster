@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+  let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
   describe "#eql?" do
     it "returns false when comparing with a standard hash" do
@@ -51,11 +51,11 @@ describe Hamster::Hash do
       ].each do |a, b, expected|
         describe "returns #{expected.inspect}" do
           it "for #{a.inspect} and #{b.inspect}" do
-            Hamster.hash(a).send(method, Hamster.hash(b)).should == expected
+            H[a].send(method, H[b]).should == expected
           end
 
           it "for #{b.inspect} and #{a.inspect}" do
-            Hamster.hash(b).send(method, Hamster.hash(a)).should == expected
+            H[b].send(method, H[a]).should == expected
           end
         end
       end
@@ -63,7 +63,7 @@ describe Hamster::Hash do
   end
 
   it "returns true on a large hash which is modified and then modified back again" do
-    hash = Hamster::Hash.new((1..1000).zip(2..1001))
+    hash = H.new((1..1000).zip(2..1001))
     hash.put('a', 1).delete('a').should == hash
     hash.put('b', 2).delete('b').should eql(hash)
   end

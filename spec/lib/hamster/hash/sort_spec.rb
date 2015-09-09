@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash(a: 3, b: 2, c: 1) }
+  let(:hash) { H[a: 3, b: 2, c: 1] }
 
   describe "#sort" do
     it "returns a Vector of sorted key/val pairs" do
@@ -11,7 +11,7 @@ describe Hamster::Hash do
 
     it "works on large hashes" do
       array = (1..1000).map { |n| [n,n] }
-      Hamster::Hash.new(array.shuffle).sort.should eql(Hamster::Vector.new(array))
+      H.new(array.shuffle).sort.should eql(V.new(array))
     end
 
     it "uses block as comparator to sort if passed a block" do

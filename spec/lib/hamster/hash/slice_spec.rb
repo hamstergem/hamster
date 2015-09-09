@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster::Hash.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL") }
+  let(:hash) { H.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL") }
 
   describe "#slice" do
     let(:slice) { hash.slice(*values) }
@@ -16,7 +16,7 @@ describe Hamster::Hash do
 
       it "doesn't modify the original Hash" do
         slice
-        hash.should eql(Hamster::Hash.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
+        hash.should eql(H.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
       end
     end
 
@@ -29,12 +29,12 @@ describe Hamster::Hash do
 
       it "doesn't modify the original Hash" do
         slice
-        hash.should eql(Hamster::Hash.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
+        hash.should eql(H.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
       end
     end
 
     context "on a Hash with a default block" do
-      let(:hash) { Hamster.hash('A' => 'aye', 'B' => 'bee') { 'nothing' }}
+      let(:hash) { H.new('A' => 'aye', 'B' => 'bee') { 'nothing' }}
       let(:values) { ["B", nil] }
 
       it "maintains the default block" do

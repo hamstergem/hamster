@@ -7,15 +7,6 @@ require "hamster/vector"
 require "hamster/nested"
 
 module Hamster
-  # Create a new hash.
-  #
-  # @see Hash#initialize
-  # @yield [key] Optional _default block_ to be stored and used to calculate the default value of a missing key. It will not be yielded during this method. It will not be preserved when marshalling.
-  # @return [Hash]
-  def self.hash(pairs = nil, &block)
-    (pairs.nil? && block.nil?) ? EmptyHash : Hash.new(pairs, &block)
-  end
-
   # A `Hamster::Hash` maps a set of unique keys to corresponding values, much
   # like a dictionary maps from words to definitions. Given a key, it can store
   # and retrieve an associated value in constant time. If an existing key is
@@ -24,9 +15,8 @@ module Hamster
   # RubyHash, two keys that are `#eql?` to each other and have the same
   # `#hash` are considered identical in a `Hamster::Hash`.
   #
-  # A `Hamster::Hash` can be created in several ways:
+  # A `Hamster::Hash` can be created in a couple of ways:
   #
-  #     Hamster.hash('Jane Doe' => 10, 'Jim Doe' => 6)
   #     Hamster::Hash.new(font_size: 10, font_family: 'Arial')
   #     Hamster::Hash[first_name: 'John', last_name: 'Smith']
   #
@@ -843,7 +833,7 @@ module Hamster
     end
   end
 
-  # The canonical empty `Hash`. Returned by `Hamster.hash` and `Hash[]` when
+  # The canonical empty `Hash`. Returned by `Hash[]` when
   # invoked with no arguments; also returned by `Hash.empty`. Prefer using this
   # one rather than creating many empty hashes using `Hash.new`.
   #

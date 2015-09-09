@@ -6,12 +6,12 @@ describe Hamster::Hash do
     describe "##{method}" do
       context "when empty" do
         it "returns the memo" do
-          Hamster.hash.send(method, "ABC") {}.should == "ABC"
+          H.empty.send(method, "ABC") {}.should == "ABC"
         end
       end
 
       context "when not empty" do
-        let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+        let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
         context "with a block" do
           it "returns the final memo" do
@@ -20,7 +20,7 @@ describe Hamster::Hash do
         end
 
         context "with no block" do
-          let(:hash) { Hamster.hash(a: 1, b: 2) }
+          let(:hash) { H[a: 1, b: 2] }
 
           it "uses a passed string as the name of a method to use instead" do
             [[:a, 1, :b, 2], [:b, 2, :a, 1]].include?(hash.send(method, "+")).should == true

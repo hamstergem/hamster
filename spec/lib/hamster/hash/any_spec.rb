@@ -5,16 +5,16 @@ describe Hamster::Hash do
   describe "#any?" do
     context "when empty" do
       it "with a block returns false" do
-        Hamster.hash.any? {}.should == false
+        H.empty.any? {}.should == false
       end
 
       it "with no block returns false" do
-        Hamster.hash.any?.should == false
+        H.empty.any?.should == false
       end
     end
 
     context "when not empty" do
-      let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL") }
+      let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"] }
 
       context "with a block" do
         [

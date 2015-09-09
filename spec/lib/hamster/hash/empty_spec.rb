@@ -9,19 +9,19 @@ describe Hamster::Hash do
       [["A" => "aye", "B" => "bee", "C" => "see"], false],
     ].each do |pairs, result|
       it "returns #{result} for #{pairs.inspect}" do
-        Hamster.hash(*pairs).empty?.should == result
+        H[*pairs].empty?.should == result
       end
     end
 
     it "returns true for empty hashes which have a default block" do
-      Hamster::Hash.new { 'default' }.empty?.should == true
+      H.new { 'default' }.empty?.should == true
     end
   end
 
   describe ".empty" do
     it "returns the canonical empty Hash" do
-      Hamster::Hash.empty.should be_empty
-      Hamster::Hash.empty.should be(Hamster::EmptyHash)
+      H.empty.should be_empty
+      H.empty.should be(Hamster::EmptyHash)
     end
 
     context "from a subclass" do

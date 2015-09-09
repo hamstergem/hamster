@@ -55,7 +55,7 @@ require "hamster/deque"
 Constructing a Hamster `Hash` is almost as simple as a regular one:
 
 ``` ruby
-person = Hamster.hash(name: "Simon", gender: :male)
+person = Hamster::Hash[name: "Simon", gender: :male]
 # => Hamster::Hash[:name => "Simon", :gender => :male]
 ```
 

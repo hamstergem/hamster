@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
-  let(:hash) { Hamster.hash("A" => "aye", "B" => "bee", "C" => "see") }
+  let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
   [:each, :each_pair].each do |method|
     describe "##{method}" do
@@ -23,7 +23,7 @@ describe Hamster::Hash do
 
         it "yields both of a pair of colliding keys" do
           yielded = []
-          hash = Hamster.hash(DeterministicHash.new('a', 1) => 1, DeterministicHash.new('b', 1) => 1)
+          hash = H[DeterministicHash.new('a', 1) => 1, DeterministicHash.new('b', 1) => 1]
           hash.each { |k,v| yielded << k }
           yielded.size.should == 2
           yielded.map { |x| x.value }.sort.should == ['a', 'b']
