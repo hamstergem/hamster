@@ -8,6 +8,8 @@ require "hamster/hash"
 require "hamster/set"
 
 module Hamster
+  include Immutable
+
   class << self
 
     # Create a list containing the given items.
@@ -122,7 +124,7 @@ module Hamster
   # It consists of a *head* (the first element) and a *tail* (which itself is also
   # a `List`, containing all the remaining elements).
   #
-  # This is a singly linked list. Prepending to the list with {List#cons} runs
+  # This is a singly linked list. Prepending to the list with {List#add} runs
   # in constant time. Traversing the list from front to back is efficient,
   # however, indexed access runs in linear time because the list needs to be
   # traversed to find the element.
@@ -181,7 +183,8 @@ module Hamster
     end
     alias :length :size
 
-    # Create a new `List` with `item` added at the front.
+    # Create a new `List` with `item` added at the front. This is a constant
+    # time operation.
     #
     # @example
     #   Hamster.list(:b, :c).cons(:a)
@@ -189,10 +192,10 @@ module Hamster
     #
     # @param item [Object] The item to add
     # @return [List]
-    def cons(item)
+    def add(item)
       Cons.new(item, self)
     end
-    alias :add :cons
+    alias :cons :add
 
     # Create a new `List` with `item` added at the end. This is much less efficient
     # than adding items at the front.
@@ -208,9 +211,11 @@ module Hamster
     end
 
     # Call the given block once for each item in the list, passing each
-    # item from first to last successively to the block.
+    # item from first to last successively to the block. If no block is given,
+    # returns an `Enumerator`.
     #
     # @return [self]
+    # @yield [item]
     def each
       return to_enum unless block_given?
       list = self
@@ -220,13 +225,15 @@ module Hamster
       end
     end
 
-    # Return a lazy list in which each element is derived from the corresponding
-    # element in this `List`, transformed through the given block.
+    # Return a `List` in which each element is derived from the corresponding
+    # element in this `List`, transformed through the given block. If no block
+    # is given, returns an `Enumerator`.
     #
     # @example
     #   Hamster.list(3, 2, 1).map { |e| e * e }  # => Hamster::List[9, 4, 1]
     #
-    # @return [List]
+    # @return [List, Enumerator]
+    # @yield [item]
     def map(&block)
       return enum_for(:map) unless block_given?
       LazyList.new do
@@ -236,7 +243,7 @@ module Hamster
     end
     alias :collect :map
 
-    # Return a lazy list which is realized by transforming each item into a `List`,
+    # Return a `List` which is realized by transforming each item into a `List`,
     # and flattening the resulting lists.
     #
     # @example
@@ -254,7 +261,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list which contains all the items for which the given block
+    # Return a `List` which contains all the items for which the given block
     # returns true.
     #
     # @example
@@ -262,6 +269,7 @@ module Hamster
     #   # => Hamster::List["Bird", "Elephant"]
     #
     # @return [List]
+    # @yield [item] Once for each item.
     def select(&block)
       return enum_for(:select) unless block_given?
       LazyList.new do
@@ -276,7 +284,7 @@ module Hamster
     alias :find_all :select
     alias :keep_if  :select
 
-    # Return a lazy list which contains all elements up to, but not including, the
+    # Return a `List` which contains all elements up to, but not including, the
     # first element for which the block returns `nil` or `false`.
     #
     # @example
@@ -284,6 +292,7 @@ module Hamster
     #   # => Hamster::List[1, 3]
     #
     # @return [List, Enumerator]
+    # @yield [item]
     def take_while(&block)
       return enum_for(:take_while) unless block_given?
       LazyList.new do
@@ -293,7 +302,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list which contains all elements starting from the
+    # Return a `List` which contains all elements starting from the
     # first element for which the block returns `nil` or `false`.
     #
     # @example
@@ -301,6 +310,7 @@ module Hamster
     #   # => Hamster::List[5, 7, 6, 4, 2]
     #
     # @return [List, Enumerator]
+    # @yield [item]
     def drop_while(&block)
       return enum_for(:drop_while) unless block_given?
       LazyList.new do
@@ -310,7 +320,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list containing the first `number` items from this `List`.
+    # Return a `List` containing the first `number` items from this `List`.
     #
     # @example
     #   Hamster.list(1, 3, 5, 7, 6, 4, 2).take(3)
@@ -326,7 +336,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list containing all but the last item from this `List`.
+    # Return a `List` containing all but the last item from this `List`.
     #
     # @example
     #   Hamster.list("A", "B", "C").pop  # => Hamster::List["A", "B"]
@@ -341,7 +351,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list containing all items after the first `number` items from
+    # Return a `List` containing all items after the first `number` items from
     # this `List`.
     #
     # @example
@@ -361,7 +371,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list with all items from this `List`, followed by all items from
+    # Return a `List` with all items from this `List`, followed by all items from
     # `other`.
     #
     # @example
@@ -389,10 +399,12 @@ module Hamster
       LazyList.new { reduce(EmptyList) { |list, item| list.cons(item) }}
     end
 
-    # Gather the corresponding elements from this `List` and `others` (that is,
-    # the elements with the same indices) into new 2-element lists. Return a
-    # lazy list of these 2-element lists.
+    # Combine two lists by "zipping" them together.  The corresponding elements
+    # from this `List` and each of `others` (that is, the elements with the
+    # same indices) will be gathered into lists.
     #
+    # If `others` contains fewer elements than this list, `nil` will be used
+    # for padding.
     #
     # @example
     #   Hamster.list("A", "B", "C").zip(Hamster.list(1, 2, 3))
@@ -409,7 +421,7 @@ module Hamster
 
     # Gather the first element of each nested list into a new `List`, then the second
     # element of each nested list, then the third, and so on. In other words, if each
-    # nested list is a "row", return a lazy list of "columns" instead.
+    # nested list is a "row", return a `List` of "columns" instead.
     #
     # Although the returned list is lazy, each returned nested list (each "column")
     # is strict. So while each nested list in the input can be infinite, the parent
@@ -441,8 +453,8 @@ module Hamster
       end
     end
 
-    # Concatenate an infinite series of copies of this `List` together (into a
-    # new lazy list). Or, if empty, just return an empty list.
+    # Concatenate an infinite series of copies of this `List` together into a
+    # new `List`. Or, if empty, just return an empty list.
     #
     # @example
     #   Hamster.list(1, 2, 3).cycle.take(10)
@@ -469,18 +481,19 @@ module Hamster
     #
     # @param count [Integer] The number of positions to shift items by
     # @return [Vector]
+    # @raise [TypeError] if count is not an integer.
     def rotate(count = 1)
       raise TypeError, "expected Integer" if not count.is_a?(Integer)
-      return self if  empty? || (count % size) == 0
+      return self if empty? || (count % size) == 0
       count = (count >= 0) ? count % size : (size - (~count % size) - 1)
       drop(count).append(take(count))
     end
 
-    # Return 2 `List`s, one of the first `number` items, and another of all the
-    # remaining items.
+    # Return two `List`s, one of the first `number` items, and another with the
+    # remaining.
     #
     # @example
-    #   Hamster.list("a", "b", "c", "d").split(2)
+    #   Hamster.list("a", "b", "c", "d").split_at(2)
     #   # => [Hamster::List["a", "b"], Hamster::List["c", "d"]]
     #
     # @param number [Integer] The index at which to split this list
@@ -489,7 +502,7 @@ module Hamster
       [take(number), drop(number)].freeze
     end
 
-    # Return 2 `List`s, one up to (but not including) the first item for which the
+    # Return two `List`s, one up to (but not including) the first item for which the
     # block returns `nil` or `false`, and another of all the remaining items.
     #
     # @example
@@ -497,6 +510,7 @@ module Hamster
     #   # => [Hamster::List[4, 3, 5], Hamster::List[2, 1]]
     #
     # @return [Array]
+    # @yield [item]
     def span(&block)
       return [self, EmptyList].freeze unless block_given?
       splitter = Splitter.new(self, block)
@@ -505,7 +519,7 @@ module Hamster
        Splitter::Right.new(splitter, mutex)].freeze
     end
 
-    # Return 2 `List`s, one up to (but not including) the first item for which the
+    # Return two `List`s, one up to (but not including) the first item for which the
     # block returns true, and another of all the remaining items.
     #
     # @example
@@ -513,6 +527,7 @@ module Hamster
     #   # => [Hamster::List[1, 3], Hamster::List[4, 2, 5]]
     #
     # @return [Array]
+    # @yield [item]
     def break(&block)
       return span unless block_given?
       span { |item| !yield(item) }
@@ -526,19 +541,41 @@ module Hamster
       EmptyList
     end
 
-    # Return a `List` with the same items, but sorted either in their natural order,
-    # or using an optional comparator block. The block must take 2 parameters, and
-    # return 0, 1, or -1 if the first one is equal, greater than, or less than the
-    # second (respectively).
+    # Return a new `List` with the same items, but sorted.
+    #
+    # @overload sort
+    #   Compare elements with their natural sort key (`#<=>`).
+    #
+    #   @example
+    #     Hamster::List["Elephant", "Dog", "Lion"].sort
+    #     # => Hamster::List["Dog", "Elephant", "Lion"]
+    #
+    # @overload sort
+    #   Uses the block as a comparator to determine sorted order.
+    #
+    #   @yield [a, b] Any number of times with different pairs of elements.
+    #   @yieldreturn [Integer] Negative if the first element should be sorted
+    #                          lower, positive if the latter element, or 0 if
+    #                          equal.
+    #   @example
+    #     Hamster::List["Elephant", "Dog", "Lion"].sort { |a,b| a.size <=> b.size }
+    #     # => Hamster::List["Dog", "Lion", "Elephant"]
     #
     # @return [List]
     def sort(&comparator)
       LazyList.new { List.from_enum(super(&comparator)) }
     end
 
-    # Return a new `List` with the same items, but sorted. The sort order will be
-    # determined by mapping the items through the given block to obtain sort keys,
-    # and then sorting the keys according to their natural sort order.
+    # Return a new `List` with the same items, but sorted. The sort order is
+    # determined by mapping the items through the given block to obtain sort
+    # keys, and then sorting the keys according to their natural sort order
+    # (`#<=>`).
+    #
+    # @yield [element] Once for each element.
+    # @yieldreturn a sort key object for the yielded element.
+    # @example
+    #   Hamster::List["Elephant", "Dog", "Lion"].sort_by { |e| e.size }
+    #   # => Hamster::List["Dog", "Lion", "Elephant"]
     #
     # @return [List]
     def sort_by(&transformer)
@@ -560,7 +597,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list with the same items, but all duplicates removed.
+    # Return a `List` with the same items, but all duplicates removed.
     # Use `#hash` and `#eql?` to determine which items are duplicates.
     #
     # @example
@@ -568,24 +605,31 @@ module Hamster
     #   Hamster.list("a", "A", "b").uniq(&:upcase) # => Hamster::List["a", "b"]
     #
     # @return [List]
-    def uniq(items = ::Set.new, &block)
+    def uniq(&block)
+      _uniq(::Set.new, &block)
+    end
+
+    # @private
+    # Separate from `uniq` so as not to expose `items` in the public API.
+    def _uniq(items, &block)
       if block_given?
         LazyList.new do
           next self if empty?
           if items.add?(block.call(head))
-            Cons.new(head, tail.uniq(items, &block))
+            Cons.new(head, tail._uniq(items, &block))
           else
-            tail.uniq(items, &block)
+            tail._uniq(items, &block)
           end
         end
       else
         LazyList.new do
           next self if empty?
-          next tail.uniq(items) if items.include?(head)
-          Cons.new(head, tail.uniq(items.add(head)))
+          next tail._uniq(items) if items.include?(head)
+          Cons.new(head, tail._uniq(items.add(head)))
         end
       end
     end
+    protected :_uniq
 
     # Return a `List` with all the elements from both this list and `other`,
     # with all duplicates removed.
@@ -597,14 +641,14 @@ module Hamster
     # @return [List]
     def union(other, items = ::Set.new)
       LazyList.new do
-        next other.uniq(items) if empty?
+        next other._uniq(items) if empty?
         next tail.union(other, items) if items.include?(head)
         Cons.new(head, tail.union(other, items.add(head)))
       end
     end
     alias :| :union
 
-    # Return a lazy list with all elements except the last one.
+    # Return a `List` with all elements except the last one.
     #
     # @example
     #   Hamster.list("a", "b", "c").init # => Hamster::List["a", "b"]
@@ -623,7 +667,7 @@ module Hamster
       list.head
     end
 
-    # Return a lazy list of all suffixes of this list.
+    # Return a `List` of all suffixes of this list.
     #
     # @example
     #   Hamster.list(1,2,3).tails
@@ -640,7 +684,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list of all prefixes of this list.
+    # Return a `List` of all prefixes of this list.
     #
     # @example
     #   Hamster.list(1,2,3).inits
@@ -657,7 +701,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list of all combinations of length `n` of items from this `List`.
+    # Return a `List` of all combinations of length `n` of items from this `List`.
     #
     # @example
     #   Hamster.list(1,2,3).combination(2)
@@ -694,8 +738,11 @@ module Hamster
     end
 
     # Split the items in this list in groups of `number`, and yield each group
-    # to the block (as a `List`).
-    # @return [self]
+    # to the block (as a `List`). If no block is given, returns an
+    # `Enumerator`.
+    #
+    # @return [self, Enumerator]
+    # @yield [list] Once for each chunk.
     def each_chunk(number, &block)
       return enum_for(:each_chunk, number) unless block_given?
       chunk(number).each(&block)
@@ -725,6 +772,13 @@ module Hamster
     # for which the block returned that value.
     #
     # @return [Hash]
+    # @yield [item]
+    # @example
+    #    Hamster::List["a", "b", "ab"].group_by { |e| e.size }
+    #    # Hamster::Hash[
+    #    #   1 => Hamster::List["b", "a"],
+    #    #   2 => Hamster::List["ab"]
+    #    # ]
     def group_by(&block)
       group_by_with(EmptyList, &block)
     end
@@ -747,22 +801,47 @@ module Hamster
       node.head
     end
 
-    # Element reference. Return the item at a specific index, or a specified,
-    # contiguous range of items (as a new list).
+    # Return specific objects from the `List`. All overloads return `nil` if
+    # the starting index is out of range.
     #
-    # @overload list[index]
-    #   Return the item at `index`.
-    #   @param index [Integer] The index to retrieve.
-    # @overload list[start, length]
-    #   Return a sublist starting at index `start` and continuing for `length` elements.
-    #   @param start [Integer] The index to start retrieving items from.
+    # @overload list.slice(index)
+    #   Returns a single object at the given `index`. If `index` is negative,
+    #   count backwards from the end.
+    #
+    #   @param index [Integer] The index to retrieve. May be negative.
+    #   @return [Object]
+    #   @example
+    #     l = Hamster::List["A", "B", "C", "D", "E", "F"]
+    #     l[2]  # => "C"
+    #     l[-1] # => "F"
+    #     l[6]  # => nil
+    #
+    # @overload list.slice(index, length)
+    #   Return a sublist starting at `index` and continuing for `length`
+    #   elements or until the end of the `List`, whichever occurs first.
+    #
+    #   @param start [Integer] The index to start retrieving items from. May be
+    #                          negative.
     #   @param length [Integer] The number of items to retrieve.
-    # @overload list[range]
-    #   Return a sublist specified by the given `range` of indices.
-    #   @param range [Range] The range of indices to retrieve.
+    #   @return [List]
+    #   @example
+    #     l = Hamster::List["A", "B", "C", "D", "E", "F"]
+    #     l[2, 3]  # => Hamster::List["C", "D", "E"]
+    #     l[-2, 3] # => Hamster::List["E", "F"]
+    #     l[20, 1] # => nil
     #
-    # @return [Object]
-    def [](arg, length = (missing_length = true))
+    # @overload list.slice(index..end)
+    #   Return a sublist starting at `index` and continuing to index
+    #   `end` or the end of the `List`, whichever occurs first.
+    #
+    #   @param range [Range] The range of indices to retrieve.
+    #   @return [Vector]
+    #   @example
+    #     l = Hamster::List["A", "B", "C", "D", "E", "F"]
+    #     l[2..3]    # => Hamster::List["C", "D"]
+    #     l[-2..100] # => Hamster::List["E", "F"]
+    #     l[20..21]  # => nil
+    def slice(arg, length = (missing_length = true))
       if missing_length
         if arg.is_a?(Range)
           from, to = arg.begin, arg.end
@@ -795,16 +874,26 @@ module Hamster
         list.take(length)
       end
     end
-    alias :slice :[]
+    alias :[] :slice
 
-    # Return a `List` of indices where the given object is found, or where the given
-    # block returns true.
+    # Return a `List` of indices of matching objects.
     #
-    # @overload indices(obj)
-    #   Return a `List` of indices where `obj` is found. Use `#==` for testing equality.
-    # @overload indices { |item| ... }
-    #   Pass each item successively to the block. Return a list of indices where the
-    #   block returns true.
+    # @overload indices(object)
+    #   Return a `List` of indices where `object` is found. Use `#==` for
+    #   testing equality.
+    #
+    #   @example
+    #     Hamster::List[1, 2, 3, 4].indices(2)
+    #     # => Hamster::List[1]
+    #
+    # @overload indices
+    #   Pass each item successively to the block. Return a list of indices
+    #   where the block returns true.
+    #
+    #   @yield [item]
+    #   @example
+    #     Hamster::List[1, 2, 3, 4].indices { |e| e.even? }
+    #     # => Hamster::List[1, 3]
     #
     # @return [List]
     def indices(object = Undefined, i = 0, &block)
@@ -823,11 +912,7 @@ module Hamster
 
     # Merge all the nested lists into a single list, using the given comparator
     # block to determine the order which items should be shifted out of the nested
-    # lists and into the output list. The comparator should take 2 parameters and
-    # return 0, 1, or -1 if the first parameter is (respectively) equal to, greater
-    # than, or less than the second parameter. Whichever nested list's `#head` is
-    # determined to be "lowest" according to the comparator will be the first in
-    # the merged `List`.
+    # lists and into the output list. 
     #
     # @example
     #   list_1 = Hamster::List[1, -3, -5]
@@ -836,6 +921,10 @@ module Hamster
     #   # => Hamster::List[1, -2, -3, 4, -5, 6]
     #
     # @return [List]
+    # @yield [a, b] Pairs of items from matching indices in each list.
+    # @yieldreturn [Integer] Negative if the first element should be selected
+    #                        first, positive if the latter element, or zero if
+    #                        either.
     def merge(&comparator)
       return merge_by unless block_given?
       LazyList.new do
@@ -860,6 +949,8 @@ module Hamster
     #   # => Hamster::List[1, -2, -3, 4, -5, 6]
     #
     # @return [List]
+    # @yield [item] Once for each item in either list.
+    # @yieldreturn [Object] A sort key for the element.
     def merge_by(&transformer)
       return merge_by { |item| item } unless block_given?
       LazyList.new do
@@ -898,7 +989,7 @@ module Hamster
       end
     end
 
-    # Return a lazy list with all elements equal to `obj` removed. `#==` is used
+    # Return a `List` with all elements equal to `obj` removed. `#==` is used
     # for testing equality.
     #
     # @example
@@ -913,7 +1004,7 @@ module Hamster
       LazyList.new { Cons.new(list.head, list.tail.delete(obj)) }
     end
 
-    # Return a lazy list containing the same items, minus the one at `index`.
+    # Return a `List` containing the same items, minus the one at `index`.
     # If `index` is negative, it counts back from the end of the list.
     #
     # @example
@@ -936,22 +1027,40 @@ module Hamster
 
     # Replace a range of indexes with the given object.
     #
-    # @overload fill(obj)
-    #   Return a new `List` of the same size, with every item set to `obj`.
-    # @overload fill(obj, start)
-    #   Return a new `List` with all indexes from `start` to the end of the
-    #   list set to `obj`.
-    # @overload fill(obj, start, length)
-    #   Return a new `List` with `length` indexes, beginning from `start`,
-    #   set to `obj`.
+    # @overload fill(object)
+    #   Return a new `List` of the same size, with every index set to `object`.
     #
-    # @example
-    #   list = Hamster.list("a", "b", "c", "d")
-    #   list.fill("x")       # => Hamster::List["x", "x", "x", "x"]
-    #   list.fill("z", 2)    # => Hamster::List["a", "b", "z", "z"]
-    #   list.fill("y", 0, 2) # => Hamster::List["y", "y", "c", "d"]
+    #   @param [Object] object Fill value.
+    #   @example
+    #     Hamster::List["A", "B", "C", "D", "E", "F"].fill("Z")
+    #     # => Hamster::List["Z", "Z", "Z", "Z", "Z", "Z"]
+    #
+    # @overload fill(object, index)
+    #   Return a new `List` with all indexes from `index` to the end of the
+    #   vector set to `obj`.
+    #
+    #   @param [Object] object Fill value.
+    #   @param [Integer] index Starting index. May be negative.
+    #   @example
+    #     Hamster::List["A", "B", "C", "D", "E", "F"].fill("Z", 3)
+    #     # => Hamster::List["A", "B", "C", "Z", "Z", "Z"]
+    #
+    # @overload fill(object, index, length)
+    #   Return a new `List` with `length` indexes, beginning from `index`,
+    #   set to `obj`. Expands the `List` if `length` would extend beyond the
+    #   current length.
+    #
+    #   @param [Object] object Fill value.
+    #   @param [Integer] index Starting index. May be negative.
+    #   @param [Integer] length
+    #   @example
+    #     Hamster::List["A", "B", "C", "D", "E", "F"].fill("Z", 3, 2)
+    #     # => Hamster::List["A", "B", "C", "Z", "Z", "F"]
+    #     Hamster::List["A", "B"].fill("Z", 1, 5)
+    #     # => Hamster::List["A", "Z", "Z", "Z", "Z", "Z"]
     #
     # @return [List]
+    # @raise [IndexError] if index is out of negative range.
     def fill(obj, index = 0, length = nil)
       if index == 0
         length ||= size
@@ -990,6 +1099,7 @@ module Hamster
     #   #     Hamster::List[3, 2, 1]]
     #
     # @return [self, Enumerator]
+    # @yield [list] Once for each permutation.
     def permutation(length = size, &block)
       return enum_for(:permutation, length) if not block_given?
       if length == 0
@@ -1037,14 +1147,15 @@ module Hamster
       self
     end
 
-    # Return 2 `List`s, the first containing all the elements for which the block
-    # evaluates to true, the second containing the rest.
+    # Return two `List`s, the first containing all the elements for which the
+    # block evaluates to true, the second containing the rest.
     #
     # @example
     #   Hamster.list(1, 2, 3, 4, 5, 6).partition { |x| x.even? }
     #   # => [Hamster::List[2, 4, 6], Hamster::List[1, 3, 5]]
     #
     # @return [List]
+    # @yield [item] Once for each item.
     def partition(&block)
       return enum_for(:partition) if not block_given?
       partitioner = Partitioner.new(self, block)
@@ -1076,7 +1187,8 @@ module Hamster
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
     end
 
-    # Return `self`.
+    # Return `self`. Since this is an immutable object duplicates are
+    # equivalent.
     # @return [List]
     def dup
       self
@@ -1127,13 +1239,21 @@ module Hamster
 
     private
 
+    # Perform compositions of `car` and `cdr` operations (traditional shorthand
+    # for `head` and `tail` respectively). Their names consist of a `c`,
+    # followed by at least one `a` or `d`, and finally an `r`. The series of
+    # `a`s and `d`s in the method name identify the series of `car` and `cdr`
+    # operations performed, in inverse order.
+    #
+    # @return [Object, List]
+    # @example
+    #   l = Hamster::List[nil, Hamster::List[1]]
+    #   l.car   # => nil
+    #   l.cdr   # => Hamster::List[Hamster::List[1]]
+    #   l.cadr  # => Hamster::List[1]
+    #   l.caadr # => 1
     def method_missing(name, *args, &block)
       if name.to_s.match(CADR)
-        # Perform compositions of car and cdr operations. Their names consist of a 'c',
-        # followed by at least one 'a' or 'd', and finally an 'r'. The series of 'a's and
-        # 'd's in the method name identify the series of car and cdr operations performed.
-        # The order in which the 'a's and 'd's appear is the inverse of the order in which
-        # the corresponding operations are performed.
         code = "def #{name}; self."
         code << Regexp.last_match[1].reverse.chars.map do |char|
           {'a' => 'head', 'd' => 'tail'}[char]
@@ -1188,7 +1308,7 @@ module Hamster
   # only called) when one of these operations is performed.
   #
   # By returning a `Cons` that in turn has a {LazyList} as its tail, one can
-  # construct infinite lazy lists.
+  # construct infinite `List`s.
   #
   # @private
   class LazyList
@@ -1265,7 +1385,7 @@ module Hamster
     end
   end
 
-  # Common behavior for other classes which implement various kinds of lazy lists
+  # Common behavior for other classes which implement various kinds of `List`s
   # @private
   class Realizable
     include List
@@ -1304,7 +1424,7 @@ module Hamster
     end
   end
 
-  # This class can divide a collection into 2 lazy lists, one of items
+  # This class can divide a collection into 2 `List`s, one of items
   #   for which the block returns true, and another for false
   # At the same time, it guarantees the block will only be called ONCE for each item
   #
@@ -1328,7 +1448,7 @@ module Hamster
     end
   end
 
-  # One of the lazy lists which gets its items from a Partitioner
+  # One of the `List`s which gets its items from a Partitioner
   # @private
   class Partitioned < Realizable
     def initialize(partitioner, buffer, mutex)
@@ -1361,9 +1481,10 @@ module Hamster
     end
   end
 
-  # This class can divide a list up into 2 lazy lists, one for the prefix of elements
-  #   for which the block returns true, and another for all the elements after that
-  # It guarantees that the block will only be called ONCE for each item
+  # This class can divide a list up into 2 `List`s, one for the prefix of
+  # elements for which the block returns true, and another for all the elements
+  # after that. It guarantees that the block will only be called ONCE for each
+  # item
   #
   # @private
   class Splitter
