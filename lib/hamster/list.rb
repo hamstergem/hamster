@@ -122,7 +122,7 @@ module Hamster
   # It consists of a *head* (the first element) and a *tail* (which itself is also
   # a `List`, containing all the remaining elements).
   #
-  # This is a singly linked list. Prepending to the list with {List#cons} runs
+  # This is a singly linked list. Prepending to the list with {List#add} runs
   # in constant time. Traversing the list from front to back is efficient,
   # however, indexed access runs in linear time because the list needs to be
   # traversed to find the element.
@@ -190,10 +190,10 @@ module Hamster
     #
     # @param item [Object] The item to add
     # @return [List]
-    def cons(item)
+    def add(item)
       Cons.new(item, self)
     end
-    alias :add :cons
+    alias :cons :add
 
     # Create a new `List` with `item` added at the end. This is much less efficient
     # than adding items at the front.

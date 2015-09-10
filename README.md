@@ -185,30 +185,30 @@ See the [API documentation][SORTED-SET-DOC] for details on all `SortedSet` metho
 
 <h2>List <span style="font-size:0.7em">(<a href="http://rubydoc.info/github/hamstergem/hamster/master/Hamster/List">API Documentation</a>)</span></h2>
 
-Hamster `List`s have a "head" (the value at the front of the list),
-and a "tail" (a list of the remaining items):
+Hamster `List`s have a *head* (the value at the front of the list),
+and a *tail* (a list of the remaining items):
 
 ``` ruby
 list = Hamster.list(1, 2, 3)
 list.head                    # => 1
-list.tail                    # => Hamster.list(2, 3)
+list.tail                    # => Hamster::List[2, 3]
 ```
 
-To add to a list, you use `List#cons`:
+Add to a list with `List#cons`:
 
 ``` ruby
 original = Hamster.list(1, 2, 3)
-copy = original.cons(0)      # => Hamster.list(0, 1, 2, 3)
+copy = original.add(0)      # => Hamster::List[0, 1, 2, 3]
 ```
 
 Notice how modifying a list actually returns a new list.
-That's because Hamster `List`s are immutable. Thankfully,
-just like other Hamster collections, they're also very
-efficient at making copies!
+That's because Hamster `List`s are immutable.
 
-`List` is, where possible, lazy. That is, it tries to defer
-processing items until absolutely necessary. For example,
-given a crude function to detect prime numbers:
+### Laziness
+
+`List` is lazy where possible. It tries to defer processing items until
+absolutely necessary. For example, given a crude function to detect prime
+numbers:
 
 ``` ruby
 def prime?(number)
@@ -240,6 +240,8 @@ first three:
 end.take(3)
   # => 10s
 ```
+
+### Construction
 
 Besides `Hamster.list` there are other ways to construct lists:
 
@@ -280,14 +282,17 @@ Besides `Hamster.list` there are other ways to construct lists:
     Hamster.iterate(1, &:next)
     ```
 
-You also get `Enumerable#to_list` so you can slowly
-transition from built-in collection classes to Hamster.
+### Core Extensions
 
-And finally, you get `IO#to_list` allowing you to lazily
-process huge files. For example, imagine the following
-code to process a 100MB file:
+`Enumerable#to_list` will wrap any existing `Enumerable` in a list, so you can
+slowly transition from built-in collection classes to Hamster.
+
+`IO#to_list` enables lazy processing of huge files. For example, imagine the
+following code to process a 100MB file:
 
 ``` ruby
+require 'hamster/core_ext'
+
 File.open("my_100_mb_file.txt") do |file|
   lines = []
   file.each_line do |line|
@@ -297,9 +302,7 @@ File.open("my_100_mb_file.txt") do |file|
 end
 ```
 
-How many times/how long did you read the code before it became
-apparent what the code actually did? Now compare that to the
-following:
+Compare to the following more functional version:
 
 ``` ruby
 File.open("my_100_mb_file.txt") do |file|
@@ -307,11 +310,11 @@ File.open("my_100_mb_file.txt") do |file|
 end
 ```
 
-Unfortunately, though the second example reads nicely, it
-takes around 13 seconds to run (compared with 0.033 seconds
+Unfortunately, though the second example reads nicely it
+takes many seconds to run (compared with milliseconds
 for the first) even though we're only interested in the first
-10 lines! However, using a little `#to_list` magic, we
-can get the running time back down to 0.033 seconds!
+ten lines. Using `#to_list` we can get the running time back comparable to the
+imperative version.
 
 ``` ruby
 File.open("my_100_mb_file.txt") do |file|
@@ -319,10 +322,9 @@ File.open("my_100_mb_file.txt") do |file|
 end
 ```
 
-How is this even possible? It's possible because `IO#to_list`
-creates a lazy list whereby each line is only ever read and
-processed as needed, in effect converting it to the first
-example without all the syntactic, imperative, noise.
+This is possible because `IO#to_list` creates a lazy list whereby each line is
+only ever read and processed as needed, in effect converting it to the first
+example.
 
 See the API documentation for details on all [`List`][LIST-DOC] methods.
 
