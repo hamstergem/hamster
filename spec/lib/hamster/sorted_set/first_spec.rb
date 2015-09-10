@@ -11,7 +11,7 @@ describe Hamster::SortedSet do
     ].each do |values, expected|
       context "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          Hamster.sorted_set(*values).first.should eql(expected)
+          SS[*values].first.should eql(expected)
         end
       end
     end

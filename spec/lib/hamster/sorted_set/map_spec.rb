@@ -6,34 +6,34 @@ describe Hamster::SortedSet do
     describe "##{method}" do
       context "when empty" do
         it "returns self" do
-          Hamster.sorted_set.send(method) {}.should equal(Hamster.sorted_set)
+          SS.empty.send(method) {}.should equal(SS.empty)
         end
       end
 
       context "when not empty" do
-        let(:sorted_set) { Hamster.sorted_set("A", "B", "C") }
+        let(:sorted_set) { SS["A", "B", "C"] }
 
         context "with a block" do
           it "preserves the original values" do
             sorted_set.send(method, &:downcase)
-            sorted_set.should eql(Hamster.sorted_set("A", "B", "C"))
+            sorted_set.should eql(SS["A", "B", "C"])
           end
 
           it "returns a new set with the mapped values" do
-            sorted_set.send(method, &:downcase).should eql(Hamster.sorted_set("a", "b", "c"))
+            sorted_set.send(method, &:downcase).should eql(SS["a", "b", "c"])
           end
         end
 
         context "with no block" do
           it "returns an Enumerator" do
             sorted_set.send(method).class.should be(Enumerator)
-            sorted_set.send(method).each(&:downcase).should == Hamster.sorted_set('a', 'b', 'c')
+            sorted_set.send(method).each(&:downcase).should == SS['a', 'b', 'c']
           end
         end
       end
 
       context "on a set ordered by a comparator" do
-        let(:sorted_set) { Hamster.sorted_set("A", "B", "C") { |a,b| b <=> a }}
+        let(:sorted_set) { SS.new(["A", "B", "C"]) { |a,b| b <=> a }}
 
         it "returns a new set with the mapped values" do
           sorted_set.send(method, &:downcase).should == ['c', 'b', 'a']

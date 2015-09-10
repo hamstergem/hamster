@@ -10,7 +10,7 @@ describe Hamster::SortedSet do
         [%w[Ichi Ni San], "Ichi"],
       ].each do |values, expected|
         describe "on #{values.inspect}" do
-          let(:set) { Hamster.sorted_set(*values) }
+          let(:set) { SS[*values] }
           let(:result) { set.max { |maximum, item| maximum.length <=> item.length }}
 
           it "returns #{expected.inspect}" do
@@ -28,7 +28,7 @@ describe Hamster::SortedSet do
       ].each do |values, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.sorted_set(*values).max.should == expected
+            SS[*values].max.should == expected
           end
         end
       end

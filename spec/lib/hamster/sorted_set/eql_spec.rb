@@ -3,8 +3,8 @@ require "set"
 require "hamster/set"
 
 describe Hamster::SortedSet do
-  let(:set) { Hamster.sorted_set(*values) }
-  let(:comparison) { Hamster.sorted_set(*comparison_values) }
+  let(:set) { SS[*values] }
+  let(:comparison) { SS[*comparison_values] }
 
   describe "#eql?" do
     let(:eql?) { set.eql?(comparison) }
@@ -110,8 +110,8 @@ describe Hamster::SortedSet do
     end
 
     context "with the same values, but a different sort order" do
-      let(:set) { Hamster.sorted_set(1, 2, 3) }
-      let(:comparison) { Hamster.sorted_set(1, 2, 3) { |n| -n }}
+      let(:set) { SS[1, 2, 3] }
+      let(:comparison) { SS.new([1, 2, 3]) { |n| -n }}
 
       it "returns false" do
         expect(eql?).to eq(false)

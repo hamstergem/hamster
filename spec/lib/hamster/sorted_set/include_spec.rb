@@ -4,7 +4,7 @@ require "hamster/sorted_set"
 describe Hamster::SortedSet do
   [:include?, :member?].each do |method|
     describe "##{method}" do
-      let(:sorted_set) { Hamster.sorted_set(1, 2, 3, 4.0) }
+      let(:sorted_set) { SS[1, 2, 3, 4.0] }
 
       [1, 2, 3, 4.0].each do |value|
         it "returns true for an existing value (#{value.inspect})" do

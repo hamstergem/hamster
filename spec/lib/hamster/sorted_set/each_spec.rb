@@ -4,7 +4,7 @@ require "hamster/sorted_set"
 describe Hamster::SortedSet do
   describe "#each" do
     context "with no block" do
-      let(:sorted_set) { Hamster.sorted_set("A", "B", "C") }
+      let(:sorted_set) { SS["A", "B", "C"] }
 
       it "returns an Enumerator" do
         sorted_set.each.class.should be(Enumerator)
@@ -13,7 +13,7 @@ describe Hamster::SortedSet do
     end
 
     context "with a block" do
-      let(:sorted_set) { Hamster::SortedSet.new((1..1025).to_a.reverse) }
+      let(:sorted_set) { SS.new((1..1025).to_a.reverse) }
 
       it "returns self" do
         sorted_set.each {}.should be(sorted_set)

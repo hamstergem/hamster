@@ -25,14 +25,14 @@ describe Hamster::SortedSet do
         unless item.nil? # test breaks otherwise
           context "looking for #{item.inspect} in #{values.inspect} without block" do
             it "returns #{expected.inspect}" do
-              Hamster.sorted_set(*values).send(method, item).should == expected
+              SS[*values].send(method, item).should == expected
             end
           end
         end
 
         context "looking for #{item.inspect} in #{values.inspect} with block" do
           it "returns #{expected.inspect}" do
-            Hamster.sorted_set(*values).send(method) { |x| x == item }.should == expected
+            SS[*values].send(method) { |x| x == item }.should == expected
           end
         end
       end

@@ -14,7 +14,7 @@ describe Hamster::SortedSet do
       ].each do |a, b, expected|
         context "for #{a.inspect} and #{b.inspect}" do
           it "returns #{expected.inspect}"  do
-            Hamster.sorted_set(*a).send(method, Hamster.sorted_set(*b)).should eql(Hamster.sorted_set(*expected))
+            SS[*a].send(method, SS[*b]).should eql(SS[*expected])
           end
         end
       end

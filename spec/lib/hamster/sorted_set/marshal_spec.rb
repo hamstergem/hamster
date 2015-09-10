@@ -7,7 +7,7 @@ describe Hamster::SortedSet do
       File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"])
     end
     let(:child_cmd) do
-      %Q|#{ruby} -I lib -r hamster -e 'set = Hamster.sorted_set(5, 10, 15); $stdout.write(Marshal.dump(set))'|
+      %Q|#{ruby} -I lib -r hamster -e 'set = Hamster::SortedSet[5, 10, 15]; $stdout.write(Marshal.dump(set))'|
     end
 
     let(:reloaded_set) do
@@ -19,7 +19,7 @@ describe Hamster::SortedSet do
     end
 
     it "can survive dumping and loading into a new process" do
-      expect(reloaded_set).to eql(Hamster.sorted_set(5, 10, 15))
+      expect(reloaded_set).to eql(SS[5, 10, 15])
     end
 
     it "is still possible to find items by index after loading" do
@@ -31,7 +31,7 @@ describe Hamster::SortedSet do
 
     it "raises a TypeError if set has a custom sort order" do
       # this is because comparator block can't be serialized
-      -> { Marshal.dump(Hamster.sorted_set(1, 2, 3) { |x| -x }) }.should raise_error(TypeError)
+      -> { Marshal.dump(SS.new([1, 2, 3]) { |x| -x }) }.should raise_error(TypeError)
     end
   end
 end

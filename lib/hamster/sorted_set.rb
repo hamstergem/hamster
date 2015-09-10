@@ -2,17 +2,6 @@ require "hamster/immutable"
 require "hamster/enumerable"
 
 module Hamster
-  # Create a new `SortedSet` populated with the given items. If a block is provided,
-  # it will determine the sort order of the set. Such a block can accept either 1
-  # parameter (and will be used to derived sort keys, like a `Enumerable#sort_by`
-  # block) or 2 parameters (and will act as a comparator, like a `Enumerable#sort`
-  # block).
-  #
-  # @return [SortedSet]
-  # @see SortedSet#initialize
-  def self.sorted_set(*items, &block)
-    (items.empty? && block.nil?) ? EmptySortedSet : SortedSet.new(items, &block)
-  end
 
   # A `SortedSet` is a collection of ordered values with no duplicates. Unlike a
   # {Vector}, in which items can appear in any arbitrary order, a `SortedSet` always
@@ -28,16 +17,13 @@ module Hamster
   # `SortedSet`. This is unlike {Set}, which can store items of any type, as long
   # as they all support `#hash` and `#eql?`.
   #
-  # A `SortedSet` can be created in any of the following ways:
+  # A `SortedSet` can be created in either of the following ways:
   #
-  #     Hamster.sorted_set('Tom', 'Dick', 'Harry')
   #     Hamster::SortedSet.new([1, 2, 3]) # any Enumerable can be used to initialize
   #     Hamster::SortedSet['A', 'B', 'C', 'D']
   #
   # Or if you want to use a custom ordering:
   #
-  #     Hamster.sorted_set('Tom', 'Dick', 'Harry') { |a, b| a.reverse <=> b.reverse }
-  #     Hamster.sorted_set('Tom', 'Dick', 'Harry') { |str| str.reverse }
   #     Hamster::SortedSet.new([1,2,3]) { |a, b| -a <=> -b }
   #     Hamster::SortedSet.new([1, 2, 3]) { |num| -num }
   #
@@ -1464,7 +1450,7 @@ module Hamster
     end
   end
 
-  # The canonical empty `SortedSet`. Returned by `Hamster.sorted_set` and `SortedSet[]`
+  # The canonical empty `SortedSet`. Returned by `SortedSet[]`
   # when invoked with no arguments; also returned by `SortedSet.empty`. Prefer using
   # this one rather than creating many empty sorted sets using `SortedSet.new`.
   #

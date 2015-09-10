@@ -4,12 +4,12 @@ require "hamster/sorted_set"
 describe Hamster::SortedSet do
   [:select, :find_all].each do |method|
     describe "##{method}" do
-      let(:sorted_set) { Hamster.sorted_set("A", "B", "C") }
+      let(:sorted_set) { SS["A", "B", "C"] }
 
       context "when everything matches" do
         it "preserves the original" do
           sorted_set.send(method) { true }
-          sorted_set.should eql(Hamster.sorted_set("A", "B", "C"))
+          sorted_set.should eql(SS["A", "B", "C"])
         end
 
         it "returns self" do
@@ -21,18 +21,18 @@ describe Hamster::SortedSet do
         context "with a block" do
           it "preserves the original" do
             sorted_set.send(method) { |item| item == "A" }
-            sorted_set.should eql(Hamster.sorted_set("A", "B", "C"))
+            sorted_set.should eql(SS["A", "B", "C"])
           end
 
           it "returns a set with the matching values" do
-            sorted_set.send(method) { |item| item == "A" }.should eql(Hamster.sorted_set("A"))
+            sorted_set.send(method) { |item| item == "A" }.should eql(SS["A"])
           end
         end
 
         context "with no block" do
           it "returns an Enumerator" do
             sorted_set.send(method).class.should be(Enumerator)
-            sorted_set.send(method).each { |item| item == "A" }.should eql(Hamster.sorted_set("A"))
+            sorted_set.send(method).each { |item| item == "A" }.should eql(SS["A"])
           end
         end
       end
@@ -40,7 +40,7 @@ describe Hamster::SortedSet do
       context "when nothing matches" do
         it "preserves the original" do
           sorted_set.send(method) { |item| false }
-          sorted_set.should eql(Hamster.sorted_set("A", "B", "C"))
+          sorted_set.should eql(SS["A", "B", "C"])
         end
 
         it "returns the canonical empty set" do

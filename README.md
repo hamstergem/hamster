@@ -167,7 +167,7 @@ do with a `Set`. Additionally, you can get the `#first` and `#last` item, or ret
 an item using an integral index:
 
 ``` ruby
-set = Hamster.sorted_set('toast', 'jam', 'bacon') # => Hamster::SortedSet["bacon", "jam", "toast"]
+set = Hamster::SortedSet['toast', 'jam', 'bacon'] # => Hamster::SortedSet["bacon", "jam", "toast"]
 set.first                                         # => "bacon"
 set.last                                          # => "toast"
 set[1]                                            # => "jam"
@@ -176,8 +176,8 @@ set[1]                                            # => "jam"
 You can also specify the sort order using a block:
 
 ``` ruby
-Hamster.sorted_set('toast', 'jam', 'bacon') { |a,b| b <=> a }
-Hamster.sorted_set('toast', 'jam', 'bacon') { |str| str.chars.last }
+Hamster::SortedSet.new(['toast', 'jam', 'bacon']) { |a,b| b <=> a }
+Hamster::SortedSet.new(['toast', 'jam', 'bacon']) { |str| str.chars.last }
 ```
 
 See the [API documentation][SORTED-SET-DOC] for details on all `SortedSet` methods.

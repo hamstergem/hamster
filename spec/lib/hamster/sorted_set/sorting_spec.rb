@@ -13,12 +13,12 @@ describe Hamster::SortedSet do
         [%w[Ichi Ni San], %w[Ni San Ichi]],
       ].each do |values, expected|
         describe "on #{values.inspect}" do
-          let(:sorted_set) { Hamster.sorted_set(*values) { |item| item.reverse }}
+          let(:sorted_set) { SS.new(values) { |item| item.reverse }}
 
           context "with a block" do
             it "preserves the original" do
               sorted_set.send(method, &comparator)
-              sorted_set.to_a.should == Hamster.sorted_set(*values) { |item| item.reverse }
+              sorted_set.to_a.should == SS.new(values) { |item| item.reverse }
             end
 
             it "returns #{expected.inspect}" do
@@ -30,7 +30,7 @@ describe Hamster::SortedSet do
           context "without a block" do
             it "preserves the original" do
               sorted_set.send(method)
-              sorted_set.to_a.should == Hamster.sorted_set(*values) { |item| item.reverse }
+              sorted_set.to_a.should == SS.new(values) { |item| item.reverse }
             end
 
             it "returns #{expected.sort.inspect}" do

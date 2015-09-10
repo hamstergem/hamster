@@ -9,11 +9,11 @@ describe Hamster::SortedSet do
       %w[A B C],
     ].each do |values|
       context "on #{values}" do
-        let(:sorted_set) { Hamster.sorted_set(*values) }
+        let(:sorted_set) { SS[*values] }
 
         it "preserves the original" do
           sorted_set.clear
-          sorted_set.should eql(Hamster.sorted_set(*values))
+          sorted_set.should eql(SS[*values])
         end
 
         it "returns an empty set" do
@@ -33,7 +33,7 @@ describe Hamster::SortedSet do
     end
 
     context "with a comparator" do
-      let(:sorted_set) { Hamster::SortedSet.new([1, 2, 3]) { |x| -x } }
+      let(:sorted_set) { SS.new([1, 2, 3]) { |x| -x } }
       it "returns an empty instance with same comparator" do
         e = sorted_set.clear
         e.should be_empty

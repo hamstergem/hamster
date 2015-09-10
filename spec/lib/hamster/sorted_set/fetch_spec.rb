@@ -3,7 +3,7 @@ require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
   describe "#fetch" do
-    let(:sorted_set) { Hamster.sorted_set('a', 'b', 'c') }
+    let(:sorted_set) { SS['a', 'b', 'c'] }
 
     context "with no default provided" do
       context "when the index exists" do

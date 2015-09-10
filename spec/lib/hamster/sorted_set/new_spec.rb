@@ -4,7 +4,7 @@ require "hamster/sorted_set"
 describe Hamster::SortedSet do
   describe ".new" do
     it "accepts a single enumerable argument and creates a new sorted set" do
-      sorted_set = Hamster::SortedSet.new([1,2,3])
+      sorted_set = SS.new([1,2,3])
       sorted_set.size.should be(3)
       sorted_set[0].should be(1)
       sorted_set[1].should be(2)
@@ -12,7 +12,7 @@ describe Hamster::SortedSet do
     end
 
     it "also works with a Range" do
-      sorted_set = Hamster::SortedSet.new(1..3)
+      sorted_set = SS.new(1..3)
       sorted_set.size.should be(3)
       sorted_set[0].should be(1)
       sorted_set[1].should be(2)
@@ -32,21 +32,21 @@ describe Hamster::SortedSet do
     end
 
     it "accepts a block with arity 1" do
-      sorted_set = Hamster::SortedSet.new(1..3) { |a| -a }
+      sorted_set = SS.new(1..3) { |a| -a }
       sorted_set[0].should be(3)
       sorted_set[1].should be(2)
       sorted_set[2].should be(1)
     end
 
     it "accepts a block with arity 2" do
-      sorted_set = Hamster::SortedSet.new(1..3) { |a,b| b <=> a }
+      sorted_set = SS.new(1..3) { |a,b| b <=> a }
       sorted_set[0].should be(3)
       sorted_set[1].should be(2)
       sorted_set[2].should be(1)
     end
 
     it "can use a block produced by Symbol#to_proc" do
-      sorted_set = Hamster::SortedSet.new([Object, BasicObject], &:name.to_proc)
+      sorted_set = SS.new([Object, BasicObject], &:name.to_proc)
       sorted_set[0].should be(BasicObject)
       sorted_set[1].should be(Object)
     end
@@ -63,7 +63,7 @@ describe Hamster::SortedSet do
 
   describe ".[]" do
     it "accepts a variable number of items and creates a new sorted set" do
-      sorted_set = Hamster::SortedSet['a', 'b']
+      sorted_set = SS['a', 'b']
       sorted_set.size.should be(2)
       sorted_set[0].should == 'a'
       sorted_set[1].should == 'b'

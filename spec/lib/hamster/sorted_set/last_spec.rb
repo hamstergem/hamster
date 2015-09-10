@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do
-  let(:sorted_set) { Hamster.sorted_set(*values) }
+  let(:sorted_set) { SS[*values] }
 
   describe "#last" do
     let(:last) { sorted_set.last }

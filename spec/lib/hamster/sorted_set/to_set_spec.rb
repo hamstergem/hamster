@@ -11,7 +11,7 @@ describe Hamster::SortedSet do
     ].each do |values|
       context "on #{values.inspect}" do
         it "returns a set with the same values" do
-          Hamster.sorted_set(*values).to_set.should eql(S[*values])
+          SS[*values].to_set.should eql(S[*values])
         end
       end
     end

@@ -7,15 +7,15 @@ describe Hamster::SortedSet do
       context "with a block" do
         [
           [[], []],
-          [[1], [true => Hamster.sorted_set(1)]],
-          [[1, 2, 3, 4], [true => Hamster.sorted_set(3, 1), false => Hamster.sorted_set(4, 2)]],
+          [[1], [true => SS[1]]],
+          [[1, 2, 3, 4], [true => SS[3, 1], false => SS[4, 2]]],
         ].each do |values, expected|
           context "on #{values.inspect}" do
-            let(:sorted_set) { Hamster.sorted_set(*values) }
+            let(:sorted_set) { SS[*values] }
 
             it "preserves the original" do
               sorted_set.send(method, &:odd?)
-              sorted_set.should eql(Hamster.sorted_set(*values))
+              sorted_set.should eql(SS[*values])
             end
 
             it "returns #{expected.inspect}" do
@@ -28,15 +28,15 @@ describe Hamster::SortedSet do
       context "without a block" do
         [
           [[], []],
-          [[1], [1 => Hamster.sorted_set(1)]],
-          [[1, 2, 3, 4], [1 => Hamster.sorted_set(1), 2 => Hamster.sorted_set(2), 3 => Hamster.sorted_set(3), 4 => Hamster.sorted_set(4)]],
+          [[1], [1 => SS[1]]],
+          [[1, 2, 3, 4], [1 => SS[1], 2 => SS[2], 3 => SS[3], 4 => SS[4]]],
         ].each do |values, expected|
           context "on #{values.inspect}" do
-            let(:sorted_set) { Hamster.sorted_set(*values) }
+            let(:sorted_set) { SS[*values] }
 
             it "preserves the original" do
               sorted_set.group_by
-              sorted_set.should eql(Hamster.sorted_set(*values))
+              sorted_set.should eql(SS[*values])
             end
 
             it "returns #{expected.inspect}" do

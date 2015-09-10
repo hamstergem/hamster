@@ -21,6 +21,7 @@ V = Hamster::Vector
 L = Hamster::List
 H = Hamster::Hash
 S = Hamster::Set
+SS = Hamster::SortedSet
 EmptyList = Hamster::EmptyList
 
 def fixture(name)

@@ -9,7 +9,7 @@ describe Hamster::SortedSet do
       [["C", "B", "A"], 'Hamster::SortedSet["A", "B", "C"]']
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:sorted_set) { Hamster.sorted_set(*values) }
+        let(:sorted_set) { SS[*values] }
 
         it "returns #{expected.inspect}" do
           sorted_set.inspect.should == expected

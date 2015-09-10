@@ -9,7 +9,7 @@ describe Hamster::SortedSet do
       [%w[A B C], false],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:sorted_set) { Hamster.sorted_set(*values) }
+        let(:sorted_set) { SS[*values] }
 
         it "returns #{expected.inspect}" do
           sorted_set.empty?.should == expected
@@ -20,8 +20,8 @@ describe Hamster::SortedSet do
 
   describe ".empty" do
     it "returns the canonical empty set" do
-      Hamster::SortedSet.empty.size.should be(0)
-      Hamster::SortedSet.empty.object_id.should be(Hamster::SortedSet.empty.object_id)
+      SS.empty.size.should be(0)
+      SS.empty.object_id.should be(SS.empty.object_id)
     end
 
     context "from a subclass" do

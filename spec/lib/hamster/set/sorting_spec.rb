@@ -19,7 +19,7 @@ describe Hamster::Set do
             let(:result) { set.send(method, &comparator) }
 
             it "returns #{expected.inspect}" do
-              result.should eql(Hamster.sorted_set(*expected, &comparator))
+              result.should eql(SS.new(expected, &comparator))
               result.to_a.should == expected
             end
 
@@ -33,7 +33,7 @@ describe Hamster::Set do
             let(:result) { set.send(method) }
 
             it "returns #{expected.sort.inspect}" do
-              result.should eql(Hamster.sorted_set(*expected))
+              result.should eql(SS[*expected])
               result.to_a.should == expected.sort
             end
 
