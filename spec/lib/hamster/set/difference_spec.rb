@@ -14,24 +14,24 @@ describe Hamster::Set do
         [%w[A B C M X Y Z], %w[B C D E F G H I J X], %w[A M Y Z]]
       ].each do |a, b, expected|
         context "for #{a.inspect} and #{b.inspect}" do
-          let(:set_a) { Hamster.set(*a) }
-          let(:set_b) { Hamster.set(*b) }
+          let(:set_a) { S[*a] }
+          let(:set_b) { S[*b] }
           let(:result) { set_a.send(method, set_b) }
 
           it "doesn't modify the original Sets" do
             result
-            set_a.should eql(Hamster::Set.new(a))
-            set_b.should eql(Hamster::Set.new(b))
+            set_a.should eql(S.new(a))
+            set_b.should eql(S.new(b))
           end
 
           it "returns #{expected.inspect}"  do
-            result.should eql(Hamster.set(*expected))
+            result.should eql(S[*expected])
           end
         end
 
         context "when passed a Ruby Array" do
           it "returns the expected Set" do
-            Hamster.set(*a).difference(b.freeze).should eql(Hamster.set(*expected))
+            S[*a].difference(b.freeze).should eql(S[*expected])
           end
         end
       end
@@ -41,7 +41,7 @@ describe Hamster::Set do
         50.times do
           array1 = items.sample(200)
           array2 = items.sample(200)
-          result = Hamster::Set.new(array1).send(method, Hamster::Set.new(array2))
+          result = S.new(array1).send(method, S.new(array2))
           result.to_a.sort.should eql((array1 - array2).sort)
         end
       end

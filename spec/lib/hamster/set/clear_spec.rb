@@ -9,15 +9,15 @@ describe Hamster::Set do
       %w[A B C],
     ].each do |values|
       describe "on #{values}" do
-        let(:set) { Hamster.set(*values) }
+        let(:set) { S[*values] }
 
         it "preserves the original" do
           set.clear
-          set.should eql(Hamster.set(*values))
+          set.should eql(S[*values])
         end
 
         it "returns an empty set" do
-          set.clear.should equal(Hamster.set)
+          set.clear.should equal(S.empty)
         end
       end
     end

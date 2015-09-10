@@ -10,7 +10,7 @@ describe Hamster::Set do
         [[1, 2, 3], 10, 4],
       ].each do |values, initial, expected|
         describe "on #{values.inspect}" do
-          let(:set) { Hamster.set(*values) }
+          let(:set) { S[*values] }
 
           context "with an initial value of #{initial}" do
             context "and a block" do
@@ -28,7 +28,7 @@ describe Hamster::Set do
         [[1, 2, 3], 6],
       ].each do |values, expected|
         describe "on #{values.inspect}" do
-          let(:set) { Hamster.set(*values) }
+          let(:set) { S[*values] }
 
           context "with no initial value" do
             context "and a block" do
@@ -42,13 +42,13 @@ describe Hamster::Set do
 
       describe "with no block and a symbol argument" do
         it "uses the symbol as the name of a method to reduce with" do
-          Hamster.set(1, 2, 3).reduce(:+).should == 6
+          S[1, 2, 3].reduce(:+).should == 6
         end
       end
 
       describe "with no block and a string argument" do
         it "uses the string as the name of a method to reduce with" do
-          Hamster.set(1, 2, 3).reduce('+').should == 6
+          S[1, 2, 3].reduce('+').should == 6
         end
       end
     end

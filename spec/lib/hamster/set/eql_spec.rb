@@ -3,8 +3,8 @@ require "set"
 require "hamster/set"
 
 describe Hamster::Set do
-  let(:set) { Hamster.set(*values) }
-  let(:comparison) { Hamster.set(*comparison_values) }
+  let(:set) { S[*values] }
+  let(:comparison) { S[*comparison_values] }
 
   describe "#eql?" do
     let(:eql?) { set.eql?(comparison) }
@@ -18,7 +18,7 @@ describe Hamster::Set do
     end
 
     context "when comparing to a standard set" do
-      let(:comparison) { Set.new(%w[A B C]) }
+      let(:comparison) { ::Set.new(%w[A B C]) }
 
       include_examples "comparing non-sets"
     end

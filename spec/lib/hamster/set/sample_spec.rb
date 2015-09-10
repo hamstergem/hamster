@@ -3,7 +3,7 @@ require "hamster/set"
 
 describe Hamster::Set do
   describe "#sample" do
-    let(:set) { Hamster::Set.new(1..10) }
+    let(:set) { S.new(1..10) }
 
     it "returns a randomly chosen item" do
       chosen = 100.times.map { set.sample }

@@ -7,12 +7,6 @@ require "hamster/sorted_set"
 require "set"
 
 module Hamster
-  # Create a new set.
-  # @return [Set]
-  # @see Set#initialize
-  def self.set(*items)
-    items.empty? ? EmptySet : Set.new(items)
-  end
 
   # `Hamster::Set` is a collection of unordered values with no duplicates. Testing whether
   # an object is present in the `Set` can be done in constant time. `Set` is also `Enumerable`, so you can
@@ -33,9 +27,8 @@ module Hamster
   # The basic set-theoretic operations {#union}, {#intersection}, {#difference}, and
   # {#exclusion} work with any `Enumerable` object.
   #
-  # A `Set` can be created in any of the following ways:
+  # A `Set` can be created in either of the following ways:
   #
-  #     Hamster.set('Tom', 'Dick', 'Harry')
   #     Hamster::Set.new([1, 2, 3]) # any Enumerable can be used to initialize
   #     Hamster::Set['A', 'B', 'C', 'D']
   #
@@ -46,7 +39,7 @@ module Hamster
   # actually return a new set and leave the existing one unchanged.
   #
   # @example
-  #   set1 = Hamster.set(1, 2)  # => Hamster::Set[1, 2]
+  #   set1 = Hamster::Set[1, 2] # => Hamster::Set[1, 2]
   #   set2 = Hamster::Set[1, 2] # => Hamster::Set[1, 2]
   #   set1 == set2              # => true
   #   set3 = set1.add("foo")    # => Hamster::Set[1, 2, "foo"]
@@ -574,7 +567,7 @@ module Hamster
     end
   end
 
-  # The canonical empty `Set`. Returned by `Hamster.set` and `Set[]` when
+  # The canonical empty `Set`. Returned by `Set[]` when
   # invoked with no arguments; also returned by `Set.empty`. Prefer using this
   # one rather than creating many empty sets using `Set.new`.
   #

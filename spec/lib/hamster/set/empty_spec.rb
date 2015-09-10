@@ -12,7 +12,7 @@ describe Hamster::Set do
     ].each do |values, expected|
       describe "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          Hamster.set(*values).empty?.should == expected
+          S[*values].empty?.should == expected
         end
       end
     end
@@ -20,9 +20,9 @@ describe Hamster::Set do
 
   describe ".empty" do
     it "returns the canonical empty set" do
-      Hamster::Set.empty.should be_empty
-      Hamster::Set.empty.object_id.should be(Hamster::Set.empty.object_id)
-      Hamster::Set.empty.should be(Hamster::EmptySet)
+      S.empty.should be_empty
+      S.empty.object_id.should be(S[].object_id)
+      S.empty.should be(Hamster::EmptySet)
     end
 
     context "from a subclass" do

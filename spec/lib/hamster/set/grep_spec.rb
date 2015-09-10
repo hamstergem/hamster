@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  let(:set) { Hamster.set(*values) }
+  let(:set) { S[*values] }
 
   describe "#grep" do
     let(:grep) { set.grep(String, &block) }

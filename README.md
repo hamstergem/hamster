@@ -146,13 +146,13 @@ Other `Array`-like methods like `#select`, `#map`, `#shuffle`, `#uniq`, `#revers
 A `Set` is an unordered collection of values with no duplicates. It is much like the Ruby standard library's `Set`, but immutable. Examples:
 
 ``` ruby
-set = Hamster.set(:red, :blue, :yellow) # => Hamster::Set[:red, :blue, :yellow]
-set.include? :red                       # => true
-set.add :green                          # => Hamster::Set[:red, :blue, :yellow, :green]
-set.delete :blue                        # => Hamster::Set[:red, :yellow]
-set.superset? Hamster.set(:red, :blue)  # => true
-set.union([:red, :blue, :pink])         # => Hamster::Set[:red, :blue, :yellow, :pink]
-set.intersection([:red, :blue, :pink])  # => Hamster::Set[:red, :blue]
+set = Hamster::Set[:red, :blue, :yellow] # => Hamster::Set[:red, :blue, :yellow]
+set.include? :red                        # => true
+set.add :green                           # => Hamster::Set[:red, :blue, :yellow, :green]
+set.delete :blue                         # => Hamster::Set[:red, :yellow]
+set.superset? Hamster::Set[:red, :blue]  # => true
+set.union([:red, :blue, :pink])          # => Hamster::Set[:red, :blue, :yellow, :pink]
+set.intersection([:red, :blue, :pink])   # => Hamster::Set[:red, :blue]
 ```
 
 Like most Hamster methods, the set-theoretic methods `#union`, `#intersection`, `#difference`, and `#exclusion` (aliased as `#|`, `#&`, `#-`, and `#^`) all work with regular Ruby collections, or indeed any `Enumerable` object. So just like all the other Hamster collections, `Hamster::Set` can easily be used in combination with "ordinary" Ruby code.

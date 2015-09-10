@@ -2,24 +2,24 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  let(:set) { Hamster.set("A", "B", "C") }
+  let(:set) { S["A", "B", "C"] }
 
   describe "#delete" do
     context "with an existing value" do
       it "preserves the original" do
         set.delete("B")
-        set.should eql(Hamster.set("A", "B", "C"))
+        set.should eql(S["A", "B", "C"])
       end
 
       it "returns a copy with the remaining values" do
-        set.delete("B").should eql(Hamster.set("A", "C"))
+        set.delete("B").should eql(S["A", "C"])
       end
     end
 
     context "with a non-existing value" do
       it "preserves the original values" do
         set.delete("D")
-        set.should eql(Hamster.set("A", "B", "C"))
+        set.should eql(S["A", "B", "C"])
       end
 
       it "returns self" do
@@ -35,7 +35,7 @@ describe Hamster::Set do
 
     it "works on large sets, with many combinations of input" do
       array = 1000.times.map { %w[a b c d e f g h i j k l m n].sample(5).join }.uniq
-      set = Hamster::Set.new(array)
+      set = S.new(array)
       array.each do |key|
         result = set.delete(key)
         result.size.should == set.size - 1
@@ -50,18 +50,18 @@ describe Hamster::Set do
     context "with an existing value" do
       it "preserves the original" do
         set.delete?("B")
-        set.should eql(Hamster.set("A", "B", "C"))
+        set.should eql(S["A", "B", "C"])
       end
 
       it "returns a copy with the remaining values" do
-        set.delete?("B").should eql(Hamster.set("A", "C"))
+        set.delete?("B").should eql(S["A", "C"])
       end
     end
 
     context "with a non-existing value" do
       it "preserves the original values" do
         set.delete?("D")
-        set.should eql(Hamster.set("A", "B", "C"))
+        set.should eql(S["A", "B", "C"])
       end
 
       it "returns false" do

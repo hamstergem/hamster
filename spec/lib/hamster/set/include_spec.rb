@@ -5,7 +5,7 @@ require 'set'
 describe Hamster::Set do
   [:include?, :member?].each do |method|
     describe "##{method}" do
-      let(:set) { Hamster.set("A", "B", "C", 2.0, nil) }
+      let(:set) { S["A", "B", "C", 2.0, nil] }
 
       ["A", "B", "C", 2.0, nil].each do |value|
         it "returns true for an existing value (#{value.inspect})" do
@@ -18,17 +18,17 @@ describe Hamster::Set do
       end
 
       it "returns true even if existing value is nil" do
-        Hamster.set(nil).include?(nil).should == true
+        S[nil].include?(nil).should == true
       end
 
       it "returns true even if existing value is false" do
-        Hamster.set(false).include?(false).should == true
+        S[false].include?(false).should == true
       end
 
       it "returns false for a mutable item which is mutated after adding" do
         item = ['mutable']
         item = [rand(1000000)] while (item.hash.abs & 31 == [item[0], 'HOSED!'].hash.abs & 31)
-        set  = Hamster::Set[item]
+        set  = S[item]
         item.push('HOSED!')
         set.include?(item).should == false
       end
@@ -38,7 +38,7 @@ describe Hamster::Set do
       end
 
       it "returns the right answers after a lot of addings and removings" do
-        array, set, rb_set = [], Hamster::Set.new, Set.new
+        array, set, rb_set = [], S.new, ::Set.new
 
         1000.times do
           if rand(2) == 0

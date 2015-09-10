@@ -6,7 +6,7 @@ describe Hamster::Set do
     describe "##{method}" do
       ('a'..'z').each do |letter|
         let(:values) { ('a'..letter).to_a }
-        let(:set) { Hamster::Set.new(values) }
+        let(:set) { S.new(values) }
         let(:result) { set.send(method) }
 
         context "on 'a'..'#{letter}'" do
@@ -16,7 +16,7 @@ describe Hamster::Set do
 
           it "doesn't change the original Set" do
             result
-            set.should eql(Hamster.set(*values))
+            set.should eql(S[*values])
           end
 
           it "returns a mutable array" do

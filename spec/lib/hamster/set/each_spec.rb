@@ -3,7 +3,7 @@ require "set"
 require "hamster/set"
 
 describe Hamster::Set do
-  let(:set) { Hamster.set("A", "B", "C") }
+  let(:set) { S["A", "B", "C"] }
 
   describe "#each" do
     let(:each) { set.each(&block) }
@@ -37,7 +37,7 @@ describe Hamster::Set do
     end
 
     it "yields both of a pair of colliding keys" do
-      set = Hamster::Set[DeterministicHash.new('a', 1010), DeterministicHash.new('b', 1010)]
+      set = S[DeterministicHash.new('a', 1010), DeterministicHash.new('b', 1010)]
       yielded = []
       set.each { |obj| yielded << obj }
       yielded.map(&:value).sort.should == ['a', 'b']

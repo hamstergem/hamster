@@ -15,15 +15,15 @@ describe Hamster::Set do
       [[nil, "B", nil], ["B"]],
     ].each do |values, expected|
       describe "on #{values.inspect}" do
-        let(:set) { Hamster.set(*values) }
+        let(:set) { S[*values] }
 
         it "preserves the original" do
           set.compact
-          set.should eql(Hamster.set(*values))
+          set.should eql(S[*values])
         end
 
         it "returns #{expected.inspect}" do
-          set.compact.should eql(Hamster.set(*expected))
+          set.compact.should eql(S[*expected])
         end
       end
     end

@@ -3,7 +3,7 @@ require "hamster/set"
 
 describe Hamster::Set do
   [:dup, :clone].each do |method|
-    let(:set) { Hamster.set("A", "B", "C") }
+    let(:set) { S["A", "B", "C"] }
 
     describe "##{method}" do
       it "returns self" do

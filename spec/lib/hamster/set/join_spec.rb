@@ -10,11 +10,11 @@ describe Hamster::Set do
         [[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)], "A|B|C"]
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:set) { Hamster.set(*values) }
+          let(:set) { S[*values] }
 
           it "preserves the original" do
             set.join("|")
-            set.should eql(Hamster.set(*values))
+            set.should eql(S[*values])
           end
 
           it "returns #{expected.inspect}" do
@@ -31,11 +31,11 @@ describe Hamster::Set do
         [[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)], "ABC"]
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:set) { Hamster.set(*values) }
+          let(:set) { S[*values] }
 
           it "preserves the original" do
             set.join
-            set.should eql(Hamster.set(*values))
+            set.should eql(S[*values])
           end
 
           it "returns #{expected.inspect}" do
@@ -47,13 +47,13 @@ describe Hamster::Set do
 
     context "without a separator (with global default separator set)" do
       before { $, = '**' }
-      let(:set) { Hamster::Set[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)] }
+      let(:set) { S[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)] }
       after  { $, = nil }
 
       context "on ['A', 'B', 'C']" do
         it "preserves the original" do
           set.join
-          set.should eql(Hamster::Set[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)])
+          set.should eql(S[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)])
         end
 
         it "returns #{@expected.inspect}" do

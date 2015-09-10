@@ -9,7 +9,7 @@ describe Hamster::Set do
       %w[A B C],
     ].each do |values|
       describe "on #{values.inspect}" do
-        let(:set) { Hamster.set(*values) }
+        let(:set) { S[*values] }
 
         it "returns self" do
           set.to_set.should equal(set)

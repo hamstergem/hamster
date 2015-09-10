@@ -10,7 +10,7 @@ describe Hamster::Set do
       %w[A B C],
     ].each do |values|
       context "on #{values.inspect}" do
-        let(:set) { Hamster.set(*values) }
+        let(:set) { S[*values] }
         let(:list) { set.to_list }
 
         it "returns a list" do
@@ -19,7 +19,7 @@ describe Hamster::Set do
 
         it "doesn't change the original Set" do
           list
-          set.should eql(Hamster::Set.new(values))
+          set.should eql(S.new(values))
         end
 
         describe "the returned list" do

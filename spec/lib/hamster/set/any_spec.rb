@@ -5,17 +5,17 @@ describe Hamster::Set do
   describe "#any?" do
     context "when empty" do
       it "with a block returns false" do
-        Hamster.set.any? {}.should == false
+        S.empty.any? {}.should == false
       end
 
       it "with no block returns false" do
-        Hamster.set.any?.should == false
+        S.empty.any?.should == false
       end
     end
 
     context "when not empty" do
       context "with a block" do
-        let(:set) { Hamster.set("A", "B", "C", nil) }
+        let(:set) { S["A", "B", "C", nil] }
 
         ["A", "B", "C", nil].each do |value|
           it "returns true if the block ever returns true (#{value.inspect})" do
@@ -40,11 +40,11 @@ describe Hamster::Set do
 
       context "with no block" do
         it "returns true if any value is truthy" do
-          Hamster.set(nil, false, true, "A").any?.should == true
+          S[nil, false, true, "A"].any?.should == true
         end
 
         it "returns false if all values are falsey" do
-          Hamster.set(nil, false).any?.should == false
+          S[nil, false].any?.should == false
         end
       end
     end

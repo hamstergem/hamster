@@ -4,22 +4,22 @@ require "hamster/set"
 describe Hamster::Set do
   describe ".new" do
     it "initializes a new set" do
-      set = Hamster::Set.new([1,2,3])
+      set = S.new([1,2,3])
       set.size.should be(3)
       [1,2,3].each { |n| set.include?(n).should == true }
     end
 
     it "accepts a Range" do
-      set = Hamster::Set.new(1..3)
+      set = S.new(1..3)
       set.size.should be(3)
       [1,2,3].each { |n| set.include?(n).should == true }
     end
 
     it "returns a Set which doesn't change even if the initializer is mutated" do
       array = [1,2,3]
-      set = Hamster::Set.new([1,2,3])
+      set = S.new([1,2,3])
       array.push('BAD')
-      set.should eql(Hamster.set(1,2,3))
+      set.should eql(S[1,2,3])
     end
 
     context "from a subclass" do
@@ -46,7 +46,7 @@ describe Hamster::Set do
 
   describe "[]" do
     it "accepts any number of arguments and initializes a new set" do
-      set = Hamster::Set[1,2,3,4]
+      set = S[1,2,3,4]
       set.size.should be(4)
       [1,2,3,4].each { |n| set.include?(n).should == true }
     end

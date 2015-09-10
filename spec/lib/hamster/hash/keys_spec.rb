@@ -7,7 +7,7 @@ describe Hamster::Hash do
     let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
     it "returns the keys as a set" do
-      hash.keys.should eql(Hamster.set("A", "B", "C"))
+      hash.keys.should eql(S["A", "B", "C"])
     end
 
     it "returns frozen String keys" do

@@ -8,7 +8,7 @@ describe Hamster::Set do
       [["A"], 'Hamster::Set["A"]'],
     ].each do |values, expected|
       describe "on #{values.inspect}" do
-        let(:set) { Hamster.set(*values) }
+        let(:set) { S[*values] }
 
         it "returns #{expected.inspect}" do
           set.inspect.should == expected
@@ -21,7 +21,7 @@ describe Hamster::Set do
     end
 
     describe 'on ["A", "B", "C"]' do
-      let(:set) { Hamster.set("A", "B", "C") }
+      let(:set) { S["A", "B", "C"] }
 
       it "returns a programmer-readable representation of the set contents" do
         set.inspect.should match(/^Hamster::Set\["[A-C]", "[A-C]", "[A-C]"\]$/)

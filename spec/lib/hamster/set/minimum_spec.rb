@@ -10,7 +10,7 @@ describe Hamster::Set do
         [%w[Ichi Ni San], "Ni"],
       ].each do |values, expected|
         describe "on #{values.inspect}" do
-          let(:set) { Hamster.set(*values) }
+          let(:set) { S[*values] }
           let(:result) { set.min { |minimum, item| minimum.length <=> item.length }}
 
           it "returns #{expected.inspect}" do
@@ -28,7 +28,7 @@ describe Hamster::Set do
       ].each do |values, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.set(*values).min.should == expected
+            S[*values].min.should == expected
           end
         end
       end

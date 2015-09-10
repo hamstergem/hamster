@@ -18,7 +18,7 @@ describe Hamster::SortedSet do
     end
 
     context "when comparing to a standard set" do
-      let(:comparison) { Set.new(%w[A B C]) }
+      let(:comparison) { ::Set.new(%w[A B C]) }
       include_examples "comparing something which is not a sorted set"
     end
 

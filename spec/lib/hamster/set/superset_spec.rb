@@ -19,7 +19,7 @@ describe Hamster::Set do
       ].each do |a, b, expected|
         describe "for #{a.inspect} and #{b.inspect}" do
           it "returns #{expected}"  do
-            Hamster.set(*a).send(method, Hamster.set(*b)).should == expected
+            S[*a].send(method, S[*b]).should == expected
           end
         end
       end
@@ -43,7 +43,7 @@ describe Hamster::Set do
       ].each do |a, b, expected|
         describe "for #{a.inspect} and #{b.inspect}" do
           it "returns #{expected}"  do
-            Hamster.set(*a).send(method, Hamster.set(*b)).should == expected
+            S[*a].send(method, S[*b]).should == expected
           end
         end
       end

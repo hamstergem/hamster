@@ -3,7 +3,7 @@ require "set"
 require "hamster/set"
 
 describe Hamster::Set do
-  let(:set) { Hamster.set("A", "B", "C") }
+  let(:set) { S["A", "B", "C"] }
 
   describe "#reverse_each" do
     let(:reverse_each) { set.reverse_each(&block) }

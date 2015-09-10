@@ -5,17 +5,17 @@ describe Hamster::Set do
   describe "#one?" do
     context "when empty" do
       it "with a block returns false" do
-        Hamster.set.one? {}.should == false
+        S.empty.one? {}.should == false
       end
 
       it "with no block returns false" do
-        Hamster.set.one?.should == false
+        S.empty.one?.should == false
       end
     end
 
     context "when not empty" do
       context "with a block" do
-        let(:set) { Hamster.set("A", "B", "C") }
+        let(:set) { S["A", "B", "C"] }
 
         it "returns false if the block returns true more than once" do
           set.one? { |item| true }.should == false
@@ -32,15 +32,15 @@ describe Hamster::Set do
 
       context "with no block" do
         it "returns false if more than one value is truthy" do
-          Hamster.set(nil, true, "A").one?.should == false
+          S[nil, true, "A"].one?.should == false
         end
 
         it "returns true if only one value is truthy" do
-          Hamster.set(nil, true, false).one?.should == true
+          S[nil, true, false].one?.should == true
         end
 
         it "returns false if no values are truthy" do
-          Hamster.set(nil, false).one?.should == false
+          S[nil, false].one?.should == false
         end
       end
     end

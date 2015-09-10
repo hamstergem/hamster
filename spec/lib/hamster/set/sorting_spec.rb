@@ -13,7 +13,7 @@ describe Hamster::Set do
         [%w[Ichi Ni San], %w[Ni San Ichi]],
       ].each do |values, expected|
         describe "on #{values.inspect}" do
-          let(:set) { Hamster.set(*values) }
+          let(:set) { S[*values] }
 
           describe "with a block" do
             let(:result) { set.send(method, &comparator) }
@@ -25,7 +25,7 @@ describe Hamster::Set do
 
             it "doesn't change the original Set" do
               result
-              set.should eql(Hamster::Set.new(values))
+              set.should eql(S.new(values))
             end
           end
 
@@ -39,7 +39,7 @@ describe Hamster::Set do
 
             it "doesn't change the original Set" do
               result
-              set.should eql(Hamster::Set.new(values))
+              set.should eql(S.new(values))
             end
           end
         end
@@ -53,7 +53,7 @@ describe Hamster::Set do
       fn    = lambda { |x| count += 1; -x }
       items = 100.times.collect { rand(10000) }.uniq
 
-      Hamster.set(*items).sort_by(&fn).to_a.should == items.sort.reverse
+      S[*items].sort_by(&fn).to_a.should == items.sort.reverse
       count.should == items.length
     end
   end

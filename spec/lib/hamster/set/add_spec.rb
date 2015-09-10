@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/set"
 
 describe Hamster::Set do
-  let(:original) { Hamster.set("A", "B", "C") }
+  let(:original) { S["A", "B", "C"] }
 
   [:add, :<<].each do |method|
     describe "##{method}" do
@@ -11,11 +11,11 @@ describe Hamster::Set do
 
         it "preserves the original" do
           result
-          original.should eql(Hamster.set("A", "B", "C"))
+          original.should eql(S["A", "B", "C"])
         end
 
         it "returns a copy with the superset of values" do
-          result.should eql(Hamster.set("A", "B", "C", "D"))
+          result.should eql(S["A", "B", "C", "D"])
         end
       end
 
@@ -24,7 +24,7 @@ describe Hamster::Set do
 
         it "preserves the original values" do
           result
-          original.should eql(Hamster.set("A", "B", "C"))
+          original.should eql(S["A", "B", "C"])
         end
 
         it "returns self" do
@@ -33,13 +33,13 @@ describe Hamster::Set do
       end
 
       it "can add nil to a set" do
-        original.add(nil).should eql(Hamster.set("A", "B", "C", nil))
+        original.add(nil).should eql(S["A", "B", "C", nil])
       end
 
       it "works on large sets, with many combinations of input" do
         50.times do
           array = (1..500).to_a.sample(100)
-          set = Hamster::Set.new(array)
+          set   = S.new(array)
           to_add = 1000 + rand(1000)
           set.add(to_add).size.should == 101
           set.add(to_add).include?(to_add).should == true
@@ -53,11 +53,11 @@ describe Hamster::Set do
       let(:result) { original.add?("D") }
 
       it "preserves the original" do
-        original.should eql(Hamster.set("A", "B", "C"))
+        original.should eql(S["A", "B", "C"])
       end
 
       it "returns a copy with the superset of values" do
-        result.should eql(Hamster.set("A", "B", "C", "D"))
+        result.should eql(S["A", "B", "C", "D"])
       end
     end
 
@@ -65,7 +65,7 @@ describe Hamster::Set do
       let(:result) { original.add?("C") }
 
       it "preserves the original values" do
-        original.should eql(Hamster.set("A", "B", "C"))
+        original.should eql(S["A", "B", "C"])
       end
 
       it "returns false" do

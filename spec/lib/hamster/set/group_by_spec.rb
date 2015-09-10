@@ -7,15 +7,15 @@ describe Hamster::Set do
       context "with a block" do
         [
           [[], []],
-          [[1], [true => Hamster.set(1)]],
-          [[1, 2, 3, 4], [true => Hamster.set(3, 1), false => Hamster.set(4, 2)]],
+          [[1], [true => S[1]]],
+          [[1, 2, 3, 4], [true => S[3, 1], false => S[4, 2]]],
         ].each do |values, expected|
           context "on #{values.inspect}" do
-            let(:set) { Hamster.set(*values) }
+            let(:set) { S[*values] }
 
             it "returns #{expected.inspect}" do
               set.send(method, &:odd?).should eql(H[*expected])
-              set.should eql(Hamster::Set.new(values)) # make sure it hasn't changed
+              set.should eql(S.new(values)) # make sure it hasn't changed
             end
           end
         end
@@ -24,15 +24,15 @@ describe Hamster::Set do
       context "without a block" do
         [
           [[], []],
-          [[1], [1 => Hamster.set(1)]],
-          [[1, 2, 3, 4], [1 => Hamster.set(1), 2 => Hamster.set(2), 3 => Hamster.set(3), 4 => Hamster.set(4)]],
+          [[1], [1 => S[1]]],
+          [[1, 2, 3, 4], [1 => S[1], 2 => S[2], 3 => S[3], 4 => S[4]]],
         ].each do |values, expected|
           context "on #{values.inspect}" do
-            let(:set) { Hamster.set(*values) }
+            let(:set) { S[*values] }
 
             it "returns #{expected.inspect}" do
               set.group_by.should eql(H[*expected])
-              set.should eql(Hamster::Set.new(values)) # make sure it hasn't changed
+              set.should eql(S.new(values)) # make sure it hasn't changed
             end
           end
         end
@@ -40,12 +40,12 @@ describe Hamster::Set do
 
       context "on an empty set" do
         it "returns an empty hash" do
-          Hamster.set.group_by { |x| x }.should eql(H.empty)
+          S.empty.group_by { |x| x }.should eql(H.empty)
         end
       end
 
       it "returns a hash without default proc" do
-        Hamster.set(1,2,3).group_by { |x| x }.default_proc.should be_nil
+        S[1,2,3].group_by { |x| x }.default_proc.should be_nil
       end
 
       context "from a subclass" do

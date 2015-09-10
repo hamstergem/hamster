@@ -18,13 +18,13 @@ describe Hamster::Set do
         describe "on #{values.inspect}" do
           context "with a block" do
             it "returns #{expected.inspect}" do
-              Hamster.set(*values).send(method) { |x| x == item }.should == expected
+              S[*values].send(method) { |x| x == item }.should == expected
             end
           end
 
           context "without a block" do
             it "returns an Enumerator" do
-              result = Hamster.set(*values).send(method)
+              result = S[*values].send(method)
               result.class.should be(Enumerator)
               result.each { |x| x == item}.should == expected
             end

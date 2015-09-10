@@ -12,7 +12,7 @@ describe Hamster::Set do
       [[1, 2, 3, 4, 5], 3],
     ].each do |values, expected|
       describe "on #{values.inspect}" do
-        let(:set) { Hamster.set(*values) }
+        let(:set) { S[*values] }
 
         context "with a block" do
           it "returns #{expected.inspect}" do

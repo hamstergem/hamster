@@ -4,7 +4,7 @@ require "hamster/set"
 describe Hamster::Set do
   [:select, :find_all].each do |method|
     describe "##{method}" do
-      let(:set) { Hamster.set("A", "B", "C") }
+      let(:set) { S["A", "B", "C"] }
 
       context "when everything matches" do
         it "returns self" do
@@ -18,18 +18,18 @@ describe Hamster::Set do
 
           it "preserves the original" do
             result
-            set.should eql(Hamster.set("A", "B", "C"))
+            set.should eql(S["A", "B", "C"])
           end
 
           it "returns a set with the matching values" do
-            result.should eql(Hamster.set("A"))
+            result.should eql(S["A"])
           end
         end
 
         context "with no block" do
           it "returns an Enumerator" do
             set.send(method).class.should be(Enumerator)
-            set.send(method).each { |item| item == "A" }.should eql(Hamster.set("A"))
+            set.send(method).each { |item| item == "A" }.should eql(S["A"])
           end
         end
       end
@@ -39,7 +39,7 @@ describe Hamster::Set do
 
         it "preserves the original" do
           result
-          set.should eql(Hamster.set("A", "B", "C"))
+          set.should eql(S["A", "B", "C"])
         end
 
         it "returns the canonical empty set" do
@@ -59,7 +59,7 @@ describe Hamster::Set do
 
       it "works on a large set, with many combinations of input" do
         items = (1..1000).to_a
-        original = Hamster::Set.new(items)
+        original = S.new(items)
         30.times do
           threshold = rand(1000)
           result    = original.send(method) { |item| item <= threshold }
@@ -67,7 +67,7 @@ describe Hamster::Set do
           result.each { |item| item.should <= threshold }
           (threshold+1).upto(1000) { |item| result.include?(item).should == false }
         end
-        original.should eql(Hamster::Set.new(items))
+        original.should eql(S.new(items))
       end
     end
   end

@@ -14,7 +14,7 @@ describe Hamster::Set do
       [[4], [], [4]],
     ].each do |values, expected_matches, expected_remainder|
       context "on #{values.inspect}" do
-        let(:set) { Hamster.set(*values) }
+        let(:set) { S[*values] }
 
         context "with a block" do
           let(:result)  { set.partition(&:odd?) }
@@ -23,7 +23,7 @@ describe Hamster::Set do
 
           it "preserves the original" do
             result
-            set.should eql(Hamster.set(*values))
+            set.should eql(S[*values])
           end
 
           it "returns a frozen array with two items" do
@@ -33,18 +33,18 @@ describe Hamster::Set do
           end
 
           it "correctly identifies the matches" do
-            matches.should eql(Hamster.set(*expected_matches))
+            matches.should eql(S[*expected_matches])
           end
 
           it "correctly identifies the remainder" do
-            remainder.should eql(Hamster.set(*expected_remainder))
+            remainder.should eql(S[*expected_remainder])
           end
         end
 
         describe "without a block" do
           it "returns an Enumerator" do
             set.partition.class.should be(Enumerator)
-            set.partition.each(&:odd?).should eql([Hamster::Set.new(expected_matches), Hamster::Set.new(expected_remainder)])
+            set.partition.each(&:odd?).should eql([S.new(expected_matches), S.new(expected_remainder)])
           end
         end
       end
