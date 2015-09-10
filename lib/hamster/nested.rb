@@ -3,15 +3,17 @@ require "hamster/hash"
 require "hamster/set"
 require "hamster/vector"
 require "hamster/sorted_set"
+require "hamster/list"
+require "hamster/deque"
 
 module Hamster
   class << self
 
     # Create a Hamster immutable data structure with nested Hamster data
     # structure from a nested Ruby object `obj`.  This method recursively
-    # "walks" the Ruby object, converting Ruby `Hash` to `Hamster::Hash`, Ruby
-    # `Array` to `Hamster::Vector` and Ruby `Set` to `Hamster::Set`.  Other
-    # Ruby objects are left as-is.
+    # "walks" the Ruby object, converting Ruby `Hash` to {Hamster::Hash}, Ruby
+    # `Array` to {Hamster::Vector}, Ruby `Set` to {Hamster::Set}, and Ruby
+    # `SortedSet` to {Hamster::SortedSet}.  Other objects are left as-is.
     #
     # @example
     #   h = Hamster.from({ "a" => [1, 2], "b" => "c" })
@@ -43,9 +45,10 @@ module Hamster
     end
 
     # Create a Ruby object from Hamster data. This method recursively "walks"
-    # the Hamster object, converting `Hamster::Hash` to Ruby `Hash`,
-    # `Hamster::Vector` to Ruby `Array` and `Hamster::Set` to Ruby `Set.  Other
-    # Ruby objects are left as-is.
+    # the Hamster object, converting {Hamster::Hash} to Ruby `Hash`,
+    # {Hamster::Vector} and {Hamster::Deque} to Ruby `Array`, {Hamster::Set}
+    # to Ruby `Set`, and {Hamster::SortedSet} to Ruby `SortedSet`.  Other
+    # objects are left as-is.
     #
     # @example
     #   h = Hamster.to_ruby(Hamster.from({ "a" => [1, 2], "b" => "c" }))
