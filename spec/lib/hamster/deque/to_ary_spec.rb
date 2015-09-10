@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/deque"
 
 describe Hamster::Deque do
-  let(:deque) { Hamster.deque("A", "B", "C", "D") }
+  let(:deque) { D["A", "B", "C", "D"] }
 
   describe "#to_ary" do
     context "enables implicit conversion to" do

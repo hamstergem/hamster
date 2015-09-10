@@ -9,15 +9,15 @@ describe Hamster::Deque do
       %w[A B C],
     ].each do |values|
       context "on #{values}" do
-        let(:deque) { Hamster.deque(*values) }
+        let(:deque) { D[*values] }
 
         it "preserves the original" do
           deque.clear
-          deque.should eql(Hamster.deque(*values))
+          deque.should eql(D[*values])
         end
 
         it "returns an empty deque" do
-          deque.clear.should equal(Hamster.deque)
+          deque.clear.should equal(D.empty)
         end
       end
     end

@@ -9,7 +9,7 @@ describe Hamster::Deque do
       %w[A B C],
     ].each do |values|
       context "on #{values.inspect}" do
-        let(:deque) { Hamster.deque(*values) }
+        let(:deque) { D[*values] }
 
         it "returns self" do
           deque.send(method).should equal(deque)

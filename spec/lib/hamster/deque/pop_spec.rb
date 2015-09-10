@@ -9,15 +9,15 @@ describe Hamster::Deque do
       [%w[A B C], %w[A B]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:deque) { Hamster.deque(*values) }
+        let(:deque) { D[*values] }
 
         it "preserves the original" do
           deque.pop
-          deque.should eql(Hamster.deque(*values))
+          deque.should eql(D[*values])
         end
 
         it "returns #{expected.inspect}" do
-          deque.pop.should eql(Hamster.deque(*expected))
+          deque.pop.should eql(D[*expected])
         end
       end
     end

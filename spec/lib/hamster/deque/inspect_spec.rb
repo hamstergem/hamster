@@ -9,7 +9,7 @@ describe Hamster::Deque do
       [%w[A B C], 'Hamster::Deque["A", "B", "C"]']
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:deque) { Hamster.deque(*values) }
+        let(:deque) { D[*values] }
 
         it "returns #{expected.inspect}" do
           deque.inspect.should == expected

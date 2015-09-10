@@ -11,7 +11,7 @@ describe Hamster::Deque do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.deque(*values).send(method).should == expected
+            D[*values].send(method).should == expected
           end
         end
       end

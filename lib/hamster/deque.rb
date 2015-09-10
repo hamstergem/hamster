@@ -2,11 +2,6 @@ require "hamster/immutable"
 require "hamster/list"
 
 module Hamster
-  # Create a new `Deque` populated with the given items.
-  # @return [Deque]
-  def self.deque(*items)
-    items.empty? ? EmptyDeque : Deque.new(items)
-  end
 
   # A `Deque` (or double-ended queue) is an ordered, sequential collection of
   # objects, which allows elements to be retrieved, added and removed at the
@@ -20,7 +15,6 @@ module Hamster
   #
   # To create a new `Deque`:
   #
-  #     Hamster.deque('a', 'b', 'c')
   #     Hamster::Deque.new([:first, :second, :third])
   #     Hamster::Deque[1, 2, 3, 4, 5]
   #
@@ -245,7 +239,7 @@ module Hamster
     end
   end
 
-  # The canonical empty `Deque`. Returned by `Hamster.deque` and `Deque[]` when
+  # The canonical empty `Deque`. Returned by `Deque[]` when
   # invoked with no arguments; also returned by `Deque.empty`. Prefer using this
   # one rather than creating many empty deques using `Deque.new`.
   #

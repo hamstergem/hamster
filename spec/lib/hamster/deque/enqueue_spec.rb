@@ -11,15 +11,15 @@ describe Hamster::Deque do
         [%w[A B C], "D", %w[A B C D]],
       ].each do |values, new_value, expected|
         describe "on #{values.inspect} with #{new_value.inspect}" do
-          let(:deque) { Hamster.deque(*values) }
+          let(:deque) { D[*values] }
 
           it "preserves the original" do
             deque.send(method, new_value)
-            deque.should eql(Hamster.deque(*values))
+            deque.should eql(D[*values])
           end
 
           it "returns #{expected.inspect}" do
-            deque.send(method, new_value).should eql(Hamster.deque(*expected))
+            deque.send(method, new_value).should eql(D[*expected])
           end
         end
       end
