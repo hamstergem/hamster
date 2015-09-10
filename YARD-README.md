@@ -176,7 +176,7 @@ list.head                    # => 1
 list.tail                    # => Hamster::List[2, 3]
 ```
 
-Add to a list with {Hamster::List#cons #add}:
+Add to a list with {Hamster::List#add}:
 
 ``` ruby
 original = Hamster.list(1, 2, 3)
