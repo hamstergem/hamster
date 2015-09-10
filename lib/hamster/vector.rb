@@ -1,7 +1,6 @@
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
-require "hamster/nested"
 
 module Hamster
   # A `Vector` is an ordered, integer-indexed collection of objects. Like
@@ -1287,14 +1286,6 @@ module Hamster
       end
     end
     alias :to_ary :to_a
-
-    # Deeply convert to Ruby Array and other primitives. No `Hamster` objects
-    # of any type will remain anywhere in the data structure.
-    #
-    # @return [::Array]
-    def to_ruby
-      Hamster.to_ruby(self)
-    end
 
     # Return true if `other` has the same type and contents as this `Vector`.
     #

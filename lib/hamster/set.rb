@@ -4,7 +4,6 @@ require "hamster/enumerable"
 require "hamster/hash"
 require "hamster/trie"
 require "hamster/sorted_set"
-require "hamster/nested"
 require "set"
 
 module Hamster
@@ -544,15 +543,6 @@ module Hamster
     # @return [self]
     def to_set
       self
-    end
-
-    # Deeply convert to Ruby Set and other primitives. No `Hamster` objects of
-    # any type will remain anywhere in the data structure.
-    #
-    #
-    # @return [::Set]
-    def to_ruby
-      Hamster.to_ruby(self)
     end
 
     # @private

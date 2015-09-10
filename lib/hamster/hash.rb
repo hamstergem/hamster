@@ -4,7 +4,6 @@ require "hamster/enumerable"
 require "hamster/trie"
 require "hamster/set"
 require "hamster/vector"
-require "hamster/nested"
 
 module Hamster
   # A `Hamster::Hash` maps a set of unique keys to corresponding values, much
@@ -793,14 +792,6 @@ module Hamster
       output
     end
     alias :to_h :to_hash
-
-    # Deeply convert to Ruby Hash and other primitives. No `Hamster` objects of
-    # any type will remain anywhere in the data structure.
-    #
-    # @return [::Hash]
-    def to_ruby
-      Hamster.to_ruby(self)
-    end
 
     # @return [::Hash]
     # @private

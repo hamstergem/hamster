@@ -1,7 +1,6 @@
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
-require "hamster/nested"
 
 module Hamster
   # Create a new `SortedSet` populated with the given items. If a block is provided,
@@ -954,14 +953,6 @@ module Hamster
     # @return [Integer]
     def hash
       reduce(0) { |hash, item| (hash << 5) - hash + item.hash }
-    end
-
-    # Deeply convert to Ruby SortedSet and other primitives. No `Hamster`
-    # objects of any type will remain anywhere in the data structure.
-    #
-    # @return [::SortedSet]
-    def to_ruby
-      Hamster.to_ruby(self)
     end
 
     # @return [::Array]
