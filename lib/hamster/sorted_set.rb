@@ -1,6 +1,5 @@
 require "hamster/immutable"
 require "hamster/enumerable"
-require "hamster/hash"
 
 module Hamster
   # Create a new `SortedSet` populated with the given items. If a block is provided,
