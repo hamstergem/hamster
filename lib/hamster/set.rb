@@ -62,7 +62,7 @@ module Hamster
       # Create a new `Set` populated with the given items.
       # @return [Set]
       def [](*items)
-        new(items)
+        items.empty? ? empty : new(items)
       end
 
       # Return an empty `Set`. If used on a subclass, returns an empty instance
