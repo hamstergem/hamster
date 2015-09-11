@@ -3,13 +3,12 @@ require "hamster/read_copy_update"
 
 module Hamster
   # @api private
-  def self.mutable_queue(*items)
-    MutableQueue.new(deque(*items))
-  end
-
-  # @api private
   class MutableQueue
     include ReadCopyUpdate
+
+    def self.[](*items)
+      MutableQueue.new(Deque[*items])
+    end
 
     def enqueue(item)
       transform { |queue| queue.enqueue(item) }
