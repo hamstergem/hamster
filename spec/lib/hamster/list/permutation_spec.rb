@@ -3,7 +3,7 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#permutation" do
-    let(:list) { Hamster.list(1,2,3,4) }
+    let(:list) { L[1,2,3,4] }
 
     context "with no block" do
       it "returns an Enumerator" do

@@ -9,7 +9,7 @@ describe Hamster::List do
       %w[A B C],
     ].each do |values|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "returns self" do
           list.send(method).should equal(list)

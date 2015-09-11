@@ -12,15 +12,15 @@ describe Hamster::List do
 
       [
         [[], []],
-        [["A"], [Hamster.list("A")]],
-        [%w[A B C], [Hamster.list("A", "B"), Hamster.list("C")]],
+        [["A"], [L["A"]]],
+        [%w[A B C], [L["A", "B"], L["C"]]],
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:list) { Hamster.list(*values) }
+          let(:list) { L[*values] }
 
           context "with a block" do
             it "preserves the original" do
-              list.should eql(Hamster.list(*values))
+              list.should eql(L[*values])
             end
 
             it "iterates over the items in order" do
@@ -37,7 +37,7 @@ describe Hamster::List do
           context "without a block" do
             it "preserves the original" do
               list.send(method, 2)
-              list.should eql(Hamster.list(*values))
+              list.should eql(L[*values])
             end
 
             it "returns an Enumerator" do

@@ -28,7 +28,7 @@ describe Hamster::List do
       ].each do |values, item, expected|
         context "looking for #{item.inspect} in #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.list(*values).indices { |x| x == item }.should eql(Hamster.list(*expected))
+            L[*values].indices { |x| x == item }.should eql(L[*expected])
           end
         end
       end
@@ -53,7 +53,7 @@ describe Hamster::List do
       ].each do |values, item, expected|
         context "looking for #{item.inspect} in #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.list(*values).indices(item).should eql(Hamster.list(*expected))
+            L[*values].indices(item).should eql(L[*expected])
           end
         end
       end

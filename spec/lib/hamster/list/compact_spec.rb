@@ -19,15 +19,15 @@ describe Hamster::List do
       [[nil, "B", nil], ["B"]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "preserves the original" do
           list.compact
-          list.should eql(Hamster.list(*values))
+          list.should eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.compact.should eql(Hamster.list(*expected))
+          list.compact.should eql(L[*expected])
         end
       end
     end

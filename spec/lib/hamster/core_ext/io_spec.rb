@@ -3,7 +3,7 @@ require "hamster/core_ext/io"
 
 describe IO do
   describe "#to_list" do
-    let(:list) { Hamster.list("A\n", "B\n", "C\n") }
+    let(:list) { L["A\n", "B\n", "C\n"] }
     let(:to_list) { io.to_list }
 
     after(:each) do

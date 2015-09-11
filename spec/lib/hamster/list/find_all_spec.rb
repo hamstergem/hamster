@@ -2,8 +2,8 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
-  let(:list) { Hamster.list(*values) }
-  let(:found_list) { Hamster.list(*found_values) }
+  let(:list) { L[*values] }
+  let(:found_list) { L[*found_values] }
 
   describe "#find_all" do
     it "is lazy" do
@@ -15,7 +15,7 @@ describe Hamster::List do
         let(:find_all) { list.find_all { |item| item == item.upcase } }
 
         it "preserves the original" do
-          expect(list).to eq(Hamster.list(*values))
+          expect(list).to eq(L[*values])
         end
 
         it "returns the found list" do

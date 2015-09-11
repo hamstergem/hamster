@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
-  let(:list) { Hamster.list("A", "B", "C", "D") }
+  let(:list) { L["A", "B", "C", "D"] }
 
   describe "#to_ary" do
     context "on a really big list" do

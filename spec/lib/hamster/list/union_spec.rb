@@ -15,15 +15,15 @@ describe Hamster::List do
         [%w[A A], ["A"], ["A"]],
       ].each do |a, b, expected|
         context "returns #{expected.inspect}" do
-          let(:list_a) { Hamster.list(*a) }
-          let(:list_b) { Hamster.list(*b) }
+          let(:list_a) { L[*a] }
+          let(:list_b) { L[*b] }
 
           it "for #{a.inspect} and #{b.inspect}"  do
-            list_a.send(method, list_b).should eql(Hamster.list(*expected))
+            list_a.send(method, list_b).should eql(L[*expected])
           end
 
           it "for #{b.inspect} and #{a.inspect}"  do
-            list_b.send(method, list_a).should eql(Hamster.list(*expected))
+            list_b.send(method, list_a).should eql(L[*expected])
           end
         end
       end

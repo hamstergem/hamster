@@ -17,27 +17,27 @@ describe Hamster::List do
         [%w[Ichi Ni San], %w[Ni San Ichi]],
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:list) { Hamster.list(*values) }
+          let(:list) { L[*values] }
 
           context "with a block" do
             it "preserves the original" do
               list.send(method, &comparator)
-              list.should == Hamster.list(*values)
+              list.should == L[*values]
             end
 
             it "returns #{expected.inspect}" do
-              list.send(method, &comparator).should == Hamster.list(*expected)
+              list.send(method, &comparator).should == L[*expected]
             end
           end
 
           context "without a block" do
             it "preserves the original" do
               list.send(method)
-              list.should eql(Hamster.list(*values))
+              list.should eql(L[*values])
             end
 
             it "returns #{expected.sort.inspect}" do
-              list.send(method).should == Hamster.list(*expected.sort)
+              list.send(method).should == L[*expected.sort]
             end
           end
         end

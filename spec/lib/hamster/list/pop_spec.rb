@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
-  let(:list) { Hamster.list(*values) }
+  let(:list) { L[*values] }
 
   describe "#pop" do
     let(:pop) { list.pop }
@@ -11,7 +11,7 @@ describe Hamster::List do
       let(:values) { [] }
 
       it "returns an empty list" do
-        expect(pop).to eq(Hamster.list)
+        expect(pop).to eq(L.empty)
       end
     end
 
@@ -19,7 +19,7 @@ describe Hamster::List do
       let(:values) { %w[a b c] }
 
       it "removes the last item" do
-        expect(pop).to eq(Hamster.list("a", "b"))
+        expect(pop).to eq(L["a", "b"])
       end
     end
   end

@@ -2,12 +2,12 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
-  let(:list) { Hamster.list(*values) }
+  let(:list) { L[*values] }
 
   describe "#flat_map" do
     let(:block) { ->(item) { [item, item + 1, item * item] } }
     let(:flat_map) { list.flat_map(&block) }
-    let(:flattened_list) { Hamster.list(*flattened_values) }
+    let(:flattened_list) { L[*flattened_values] }
 
     shared_examples "checking flattened result" do
 

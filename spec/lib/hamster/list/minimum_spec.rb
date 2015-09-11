@@ -17,7 +17,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.list(*values).min { |minimum, item| minimum.length <=> item.length }.should == expected
+            L[*values].min { |minimum, item| minimum.length <=> item.length }.should == expected
           end
         end
       end
@@ -31,7 +31,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.list(*values).min.should == expected
+            L[*values].min.should == expected
           end
         end
       end

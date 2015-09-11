@@ -171,7 +171,7 @@ Hamster `List`s have a *head* (the value at the front of the list),
 and a *tail* (a list of the remaining items):
 
 ``` ruby
-list = Hamster.list(1, 2, 3)
+list = Hamster::List[1, 2, 3]
 list.head                    # => 1
 list.tail                    # => Hamster::List[2, 3]
 ```
@@ -179,7 +179,7 @@ list.tail                    # => Hamster::List[2, 3]
 Add to a list with {Hamster::List#add}:
 
 ``` ruby
-original = Hamster.list(1, 2, 3)
+original = Hamster::List[1, 2, 3]
 copy = original.add(0)      # => Hamster::List[0, 1, 2, 3]
 ```
 
@@ -225,7 +225,7 @@ end.take(3)
 
 ### Construction
 
-Besides `Hamster.list` there are other ways to construct lists:
+Besides `Hamster::List[]` there are other ways to construct lists:
 
   - {Hamster.interval Hamster.interval(from, to)} creates a lazy list
     equivalent to a list containing all the values between
@@ -268,7 +268,7 @@ Besides `Hamster.list` there are other ways to construct lists:
 
 ### Core Extensions
 
-{Enumerable#to_list} will wrap any existing `Enumerable` in a list, so you can
+{Enumerable#to_list} will convert any existing `Enumerable` to a list, so you can
 slowly transition from built-in collection classes to Hamster.
 
 {IO#to_list} enables lazy processing of huge files. For example, imagine the

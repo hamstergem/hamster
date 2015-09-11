@@ -15,15 +15,15 @@ describe Hamster::List do
       [%w[A B C], 2, ["C"]],
     ].each do |values, number, expected|
       context "with #{number} from #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "preserves the original" do
           list.drop(number)
-          list.should eql(Hamster.list(*values))
+          list.should eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.drop(number).should == Hamster.list(*expected)
+          list.drop(number).should == L[*expected]
         end
       end
     end

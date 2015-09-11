@@ -13,16 +13,16 @@ describe Hamster::List do
       [%w[A B C], ["C"]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         context "with a block" do
           it "preserves the original" do
             list.drop_while { |item| item < "C" }
-            list.should eql(Hamster.list(*values))
+            list.should eql(L[*values])
           end
 
           it "returns #{expected.inspect}" do
-            list.drop_while { |item| item < "C" }.should eql(Hamster.list(*expected))
+            list.drop_while { |item| item < "C" }.should eql(L[*expected])
           end
         end
 

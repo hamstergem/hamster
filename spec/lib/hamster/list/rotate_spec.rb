@@ -3,21 +3,21 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#rotate" do
-    let(:list) { Hamster.list(1,2,3,4,5) }
+    let(:list) { L[1,2,3,4,5] }
 
     context "when passed no argument" do
       it "returns a new list with the first element moved to the end" do
-        list.rotate.should eql(Hamster.list(2,3,4,5,1))
+        list.rotate.should eql(L[2,3,4,5,1])
       end
     end
 
     context "with an integral argument n" do
       it "returns a new list with the first (n % size) elements moved to the end" do
-        list.rotate(2).should eql(Hamster.list(3,4,5,1,2))
-        list.rotate(3).should eql(Hamster.list(4,5,1,2,3))
-        list.rotate(4).should eql(Hamster.list(5,1,2,3,4))
-        list.rotate(5).should eql(Hamster.list(1,2,3,4,5))
-        list.rotate(-1).should eql(Hamster.list(5,1,2,3,4))
+        list.rotate(2).should eql(L[3,4,5,1,2])
+        list.rotate(3).should eql(L[4,5,1,2,3])
+        list.rotate(4).should eql(L[5,1,2,3,4])
+        list.rotate(5).should eql(L[1,2,3,4,5])
+        list.rotate(-1).should eql(L[5,1,2,3,4])
       end
     end
 

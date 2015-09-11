@@ -20,11 +20,11 @@ describe Enumerable do
     let(:to_list) { enumerable.to_list }
 
     it "returns an equivalent list" do
-      expect(to_list).to eq(Hamster.list("A", "B", "C"))
+      expect(to_list).to eq(L["A", "B", "C"])
     end
 
     it "works on Ranges" do
-      expect((1..3).to_list).to eq(Hamster.list(1, 2, 3))
+      expect((1..3).to_list).to eq(L[1, 2, 3])
     end
   end
 end

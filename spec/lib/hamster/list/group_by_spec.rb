@@ -13,12 +13,12 @@ describe Hamster::List do
       context "with a block" do
         [
           [[], []],
-          [[1], [true => Hamster.list(1)]],
-          [[1, 2, 3, 4], [true => Hamster.list(3, 1), false => Hamster.list(4, 2)]],
+          [[1], [true => L[1]]],
+          [[1, 2, 3, 4], [true => L[3, 1], false => L[4, 2]]],
         ].each do |values, expected|
           context "on #{values.inspect}" do
             it "returns #{expected.inspect}" do
-              Hamster.list(*values).send(method, &:odd?).should eql(H[*expected])
+              L[*values].send(method, &:odd?).should eql(H[*expected])
             end
           end
         end
@@ -27,12 +27,12 @@ describe Hamster::List do
       context "without a block" do
         [
           [[], []],
-          [[1], [1 => Hamster.list(1)]],
-          [[1, 2, 3, 4], [1 => Hamster.list(1), 2 => Hamster.list(2), 3 => Hamster.list(3), 4 => Hamster.list(4)]],
+          [[1], [1 => L[1]]],
+          [[1, 2, 3, 4], [1 => L[1], 2 => L[2], 3 => L[3], 4 => L[4]]],
         ].each do |values, expected|
           context "on #{values.inspect}" do
             it "returns #{expected.inspect}" do
-              Hamster.list(*values).send(method).should eql(H[*expected])
+              L[*values].send(method).should eql(H[*expected])
             end
           end
         end

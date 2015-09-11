@@ -15,7 +15,7 @@ describe Hamster::List do
       [%w[A B C], 'Hamster::List["A", "B", "C"]']
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "returns #{expected.inspect}" do
           list.inspect.should == expected

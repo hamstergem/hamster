@@ -9,19 +9,19 @@ describe Hamster::List do
 
     [
       [[], []],
-      [["A"], [Hamster.list("A")]],
-      [%w[A B C], [Hamster.list("A", "B"), Hamster.list("C")]],
+      [["A"], [L["A"]]],
+      [%w[A B C], [L["A", "B"], L["C"]]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "preserves the original" do
           list.chunk(2)
-          list.should eql(Hamster.list(*values))
+          list.should eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.chunk(2).should eql(Hamster.list(*expected))
+          list.chunk(2).should eql(L[*expected])
         end
       end
     end

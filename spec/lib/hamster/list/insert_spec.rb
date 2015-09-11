@@ -3,7 +3,7 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#insert" do
-    let(:original) { Hamster.list(1, 2, 3) }
+    let(:original) { L[1, 2, 3] }
 
     it "can add items at the beginning of a list" do
       list = original.insert(0, :a, :b)

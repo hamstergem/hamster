@@ -11,17 +11,17 @@ describe Hamster::List do
 
     context "when empty" do
       it "with a block returns true" do
-        Hamster.list.none? {}.should == true
+        L.empty.none? {}.should == true
       end
 
       it "with no block returns true" do
-        Hamster.list.none?.should == true
+        L.empty.none?.should == true
       end
     end
 
     context "when not empty" do
       context "with a block" do
-        let(:list) { Hamster.list("A", "B", "C", nil) }
+        let(:list) { L["A", "B", "C", nil] }
 
         ["A", "B", "C", nil].each do |value|
           it "returns false if the block ever returns true (#{value.inspect})" do
@@ -36,11 +36,11 @@ describe Hamster::List do
 
       context "with no block" do
         it "returns false if any value is truthy" do
-          Hamster.list(nil, false, true, "A").none?.should == false
+          L[nil, false, true, "A"].none?.should == false
         end
 
         it "returns true if all values are falsey" do
-          Hamster.list(nil, false).none?.should == true
+          L[nil, false].none?.should == true
         end
       end
     end

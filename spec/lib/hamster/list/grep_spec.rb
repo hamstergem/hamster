@@ -16,7 +16,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.list(*values).grep(String).should eql(Hamster.list(*expected))
+            L[*values].grep(String).should eql(L[*expected])
           end
         end
       end
@@ -30,15 +30,15 @@ describe Hamster::List do
         [["A", 2, "C"], %w[a c]],
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:list) { Hamster.list(*values) }
+          let(:list) { L[*values] }
 
           it "preserves the original" do
             list.grep(String, &:downcase)
-            list.should eql(Hamster.list(*values))
+            list.should eql(L[*values])
           end
 
           it "returns #{expected.inspect}" do
-            list.grep(String, &:downcase).should eql(Hamster.list(*expected))
+            list.grep(String, &:downcase).should eql(L[*expected])
           end
         end
       end

@@ -15,22 +15,22 @@ describe Hamster::List do
         [%w[A B], %w[C D], %w[A B C D]],
       ].each do |left_values, right_values, expected|
         context "on #{left_values.inspect} and #{right_values.inspect}" do
-          let(:left) { Hamster.list(*left_values) }
-          let(:right) { Hamster.list(*right_values) }
+          let(:left) { L[*left_values] }
+          let(:right) { L[*right_values] }
           let(:result) { left.append(right) }
 
           it "preserves the left" do
             result
-            left.should eql(Hamster.list(*left_values))
+            left.should eql(L[*left_values])
           end
 
           it "preserves the right" do
             result
-            right.should eql(Hamster.list(*right_values))
+            right.should eql(L[*right_values])
           end
 
           it "returns #{expected.inspect}" do
-            result.should eql(Hamster.list(*expected))
+            result.should eql(L[*expected])
           end
         end
       end

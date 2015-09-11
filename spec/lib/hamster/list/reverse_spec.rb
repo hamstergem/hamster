@@ -19,15 +19,15 @@ describe Hamster::List do
       [%w[A B C], %w[C B A]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "preserves the original" do
           list.reverse { |item| item.downcase }
-          list.should eql(Hamster.list(*values))
+          list.should eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.reverse { |item| item.downcase }.should == Hamster.list(*expected)
+          list.reverse { |item| item.downcase }.should == L[*expected]
         end
       end
     end

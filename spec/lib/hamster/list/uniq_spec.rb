@@ -9,7 +9,7 @@ describe Hamster::List do
 
     context "when passed a block" do
       it "uses the block to identify duplicates" do
-        Hamster.list("a", "A", "b").uniq(&:upcase).should eql(Hamster::List["a", "b"])
+        L["a", "A", "b"].uniq(&:upcase).should eql(Hamster::List["a", "b"])
       end
     end
 
@@ -20,15 +20,15 @@ describe Hamster::List do
       [%w[A B A C C], %w[A B C]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "preserves the original" do
           list.uniq
-          list.should eql(Hamster.list(*values))
+          list.should eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.uniq.should eql(Hamster.list(*expected))
+          list.uniq.should eql(L[*expected])
         end
       end
     end

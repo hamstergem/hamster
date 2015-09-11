@@ -13,15 +13,15 @@ describe Hamster::List do
       [%w[A B C], [L["A", "B", "C"], L["B", "C"], L["C"]]],
     ].each do |values, expected|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "preserves the original" do
           list.tails
-          list.should eql(Hamster.list(*values))
+          list.should eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.tails.should eql(Hamster.list(*expected))
+          list.tails.should eql(L[*expected])
         end
       end
     end

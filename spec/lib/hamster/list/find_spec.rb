@@ -22,7 +22,7 @@ describe Hamster::List do
         [["A", "B", nil], "C", nil],
       ].each do |values, item, expected|
         context "on #{values.inspect}" do
-          let(:list) { Hamster.list(*values) }
+          let(:list) { L[*values] }
 
           context "with a block" do
             it "returns #{expected.inspect}" do

@@ -3,7 +3,7 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#subsequences" do
-    let(:list) { Hamster.list(1,2,3,4,5) }
+    let(:list) { L[1,2,3,4,5] }
 
     it "yields all sublists with 1 or more consecutive items" do
       result = []

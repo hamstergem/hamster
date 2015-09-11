@@ -18,7 +18,7 @@ describe Hamster::List do
       [[4], [], [4]],
     ].each do |values, expected_prefix, expected_remainder|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         context "with a block" do
           let(:result) { list.break { |item| item > 2 }}
@@ -27,7 +27,7 @@ describe Hamster::List do
 
           it "preserves the original" do
             result
-            list.should eql(Hamster.list(*values))
+            list.should eql(L[*values])
           end
 
           it "returns a frozen array with two items" do
@@ -37,11 +37,11 @@ describe Hamster::List do
           end
 
           it "correctly identifies the prefix" do
-            prefix.should eql(Hamster.list(*expected_prefix))
+            prefix.should eql(L[*expected_prefix])
           end
 
           it "correctly identifies the remainder" do
-            remainder.should eql(Hamster.list(*expected_remainder))
+            remainder.should eql(L[*expected_remainder])
           end
         end
 

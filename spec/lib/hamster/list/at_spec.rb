@@ -22,7 +22,7 @@ describe Hamster::List do
     ].each do |values, number, expected|
       describe "#{values.inspect} with #{number}" do
         it "returns #{expected.inspect}" do
-          Hamster.list(*values).at(number).should == expected
+          L[*values].at(number).should == expected
         end
       end
     end

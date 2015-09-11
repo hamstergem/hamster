@@ -11,7 +11,7 @@ describe Hamster::List do
     ].each do |values|
       context "on #{values.inspect}" do
         it "returns a set with the same values" do
-          Hamster.list(*values).to_set.should eql(S[*values])
+          L[*values].to_set.should eql(S[*values])
         end
       end
     end

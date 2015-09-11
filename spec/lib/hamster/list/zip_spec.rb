@@ -9,14 +9,14 @@ describe Hamster::List do
 
     [
       [[], [], []],
-      [["A"], ["aye"], [Hamster.list("A", "aye")]],
-      [["A"], [], [Hamster.list("A", nil)]],
-      [[], ["A"], [Hamster.list(nil, "A")]],
-      [%w[A B C], %w[aye bee see], [Hamster.list("A", "aye"), Hamster.list("B", "bee"), Hamster.list("C", "see")]],
+      [["A"], ["aye"], [L["A", "aye"]]],
+      [["A"], [], [L["A", nil]]],
+      [[], ["A"], [L[nil, "A"]]],
+      [%w[A B C], %w[aye bee see], [L["A", "aye"], L["B", "bee"], L["C", "see"]]],
     ].each do |left, right, expected|
       context "on #{left.inspect} and #{right.inspect}" do
         it "returns #{expected.inspect}" do
-          Hamster.list(*left).zip(Hamster.list(*right)).should eql(Hamster.list(*expected))
+          L[*left].zip(L[*right]).should eql(L[*expected])
         end
       end
     end

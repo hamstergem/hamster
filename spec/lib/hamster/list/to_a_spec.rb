@@ -16,7 +16,7 @@ describe Hamster::List do
         %w[A B C],
       ].each do |values|
         context "on #{values.inspect}" do
-          let(:list) { Hamster.list(*values) }
+          let(:list) { L[*values] }
 
           it "returns #{values.inspect}" do
             list.send(method).should == values
@@ -24,7 +24,7 @@ describe Hamster::List do
 
           it "leaves the original unchanged" do
             list.send(method)
-            list.should eql(Hamster.list(*values))
+            list.should eql(L[*values])
           end
 
           it "returns a mutable array" do

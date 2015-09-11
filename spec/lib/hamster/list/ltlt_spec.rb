@@ -4,16 +4,16 @@ require "hamster/list"
 describe Hamster::List do
   describe "#<<" do
     it "adds an item onto the end of a list" do
-      list = Hamster.list("a", "b")
-      (list << "c").should eql(Hamster.list("a", "b", "c"))
-      list.should eql(Hamster.list("a", "b"))
+      list = L["a", "b"]
+      (list << "c").should eql(L["a", "b", "c"])
+      list.should eql(L["a", "b"])
     end
 
     context "on an empty list" do
       it "returns a list with one item" do
-        list = Hamster.list
-        (list << "c").should eql(Hamster.list("c"))
-        list.should eql(Hamster.list)
+        list = L.empty
+        (list << "c").should eql(L["c"])
+        list.should eql(L.empty)
       end
     end
   end

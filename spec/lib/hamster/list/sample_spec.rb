@@ -3,7 +3,7 @@ require "hamster/list"
 
 describe Hamster::List do
   describe "#sample" do
-    let(:list) { Hamster.list(*(1..10)) }
+    let(:list) { (1..10).to_list }
 
     it "returns a randomly chosen item" do
       chosen = 100.times.map { list.sample }

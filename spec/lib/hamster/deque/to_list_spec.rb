@@ -11,7 +11,7 @@ describe Hamster::Deque do
     ].each do |values|
       context "on #{values.inspect}" do
         it "returns a list containing #{values.inspect}" do
-          D[*values].to_list.should eql(Hamster.list(*values))
+          D[*values].to_list.should eql(L[*values])
         end
       end
     end
@@ -19,7 +19,7 @@ describe Hamster::Deque do
     context "after dedequeing an item from #{%w[A B C].inspect}" do
       it "returns a list containing #{%w[B C].inspect}" do
         list = D["A", "B", "C"].dequeue.to_list
-        list.should eql(Hamster.list("B", "C"))
+        list.should eql(L["B", "C"])
       end
     end
   end

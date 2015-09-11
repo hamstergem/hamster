@@ -10,7 +10,7 @@ describe Hamster::List do
 
     it "calls the passed block only once for each item" do
       count = 0
-      a,b = Hamster.list(1, 2, 3).partition { |item| count += 1; item.odd? }
+      a,b = L[1, 2, 3].partition { |item| count += 1; item.odd? }
       (a.size + b.size).should be(3) # force realization of lazy lists
       count.should be(3)
     end
@@ -20,7 +20,7 @@ describe Hamster::List do
 
     it "returns a lazy list of items for which predicate is true" do
       count = 0
-      a,b = Hamster.list(1, 2, 3, 4).partition { |item| count += 1; item.odd? }
+      a,b = L[1, 2, 3, 4].partition { |item| count += 1; item.odd? }
       a.take(1).should == [1]
       count.should be(3) # would be 1 if lists were lazier
       a.take(2).should == [1, 3]
@@ -29,7 +29,7 @@ describe Hamster::List do
 
     it "returns a lazy list of items for which predicate is false" do
       count = 0
-      a,b = Hamster.list(1, 2, 3, 4).partition { |item| count += 1; item.odd? }
+      a,b = L[1, 2, 3, 4].partition { |item| count += 1; item.odd? }
       b.take(1).should == [2]
       count.should be(4) # would be 2 if lists were lazier
       b.take(2).should == [2, 4]
@@ -78,7 +78,7 @@ describe Hamster::List do
       [[4], [], [4]],
     ].each do |values, expected_matches, expected_remainder|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         context "with a block" do
           let(:result)  { list.partition(&:odd?) }
@@ -86,7 +86,7 @@ describe Hamster::List do
           let(:remainder) { result.last }
 
           it "preserves the original" do
-            list.should eql(Hamster.list(*values))
+            list.should eql(L[*values])
           end
 
           it "returns a frozen array with two items" do
@@ -96,18 +96,18 @@ describe Hamster::List do
           end
 
           it "correctly identifies the matches" do
-            matches.should eql(Hamster.list(*expected_matches))
+            matches.should eql(L[*expected_matches])
           end
 
           it "correctly identifies the remainder" do
-            remainder.should eql(Hamster.list(*expected_remainder))
+            remainder.should eql(L[*expected_remainder])
           end
         end
 
         context "without a block" do
           it "returns an Enumerator" do
             list.partition.class.should be(Enumerator)
-            list.partition.each(&:odd?).should eql([Hamster.list(*expected_matches), Hamster.list(*expected_remainder)])
+            list.partition.each(&:odd?).should eql([L[*expected_matches], L[*expected_remainder]])
           end
         end
       end

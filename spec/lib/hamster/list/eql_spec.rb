@@ -38,25 +38,25 @@ describe Hamster::List do
     end
   end
 
-  include_examples 'equal using =='       , Hamster.list("A", "B", "C"), %w[A B C]
-  include_examples 'not equal using eql?' , Hamster.list("A", "B", "C"), %w[A B C]
-  include_examples 'not equal using =='   , Hamster.list("A", "B", "C"), Object.new
-  include_examples 'not equal using eql?' , Hamster.list("A", "B", "C"), Object.new
-  include_examples 'equal using =='       , Hamster.list, []
-  include_examples 'not equal using eql?' , Hamster.list, []
+  include_examples 'equal using =='       , L["A", "B", "C"], %w[A B C]
+  include_examples 'not equal using eql?' , L["A", "B", "C"], %w[A B C]
+  include_examples 'not equal using =='   , L["A", "B", "C"], Object.new
+  include_examples 'not equal using eql?' , L["A", "B", "C"], Object.new
+  include_examples 'equal using =='       , L.empty, []
+  include_examples 'not equal using eql?' , L.empty, []
 
-  include_examples 'equal using eql?'     , Hamster.list, Hamster.list
-  include_examples 'not equal using eql?' , Hamster.list, Hamster.list(nil)
-  include_examples 'not equal using eql?' , Hamster.list("A"), Hamster.list
-  include_examples 'equal using eql?'     , Hamster.list("A"), Hamster.list("A")
-  include_examples 'not equal using eql?' , Hamster.list("A"), Hamster.list("B")
-  include_examples 'not equal using eql?' , Hamster.list(%w[A B]), Hamster.list("A")
-  include_examples 'equal using eql?'     , Hamster.list(*%w[A B C]), Hamster.list(*%w[A B C])
-  include_examples 'not equal using eql?' , Hamster.list(*%w[C A B]), Hamster.list(*%w[A B C])
+  include_examples 'equal using eql?'     , L.empty, L.empty
+  include_examples 'not equal using eql?' , L.empty, L[nil]
+  include_examples 'not equal using eql?' , L["A"], L.empty
+  include_examples 'equal using eql?'     , L["A"], L["A"]
+  include_examples 'not equal using eql?' , L["A"], L["B"]
+  include_examples 'not equal using eql?' , L["A", "B"], L["A"]
+  include_examples 'equal using eql?'     , L["A", "B", "C"], L["A", "B", "C"]
+  include_examples 'not equal using eql?' , L["C", "A", "B"], L["A", "B", "C"]
 
-  include_examples 'equal using =='       , Hamster.list('A'), ['A']
-  include_examples 'equal using =='       , ['A'], Hamster.list('A')
+  include_examples 'equal using =='       , L['A'], ['A']
+  include_examples 'equal using =='       , ['A'], L['A']
 
-  include_examples 'not equal using eql?' , Hamster.list('A'), ['A']
-  include_examples 'not equal using eql?' , ['A'], Hamster.list('A')
+  include_examples 'not equal using eql?' , L['A'], ['A']
+  include_examples 'not equal using eql?' , ['A'], L['A']
 end

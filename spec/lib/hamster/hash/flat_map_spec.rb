@@ -13,7 +13,7 @@ describe Hamster::Hash do
 
     it "returns the concatenation of block return values" do
       hash.flat_map { |k,v| [k,v] }.sort.should == ['A', 'B', 'C', 'aye', 'bee', 'see']
-      hash.flat_map { |k,v| Hamster.list(k,v) }.sort.should == ['A', 'B', 'C', 'aye', 'bee', 'see']
+      hash.flat_map { |k,v| L[k,v] }.sort.should == ['A', 'B', 'C', 'aye', 'bee', 'see']
       hash.flat_map { |k,v| V[k,v] }.sort.should == ['A', 'B', 'C', 'aye', 'bee', 'see']
     end
 

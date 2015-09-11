@@ -26,7 +26,7 @@ describe Hamster::List do
     ].each do |values, item, expected|
       context "looking for #{item.inspect} in #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          Hamster.list(*values).index(item).should == expected
+          L[*values].index(item).should == expected
         end
       end
     end

@@ -16,11 +16,11 @@ describe Hamster::List do
         [%w[A B C], "A|B|C"]
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:list) { Hamster.list(*values) }
+          let(:list) { L[*values] }
 
           it "preserves the original" do
             list.join("|")
-            list.should eql(Hamster.list(*values))
+            list.should eql(L[*values])
           end
 
           it "returns #{expected.inspect}" do
@@ -37,11 +37,11 @@ describe Hamster::List do
         [%w[A B C], "ABC"]
       ].each do |values, expected|
         context "on #{values.inspect}" do
-          let(:list) { Hamster.list(*values) }
+          let(:list) { L[*values] }
 
           it "preserves the original" do
             list.join
-            list.should eql(Hamster.list(*values))
+            list.should eql(L[*values])
           end
 
           it "returns #{expected.inspect}" do
@@ -53,7 +53,7 @@ describe Hamster::List do
 
     context "without a separator (with global default separator set)" do
       before { $, = '**' }
-      let(:list) { Hamster.list("A", "B", "C") }
+      let(:list) { L["A", "B", "C"] }
       after  { $, = nil }
 
       it "uses the default global separator" do

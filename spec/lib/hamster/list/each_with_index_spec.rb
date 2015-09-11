@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster::List do
   describe "#each_with_index" do
     context "with no block" do
-      let(:list) { Hamster.list("A", "B", "C") }
+      let(:list) { L["A", "B", "C"] }
 
       it "returns an Enumerator" do
         list.each_with_index.class.should be(Enumerator)

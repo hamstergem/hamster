@@ -11,12 +11,12 @@ describe Hamster::List do
 
     context "on an empty list" do
       it "returns 0" do
-        expect(Hamster.list.hash).to eq(0)
+        expect(L.empty.hash).to eq(0)
       end
     end
 
     it "values are sufficiently distributed" do
-      (1..4000).each_slice(4).map { |a, b, c, d| Hamster.list(a, b, c, d).hash }.uniq.size.should == 1000
+      (1..4000).each_slice(4).map { |a, b, c, d| L[a, b, c, d].hash }.uniq.size.should == 1000
     end
   end
 end

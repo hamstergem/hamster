@@ -11,17 +11,17 @@ describe Hamster::List do
 
     context "when empty" do
       it "with a block returns false" do
-        Hamster.list.one? {}.should == false
+        L.empty.one? {}.should == false
       end
 
       it "with no block returns false" do
-        Hamster.list.one?.should == false
+        L.empty.one?.should == false
       end
     end
 
     context "when not empty" do
       context "with a block" do
-        let(:list) { Hamster.list("A", "B", "C") }
+        let(:list) { L["A", "B", "C"] }
 
         it "returns false if the block returns true more than once" do
           list.one? { |item| true }.should == false
@@ -38,11 +38,11 @@ describe Hamster::List do
 
       context "with no block" do
         it "returns false if more than one value is truthy" do
-          Hamster.list(nil, true, "A").one?.should == false
+          L[nil, true, "A"].one?.should == false
         end
 
         it "returns true if only one value is truthy" do
-          Hamster.list(nil, true, false).one?.should == true
+          L[nil, true, false].one?.should == true
         end
       end
     end

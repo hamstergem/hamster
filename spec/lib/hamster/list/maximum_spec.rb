@@ -17,7 +17,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.list(*values).max { |maximum, item| maximum.length <=> item.length }.should == expected
+            L[*values].max { |maximum, item| maximum.length <=> item.length }.should == expected
           end
         end
       end
@@ -31,7 +31,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            Hamster.list(*values).max.should == expected
+            L[*values].max.should == expected
           end
         end
       end

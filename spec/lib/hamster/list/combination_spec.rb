@@ -18,15 +18,15 @@ describe Hamster::List do
       [[], 1, []],
     ].each do |values, number, expected|
       context "on #{values.inspect} in groups of #{number}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "preserves the original" do
           list.combination(number)
-          list.should eql(Hamster.list(*values))
+          list.should eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.combination(number).should eql(Hamster.list(*expected))
+          list.combination(number).should eql(L[*expected])
         end
       end
     end

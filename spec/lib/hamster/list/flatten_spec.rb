@@ -11,19 +11,19 @@ describe Hamster do
       [[], []],
       [["A"], ["A"]],
       [%w[A B C], %w[A B C]],
-      [["A", Hamster.list("B"), "C"], %w[A B C]],
-      [[Hamster.list("A"), Hamster.list("B"), Hamster.list("C")], %w[A B C]],
+      [["A", L["B"], "C"], %w[A B C]],
+      [[L["A"], L["B"], L["C"]], %w[A B C]],
     ].each do |values, expected|
       context "on #{values}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         it "preserves the original" do
           list.flatten
-          list.should eql(Hamster.list(*values))
+          list.should eql(L[*values])
         end
 
         it "returns an empty list" do
-          list.flatten.should eql(Hamster.list(*expected))
+          list.flatten.should eql(L[*expected])
         end
       end
     end

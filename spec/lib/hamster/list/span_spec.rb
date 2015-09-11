@@ -1,7 +1,7 @@
 require "spec_helper"
 require "hamster/list"
 
-describe "Hamster.list#span" do
+describe "Hamster::list#span" do
   it "is lazy" do
     -> { Hamster.stream { |item| fail }.span { true } }.should_not raise_error
   end
@@ -25,7 +25,7 @@ DESC
       [[4], [], [4]],
     ].each do |values, expected_prefix, expected_remainder|
       context "given the list #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         context "and a predicate that returns true for values <= 2" do
           let(:result) { list.span { |item| item <= 2 }}
@@ -34,15 +34,15 @@ DESC
 
           it "preserves the original" do
             result
-            list.should eql(Hamster.list(*values))
+            list.should eql(L[*values])
           end
 
           it "returns the prefix as #{expected_prefix.inspect}" do
-            prefix.should eql(Hamster.list(*expected_prefix))
+            prefix.should eql(L[*expected_prefix])
           end
 
           it "returns the remainder as #{expected_remainder.inspect}" do
-            remainder.should eql(Hamster.list(*expected_remainder))
+            remainder.should eql(L[*expected_remainder])
           end
 
           it "calls the block only once for each element" do

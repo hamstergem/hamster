@@ -15,7 +15,7 @@ describe Hamster::List do
       %w[A B C],
     ].each do |values|
       context "on #{values.inspect}" do
-        let(:list) { Hamster.list(*values) }
+        let(:list) { L[*values] }
 
         context "with a block" do
           it "iterates over the items in order" do

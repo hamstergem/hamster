@@ -2,8 +2,8 @@ require "spec_helper"
 require "hamster/list"
 
 describe Hamster::List do
-  let(:list) { Hamster.list(*values) }
-  let(:selected_list) { Hamster.list(*selected_values) }
+  let(:list) { L[*values] }
+  let(:selected_list) { L[*selected_values] }
 
   describe "#select" do
     it "is lazy" do
@@ -15,7 +15,7 @@ describe Hamster::List do
         let(:select) { list.select { |item| item == item.upcase } }
 
         it "preserves the original" do
-          expect(list).to eq(Hamster.list(*values))
+          expect(list).to eq(L[*values])
         end
 
         it "returns the selected list" do
