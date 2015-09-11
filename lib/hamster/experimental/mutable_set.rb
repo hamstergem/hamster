@@ -3,13 +3,12 @@ require "hamster/read_copy_update"
 
 module Hamster
   # @api private
-  def self.mutable_set(*items)
-    MutableSet.new(Set[*items])
-  end
-
-  # @api private
   class MutableSet
     include ReadCopyUpdate
+
+    def self.[](*items)
+      MutableSet.new(Set[*items])
+    end
 
     def add(item)
       transform { |set| set.add(item) }

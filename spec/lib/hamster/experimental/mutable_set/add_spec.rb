@@ -2,7 +2,7 @@ require "spec_helper"
 require "hamster/experimental/mutable_set"
 
 describe Hamster::MutableSet do
-  let(:mutable) { Hamster.mutable_set(*values) }
+  let(:mutable) { Hamster::MutableSet[*values] }
 
   describe "#add" do
     let(:values) { %w[A B C] }
@@ -17,7 +17,7 @@ describe Hamster::MutableSet do
 
       it "modifies the original set to include new value" do
         add
-        expect(mutable).to eq(Hamster.mutable_set("A", "B", "C", "D"))
+        expect(mutable).to eq(Hamster::MutableSet["A", "B", "C", "D"])
       end
     end
 
@@ -30,7 +30,7 @@ describe Hamster::MutableSet do
 
       it "preserves the original values" do
         add
-        expect(mutable).to eq(Hamster.mutable_set("A", "B", "C"))
+        expect(mutable).to eq(Hamster::MutableSet["A", "B", "C"])
       end
     end
   end
