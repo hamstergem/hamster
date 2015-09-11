@@ -263,6 +263,8 @@ Besides `Hamster.list` there are other ways to construct lists:
     ``` ruby
     Hamster.iterate(1, &:next)
     ```
+  - {Hamster::List.empty} returns an empty list, which you can
+    build up using repeated calls to {Hamster::List#add #add} or other `List` methods.
 
 ### Core Extensions
 

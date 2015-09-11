@@ -282,6 +282,9 @@ Besides `Hamster.list` there are other ways to construct lists:
     Hamster.iterate(1, &:next)
     ```
 
+  - `Hamster::List.empty` returns an empty list, which you can
+    build up using repeated calls to `#add` or other `List` methods.
+
 ### Core Extensions
 
 `Enumerable#to_list` will wrap any existing `Enumerable` in a list, so you can

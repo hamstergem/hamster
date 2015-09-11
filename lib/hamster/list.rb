@@ -144,6 +144,13 @@ module Hamster
       from_enum(items)
     end
 
+    # Return an empty `List`.
+    #
+    # @return [List]
+    def self.empty
+      EmptyList
+    end
+
     # This method exists distinct from `.[]` since it is ~30% faster
     # than splatting the argument.
     #
