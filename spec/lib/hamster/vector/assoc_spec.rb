@@ -17,6 +17,11 @@ describe Hamster::Vector do
       vector.assoc(EqualNotEql.new).should_not be_nil
       vector.assoc(EqlNotEqual.new).should be_nil
     end
+
+    it "skips elements which are not indexable" do
+      V[false, true, nil].assoc(:b).should be_nil
+      V[[1,2], nil].assoc(3).should be_nil
+    end
   end
 
   describe "#rassoc" do

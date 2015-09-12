@@ -1251,7 +1251,10 @@ module Hamster
     # @param obj [Object] The object to search for
     # @return [Object]
     def assoc(obj)
-      each { |array| return array if obj == array[0] }
+      each do |array|
+        next if !array.respond_to?(:[])
+        return array if obj == array[0]
+      end
       nil
     end
 
