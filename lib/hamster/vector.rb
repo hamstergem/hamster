@@ -1271,7 +1271,10 @@ module Hamster
     # @param obj [Object] The object to search for
     # @return [Object]
     def rassoc(obj)
-      each { |array| return array if obj == array[1] }
+      each do |array|
+        next if !array.respond_to?(:[])
+        return array if obj == array[1]
+      end
       nil
     end
 
