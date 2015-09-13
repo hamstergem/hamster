@@ -1592,4 +1592,4 @@ module Hamster
       end
     end
   end
-end
+end.freeze
