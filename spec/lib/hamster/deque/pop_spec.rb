@@ -19,6 +19,10 @@ describe Hamster::Deque do
         it "returns #{expected.inspect}" do
           deque.pop.should eql(D[*expected])
         end
+
+        it "returns a frozen instance" do
+          deque.pop.should be_frozen
+        end
       end
     end
 

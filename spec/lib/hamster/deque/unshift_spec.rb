@@ -20,6 +20,11 @@ describe Hamster::Deque do
         it "returns #{expected.inspect}" do
           deque.unshift(new_value).should eql(D[*expected])
         end
+
+
+        it "returns a frozen instance" do
+          deque.unshift(new_value).should be_frozen
+        end
       end
     end
   end
