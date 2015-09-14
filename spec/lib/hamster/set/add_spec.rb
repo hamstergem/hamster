@@ -38,10 +38,12 @@ describe Hamster::Set do
 
       it "works on large sets, with many combinations of input" do
         50.times do
-          array = (1..500).to_a.sample(100)
+          # Array#sample is buggy on RBX 2.5.8; that's why #uniq is needed here
+          # See https://github.com/rubinius/rubinius/issues/3506
+          array = (1..500).to_a.sample(100).uniq
           set   = S.new(array)
           to_add = 1000 + rand(1000)
-          set.add(to_add).size.should == 101
+          set.add(to_add).size.should == array.size + 1
           set.add(to_add).include?(to_add).should == true
         end
       end
