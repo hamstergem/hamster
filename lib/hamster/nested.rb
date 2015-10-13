@@ -27,6 +27,8 @@ module Hamster
         Hamster::Hash.new(res)
       when Hamster::Hash
         obj.map { |key, value| [from(key), from(value)] }
+      when ::Struct
+        from(obj.to_h)
       when ::Array
         res = obj.map { |element| from(element) }
         Hamster::Vector.new(res)
