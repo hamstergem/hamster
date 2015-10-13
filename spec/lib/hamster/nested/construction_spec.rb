@@ -28,7 +28,11 @@ describe Hamster do
     [ ::SortedSet.new, Hamster::SortedSet[] ],
     [ ::SortedSet.new([1, 2, 3]), Hamster::SortedSet[1, 2, 3] ],
     [ 42, 42 ],
-    [ STDOUT, STDOUT ]
+    [ STDOUT, STDOUT ],
+
+    # Struct conversion is one-way (from Ruby core Struct to Hamster::Hash), not back again!
+    [ Struct::Customer.new, Hamster::Hash[name: nil, address: nil], true ],
+    [ Struct::Customer.new('Dave', '123 Main'), Hamster::Hash[name: 'Dave', address: '123 Main'], true ]
   ]
 
   describe ".from" do
@@ -58,10 +62,12 @@ describe Hamster do
   end
 
   describe ".to_ruby" do
-    expectations.each do |expected_result, input|
-      context "with #{input.inspect} as input" do
-        it "should return #{expected_result.inspect}" do
-          Hamster.to_ruby(input).should eql(expected_result)
+    expectations.each do |expected_result, input, one_way|
+      unless one_way
+        context "with #{input.inspect} as input" do
+          it "should return #{expected_result.inspect}" do
+            Hamster.to_ruby(input).should eql(expected_result)
+          end
         end
       end
     end

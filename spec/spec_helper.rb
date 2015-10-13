@@ -30,6 +30,8 @@ SS = Hamster::SortedSet
 D = Hamster::Deque
 EmptyList = Hamster::EmptyList
 
+Struct.new("Customer", :name, :address)
+
 def fixture(name)
   File.read(fixture_path(name))
 end
