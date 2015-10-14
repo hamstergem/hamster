@@ -5,6 +5,7 @@ require "hamster/vector"
 require "hamster/sorted_set"
 require "hamster/list"
 require "hamster/deque"
+require "hamster/core_ext/struct"
 
 module Hamster
   class << self
