@@ -335,10 +335,10 @@ Hamster arrays, hashes, and nested structures of arrays and hashes may be transf
 
     c = Hamster.from({people: [{name: 'Chris', city: 'Lagos'}, {name: 'Pat', city: 'Madrid'}], places: [{name: 'Lagos', population: 1}, {name: 'Madrid', population: 1}]})
     c2 = c.update_in( :people, 1, :city){|old_city| 'Lagos'}
-    c3 = c.update_in( :places, 1, :population){|old_population| old_population - 1 }
-    c4 = c.update_in( :places, 0, :population){|old_population| old_population + 1 }
+    c3 = c2.update_in( :places, 1, :population){|old_population| old_population - 1 }
+    c4 = c3.update_in( :places, 0, :population){|old_population| old_population + 1 }
     Hamster.to_ruby c4
-     => {:places=>[{:population=>1, :name=>"Lagos"}, {:population=>2, :name=>"Madrid"}], :people=>[{:name=>"Chris", :city=>"Lagos"}, {:name=>"Pat", :city=>"Madrid"}]}
+    => {:places=>[{:population=>2, :name=>"Lagos"}, {:population=>0, :name=>"Madrid"}], :people=>[{:name=>"Chris", :city=>"Lagos"}, {:name=>"Pat", :city=>"Lagos"}]}
 
 Naturally, `update_in` never mutates your collections.
 
