@@ -1,6 +1,7 @@
 require "hamster/immutable"
 require "hamster/enumerable"
 require "hamster/hash"
+require "hamster/associable"
 
 module Hamster
   # A `Vector` is an ordered, integer-indexed collection of objects. Like
@@ -38,6 +39,7 @@ module Hamster
   class Vector
     include Immutable
     include Enumerable
+    include Associable
 
     # @private
     BLOCK_SIZE = 32
@@ -139,30 +141,30 @@ module Hamster
     # is greater than the length of the vector, the returned vector will be
     # padded with `nil`s to the correct size.
     #
-    # @overload set(index, item)
+    # @overload put(index, item)
     #   Return a new `Vector` with the item at `index` replaced by `item`.
     #
     #   @param item [Object] The object to insert into that position
     #   @example
-    #     Hamster::Vector[1, 2, 3, 4].set(2, 99)
+    #     Hamster::Vector[1, 2, 3, 4].put(2, 99)
     #     # => Hamster::Vector[1, 2, 99, 4]
-    #     Hamster::Vector[1, 2, 3, 4].set(-1, 99)
+    #     Hamster::Vector[1, 2, 3, 4].put(-1, 99)
     #     # => Hamster::Vector[1, 2, 3, 99]
-    #     Hamster::Vector[].set(2, 99)
+    #     Hamster::Vector[].put(2, 99)
     #     # => Hamster::Vector[nil, nil, 99]
     #
-    # @overload set(index)
+    # @overload put(index)
     #   Return a new `Vector` with the item at `index` replaced by the return
     #   value of the block.
     #
     #   @yield (existing) Once with the existing value at the given `index`.
     #   @example
-    #     Hamster::Vector[1, 2, 3, 4].set(2) { |v| v * 10 }
+    #     Hamster::Vector[1, 2, 3, 4].put(2) { |v| v * 10 }
     #     # => Hamster::Vector[1, 2, 30, 4]
     #
     # @param index [Integer] The index to update. May be negative.
     # @return [Vector]
-    def set(index, item = yield(get(index)))
+    def put(index, item = yield(get(index)))
       raise IndexError, "index #{index} outside of vector bounds" if index < -@size
       index += @size if index < 0
       if index > @size
@@ -173,6 +175,7 @@ module Hamster
         update_root(index, item)
       end
     end
+    alias :set :put
 
     # Return a new `Vector` with a deeply nested value modified to the result
     # of the given code block.  When traversing the nested `Vector`s and
@@ -195,19 +198,6 @@ module Hamster
     # @yield [value] The previously stored value
     # @yieldreturn [Object] The new value to store
     # @return [Vector]
-    def update_in(*key_path, &block)
-      if key_path.empty?
-        raise ArgumentError, "must have at least one key in path"
-      end
-      key = key_path[0]
-      if key_path.size == 1
-        new_value = block.call(get(key))
-      else
-        value = fetch(key, EmptyHash)
-        new_value = value.update_in(*key_path[1..-1], &block)
-      end
-      set(key, new_value)
-    end
 
     # Retrieve the item at `index`. If there is none (either the provided index
     # is too high or too low), return `nil`.
