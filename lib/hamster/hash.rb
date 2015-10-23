@@ -4,6 +4,7 @@ require "hamster/enumerable"
 require "hamster/trie"
 require "hamster/set"
 require "hamster/vector"
+require "hamster/associable"
 
 module Hamster
   # A `Hamster::Hash` maps a set of unique keys to corresponding values, much
@@ -60,6 +61,7 @@ module Hamster
   class Hash
     include Immutable
     include Enumerable
+    include Associable
 
     class << self
       # Create a new `Hash` populated with the given key/value pairs.
@@ -285,19 +287,6 @@ module Hamster
     # @yield [value] The previously stored value
     # @yieldreturn [Object] The new value to store
     # @return [Hash]
-    def update_in(*key_path, &block)
-      if key_path.empty?
-        raise ArgumentError, "must have at least one key in path"
-      end
-      key = key_path[0]
-      if key_path.size == 1
-        new_value = block.call(get(key))
-      else
-        value = fetch(key, EmptyHash)
-        new_value = value.update_in(*key_path[1..-1], &block)
-      end
-      put(key, new_value)
-    end
 
     # An alias for {#put} to match RubyHash's API. Does not support {#put}'s
     # block form.

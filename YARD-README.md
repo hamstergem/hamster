@@ -329,6 +329,24 @@ deque.unshift(:a)               # => Hamster::Deque[:a, 1, 2, 3]
 
 Of course, you can do the same thing with a `Vector`, but a `Deque` is more efficient. See the {Hamster::Deque API documentation} for details on all Deque methods.
 
+<h2>Transformations</h2>
+
+Hamster arrays, hashes, and nested structures of arrays and hashes may be transformed with the `update_in` method.
+
+``` ruby
+c = Hamster.from({
+  people: [{name: 'Chris', city: 'Lagos'}, {name: 'Pat', city: 'Madrid'}],
+  places: [{name: 'Lagos', population: 1}, {name: 'Madrid', population: 1}]})
+c2 = c.update_in(:people, 1, :city) { |old_city| 'Lagos' }
+c3 = c2.update_in(:places, 1, :population) { |old_population| old_population - 1 }
+c4 = c3.update_in(:places, 0, :population) { |old_population| old_population + 1 }
+Hamster.to_ruby(c4)
+# => {:places=>[{:population=>2, :name=>"Lagos"}, {:population=>0, :name=>"Madrid"}], :people=>[{:name=>"Chris", :city=>"Lagos"}, {:name=>"Pat", :city=>"Lagos"}]}
+```
+
+Naturally, `update_in` never mutates your collections.
+
+See {Hamster::Hash#update_in}, {Hamster::Vector#update_in}, and {Hamster::Associable#update_in} for details.
 
 Contributing
 ============
