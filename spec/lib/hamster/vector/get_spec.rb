@@ -57,7 +57,7 @@ describe Hamster::Vector do
               if rand(2) == 0
                 value, index = rand(10000), rand(size)
                 array[index] = value
-                vector = vector.set(index, value)
+                vector = vector.put(index, value)
               else
                 index = rand(array.size)
                 array.delete_at(index)

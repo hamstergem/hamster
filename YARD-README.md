@@ -111,7 +111,7 @@ A `Vector` is an integer-indexed collection much like an immutable `Array`. Exam
 vector = Hamster::Vector[1, 2, 3, 4] # => Hamster::Vector[1, 2, 3, 4]
 vector[0]                            # => 1
 vector[-1]                           # => 4
-vector.set(1, :a)                    # => Hamster::Vector[1, :a, 3, 4]
+vector.put(1, :a)                    # => Hamster::Vector[1, :a, 3, 4]
 vector.add(:b)                       # => Hamster::Vector[1, 2, 3, 4, :b]
 vector.insert(2, :a, :b)             # => Hamster::Vector[1, 2, :a, :b, 3, 4]
 vector.delete_at(0)                  # => Hamster::Vector[2, 3, 4]
