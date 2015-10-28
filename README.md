@@ -374,7 +374,7 @@ Installing
 
 Add this line to your application's Gemfile:
 
-    gem "hamster", "~> 1.0"
+    gem "hamster", "2.0.0"
 
 And then execute:
 
@@ -426,7 +426,7 @@ This Code of Conduct is adapted from the [Contributor Covenant](http:contributor
 Licensing
 =========
 
-Copyright (c) 2009-2014 Simon Harris
+Copyright (c) 2009-2015 Simon Harris
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

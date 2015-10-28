@@ -1,9 +1,17 @@
 Changelog
 =========
 
-  - 1.0.0 [wip]
-    * Added code climate coverage tool [developer]
-    * Removed specification for patch level in ruby version [developer]
+  - 2.0.0
+    * [Removing] Hamster.deque since talking to the classes should be the main entry point
+    * [Removing] Hamster.mutable_set
+    * [Removing] Hamster.mutable_queue
+    * [Removing] Hamster.hash
+    * [Adding] an module for association behavior
+    * [Changing] Enumerable#to_list to a more susinct behavior
+    * [Adding] the Struct#to_h method if Struct doesn't have that method [< 1.9.3]
+    * [Changing] Freezing the result of allocating a Hamster::Deque
+    * [Documenting] the Hamster::Empty constants as private interfaces
+  - 1.0.0
     * Specified benchmark-ips version
-    * Added changelog [developer]
-    * Added a CoC [developer]
+  - 0.X.Y
+    * ...?
