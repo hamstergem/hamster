@@ -1,5 +1,6 @@
 require "spec_helper"
 require "hamster/hash"
+require 'hamster/nested'
 
 describe Hamster::Hash do
   describe "#put" do
@@ -99,5 +100,14 @@ describe Hamster::Hash do
         hash['A STRING!'].should be_nil
       end
     end
+
+    context "from a Ruby Hash" do
+      let(:rh){ {name: 'Pat'} }
+      let!(:h1){ Hamster.from(rh).put(:name, 'Patsy') }
+      it 'does not mutate the original Ruby Hash' do
+        expect(rh[:name]).to eq('Pat')
+      end
+    end
+
   end
 end

@@ -1,6 +1,7 @@
 require "spec_helper"
 require "hamster/hash"
 require "hamster/vector"
+require 'hamster/nested'
 
 describe Hamster::Associable do
   describe "#update_in" do
@@ -146,5 +147,14 @@ describe Hamster::Associable do
       end
 
     end
+
+    context "from a Ruby Hash" do
+      let(:rh){ {name: 'Pat'} }
+      let!(:h1){ Hamster.from(rh).update_in(:name){|name| name << 'sy'} }
+      it 'does not mutate the original Ruby Hash' do
+        expect(rh[:name]).to eq('Pat')
+      end
+    end
+
   end
 end

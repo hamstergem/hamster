@@ -1,5 +1,6 @@
 require "spec_helper"
 require "hamster/vector"
+require 'hamster/nested'
 
 describe Hamster::Vector do
   let(:vector) { V[*values] }
@@ -171,5 +172,17 @@ describe Hamster::Vector do
         end
       end
     end
+
+    context "from a Ruby Array" do
+      let(:ra){ [1] }
+      let!(:v1){ Hamster.from(ra).put(0,2) }
+      it 'does not mutate the original Ruby Array' do
+        expect(ra[0]).to eq(1)
+      end
+      it 'does set the value in the Hamster::Vector' do
+        expect(v1[0]).to eq(2)
+      end
+    end
+
   end
 end
