@@ -559,17 +559,18 @@ module Hamster
     end
 
     # Return a {Vector} of the values which correspond to the `wanted` keys.
-    # If any of the `wanted` keys are not present in this `Hash`, they will be skipped.
+    # If any of the `wanted` keys are not present in this `Hash`, `nil` will be
+    # placed instead, or the result of the default proc (if one is defined),
+    # similar to the behavior of {#get}.
     #
     # @example
     #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
-    #   h.values_at("B", "A", "D")  # => Hamster::Vector[2, 1]
+    #   h.values_at("B", "A", "D")  # => Hamster::Vector[2, 1, nil]
     #
     # @param wanted [Array] The keys to retrieve
     # @return [Vector]
     def values_at(*wanted)
-      array = []
-      wanted.each { |key| array << get(key) if key?(key) }
+      array = wanted.map { |key| get(key) }
       Vector.new(array.freeze)
     end
 
