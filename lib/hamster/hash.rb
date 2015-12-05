@@ -573,6 +573,22 @@ module Hamster
       Vector.new(array.freeze)
     end
 
+    # Return a {Vector} of the values which correspond to the `wanted` keys.
+    # If any of the `wanted` keys are not present in this `Hash`, raise `KeyError`
+    # exception.
+    #
+    # @example
+    #   h = Hamster::Hash["A" => 1, "B" => 2, "C" => 3]
+    #   h.fetch_values("C", "A")  # => Hamster::Vector[3, 1]
+    #   h.fetch_values("C", "Z")  # => KeyError: key not found: "Z"
+    #
+    # @param wanted [Array] The keys to retrieve
+    # @return [Vector]
+    def fetch_values(*wanted)
+      array = wanted.map { |key| fetch(key) }
+      Vector.new(array.freeze)
+    end
+
     # Return a new {Set} containing the keys from this `Hash`.
     #
     # @example
