@@ -9,7 +9,7 @@ describe Hamster::Set do
 
     shared_examples "check filtered values" do
       it "returns the filtered values" do
-        expect(grep).to eq(filtered)
+        expect(grep).to eq(S[*filtered])
       end
     end
 
@@ -18,28 +18,28 @@ describe Hamster::Set do
         let(:values) { [] }
         let(:filtered) { [] }
 
-        shared_examples "check filtered values"
+        include_examples "check filtered values"
       end
 
       context "with a single item array" do
         let(:values) { ["A"] }
         let(:filtered) { ["A"] }
 
-        shared_examples "check filtered values"
+        include_examples "check filtered values"
       end
 
       context "with a single item array that doesn't contain match" do
         let(:values) { [1] }
         let(:filtered) { [] }
 
-        shared_examples "check filtered values"
+        include_examples "check filtered values"
       end
 
       context "with a multi-item array where one isn't a match" do
         let(:values) { ["A", 2, "C"] }
         let(:filtered) { %w[A C] }
 
-        shared_examples "check filtered values"
+        include_examples "check filtered values"
       end
     end
 
@@ -50,7 +50,7 @@ describe Hamster::Set do
     end
 
     describe "with a block" do
-      let(:block) { ->(item) { item.downcase }}
+      let(:block) { ->(item) { item }}
 
       include_examples "check different types of inputs"
     end
