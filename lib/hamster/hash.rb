@@ -590,25 +590,6 @@ module Hamster
       Vector.new(array.freeze)
     end
 
-    # Return the value of successively indexing into a hash
-    # If any of the keys is not present in the hash, return `nil`
-    #
-    # @example
-    #   h = Hamster::Hash[:a => 9, :b => Hamster::Hash[:c => 'a', :d => 4], :e => nil]
-    #   h.dig(:b, :c) # => "a"
-    #   h.dig(:b, :f) # => nil
-    # @params keys to fetch from the hash
-    # @return [Object]
-    def dig(key, *rest)
-      value = self[key]
-      if rest.empty? || value.nil?
-        value
-      elsif value.respond_to?(:dig)
-        value.dig(*rest)
-      end
-    end
-
-
     # Return a new {Set} containing the keys from this `Hash`.
     #
     # @example

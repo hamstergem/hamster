@@ -23,5 +23,10 @@ describe Hamster::Hash do
     it "returns nil if a value does not support dig" do
       expect(h.dig(:a, :foo)).to eq(nil)
     end
+
+    it "returns the correct value when there is a default proc" do
+      default_hash = H.new { |k, v| "#{k}-default" }
+      expect(default_hash.dig(:a)).to eq("a-default")
+    end
   end
 end
