@@ -13,7 +13,9 @@ describe Hamster::Set do
       end
     end
 
-    shared_examples "check different types of inputs" do
+    context "without a block" do
+      let(:block) { nil }
+
       context "with an empty array" do
         let(:values) { [] }
         let(:filtered) { [] }
@@ -43,16 +45,15 @@ describe Hamster::Set do
       end
     end
 
-    context "without a block" do
-      let(:block) { nil }
-
-      include_examples "check different types of inputs"
-    end
-
     describe "with a block" do
-      let(:block) { ->(item) { item }}
+      let(:block) { ->(item) { item.downcase }}
 
-      include_examples "check different types of inputs"
+      context 'processes each item with the block before matching' do
+        let(:values) { ["A", 2, "C"] }
+        let(:filtered) { %w[a c] }
+
+        include_examples "check filtered values"
+      end
     end
   end
 end
