@@ -759,6 +759,50 @@ module Hamster
       self.eql?(other) || (other.respond_to?(:to_hash) && to_hash.eql?(other.to_hash))
     end
 
+    # Return true if this `Hash` is a proper superset of `other`, which means
+    # all `other`'s keys are contained in this `Hash` with the identical
+    # values, and the two hashes are not identical.
+    #
+    # @param other [Hamster::Hash] The object to compare with
+    # @return [Boolean]
+    def >(other)
+      self != other && self >= other
+    end
+
+    # Return true if this `Hash` is a superset of `other`, which means all
+    # `other`'s keys are contained in this `Hash` with the identical values.
+    #
+    # @param other [Hamster::Hash] The object to compare with
+    # @return [Boolean]
+    def >=(other)
+      other.each do |key, value|
+        if self[key] != value
+          return false
+        end
+      end
+      true
+    end
+
+    # Return true if this `Hash` is a proper subset of `other`, which means all
+    # its keys are contained in `other` with the identical values, and the two
+    # hashes are not identical.
+    #
+    # @param other [Hamster::Hash] The object to compare with
+    # @return [Boolean]
+    def <(other)
+      other > self
+    end
+
+    # Return true if this `Hash` is a subset of `other`, which means all its
+    # keys are contained in `other` with the identical values, and the two
+    # hashes are not identical.
+    #
+    # @param other [Hamster::Hash] The object to compare with
+    # @return [Boolean]
+    def <=(other)
+      other >= self
+    end
+
     # See `Object#hash`.
     # @return [Integer]
     def hash
