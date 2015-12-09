@@ -16,28 +16,28 @@ describe Hamster::Set do
     context "without a block" do
       let(:block) { nil }
 
-      context "with an empty array" do
+      context "with an empty set" do
         let(:values) { [] }
         let(:filtered) { [] }
 
         include_examples "check filtered values"
       end
 
-      context "with a single item array" do
+      context "with a single item set" do
         let(:values) { ["A"] }
         let(:filtered) { ["A"] }
 
         include_examples "check filtered values"
       end
 
-      context "with a single item array that doesn't contain match" do
+      context "with a single item set that doesn't contain match" do
         let(:values) { [1] }
         let(:filtered) { [] }
 
         include_examples "check filtered values"
       end
 
-      context "with a multi-item array where one isn't a match" do
+      context "with a multi-item set where one isn't a match" do
         let(:values) { ["A", 2, "C"] }
         let(:filtered) { %w[A C] }
 
@@ -48,7 +48,7 @@ describe Hamster::Set do
     describe "with a block" do
       let(:block) { ->(item) { item.downcase }}
 
-      context 'processes each item with the block before matching' do
+      context "processes each matching item with the block" do
         let(:values) { ["A", 2, "C"] }
         let(:filtered) { %w[a c] }
 
