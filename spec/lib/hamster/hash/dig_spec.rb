@@ -25,7 +25,7 @@ describe Hamster::Hash do
     end
 
     it "returns the correct value when there is a default proc" do
-      default_hash = H.new { |k, v| "#{k}-default" }
+      default_hash = H.new { |k| "#{k}-default" }
       expect(default_hash.dig(:a)).to eq("a-default")
     end
   end
