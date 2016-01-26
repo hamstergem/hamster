@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.platform      = Gem::Platform::RUBY
   spec.required_ruby_version = ">= 1.9.3"
 
-  spec.files         = Dir["lib/**/*"]
+  spec.files         = Dir["lib/**/*", "LICENSE"]
   spec.executables   = Dir["bin/**/*"].map! { |f| f.gsub(/bin\//, '') }
   spec.test_files    = Dir["test/**/*", "spec/**/*"]
   spec.require_paths = ["lib"]
