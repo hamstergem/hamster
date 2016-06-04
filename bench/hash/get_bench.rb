@@ -45,7 +45,7 @@ Benchmark.ips do |b|
     end
   end
 
-  b.report "get existing medium" do |n|
+  b.report "get missing medium" do |n|
     a = 0
     x = nil
     while a < n
@@ -54,7 +54,7 @@ Benchmark.ips do |b|
     end
   end
 
-  b.report "get existing large" do |n|
+  b.report "get missing large" do |n|
     a = 0
     x = nil
     while a < n
