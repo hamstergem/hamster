@@ -526,21 +526,9 @@ module Hamster
     # @return [Vector]
     def uniq(&block)
       array = self.to_a
-      if block_given?
-        if array.frozen?
-          self.class.new(array.uniq(&block).freeze)
-        elsif array.uniq!(&block) # returns nil if no changes were made
-          self.class.new(array.freeze)
-        else
-          self
-        end
-      elsif array.frozen?
-        self.class.new(array.uniq.freeze)
-      elsif array.uniq! # returns nil if no changes were made
-        self.class.new(array.freeze)
-      else
-        self
-      end
+      return self.class.new(array.uniq(&block).freeze) if array.frozen?
+      return self.class.new(array.freeze) if array.uniq!(&block)
+      self
     end
 
     # Return a new `Vector` with the same elements as this one, but in reverse order.

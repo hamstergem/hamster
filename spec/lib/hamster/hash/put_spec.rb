@@ -2,6 +2,13 @@ require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
+  describe "#[]=" do
+    it 'raises error pointing to #put' do
+      expect { subject[:A] = 'aye' }
+        .to raise_error(NoMethodError, /Hamster::Hash.*`put'/)
+    end
+  end
+
   describe "#put" do
     let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
