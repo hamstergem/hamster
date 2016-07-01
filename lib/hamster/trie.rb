@@ -28,17 +28,17 @@ module Hamster
     end
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
-    def each(&block)
+    def each
       @entries.each { |entry| yield(entry) if entry }
       @children.each do |child|
-        child.each(&block) if child
+        child.each { |child| yield(child) } if child
       end
       nil
     end
 
-    def reverse_each(&block)
+    def reverse_each
       @children.reverse_each do |child|
-        child.reverse_each(&block) if child
+        child.reverse_each { |child| yield(child) } if child
       end
       @entries.reverse_each { |entry| yield(entry) if entry }
       nil

@@ -23,27 +23,27 @@ module Hamster
 
     # Search the collection for elements which are `#===` to `item`. Yield them to
     # the optional code block if provided, and return them as a new collection.
-    def grep(pattern, &block)
+    def grep(pattern)
       result = select { |item| pattern === item }
-      result = result.map(&block) if block_given?
+      result = result.map { |i| yield(i) } if block_given?
       result
     end
 
     # Search the collection for elements which are not `#===` to `item`. Yield
     # them to the optional code block if provided, and return them as a new
     # collection.
-    def grep_v(pattern, &block)
+    def grep_v(pattern)
       result = select { |item| !(pattern === item) }
-      result = result.map(&block) if block_given?
+      result = result.map { |i| yield(i) } if block_given?
       result
     end
 
     # Yield all integers from 0 up to, but not including, the number of items in
     # this collection. For collections which provide indexed access, these are all
     # the valid, non-negative indices into the collection.
-    def each_index(&block)
+    def each_index
       return enum_for(:each_index) unless block_given?
-      0.upto(size-1, &block)
+      0.upto(size-1) { |i| yield(i) }
       self
     end
 
@@ -153,7 +153,12 @@ module Hamster
       # @private
       def sort_by(&block)
         result = to_a
-        result.frozen? ? result.sort_by(&block) : result.sort_by!(&block)
+
+        if result.frozen? 
+          result.sort_by { |i| yield(i) }
+        else 
+          result.sort_by! { |i| yield(i) }
+        end
       end
     end
   end

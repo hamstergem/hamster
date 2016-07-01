@@ -426,9 +426,9 @@ module Hamster
     #   # => Hamster::Vector["A", "B", "C"]
     #
     # @return [self, Enumerator]
-    def each(&block)
+    def each
       return to_enum unless block_given?
-      traverse_depth_first(@root, @levels, &block)
+      traverse_depth_first(@root, @levels) { |entry| yield(entry) }
       self
     end
 
@@ -443,9 +443,9 @@ module Hamster
     #   Element: A
     #
     # @return [self]
-    def reverse_each(&block)
+    def reverse_each
       return enum_for(:reverse_each) unless block_given?
-      reverse_traverse_depth_first(@root, @levels, &block)
+      reverse_traverse_depth_first(@root, @levels) { |entry| yield(entry) }
       self
     end
 
@@ -1300,14 +1300,17 @@ module Hamster
 
     private
 
-    def traverse_depth_first(node, level, &block)
-      return node.each(&block) if level == 0
-      node.each { |child| traverse_depth_first(child, level - 1, &block) }
+    def traverse_depth_first(node, level)
+      return node.each { |n| yield(n) } if level == 0
+      node.each { |child| traverse_depth_first(child, level - 1) { |n| yield(n) } }
     end
 
-    def reverse_traverse_depth_first(node, level, &block)
-      return node.reverse_each(&block) if level == 0
-      node.reverse_each { |child| reverse_traverse_depth_first(child, level - 1, &block) }
+    def reverse_traverse_depth_first(node, level)
+      return node.reverse_each { |n| yield(n) } if level == 0
+
+      node.reverse_each do |child|
+        reverse_traverse_depth_first(child, level - 1) { |n| yield(n) }
+      end
     end
 
     def leaf_node_for(node, bitshift, index)

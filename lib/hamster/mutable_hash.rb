@@ -10,8 +10,8 @@ module Hamster
       MutableHash.new(Hash[pairs])
     end
 
-    def put(key, value = Undefined, &block)
-      transform { |hash| hash.put(key, value, &block) }
+    def put(key, value = Undefined)
+      transform { |hash| hash.put(key, value) { |i| yield(i) } }
     end
 
     def store(key, value)
