@@ -374,7 +374,7 @@ Installing
 
 Add this line to your application's Gemfile:
 
-    gem "hamster", "2.0.0"
+    gem "hamster"
 
 And then execute:
 
