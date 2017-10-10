@@ -109,7 +109,8 @@ Since it is immutable, Hamster's `Hash` doesn't provide an assignment
 transforms the value associated with a given key:
 
 ``` ruby
-counters.put(:odds) { |value| value + 1 } # => Hamster::Hash[:odds => 1, :evens => 0]
+counters = Hamster::Hash[evens: 0, odds: 0]  # => Hamster::Hash[:evens => 0, :odds => 0]
+counters.put(:odds) { |value| value + 1 }    # => Hamster::Hash[:odds => 1, :evens => 0]
 ```
 
 Or more succinctly:
