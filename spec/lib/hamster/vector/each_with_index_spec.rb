@@ -7,8 +7,8 @@ describe Hamster::Vector do
       let(:vector) { V["A", "B", "C"] }
 
       it "returns an Enumerator" do
-        vector.each_with_index.class.should be(Enumerator)
-        vector.each_with_index.to_a.should == [['A', 0], ['B', 1], ['C', 2]]
+        expect(vector.each_with_index.class).to be(Enumerator)
+        expect(vector.each_with_index.to_a).to eq([['A', 0], ['B', 1], ['C', 2]])
       end
     end
 
@@ -19,13 +19,13 @@ describe Hamster::Vector do
 
           it "returns self" do
             pairs = []
-            vector.each_with_index { |item, index| pairs << [item, index] }.should be(vector)
+            expect(vector.each_with_index { |item, index| pairs << [item, index] }).to be(vector)
           end
 
           it "iterates over the items in order" do
             pairs = []
-            vector.each_with_index { |item, index| pairs << [item, index] }.should be(vector)
-            pairs.should == (1..size).zip(0..size.pred)
+            expect(vector.each_with_index { |item, index| pairs << [item, index] }).to be(vector)
+            expect(pairs).to eq((1..size).zip(0..size.pred))
           end
         end
       end

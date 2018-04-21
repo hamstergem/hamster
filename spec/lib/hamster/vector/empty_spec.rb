@@ -10,7 +10,7 @@ describe Hamster::Vector do
     ].each do |values, expected|
       describe "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          V[*values].empty?.should == expected
+          expect(V[*values].empty?).to eq(expected)
         end
       end
     end
@@ -18,15 +18,15 @@ describe Hamster::Vector do
 
   describe ".empty" do
     it "returns the canonical empty vector" do
-      V.empty.size.should be(0)
-      V.empty.object_id.should be(V.empty.object_id)
+      expect(V.empty.size).to be(0)
+      expect(V.empty.object_id).to be(V.empty.object_id)
     end
 
     context "from a subclass" do
       it "returns an empty instance of the subclass" do
         subclass = Class.new(Hamster::Vector)
-        subclass.empty.class.should be(subclass)
-        subclass.empty.should be_empty
+        expect(subclass.empty.class).to be(subclass)
+        expect(subclass.empty).to be_empty
       end
 
       it "calls overridden #initialize when creating empty Hash" do
@@ -35,7 +35,7 @@ describe Hamster::Vector do
             @variable = 'value'
           end
         end
-        subclass.empty.instance_variable_get(:@variable).should == 'value'
+        expect(subclass.empty.instance_variable_get(:@variable)).to eq('value')
       end
     end
   end

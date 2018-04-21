@@ -11,7 +11,7 @@ describe Hamster::Vector do
       ].each do |values, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            V[*values].min { |minimum, item| minimum.length <=> item.length }.should == expected
+            expect(V[*values].min { |minimum, item| minimum.length <=> item.length }).to eq(expected)
           end
         end
       end
@@ -25,7 +25,7 @@ describe Hamster::Vector do
       ].each do |values, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            V[*values].min.should == expected
+            expect(V[*values].min).to eq(expected)
           end
         end
       end

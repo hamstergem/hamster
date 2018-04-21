@@ -16,14 +16,14 @@ describe Hamster::Vector do
 
           context "with a block" do
             it "returns #{expected.inspect}" do
-              vector.send(method) { |item| item == item.downcase }.should eql(V[*expected])
+              expect(vector.send(method) { |item| item == item.downcase }).to eql(V[*expected])
             end
           end
 
           context "without a block" do
             it "returns an Enumerator" do
-              vector.send(method).class.should be(Enumerator)
-              vector.send(method).each { |item| item == item.downcase }.should eql(V[*expected])
+              expect(vector.send(method).class).to be(Enumerator)
+              expect(vector.send(method).each { |item| item == item.downcase }).to eql(V[*expected])
             end
           end
         end
@@ -34,8 +34,8 @@ describe Hamster::Vector do
           [0, 5, 32, 50, 500, 800, 1024].each do |threshold|
             vector = V.new(1..size)
             result = vector.send(method) { |item| item > threshold }
-            result.size.should == [size, threshold].min
-            result.should eql(V.new(1..[size, threshold].min))
+            expect(result.size).to eq([size, threshold].min)
+            expect(result).to eql(V.new(1..[size, threshold].min))
           end
         end
       end

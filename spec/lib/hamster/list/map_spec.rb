@@ -5,7 +5,7 @@ describe Hamster::List do
   [:map, :collect].each do |method|
     describe "##{method}" do
       it "is lazy" do
-        -> { Hamster.stream { fail }.map { |item| item } }.should_not raise_error
+        expect { Hamster.stream { fail }.map { |item| item } }.not_to raise_error
       end
 
       [
@@ -19,24 +19,24 @@ describe Hamster::List do
           context "with a block" do
             it "preserves the original" do
               list.send(method, &:downcase)
-              list.should eql(L[*values])
+              expect(list).to eql(L[*values])
             end
 
             it "returns #{expected.inspect}" do
-              list.send(method, &:downcase).should eql(L[*expected])
+              expect(list.send(method, &:downcase)).to eql(L[*expected])
             end
 
             it "is lazy" do
               count = 0
               list.send(method) { |item| count += 1 }
-              count.should <= 1
+              expect(count).to be <= 1
             end
           end
 
           context "without a block" do
             it "returns an Enumerator" do
-              list.send(method).class.should be(Enumerator)
-              list.send(method).each(&:downcase).should eql(L[*expected])
+              expect(list.send(method).class).to be(Enumerator)
+              expect(list.send(method).each(&:downcase)).to eql(L[*expected])
             end
           end
         end

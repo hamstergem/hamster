@@ -15,11 +15,11 @@ describe Hamster::Vector do
 
         it "preserves the original" do
           vector.pop
-          vector.should eql(V[*values])
+          expect(vector).to eql(V[*values])
         end
 
         it "returns #{expected.inspect}" do
-          vector.pop.should eql(V[*expected])
+          expect(vector.pop).to eql(V[*expected])
         end
       end
     end

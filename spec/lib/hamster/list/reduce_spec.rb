@@ -6,7 +6,7 @@ describe Hamster::List do
     describe "##{method}" do
       context "on a really big list" do
         it "doesn't run out of stack" do
-          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).send(method, &:+) }.should_not raise_error
+          expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).send(method, &:+) }.not_to raise_error
         end
       end
 
@@ -18,7 +18,7 @@ describe Hamster::List do
         context "on #{values.inspect}" do
           context "with an initial value of #{initial} and a block" do
             it "returns #{expected.inspect}" do
-              L[*values].send(method, initial) { |memo, item| memo - item }.should == expected
+              expect(L[*values].send(method, initial) { |memo, item| memo - item }).to eq(expected)
             end
           end
         end
@@ -32,7 +32,7 @@ describe Hamster::List do
         context "on #{values.inspect}" do
           context "with no initial value and a block" do
             it "returns #{expected.inspect}" do
-              L[*values].send(method) { |memo, item| memo - item }.should == expected
+              expect(L[*values].send(method) { |memo, item| memo - item }).to eq(expected)
             end
           end
         end
@@ -40,13 +40,13 @@ describe Hamster::List do
 
       context "with no block and a symbol argument" do
         it "uses the symbol as the name of a method to reduce with" do
-          L[1, 2, 3].send(method, :+).should == 6
+          expect(L[1, 2, 3].send(method, :+)).to eq(6)
         end
       end
 
       context "with no block and a string argument" do
         it "uses the string as the name of a method to reduce with" do
-          L[1, 2, 3].send(method, '+').should == 6
+          expect(L[1, 2, 3].send(method, '+')).to eq(6)
         end
       end
     end

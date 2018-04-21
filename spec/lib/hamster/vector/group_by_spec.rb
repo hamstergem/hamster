@@ -13,8 +13,8 @@ describe Hamster::Vector do
           let(:vector) { V[*values] }
 
           it "returns #{expected.inspect}" do
-            vector.group_by(&:odd?).should eql(H[*expected])
-            vector.should eql(V.new(values)) # make sure it hasn't changed
+            expect(vector.group_by(&:odd?)).to eql(H[*expected])
+            expect(vector).to eql(V.new(values)) # make sure it hasn't changed
           end
         end
       end
@@ -30,8 +30,8 @@ describe Hamster::Vector do
           let(:vector) { V[*values] }
 
           it "returns #{expected.inspect}" do
-            vector.group_by.should eql(H[*expected])
-            vector.should eql(V.new(values)) # make sure it hasn't changed
+            expect(vector.group_by).to eql(H[*expected])
+            expect(vector).to eql(V.new(values)) # make sure it hasn't changed
           end
         end
       end
@@ -39,19 +39,19 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "returns an empty hash" do
-        V.empty.group_by { |x| x }.should eql(H.empty)
+        expect(V.empty.group_by { |x| x }).to eql(H.empty)
       end
     end
 
     it "returns a hash without default proc" do
-      V[1,2,3].group_by { |x| x }.default_proc.should be_nil
+      expect(V[1,2,3].group_by { |x| x }.default_proc).to be_nil
     end
 
     context "from a subclass" do
       it "returns an Hash whose values are instances of the subclass" do
         subclass = Class.new(Hamster::Vector)
         instance = subclass.new([1, 'string', :symbol])
-        instance.group_by { |x| x.class }.values.each { |v| v.class.should be(subclass) }
+        instance.group_by { |x| x.class }.values.each { |v| expect(v.class).to be(subclass) }
       end
     end
   end

@@ -5,7 +5,7 @@ describe Hamster::List do
   describe "#hash" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).hash }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).hash }.not_to raise_error
       end
     end
 
@@ -16,7 +16,7 @@ describe Hamster::List do
     end
 
     it "values are sufficiently distributed" do
-      (1..4000).each_slice(4).map { |a, b, c, d| L[a, b, c, d].hash }.uniq.size.should == 1000
+      expect((1..4000).each_slice(4).map { |a, b, c, d| L[a, b, c, d].hash }.uniq.size).to eq(1000)
     end
   end
 end

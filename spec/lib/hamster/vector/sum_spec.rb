@@ -10,7 +10,7 @@ describe Hamster::Vector do
     ].each do |values, expected|
       describe "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          V[*values].sum.should == expected
+          expect(V[*values].sum).to eq(expected)
         end
       end
     end

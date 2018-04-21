@@ -11,19 +11,19 @@ describe Hamster::List do
     ].each do |items1, items2|
       context "with #{items1} and #{items2}" do
         it "returns -1" do
-          (L[*items1] <=> L[*items2]).should be(-1)
+          expect(L[*items1] <=> L[*items2]).to be(-1)
         end
       end
 
       context "with #{items2} and #{items1}" do
         it "returns 1" do
-          (L[*items2] <=> L[*items1]).should be(1)
+          expect(L[*items2] <=> L[*items1]).to be(1)
         end
       end
 
       context "with #{items1} and #{items1}" do
         it "returns 0" do
-          (L[*items1] <=> L[*items1]).should be(0)
+          expect(L[*items1] <=> L[*items1]).to be(0)
         end
       end
     end

@@ -18,7 +18,7 @@ describe Hamster::SortedSet do
     ].each do |a, b, expected|
       context "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}" do
-          SS[*a].intersect?(SS[*b]).should be(expected)
+          expect(SS[*a].intersect?(SS[*b])).to be(expected)
         end
       end
     end

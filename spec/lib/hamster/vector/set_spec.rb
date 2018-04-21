@@ -12,14 +12,14 @@ describe Hamster::Vector do
     context "without block" do
       it "replaces the element" do
         result = vector.set(1, 100)
-        result.should eql(V[5, 100, 7])
+        expect(result).to eql(V[5, 100, 7])
       end
     end
 
     context "with block" do
       it "passes the existing element to the block and replaces the result" do
         result = vector.set(1) { |e| e + 100 }
-        result.should eql(V[5, 106, 7])
+        expect(result).to eql(V[5, 106, 7])
       end
     end
   end

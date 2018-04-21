@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster::List do
   describe "#tails" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.tails }.should_not raise_error
+      expect { Hamster.stream { fail }.tails }.not_to raise_error
     end
 
     [
@@ -17,11 +17,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.tails
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.tails.should eql(L[*expected])
+          expect(list.tails).to eql(L[*expected])
         end
       end
     end

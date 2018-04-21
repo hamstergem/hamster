@@ -20,18 +20,18 @@ describe Hamster::Set do
 
           it "doesn't modify the original Sets" do
             result
-            set_a.should eql(S.new(a))
-            set_b.should eql(S.new(b))
+            expect(set_a).to eql(S.new(a))
+            expect(set_b).to eql(S.new(b))
           end
 
           it "returns #{expected.inspect}"  do
-            result.should eql(S[*expected])
+            expect(result).to eql(S[*expected])
           end
         end
 
         context "when passed a Ruby Array" do
           it "returns the expected Set" do
-            S[*a].difference(b.freeze).should eql(S[*expected])
+            expect(S[*a].difference(b.freeze)).to eql(S[*expected])
           end
         end
       end
@@ -42,7 +42,7 @@ describe Hamster::Set do
           array1 = items.sample(200)
           array2 = items.sample(200)
           result = S.new(array1).send(method, S.new(array2))
-          result.to_a.sort.should eql((array1 - array2).sort)
+          expect(result.to_a.sort).to eql((array1 - array2).sort)
         end
       end
     end

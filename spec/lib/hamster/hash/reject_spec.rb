@@ -8,7 +8,7 @@ describe Hamster::Hash do
 
       context "when nothing matches" do
         it "returns self" do
-          hash.send(method) { |key, value| false }.should equal(hash)
+          expect(hash.send(method) { |key, value| false }).to equal(hash)
         end
       end
 
@@ -18,11 +18,11 @@ describe Hamster::Hash do
 
           it "preserves the original" do
             result
-            hash.should eql(H["A" => "aye", "B" => "bee", "C" => "see"])
+            expect(hash).to eql(H["A" => "aye", "B" => "bee", "C" => "see"])
           end
 
           it "returns a set with the matching values" do
-            result.should eql(H["B" => "bee", "C" => "see"])
+            expect(result).to eql(H["B" => "bee", "C" => "see"])
           end
 
           it "yields entries in the same order as #each" do
@@ -30,15 +30,15 @@ describe Hamster::Hash do
             remove_pairs = []
             hash.each_pair { |k,v| each_pairs << [k,v] }
             hash.send(method) { |k,v| remove_pairs << [k,v] }
-            each_pairs.should == remove_pairs
+            expect(each_pairs).to eq(remove_pairs)
           end
         end
 
         context "with no block" do
           it "returns an Enumerator" do
-            hash.send(method).class.should be(Enumerator)
-            hash.send(method).to_a.sort.should == [['A', 'aye'], ['B', 'bee'], ['C', 'see']]
-            hash.send(method).each { true }.should eql(H.empty)
+            expect(hash.send(method).class).to be(Enumerator)
+            expect(hash.send(method).to_a.sort).to eq([['A', 'aye'], ['B', 'bee'], ['C', 'see']])
+            expect(hash.send(method).each { true }).to eql(H.empty)
           end
         end
 
@@ -48,12 +48,12 @@ describe Hamster::Hash do
             hash  = H.new(array)
             [0, 10, 100, 200, 500, 800, 900, 999, 1000].each do |threshold|
               result = hash.send(method) { |k,v| k >= threshold}
-              result.size.should == threshold
-              0.upto(threshold-1) { |n| result.key?(n).should == true }
-              threshold.upto(1000) { |n| result.key?(n).should == false }
+              expect(result.size).to eq(threshold)
+              0.upto(threshold-1) { |n| expect(result.key?(n)).to eq(true) }
+              threshold.upto(1000) { |n| expect(result.key?(n)).to eq(false) }
             end
             # shouldn't have changed
-            hash.should eql(H.new(1000.times.collect { |n| [n, n] }))
+            expect(hash).to eql(H.new(1000.times.collect { |n| [n, n] }))
           end
         end
       end

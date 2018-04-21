@@ -4,12 +4,12 @@ require "hamster/list"
 describe Hamster::List do
   describe "#uniq" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.uniq }.should_not raise_error
+      expect { Hamster.stream { fail }.uniq }.not_to raise_error
     end
 
     context "when passed a block" do
       it "uses the block to identify duplicates" do
-        L["a", "A", "b"].uniq(&:upcase).should eql(Hamster::List["a", "b"])
+        expect(L["a", "A", "b"].uniq(&:upcase)).to eql(Hamster::List["a", "b"])
       end
     end
 
@@ -24,11 +24,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.uniq
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.uniq.should eql(L[*expected])
+          expect(list.uniq).to eql(L[*expected])
         end
       end
     end

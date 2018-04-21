@@ -9,18 +9,18 @@ describe Hamster::Vector do
       it "yields all the valid indices into the vector" do
         result = []
         vector.each_index { |i| result << i }
-        result.should eql([0,1,2,3])
+        expect(result).to eql([0,1,2,3])
       end
 
       it "returns self" do
-        vector.each_index {}.should be(vector)
+        expect(vector.each_index {}).to be(vector)
       end
     end
 
     context "without a block" do
       it "returns an Enumerator" do
-        vector.each_index.class.should be(Enumerator)
-        vector.each_index.to_a.should eql([0,1,2,3])
+        expect(vector.each_index.class).to be(Enumerator)
+        expect(vector.each_index.to_a).to eql([0,1,2,3])
       end
     end
 
@@ -33,7 +33,7 @@ describe Hamster::Vector do
     [1, 2, 10, 31, 32, 33, 1000, 1024, 1025].each do |size|
       context "on a #{size}-item vector" do
         it "yields all valid indices" do
-          V.new(1..size).each_index.to_a.should == (0..(size-1)).to_a
+          expect(V.new(1..size).each_index.to_a).to eq((0..(size-1)).to_a)
         end
       end
     end

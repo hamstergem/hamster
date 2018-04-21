@@ -18,15 +18,15 @@ describe Hamster::Set do
         describe "on #{values.inspect}" do
           context "with a block" do
             it "returns #{expected.inspect}" do
-              S[*values].send(method) { |x| x == item }.should == expected
+              expect(S[*values].send(method) { |x| x == item }).to eq(expected)
             end
           end
 
           context "without a block" do
             it "returns an Enumerator" do
               result = S[*values].send(method)
-              result.class.should be(Enumerator)
-              result.each { |x| x == item}.should == expected
+              expect(result.class).to be(Enumerator)
+              expect(result.each { |x| x == item}).to eq(expected)
             end
           end
         end

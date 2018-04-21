@@ -18,22 +18,22 @@ describe Hamster::Vector do
           context "with a block" do
             it "preserves the original" do
               vector.send(method, &comparator)
-              vector.should eql(V[*values])
+              expect(vector).to eql(V[*values])
             end
 
             it "returns #{expected.inspect}" do
-              vector.send(method, &comparator).should eql(V[*expected])
+              expect(vector.send(method, &comparator)).to eql(V[*expected])
             end
           end
 
           context "without a block" do
             it "preserves the original" do
               vector.send(method)
-              vector.should eql(V[*values])
+              expect(vector).to eql(V[*values])
             end
 
             it "returns #{expected.sort.inspect}" do
-              vector.send(method).should eql(V[*expected.sort])
+              expect(vector.send(method)).to eql(V[*expected.sort])
             end
           end
         end
@@ -45,9 +45,9 @@ describe Hamster::Vector do
             array = size.times.map { rand(10000) }
             vector = V.new(array)
             if method == :sort
-              vector.sort.should == array.sort
+              expect(vector.sort).to eq(array.sort)
             else
-              vector.sort_by { |x| -x }.should == array.sort_by { |x| -x }
+              expect(vector.sort_by { |x| -x }).to eq(array.sort_by { |x| -x })
             end
           end
         end

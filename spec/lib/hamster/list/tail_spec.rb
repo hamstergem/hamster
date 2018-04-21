@@ -5,7 +5,7 @@ describe Hamster::List do
   describe "#tail" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).select(&:nil?).tail }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).select(&:nil?).tail }.not_to raise_error
       end
     end
 
@@ -19,11 +19,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.tail
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.tail.should eql(L[*expected])
+          expect(list.tail).to eql(L[*expected])
         end
       end
     end

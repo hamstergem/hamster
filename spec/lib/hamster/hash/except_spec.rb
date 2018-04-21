@@ -7,23 +7,23 @@ describe Hamster::Hash do
 
     context "with only keys that the Hash has" do
       it "returns a Hash without those values" do
-        hash.except("B", nil).should eql(H["A" => "aye", "C" => "see"])
+        expect(hash.except("B", nil)).to eql(H["A" => "aye", "C" => "see"])
       end
 
       it "doesn't change the original Hash" do
         hash.except("B", nil)
-        hash.should eql(H["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"])
+        expect(hash).to eql(H["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"])
       end
     end
 
     context "with keys that the Hash doesn't have" do
       it "returns a Hash without the values that it had keys for" do
-        hash.except("B", "A", 3).should eql(H["C" => "see", nil => "NIL"])
+        expect(hash.except("B", "A", 3)).to eql(H["C" => "see", nil => "NIL"])
       end
 
       it "doesn't change the original Hash" do
         hash.except("B", "A", 3)
-        hash.should eql(H["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"])
+        expect(hash).to eql(H["A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"])
       end
     end
 
@@ -33,11 +33,11 @@ describe Hamster::Hash do
       100.times do
         to_remove = rand(100).times.collect { keys.sample }
         result    = original.except(*to_remove)
-        result.size.should == original.size - to_remove.uniq.size
-        to_remove.each { |key| result.key?(key).should == false }
-        (keys.sample(100) - to_remove).each { |key| result.key?(key).should == true }
+        expect(result.size).to eq(original.size - to_remove.uniq.size)
+        to_remove.each { |key| expect(result.key?(key)).to eq(false) }
+        (keys.sample(100) - to_remove).each { |key| expect(result.key?(key)).to eq(true) }
       end
-      original.should eql(H.new(keys.zip(2..1001))) # shouldn't have changed
+      expect(original).to eql(H.new(keys.zip(2..1001))) # shouldn't have changed
     end
   end
 end

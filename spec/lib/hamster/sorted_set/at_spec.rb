@@ -17,7 +17,7 @@ describe Hamster::SortedSet do
     ].each do |values, number, expected|
       describe "#{values.inspect} with #{number}" do
         it "returns #{expected.inspect}" do
-          SS[*values].at(number).should == expected
+          expect(SS[*values].at(number)).to eq(expected)
         end
       end
     end

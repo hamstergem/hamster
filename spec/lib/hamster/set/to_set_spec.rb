@@ -12,7 +12,7 @@ describe Hamster::Set do
         let(:set) { S[*values] }
 
         it "returns self" do
-          set.to_set.should equal(set)
+          expect(set.to_set).to equal(set)
         end
       end
     end

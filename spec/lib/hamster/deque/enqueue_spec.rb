@@ -15,11 +15,11 @@ describe Hamster::Deque do
 
           it "preserves the original" do
             deque.send(method, new_value)
-            deque.should eql(D[*values])
+            expect(deque).to eql(D[*values])
           end
 
           it "returns #{expected.inspect}" do
-            deque.send(method, new_value).should eql(D[*expected])
+            expect(deque.send(method, new_value)).to eql(D[*expected])
           end
         end
       end

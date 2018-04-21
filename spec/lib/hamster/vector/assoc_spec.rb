@@ -6,41 +6,41 @@ describe Hamster::Vector do
 
   describe "#assoc" do
     it "searches for a 2-element array with a given 1st item" do
-      vector.assoc(:b).should == [:b, 2]
+      expect(vector.assoc(:b)).to eq([:b, 2])
     end
 
     it "returns nil if a matching 1st item is not found" do
-      vector.assoc(:d).should be_nil
+      expect(vector.assoc(:d)).to be_nil
     end
 
     it "uses #== to compare 1st items with provided object" do
-      vector.assoc(EqualNotEql.new).should_not be_nil
-      vector.assoc(EqlNotEqual.new).should be_nil
+      expect(vector.assoc(EqualNotEql.new)).not_to be_nil
+      expect(vector.assoc(EqlNotEqual.new)).to be_nil
     end
 
     it "skips elements which are not indexable" do
-      V[false, true, nil].assoc(:b).should be_nil
-      V[[1,2], nil].assoc(3).should be_nil
+      expect(V[false, true, nil].assoc(:b)).to be_nil
+      expect(V[[1,2], nil].assoc(3)).to be_nil
     end
   end
 
   describe "#rassoc" do
     it "searches for a 2-element array with a given 2nd item" do
-      vector.rassoc(1).should == [:c, 1]
+      expect(vector.rassoc(1)).to eq([:c, 1])
     end
 
     it "returns nil if a matching 2nd item is not found" do
-      vector.rassoc(4).should be_nil
+      expect(vector.rassoc(4)).to be_nil
     end
 
     it "uses #== to compare 2nd items with provided object" do
-      vector.rassoc(EqualNotEql.new).should_not be_nil
-      vector.rassoc(EqlNotEqual.new).should be_nil
+      expect(vector.rassoc(EqualNotEql.new)).not_to be_nil
+      expect(vector.rassoc(EqlNotEqual.new)).to be_nil
     end
 
     it "skips elements which are not indexable" do
-      V[false, true, nil].rassoc(:b).should be_nil
-      V[[1,2], nil].rassoc(3).should be_nil
+      expect(V[false, true, nil].rassoc(:b)).to be_nil
+      expect(V[[1,2], nil].rassoc(3)).to be_nil
     end
   end
 end

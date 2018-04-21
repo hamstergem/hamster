@@ -14,11 +14,11 @@ describe Hamster::Vector do
 
           it "preserves the original" do
             vector.join("|")
-            vector.should eql(V[*values])
+            expect(vector).to eql(V[*values])
           end
 
           it "returns #{expected.inspect}" do
-            vector.join("|").should == expected
+            expect(vector.join("|")).to eq(expected)
           end
         end
       end
@@ -35,11 +35,11 @@ describe Hamster::Vector do
 
           it "preserves the original" do
             vector.join
-            vector.should eql(V[*values])
+            expect(vector).to eql(V[*values])
           end
 
           it "returns #{expected.inspect}" do
-            vector.join.should == expected
+            expect(vector.join).to eq(expected)
           end
         end
       end
@@ -51,7 +51,7 @@ describe Hamster::Vector do
 
       describe 'on ["A", "B", "C"]' do
         it 'returns "A**B**C"' do
-          V["A", "B", "C"].join.should == "A**B**C"
+          expect(V["A", "B", "C"].join).to eq("A**B**C")
         end
       end
     end

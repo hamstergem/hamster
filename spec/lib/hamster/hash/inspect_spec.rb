@@ -10,7 +10,7 @@ describe Hamster::Hash do
     ].each do |values, expected|
       describe "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          H[*values].inspect.should == expected
+          expect(H[*values].inspect).to eq(expected)
         end
       end
     end
@@ -23,7 +23,7 @@ describe Hamster::Hash do
       describe "on #{values.inspect}" do
         it "returns a string which can be eval'd to get an equivalent object" do
           original = H.new(values)
-          eval(original.inspect).should eql(original)
+          expect(eval(original.inspect)).to eql(original)
         end
       end
     end

@@ -20,15 +20,15 @@ describe Hamster::Hash do
 
           describe "with a block" do
             it "returns #{expected.inspect}" do
-              hash.send(method) { |k, v| k == key }.should == expected
+              expect(hash.send(method) { |k, v| k == key }).to eq(expected)
             end
           end
 
           describe "without a block" do
             it "returns an Enumerator" do
               result = hash.send(method)
-              result.class.should be(Enumerator)
-              result.each { |k,v| k == key }.should == expected
+              expect(result.class).to be(Enumerator)
+              expect(result.each { |k,v| k == key }).to eq(expected)
             end
           end
         end
@@ -37,7 +37,7 @@ describe Hamster::Hash do
       it "stops iterating when the block returns true" do
         yielded = []
         H[a: 1, b: 2].find { |k,v| yielded << k; true }
-        yielded.size.should == 1
+        expect(yielded.size).to eq(1)
       end
     end
   end

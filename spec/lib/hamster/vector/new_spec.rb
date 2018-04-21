@@ -5,17 +5,17 @@ describe Hamster::Vector do
   describe ".new" do
     it "accepts a single enumerable argument and creates a new vector" do
       vector = Hamster::Vector.new([1,2,3])
-      vector.size.should be(3)
-      vector[0].should be(1)
-      vector[1].should be(2)
-      vector[2].should be(3)
+      expect(vector.size).to be(3)
+      expect(vector[0]).to be(1)
+      expect(vector[1]).to be(2)
+      expect(vector[2]).to be(3)
     end
 
     it "makes a defensive copy of a non-frozen mutable Array passed in" do
       array = [1,2,3]
       vector = Hamster::Vector.new(array)
       array[0] = 'changed'
-      vector[0].should be(1)
+      expect(vector[0]).to be(1)
     end
 
     it "is amenable to overriding of #initialize" do
@@ -26,16 +26,16 @@ describe Hamster::Vector do
       end
 
       vector = SnazzyVector.new
-      vector.size.should be(1)
-      vector.should == ['SNAZZY!!!']
+      expect(vector.size).to be(1)
+      expect(vector).to eq(['SNAZZY!!!'])
     end
 
     context "from a subclass" do
       it "returns a frozen instance of the subclass" do
         subclass = Class.new(Hamster::Vector)
         instance = subclass.new(["some", "values"])
-        instance.class.should be subclass
-        instance.frozen?.should be true
+        expect(instance.class).to be subclass
+        expect(instance.frozen?).to be true
       end
     end
   end
@@ -43,9 +43,9 @@ describe Hamster::Vector do
   describe ".[]" do
     it "accepts a variable number of items and creates a new vector" do
       vector = Hamster::Vector['a', 'b']
-      vector.size.should be(2)
-      vector[0].should == 'a'
-      vector[1].should == 'b'
+      expect(vector.size).to be(2)
+      expect(vector[0]).to eq('a')
+      expect(vector[1]).to eq('b')
     end
   end
 end

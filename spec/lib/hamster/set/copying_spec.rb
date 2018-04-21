@@ -7,7 +7,7 @@ describe Hamster::Set do
 
     describe "##{method}" do
       it "returns self" do
-        set.send(method).should equal(set)
+        expect(set.send(method)).to equal(set)
       end
     end
   end

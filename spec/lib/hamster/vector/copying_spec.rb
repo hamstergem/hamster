@@ -13,7 +13,7 @@ describe Hamster::Vector do
         let(:vector) { V[*values] }
 
         it "returns self" do
-          vector.send(method).should equal(vector)
+          expect(vector.send(method)).to equal(vector)
         end
       end
     end

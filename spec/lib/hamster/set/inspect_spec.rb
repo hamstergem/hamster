@@ -11,11 +11,11 @@ describe Hamster::Set do
         let(:set) { S[*values] }
 
         it "returns #{expected.inspect}" do
-          set.inspect.should == expected
+          expect(set.inspect).to eq(expected)
         end
 
         it "returns a string which can be eval'd to get an equivalent set" do
-          eval(set.inspect).should eql(set)
+          expect(eval(set.inspect)).to eql(set)
         end
       end
     end
@@ -24,11 +24,11 @@ describe Hamster::Set do
       let(:set) { S["A", "B", "C"] }
 
       it "returns a programmer-readable representation of the set contents" do
-        set.inspect.should match(/^Hamster::Set\["[A-C]", "[A-C]", "[A-C]"\]$/)
+        expect(set.inspect).to match(/^Hamster::Set\["[A-C]", "[A-C]", "[A-C]"\]$/)
       end
 
       it "returns a string which can be eval'd to get an equivalent set" do
-        eval(set.inspect).should eql(set)
+        expect(eval(set.inspect)).to eql(set)
       end
     end
 
@@ -37,11 +37,11 @@ describe Hamster::Set do
       let(:set) { MySet[1, 2] }
 
       it "returns a programmer-readable representation of the set contents" do
-        set.inspect.should match(/^MySet\[[1-2], [1-2]\]$/)
+        expect(set.inspect).to match(/^MySet\[[1-2], [1-2]\]$/)
       end
 
       it "returns a string which can be eval'd to get an equivalent set" do
-        eval(set.inspect).should eql(set)
+        expect(eval(set.inspect)).to eql(set)
       end
     end
   end

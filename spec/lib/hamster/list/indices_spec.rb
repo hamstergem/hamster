@@ -7,12 +7,12 @@ describe Hamster::List do
       it "is lazy" do
         count = 0
         Hamster.stream { count += 1 }.indices { |item| true }
-        count.should <= 1
+        expect(count).to be <= 1
       end
 
       context "on a large list which doesn't contain desired item" do
         it "doesn't blow the stack" do
-          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).indices { |x| x < 0 }.size }.should_not raise_error
+          expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).indices { |x| x < 0 }.size }.not_to raise_error
         end
       end
 
@@ -28,7 +28,7 @@ describe Hamster::List do
       ].each do |values, item, expected|
         context "looking for #{item.inspect} in #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            L[*values].indices { |x| x == item }.should eql(L[*expected])
+            expect(L[*values].indices { |x| x == item }).to eql(L[*expected])
           end
         end
       end
@@ -38,7 +38,7 @@ describe Hamster::List do
       it "is lazy" do
         count = 0
         Hamster.stream { count += 1 }.indices(nil)
-        count.should <= 1
+        expect(count).to be <= 1
       end
 
       [
@@ -53,7 +53,7 @@ describe Hamster::List do
       ].each do |values, item, expected|
         context "looking for #{item.inspect} in #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            L[*values].indices(item).should eql(L[*expected])
+            expect(L[*values].indices(item)).to eql(L[*expected])
           end
         end
       end

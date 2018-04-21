@@ -7,7 +7,7 @@ describe Hamster::Hash do
   [:dup, :clone].each do |method|
     describe "##{method}" do
       it "returns self" do
-        hash.send(method).should equal(hash)
+        expect(hash.send(method)).to equal(hash)
       end
     end
   end

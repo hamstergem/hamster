@@ -12,7 +12,7 @@ describe Hamster::SortedSet do
         let(:sorted_set) { SS[*values] }
 
         it "returns #{expected.inspect}" do
-          sorted_set.empty?.should == expected
+          expect(sorted_set.empty?).to eq(expected)
         end
       end
     end
@@ -20,15 +20,15 @@ describe Hamster::SortedSet do
 
   describe ".empty" do
     it "returns the canonical empty set" do
-      SS.empty.size.should be(0)
-      SS.empty.object_id.should be(SS.empty.object_id)
+      expect(SS.empty.size).to be(0)
+      expect(SS.empty.object_id).to be(SS.empty.object_id)
     end
 
     context "from a subclass" do
       it "returns an empty instance of the subclass" do
         subclass = Class.new(Hamster::SortedSet)
-        subclass.empty.class.should be(subclass)
-        subclass.empty.should be_empty
+        expect(subclass.empty.class).to be(subclass)
+        expect(subclass.empty).to be_empty
       end
     end
   end

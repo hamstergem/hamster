@@ -7,8 +7,8 @@ describe Hamster::Vector do
 
     it "returns a randomly chosen item" do
       chosen = 100.times.map { vector.sample }
-      chosen.each { |item| vector.include?(item).should == true }
-      vector.each { |item| chosen.include?(item).should == true }
+      chosen.each { |item| expect(vector.include?(item)).to eq(true) }
+      vector.each { |item| expect(chosen.include?(item)).to eq(true) }
     end
   end
 end

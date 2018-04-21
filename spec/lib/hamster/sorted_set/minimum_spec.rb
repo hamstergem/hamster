@@ -12,7 +12,7 @@ describe Hamster::SortedSet do
     ].each do |values, expected|
       context "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          SS[*values].min.should == expected
+          expect(SS[*values].min).to eq(expected)
         end
       end
     end

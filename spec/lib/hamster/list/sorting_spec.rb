@@ -8,7 +8,7 @@ describe Hamster::List do
   ].each do |method, comparator|
     describe "##{method}" do
       it "is lazy" do
-        -> { Hamster.stream { fail }.send(method, &comparator) }.should_not raise_error
+        expect { Hamster.stream { fail }.send(method, &comparator) }.not_to raise_error
       end
 
       [
@@ -22,22 +22,22 @@ describe Hamster::List do
           context "with a block" do
             it "preserves the original" do
               list.send(method, &comparator)
-              list.should == L[*values]
+              expect(list).to eq(L[*values])
             end
 
             it "returns #{expected.inspect}" do
-              list.send(method, &comparator).should == L[*expected]
+              expect(list.send(method, &comparator)).to eq(L[*expected])
             end
           end
 
           context "without a block" do
             it "preserves the original" do
               list.send(method)
-              list.should eql(L[*values])
+              expect(list).to eql(L[*values])
             end
 
             it "returns #{expected.sort.inspect}" do
-              list.send(method).should == L[*expected.sort]
+              expect(list.send(method)).to eq(L[*expected.sort])
             end
           end
         end

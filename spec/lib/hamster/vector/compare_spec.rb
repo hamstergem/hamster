@@ -12,19 +12,19 @@ describe Hamster::Vector do
     ].each do |items1, items2|
       describe "with #{items1} and #{items2}" do
         it "returns -1" do
-          (V.new(items1) <=> V.new(items2)).should be(-1)
+          expect(V.new(items1) <=> V.new(items2)).to be(-1)
         end
       end
 
       describe "with #{items2} and #{items1}" do
         it "returns 1" do
-          (V.new(items2) <=> V.new(items1)).should be(1)
+          expect(V.new(items2) <=> V.new(items1)).to be(1)
         end
       end
 
       describe "with #{items1} and #{items1}" do
         it "returns 0" do
-          (V.new(items1) <=> V.new(items1)).should be(0)
+          expect(V.new(items1) <=> V.new(items1)).to be(0)
         end
       end
     end

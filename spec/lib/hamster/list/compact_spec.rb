@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster::List do
   describe "#compact" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.compact }.should_not raise_error
+      expect { Hamster.stream { fail }.compact }.not_to raise_error
     end
 
     [
@@ -23,11 +23,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.compact
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.compact.should eql(L[*expected])
+          expect(list.compact).to eql(L[*expected])
         end
       end
     end

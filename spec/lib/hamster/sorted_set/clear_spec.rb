@@ -13,12 +13,12 @@ describe Hamster::SortedSet do
 
         it "preserves the original" do
           sorted_set.clear
-          sorted_set.should eql(SS[*values])
+          expect(sorted_set).to eql(SS[*values])
         end
 
         it "returns an empty set" do
-          sorted_set.clear.should equal(Hamster::EmptySortedSet)
-          sorted_set.clear.should be_empty
+          expect(sorted_set.clear).to equal(Hamster::EmptySortedSet)
+          expect(sorted_set.clear).to be_empty
         end
       end
     end
@@ -27,8 +27,8 @@ describe Hamster::SortedSet do
       it "returns an empty instance of the subclass" do
         subclass = Class.new(Hamster::SortedSet)
         instance = subclass.new([:a, :b, :c, :d])
-        instance.clear.class.should be(subclass)
-        instance.clear.should be_empty
+        expect(instance.clear.class).to be(subclass)
+        expect(instance.clear).to be_empty
       end
     end
 
@@ -36,8 +36,8 @@ describe Hamster::SortedSet do
       let(:sorted_set) { SS.new([1, 2, 3]) { |x| -x } }
       it "returns an empty instance with same comparator" do
         e = sorted_set.clear
-        e.should be_empty
-        e.add(4).add(5).add(6).to_a.should == [6, 5, 4]
+        expect(e).to be_empty
+        expect(e.add(4).add(5).add(6).to_a).to eq([6, 5, 4])
       end
     end
   end

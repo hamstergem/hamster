@@ -7,8 +7,8 @@ describe Hamster::Set do
 
     it "returns a randomly chosen item" do
       chosen = 100.times.map { set.sample }
-      chosen.each { |item| set.include?(item).should == true }
-      set.each { |item| chosen.include?(item).should == true }
+      chosen.each { |item| expect(set.include?(item)).to eq(true) }
+      set.each { |item| expect(chosen.include?(item)).to eq(true) }
     end
   end
 end

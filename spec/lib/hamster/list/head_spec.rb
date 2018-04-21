@@ -11,7 +11,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            L[*values].send(method).should == expected
+            expect(L[*values].send(method)).to eq(expected)
           end
         end
       end

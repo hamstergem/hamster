@@ -7,7 +7,7 @@ describe Hamster::List do
       let(:list) { Hamster.interval(0, STACK_OVERFLOW_DEPTH) }
 
       it "doesn't run out of stack" do
-        -> { list.at(STACK_OVERFLOW_DEPTH) }.should_not raise_error
+        expect { list.at(STACK_OVERFLOW_DEPTH) }.not_to raise_error
       end
     end
 
@@ -22,7 +22,7 @@ describe Hamster::List do
     ].each do |values, number, expected|
       describe "#{values.inspect} with #{number}" do
         it "returns #{expected.inspect}" do
-          L[*values].at(number).should == expected
+          expect(L[*values].at(number)).to eq(expected)
         end
       end
     end

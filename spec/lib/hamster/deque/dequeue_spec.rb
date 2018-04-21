@@ -14,11 +14,11 @@ describe Hamster::Deque do
 
           it "preserves the original" do
             deque.send(method)
-            deque.should eql(D[*values])
+            expect(deque).to eql(D[*values])
           end
 
           it "returns #{expected.inspect}" do
-            deque.send(method).should eql(D[*expected])
+            expect(deque.send(method)).to eql(D[*expected])
           end
         end
       end
@@ -28,7 +28,7 @@ describe Hamster::Deque do
       let(:subclass) { Class.new(Hamster::Deque) }
       let(:empty_instance) { subclass.new }
       it "returns emtpy object of same class" do
-        empty_instance.send(method).class.should be subclass
+        expect(empty_instance.send(method).class).to be subclass
       end
     end
   end

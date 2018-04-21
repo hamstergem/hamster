@@ -15,7 +15,7 @@ describe Hamster::Set do
           context "with an initial value of #{initial}" do
             context "and a block" do
               it "returns #{expected.inspect}" do
-                set.send(method, initial) { |memo, item| memo - item }.should == expected
+                expect(set.send(method, initial) { |memo, item| memo - item }).to eq(expected)
               end
             end
           end
@@ -33,7 +33,7 @@ describe Hamster::Set do
           context "with no initial value" do
             context "and a block" do
               it "returns #{expected.inspect}" do
-                set.send(method) { |memo, item| memo + item }.should == expected
+                expect(set.send(method) { |memo, item| memo + item }).to eq(expected)
               end
             end
           end
@@ -42,13 +42,13 @@ describe Hamster::Set do
 
       describe "with no block and a symbol argument" do
         it "uses the symbol as the name of a method to reduce with" do
-          S[1, 2, 3].reduce(:+).should == 6
+          expect(S[1, 2, 3].reduce(:+)).to eq(6)
         end
       end
 
       describe "with no block and a string argument" do
         it "uses the string as the name of a method to reduce with" do
-          S[1, 2, 3].reduce('+').should == 6
+          expect(S[1, 2, 3].reduce('+')).to eq(6)
         end
       end
     end

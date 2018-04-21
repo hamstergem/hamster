@@ -5,7 +5,7 @@ describe Hamster::List do
   describe "#each" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).each { |item| } }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).each { |item| } }.not_to raise_error
       end
     end
 
@@ -21,18 +21,18 @@ describe Hamster::List do
           it "iterates over the items in order" do
             yielded = []
             list.each { |item| yielded << item }
-            yielded.should == values
+            expect(yielded).to eq(values)
           end
 
           it "returns nil" do
-            list.each { |item| item }.should be_nil
+            expect(list.each { |item| item }).to be_nil
           end
         end
 
         context "without a block" do
           it "returns an Enumerator" do
-            list.each.class.should be(Enumerator)
-            Hamster::List[*list.each].should eql(list)
+            expect(list.each.class).to be(Enumerator)
+            expect(Hamster::List[*list.each]).to eql(list)
           end
         end
       end

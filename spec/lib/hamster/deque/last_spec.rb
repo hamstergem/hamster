@@ -10,7 +10,7 @@ describe Hamster::Deque do
     ].each do |values, expected|
       context "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          D[*values].last.should eql(expected)
+          expect(D[*values].last).to eql(expected)
         end
       end
     end
