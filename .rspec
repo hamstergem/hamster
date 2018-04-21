@@ -1,5 +1,2 @@
---colour
---format documentation
 --fail-fast
---profile
 --require spec_helper
