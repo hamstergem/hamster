@@ -1,4 +1,3 @@
-require "spec_helper"
 require "hamster/list"
 
 describe Hamster do

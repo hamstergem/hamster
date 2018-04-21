@@ -1,4 +1,3 @@
-require "spec_helper"
 require "hamster/sorted_set"
 
 describe Hamster::SortedSet do

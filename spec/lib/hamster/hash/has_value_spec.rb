@@ -1,4 +1,3 @@
-require "spec_helper"
 require "hamster/hash"
 
 describe Hamster::Hash do
