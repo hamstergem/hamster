@@ -19,13 +19,13 @@ describe Hamster::Set do
             let(:result) { set.send(method, &comparator) }
 
             it "returns #{expected.inspect}" do
-              result.should eql(SS.new(expected, &comparator))
-              result.to_a.should == expected
+              expect(result).to eql(SS.new(expected, &comparator))
+              expect(result.to_a).to eq(expected)
             end
 
             it "doesn't change the original Set" do
               result
-              set.should eql(S.new(values))
+              expect(set).to eql(S.new(values))
             end
           end
 
@@ -33,13 +33,13 @@ describe Hamster::Set do
             let(:result) { set.send(method) }
 
             it "returns #{expected.sort.inspect}" do
-              result.should eql(SS[*expected])
-              result.to_a.should == expected.sort
+              expect(result).to eql(SS[*expected])
+              expect(result.to_a).to eq(expected.sort)
             end
 
             it "doesn't change the original Set" do
               result
-              set.should eql(S.new(values))
+              expect(set).to eql(S.new(values))
             end
           end
         end
@@ -53,8 +53,8 @@ describe Hamster::Set do
       fn    = lambda { |x| count += 1; -x }
       items = 100.times.collect { rand(10000) }.uniq
 
-      S[*items].sort_by(&fn).to_a.should == items.sort.reverse
-      count.should == items.length
+      expect(S[*items].sort_by(&fn).to_a).to eq(items.sort.reverse)
+      expect(count).to eq(items.length)
     end
   end
 end

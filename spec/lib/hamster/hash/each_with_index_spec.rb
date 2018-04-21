@@ -7,23 +7,23 @@ describe Hamster::Hash do
 
     describe "with a block (internal iteration)" do
       it "returns self" do
-        hash.each_with_index {}.should be(hash)
+        expect(hash.each_with_index {}).to be(hash)
       end
 
       it "yields all key/value pairs with numeric indexes" do
         actual_pairs = {}
         indexes = []
         hash.each_with_index { |(key, value), index| actual_pairs[key] = value; indexes << index }
-        actual_pairs.should == { "A" => "aye", "B" => "bee", "C" => "see" }
-        indexes.sort.should == [0, 1, 2]
+        expect(actual_pairs).to eq({ "A" => "aye", "B" => "bee", "C" => "see" })
+        expect(indexes.sort).to eq([0, 1, 2])
       end
     end
 
     describe "with no block" do
       it "returns an Enumerator" do
-        hash.each_with_index.should be_kind_of(Enumerator)
-        hash.each_with_index.to_a.map(&:first).sort.should eql([["A", "aye"], ["B", "bee"], ["C", "see"]])
-        hash.each_with_index.to_a.map(&:last).should eql([0,1,2])
+        expect(hash.each_with_index).to be_kind_of(Enumerator)
+        expect(hash.each_with_index.to_a.map(&:first).sort).to eql([["A", "aye"], ["B", "bee"], ["C", "see"]])
+        expect(hash.each_with_index.to_a.map(&:last)).to eql([0,1,2])
       end
     end
   end

@@ -15,18 +15,18 @@ describe Hamster::SortedSet do
         context "with a block" do
           it "preserves the original" do
             sorted_set.drop_while { |item| item < "C" }
-            sorted_set.should eql(SS[*values])
+            expect(sorted_set).to eql(SS[*values])
           end
 
           it "returns #{expected.inspect}" do
-            sorted_set.drop_while { |item| item < "C" }.should eql(SS[*expected])
+            expect(sorted_set.drop_while { |item| item < "C" }).to eql(SS[*expected])
           end
         end
 
         context "without a block" do
           it "returns an Enumerator" do
-            sorted_set.drop_while.class.should be(Enumerator)
-            sorted_set.drop_while.each { |item| item < "C" }.should eql(SS[*expected])
+            expect(sorted_set.drop_while.class).to be(Enumerator)
+            expect(sorted_set.drop_while.each { |item| item < "C" }).to eql(SS[*expected])
           end
         end
       end

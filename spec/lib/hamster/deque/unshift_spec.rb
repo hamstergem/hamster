@@ -14,16 +14,16 @@ describe Hamster::Deque do
 
         it "preserves the original" do
           deque.unshift(new_value)
-          deque.should eql(D[*values])
+          expect(deque).to eql(D[*values])
         end
 
         it "returns #{expected.inspect}" do
-          deque.unshift(new_value).should eql(D[*expected])
+          expect(deque.unshift(new_value)).to eql(D[*expected])
         end
 
 
         it "returns a frozen instance" do
-          deque.unshift(new_value).should be_frozen
+          expect(deque.unshift(new_value)).to be_frozen
         end
       end
     end

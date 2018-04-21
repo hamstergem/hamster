@@ -8,24 +8,24 @@ describe Hamster::Hash do
 
       ["A", "B", "C", nil, 2.0].each do |key|
         it "returns true for an existing key (#{key.inspect})" do
-          hash.send(method, key).should == true
+          expect(hash.send(method, key)).to eq(true)
         end
       end
 
       it "returns false for a non-existing key" do
-        hash.send(method, "D").should == false
+        expect(hash.send(method, "D")).to eq(false)
       end
 
       it "uses #eql? for equality" do
-        hash.send(method, 2).should == false
+        expect(hash.send(method, 2)).to eq(false)
       end
 
       it "returns true if the key is found and maps to nil" do
-        H["A" => nil].send(method, "A").should == true
+        expect(H["A" => nil].send(method, "A")).to eq(true)
       end
 
       it "returns true if the key is found and maps to false" do
-        H["A" => false].send(method, "A").should == true
+        expect(H["A" => false].send(method, "A")).to eq(true)
       end
     end
   end

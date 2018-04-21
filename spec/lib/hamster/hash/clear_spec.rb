@@ -14,29 +14,29 @@ describe Hamster::Hash do
 
         it "preserves the original" do
           result
-          original.should eql(H[*values])
+          expect(original).to eql(H[*values])
         end
 
         it "returns an empty hash" do
-          result.should equal(H.empty)
-          result.should be_empty
+          expect(result).to equal(H.empty)
+          expect(result).to be_empty
         end
       end
     end
 
     it "maintains the default Proc, if there is one" do
       hash = H.new(a: 1) { 1 }
-      hash.clear[:b].should == 1
-      hash.clear[:c].should == 1
-      hash.clear.default_proc.should_not be_nil
+      expect(hash.clear[:b]).to eq(1)
+      expect(hash.clear[:c]).to eq(1)
+      expect(hash.clear.default_proc).not_to be_nil
     end
 
     context "on a subclass" do
       it "returns an empty instance of the subclass" do
         subclass = Class.new(Hamster::Hash)
         instance = subclass.new(a: 1, b: 2)
-        instance.clear.class.should be(subclass)
-        instance.clear.should be_empty
+        expect(instance.clear.class).to be(subclass)
+        expect(instance.clear).to be_empty
       end
     end
   end

@@ -13,11 +13,11 @@ describe Hamster::Deque do
 
         it "preserves the original" do
           deque.clear
-          deque.should eql(D[*values])
+          expect(deque).to eql(D[*values])
         end
 
         it "returns an empty deque" do
-          deque.clear.should equal(D.empty)
+          expect(deque.clear).to equal(D.empty)
         end
       end
     end
@@ -27,8 +27,8 @@ describe Hamster::Deque do
     it "returns an instance of the subclass" do
       subclass = Class.new(Hamster::Deque)
       instance = subclass.new([1,2])
-      instance.clear.should be_empty
-      instance.clear.class.should be(subclass)
+      expect(instance.clear).to be_empty
+      expect(instance.clear.class).to be(subclass)
     end
   end
 end

@@ -3,7 +3,7 @@ require "hamster/list"
 
 describe "Hamster::list#span" do
   it "is lazy" do
-    -> { Hamster.stream { |item| fail }.span { true } }.should_not raise_error
+    expect { Hamster.stream { |item| fail }.span { true } }.not_to raise_error
   end
 
   describe <<-DESC do
@@ -34,41 +34,41 @@ DESC
 
           it "preserves the original" do
             result
-            list.should eql(L[*values])
+            expect(list).to eql(L[*values])
           end
 
           it "returns the prefix as #{expected_prefix.inspect}" do
-            prefix.should eql(L[*expected_prefix])
+            expect(prefix).to eql(L[*expected_prefix])
           end
 
           it "returns the remainder as #{expected_remainder.inspect}" do
-            remainder.should eql(L[*expected_remainder])
+            expect(remainder).to eql(L[*expected_remainder])
           end
 
           it "calls the block only once for each element" do
             count = 0
             result = list.span { |item| count += 1; item <= 2 }
             # force realization of lazy lists
-            result.first.size.should == expected_prefix.size
-            result.last.size.should == expected_remainder.size
+            expect(result.first.size).to eq(expected_prefix.size)
+            expect(result.last.size).to eq(expected_remainder.size)
             # it may not need to call the block on every element, just up to the
             # point where the block first returns a false value
-            count.should <= values.size
+            expect(count).to be <= values.size
           end
         end
 
         context "without a predicate" do
           it "returns a frozen array" do
-            list.span.class.should be(Array)
-            list.span.should be_frozen
+            expect(list.span.class).to be(Array)
+            expect(list.span).to be_frozen
           end
 
           it "returns self as the prefix" do
-            list.span.first.should equal(list)
+            expect(list.span.first).to equal(list)
           end
 
           it "returns an empty list as the remainder" do
-            list.span.last.should be_empty
+            expect(list.span.last).to be_empty
           end
         end
       end

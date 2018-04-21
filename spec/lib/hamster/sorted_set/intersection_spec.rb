@@ -14,13 +14,13 @@ describe Hamster::SortedSet do
       ].each do |a, b, expected|
         context "for #{a.inspect} and #{b.inspect}" do
           it "returns #{expected.inspect}" do
-            SS[*a].send(method, SS[*b]).should eql(SS[*expected])
+            expect(SS[*a].send(method, SS[*b])).to eql(SS[*expected])
           end
         end
 
         context "for #{b.inspect} and #{a.inspect}" do
           it "returns #{expected.inspect}" do
-            SS[*b].send(method, SS[*a]).should eql(SS[*expected])
+            expect(SS[*b].send(method, SS[*a])).to eql(SS[*expected])
           end
         end
       end

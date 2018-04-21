@@ -5,14 +5,14 @@ require "thread"
 describe Hamster::List do
   describe "#partition" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.partition }.should_not raise_error
+      expect { Hamster.stream { fail }.partition }.not_to raise_error
     end
 
     it "calls the passed block only once for each item" do
       count = 0
       a,b = L[1, 2, 3].partition { |item| count += 1; item.odd? }
-      (a.size + b.size).should be(3) # force realization of lazy lists
-      count.should be(3)
+      expect(a.size + b.size).to be(3) # force realization of lazy lists
+      expect(count).to be(3)
     end
 
     # note: Lists are not as lazy as they could be!
@@ -21,19 +21,19 @@ describe Hamster::List do
     it "returns a lazy list of items for which predicate is true" do
       count = 0
       a,b = L[1, 2, 3, 4].partition { |item| count += 1; item.odd? }
-      a.take(1).should == [1]
-      count.should be(3) # would be 1 if lists were lazier
-      a.take(2).should == [1, 3]
-      count.should be(4) # would be 3 if lists were lazier
+      expect(a.take(1)).to eq([1])
+      expect(count).to be(3) # would be 1 if lists were lazier
+      expect(a.take(2)).to eq([1, 3])
+      expect(count).to be(4) # would be 3 if lists were lazier
     end
 
     it "returns a lazy list of items for which predicate is false" do
       count = 0
       a,b = L[1, 2, 3, 4].partition { |item| count += 1; item.odd? }
-      b.take(1).should == [2]
-      count.should be(4) # would be 2 if lists were lazier
-      b.take(2).should == [2, 4]
-      count.should be(4)
+      expect(b.take(1)).to eq([2])
+      expect(count).to be(4) # would be 2 if lists were lazier
+      expect(b.take(2)).to eq([2, 4])
+      expect(count).to be(4)
     end
 
     it "calls the passed block only once for each item, even with multiple threads" do
@@ -54,17 +54,17 @@ describe Hamster::List do
           # make sure that only one thread will run the above "iterate" block at a
           # time, regardless
           if i % 2 == 0
-            left.take(100).sum.should == 10000
+            expect(left.take(100).sum).to eq(10000)
           else
-            right.take(100).sum.should == 9900
+            expect(right.take(100).sum).to eq(9900)
           end
         end
       end.each(&:join)
 
       # if no threads "stepped on" each other, the following should be true
       # make some allowance for "lazy" lists which actually realize a little bit ahead:
-      (200..203).include?(yielded.size).should == true
-      yielded.should == (0..(yielded.size-1)).to_a
+      expect((200..203).include?(yielded.size)).to eq(true)
+      expect(yielded).to eq((0..(yielded.size-1)).to_a)
     end
 
     [
@@ -86,28 +86,28 @@ describe Hamster::List do
           let(:remainder) { result.last }
 
           it "preserves the original" do
-            list.should eql(L[*values])
+            expect(list).to eql(L[*values])
           end
 
           it "returns a frozen array with two items" do
-            result.class.should be(Array)
-            result.should be_frozen
-            result.size.should be(2)
+            expect(result.class).to be(Array)
+            expect(result).to be_frozen
+            expect(result.size).to be(2)
           end
 
           it "correctly identifies the matches" do
-            matches.should eql(L[*expected_matches])
+            expect(matches).to eql(L[*expected_matches])
           end
 
           it "correctly identifies the remainder" do
-            remainder.should eql(L[*expected_remainder])
+            expect(remainder).to eql(L[*expected_remainder])
           end
         end
 
         context "without a block" do
           it "returns an Enumerator" do
-            list.partition.class.should be(Enumerator)
-            list.partition.each(&:odd?).should eql([L[*expected_matches], L[*expected_remainder]])
+            expect(list.partition.class).to be(Enumerator)
+            expect(list.partition.each(&:odd?)).to eql([L[*expected_matches], L[*expected_remainder]])
           end
         end
       end

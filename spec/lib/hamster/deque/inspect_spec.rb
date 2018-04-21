@@ -12,11 +12,11 @@ describe Hamster::Deque do
         let(:deque) { D[*values] }
 
         it "returns #{expected.inspect}" do
-          deque.inspect.should == expected
+          expect(deque.inspect).to eq(expected)
         end
 
         it "returns a string which can be eval'd to get an equivalent object" do
-          eval(deque.inspect).should eql(deque)
+          expect(eval(deque.inspect)).to eql(deque)
         end
       end
     end

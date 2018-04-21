@@ -5,7 +5,7 @@ describe Hamster::List do
   describe "#join" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).join }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).join }.not_to raise_error
       end
     end
 
@@ -20,11 +20,11 @@ describe Hamster::List do
 
           it "preserves the original" do
             list.join("|")
-            list.should eql(L[*values])
+            expect(list).to eql(L[*values])
           end
 
           it "returns #{expected.inspect}" do
-            list.join("|").should == expected
+            expect(list.join("|")).to eq(expected)
           end
         end
       end
@@ -41,11 +41,11 @@ describe Hamster::List do
 
           it "preserves the original" do
             list.join
-            list.should eql(L[*values])
+            expect(list).to eql(L[*values])
           end
 
           it "returns #{expected.inspect}" do
-            list.join.should == expected
+            expect(list.join).to eq(expected)
           end
         end
       end
@@ -57,7 +57,7 @@ describe Hamster::List do
       after  { $, = nil }
 
       it "uses the default global separator" do
-        list.join.should == "A**B**C"
+        expect(list.join).to eq("A**B**C")
       end
     end
   end

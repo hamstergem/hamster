@@ -11,25 +11,25 @@ describe Hamster::Hash do
 
     it "prints the whole Hash on one line if it fits" do
       PP.pp(hash, stringio, 80)
-      stringio.string.chomp.should == 'Hamster::Hash[1 => "tin", 2 => "earwax", 3 => "neanderthal"]'
+      expect(stringio.string.chomp).to eq('Hamster::Hash[1 => "tin", 2 => "earwax", 3 => "neanderthal"]')
     end
 
     it "prints each key/val pair on its own line, if not" do
       PP.pp(hash, stringio, 20)
-      stringio.string.chomp.should == 'Hamster::Hash[
+      expect(stringio.string.chomp).to eq('Hamster::Hash[
  1 => "tin",
  2 => "earwax",
- 3 => "neanderthal"]'
+ 3 => "neanderthal"]')
     end
 
     it "prints keys and vals on separate lines, if space is very tight" do
       PP.pp(hash, stringio, 15)
       # the trailing space after "3 =>" below is needed, don't remove it
-      stringio.string.chomp.should == 'Hamster::Hash[
+      expect(stringio.string.chomp).to eq('Hamster::Hash[
  1 => "tin",
  2 => "earwax",
  3 => 
-  "neanderthal"]'
+  "neanderthal"]')
     end
   end
 end

@@ -7,17 +7,17 @@ describe Hamster::List do
       let(:list) { Hamster.interval(0, STACK_OVERFLOW_DEPTH) }
 
       it "doesn't run out of stack" do
-        -> { list.all? }.should_not raise_error
+        expect { list.all? }.not_to raise_error
       end
     end
 
     context "when empty" do
       it "with a block returns true" do
-        L.empty.all? {}.should == true
+        expect(L.empty.all? {}).to eq(true)
       end
 
       it "with no block returns true" do
-        L.empty.all?.should == true
+        expect(L.empty.all?).to eq(true)
       end
     end
 
@@ -27,13 +27,13 @@ describe Hamster::List do
 
         context "if the block always returns true" do
           it "returns true" do
-            list.all? { |item| true }.should == true
+            expect(list.all? { |item| true }).to eq(true)
           end
         end
 
         context "if the block ever returns false" do
           it "returns false" do
-            list.all? { |item| item == "D" }.should == false
+            expect(list.all? { |item| item == "D" }).to eq(false)
           end
         end
       end
@@ -41,14 +41,14 @@ describe Hamster::List do
       context "with no block" do
         context "if all values are truthy" do
           it "returns true" do
-            L[true, "A"].all?.should == true
+            expect(L[true, "A"].all?).to eq(true)
           end
         end
 
         [nil, false].each do |value|
           context "if any value is #{value.inspect}" do
             it "returns false" do
-              L[value, true, "A"].all?.should == false
+              expect(L[value, true, "A"].all?).to eq(false)
             end
           end
         end

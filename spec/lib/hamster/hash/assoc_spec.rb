@@ -6,47 +6,47 @@ describe Hamster::Hash do
 
   describe "#assoc" do
     it "searches for a key/val pair with a given key" do
-      hash.assoc(:a).should == [:a, 3]
-      hash.assoc(:b).should == [:b, 2]
-      hash.assoc(:c).should == [:c, 1]
+      expect(hash.assoc(:a)).to eq([:a, 3])
+      expect(hash.assoc(:b)).to eq([:b, 2])
+      expect(hash.assoc(:c)).to eq([:c, 1])
     end
 
     it "returns nil if a matching key is not found" do
-      hash.assoc(:d).should be_nil
-      hash.assoc(nil).should be_nil
-      hash.assoc(0).should be_nil
+      expect(hash.assoc(:d)).to be_nil
+      expect(hash.assoc(nil)).to be_nil
+      expect(hash.assoc(0)).to be_nil
     end
 
     it "returns nil even if there is a default" do
-      H.new(a: 1, b: 2) { fail }.assoc(:c).should be_nil
+      expect(H.new(a: 1, b: 2) { fail }.assoc(:c)).to be_nil
     end
 
     it "uses #== to compare keys with provided object" do
-      hash.assoc(EqualNotEql.new).should_not be_nil
-      hash.assoc(EqlNotEqual.new).should be_nil
+      expect(hash.assoc(EqualNotEql.new)).not_to be_nil
+      expect(hash.assoc(EqlNotEqual.new)).to be_nil
     end
   end
 
   describe "#rassoc" do
     it "searches for a key/val pair with a given value" do
-      hash.rassoc(1).should == [:c, 1]
-      hash.rassoc(2).should == [:b, 2]
-      hash.rassoc(3).should == [:a, 3]
+      expect(hash.rassoc(1)).to eq([:c, 1])
+      expect(hash.rassoc(2)).to eq([:b, 2])
+      expect(hash.rassoc(3)).to eq([:a, 3])
     end
 
     it "returns nil if a matching value is not found" do
-      hash.rassoc(0).should be_nil
-      hash.rassoc(4).should be_nil
-      hash.rassoc(nil).should be_nil
+      expect(hash.rassoc(0)).to be_nil
+      expect(hash.rassoc(4)).to be_nil
+      expect(hash.rassoc(nil)).to be_nil
     end
 
     it "returns nil even if there is a default" do
-      H.new(a: 1, b: 2) { fail }.rassoc(3).should be_nil
+      expect(H.new(a: 1, b: 2) { fail }.rassoc(3)).to be_nil
     end
 
     it "uses #== to compare values with provided object" do
-      hash.rassoc(EqualNotEql.new).should_not be_nil
-      hash.rassoc(EqlNotEqual.new).should be_nil
+      expect(hash.rassoc(EqualNotEql.new)).not_to be_nil
+      expect(hash.rassoc(EqlNotEqual.new)).to be_nil
     end
   end
 end

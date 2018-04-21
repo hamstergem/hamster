@@ -7,8 +7,8 @@ describe Hamster::List do
 
     it "returns a randomly chosen item" do
       chosen = 100.times.map { list.sample }
-      chosen.each { |item| list.include?(item).should == true }
-      list.each { |item| chosen.include?(item).should == true }
+      chosen.each { |item| expect(list.include?(item)).to eq(true) }
+      list.each { |item| expect(chosen.include?(item)).to eq(true) }
     end
   end
 end

@@ -23,28 +23,28 @@ describe Hamster::Vector do
 
           it "preserves the original" do
             result
-            vector.should eql(V[*values])
+            expect(vector).to eql(V[*values])
           end
 
           it "returns a frozen array with two items" do
-            result.class.should be(Array)
-            result.should be_frozen
-            result.size.should be(2)
+            expect(result.class).to be(Array)
+            expect(result).to be_frozen
+            expect(result.size).to be(2)
           end
 
           it "correctly identifies the matches" do
-            matches.should eql(V[*expected_matches])
+            expect(matches).to eql(V[*expected_matches])
           end
 
           it "correctly identifies the remainder" do
-            remainder.should eql(V[*expected_remainder])
+            expect(remainder).to eql(V[*expected_remainder])
           end
         end
 
         describe "without a block" do
           it "returns an Enumerator" do
-            vector.partition.class.should be(Enumerator)
-            vector.partition.each(&:odd?).should eql([V.new(expected_matches), V.new(expected_remainder)])
+            expect(vector.partition.class).to be(Enumerator)
+            expect(vector.partition.each(&:odd?)).to eql([V.new(expected_matches), V.new(expected_remainder)])
           end
         end
       end

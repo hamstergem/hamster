@@ -8,16 +8,16 @@ describe Hamster::SortedSet do
 
       [1, 2, 3, 4.0].each do |value|
         it "returns true for an existing value (#{value.inspect})" do
-          sorted_set.send(method, value).should == true
+          expect(sorted_set.send(method, value)).to eq(true)
         end
       end
 
       it "returns false for a non-existing value" do
-        sorted_set.send(method, 5).should == false
+        expect(sorted_set.send(method, 5)).to eq(false)
       end
 
       it "uses #<=> for equality" do
-        sorted_set.send(method, 4).should == true
+        expect(sorted_set.send(method, 4)).to eq(true)
       end
     end
   end

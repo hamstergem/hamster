@@ -10,15 +10,15 @@ describe Hamster::Deque do
 
     it "prints the whole Deque on one line if it fits" do
       PP.pp(deque, stringio, 80)
-      stringio.string.chomp.should == 'Hamster::Deque["AAAA", "BBBB", "CCCC"]'
+      expect(stringio.string.chomp).to eq('Hamster::Deque["AAAA", "BBBB", "CCCC"]')
     end
 
     it "prints each item on its own line, if not" do
       PP.pp(deque, stringio, 10)
-      stringio.string.chomp.should == 'Hamster::Deque[
+      expect(stringio.string.chomp).to eq('Hamster::Deque[
  "AAAA",
  "BBBB",
- "CCCC"]'
+ "CCCC"]')
     end
   end
 end

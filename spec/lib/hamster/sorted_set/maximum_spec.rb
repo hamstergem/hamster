@@ -14,7 +14,7 @@ describe Hamster::SortedSet do
           let(:result) { set.max { |maximum, item| maximum.length <=> item.length }}
 
           it "returns #{expected.inspect}" do
-            result.should == expected
+            expect(result).to eq(expected)
           end
         end
       end
@@ -28,7 +28,7 @@ describe Hamster::SortedSet do
       ].each do |values, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            SS[*values].max.should == expected
+            expect(SS[*values].max).to eq(expected)
           end
         end
       end

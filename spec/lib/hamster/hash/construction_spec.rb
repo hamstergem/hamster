@@ -5,8 +5,8 @@ describe Hamster::Hash do
   describe ".hash" do
     context "with nothing" do
       it "returns the canonical empty hash" do
-        H.empty.should be_empty
-        H.empty.should equal(Hamster::EmptyHash)
+        expect(H.empty).to be_empty
+        expect(H.empty).to equal(Hamster::EmptyHash)
       end
     end
 
@@ -14,8 +14,8 @@ describe Hamster::Hash do
       let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
       it "is equivalent to repeatedly using #put" do
-        hash.should eql(H.empty.put("A", "aye").put("B", "bee").put("C", "see"))
-        hash.size.should == 3
+        expect(hash).to eql(H.empty.put("A", "aye").put("B", "bee").put("C", "see"))
+        expect(hash.size).to eq(3)
       end
     end
 
@@ -23,7 +23,7 @@ describe Hamster::Hash do
       let(:hash) { H[[[:a, 1], [:b, 2]]] }
 
       it "initializes a new Hash" do
-        hash.should eql(H[a: 1, b: 2])
+        expect(hash).to eql(H[a: 1, b: 2])
       end
     end
 
@@ -32,7 +32,7 @@ describe Hamster::Hash do
       let(:other) { H[hash] }
 
       it "initializes an equivalent Hash" do
-        hash.should eql(other)
+        expect(hash).to eql(other)
       end
     end
   end

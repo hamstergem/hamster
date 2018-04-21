@@ -59,7 +59,7 @@ describe Hamster::Vector do
       it "returns an instance of the subclass" do
         subclass = Class.new(Hamster::Vector)
         instance = subclass[1,2,3]
-        (instance << 4).class.should be(subclass)
+        expect((instance << 4).class).to be(subclass)
       end
     end
   end

@@ -18,7 +18,7 @@ describe Hamster::SortedSet do
     ].each do |a, b, expected|
       context "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}"  do
-          SS[*a].superset?(SS[*b]).should == expected
+          expect(SS[*a].superset?(SS[*b])).to eq(expected)
         end
       end
     end
@@ -40,7 +40,7 @@ describe Hamster::SortedSet do
     ].each do |a, b, expected|
       context "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}"  do
-          SS[*a].proper_superset?(SS[*b]).should == expected
+          expect(SS[*a].proper_superset?(SS[*b])).to eq(expected)
         end
       end
     end

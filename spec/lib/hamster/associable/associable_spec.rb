@@ -23,116 +23,116 @@ describe Hamster::Associable do
     }
     context "with one level on existing key" do
       it "Hash passes the value to the block" do
-        hash.update_in("A") { |value| value.should == "aye" }
+        hash.update_in("A") { |value| expect(value).to eq("aye") }
       end
 
       it "Vector passes the value to the block" do
-        vector.update_in(1) { |value| value.should == 101 }
+        vector.update_in(1) { |value| expect(value).to eq(101) }
       end
 
       it "Hash replaces the value with the result of the block" do
         result = hash.update_in("A") { |value| "FLIBBLE" }
-        result.get("A").should == "FLIBBLE"
+        expect(result.get("A")).to eq("FLIBBLE")
       end
 
       it "Vector replaces the value with the result of the block" do
         result = vector.update_in(1) { |value| "FLIBBLE" }
-        result.get(1).should == "FLIBBLE"
+        expect(result.get(1)).to eq("FLIBBLE")
       end
 
       it "Hash should preserve the original" do
         result = hash.update_in("A") { |value| "FLIBBLE" }
-        hash.get("A").should == "aye"
+        expect(hash.get("A")).to eq("aye")
       end
 
       it "Vector should preserve the original" do
         result = vector.update_in(1) { |value| "FLIBBLE" }
-        vector.get(1).should == 101
+        expect(vector.get(1)).to eq(101)
       end
     end
 
     context "with multi-level on existing keys" do
       it "Hash passes the value to the block" do
-        hash.update_in("B", "D", "E") { |value| value.should == "eee" }
+        hash.update_in("B", "D", "E") { |value| expect(value).to eq("eee") }
       end
 
       it "Vector passes the value to the block" do
-        vector.update_in(3, 2, 0) { |value| value.should == 300 }
+        vector.update_in(3, 2, 0) { |value| expect(value).to eq(300) }
       end
 
       it "Hash replaces the value with the result of the block" do
         result = hash.update_in("B", "D", "E") { |value| "FLIBBLE" }
-        result["B"]["D"]["E"].should == "FLIBBLE"
+        expect(result["B"]["D"]["E"]).to eq("FLIBBLE")
       end
 
       it "Vector replaces the value with the result of the block" do
         result = vector.update_in(3, 2, 0) { |value| "FLIBBLE" }
-        result[3][2][0].should == "FLIBBLE"
+        expect(result[3][2][0]).to eq("FLIBBLE")
       end
 
       it "Hash should preserve the original" do
         result = hash.update_in("B", "D", "E") { |value| "FLIBBLE" }
-        hash["B"]["D"]["E"].should == "eee"
+        expect(hash["B"]["D"]["E"]).to eq("eee")
       end
 
       it "Vector should preserve the original" do
         result = vector.update_in(3, 2, 0) { |value| "FLIBBLE" }
-        vector[3][2][0].should == 300
+        expect(vector[3][2][0]).to eq(300)
       end
 
     end
 
     context "with multi-level creating sub-hashes when keys don't exist" do
       it "Hash passes nil to the block" do
-        hash.update_in("B", "X", "Y") { |value| value.should be_nil }
+        hash.update_in("B", "X", "Y") { |value| expect(value).to be_nil }
       end
 
       it "Vector passes nil to the block" do
-        vector.update_in(3, 3, "X", "Y") { |value| value.should be_nil }
+        vector.update_in(3, 3, "X", "Y") { |value| expect(value).to be_nil }
       end
 
       it "Hash creates subhashes on the way to set the value" do
         result = hash.update_in("B", "X", "Y") { |value| "NEWVALUE" }
-        result["B"]["X"]["Y"].should == "NEWVALUE"
-        result["B"]["D"]["E"].should == "eee"
+        expect(result["B"]["X"]["Y"]).to eq("NEWVALUE")
+        expect(result["B"]["D"]["E"]).to eq("eee")
       end
 
       it "Vector creates subhashes on the way to set the value" do
         result = vector.update_in(3, 3, "X", "Y") { |value| "NEWVALUE" }
-        result[3][3]["X"]["Y"].should == "NEWVALUE"
-        result[3][2][0].should == 300
+        expect(result[3][3]["X"]["Y"]).to eq("NEWVALUE")
+        expect(result[3][2][0]).to eq(300)
       end
     end
 
     context "Hash with multi-level including Vector with existing keys" do
       it "passes the value to the block" do
-        hash.update_in("F", 1, "H") { |value| value.should == "eitch" }
+        hash.update_in("F", 1, "H") { |value| expect(value).to eq("eitch") }
       end
 
       it "replaces the value with the result of the block" do
         result = hash.update_in("F", 1, "H") { |value| "FLIBBLE" }
-        result["F"][1]["H"].should == "FLIBBLE"
+        expect(result["F"][1]["H"]).to eq("FLIBBLE")
       end
 
       it "should preserve the original" do
         result = hash.update_in("F", 1, "H") { |value| "FLIBBLE" }
-        hash["F"][1]["H"].should == "eitch"
+        expect(hash["F"][1]["H"]).to eq("eitch")
       end
     end
 
     context "Vector with multi-level including Hash with existing keys" do
       it "passes the value to the block" do
-        vector.update_in(4, "B") { |value| value.should == "bravo" }
+        vector.update_in(4, "B") { |value| expect(value).to eq("bravo") }
       end
 
       it "replaces the value with the result of the block" do
         result = vector.update_in(4, "B") { |value| "FLIBBLE" }
-        result[4]["B"].should == "FLIBBLE"
+        expect(result[4]["B"]).to eq("FLIBBLE")
       end
 
       it "should preserve the original" do
         result = vector.update_in(4, "B") { |value| "FLIBBLE" }
-        vector[4]["B"].should == "bravo"
+        expect(vector[4]["B"]).to eq("bravo")
       end
     end
 

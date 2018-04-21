@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster do
   describe "#flatten" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.flatten }.should_not raise_error
+      expect { Hamster.stream { fail }.flatten }.not_to raise_error
     end
 
     [
@@ -19,11 +19,11 @@ describe Hamster do
 
         it "preserves the original" do
           list.flatten
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns an empty list" do
-          list.flatten.should eql(L[*expected])
+          expect(list.flatten).to eql(L[*expected])
         end
       end
     end

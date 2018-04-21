@@ -10,7 +10,7 @@ describe Hamster::Set do
         [%w[A B C], 3],
       ].each do |values, result|
         it "returns #{result} for #{values.inspect}" do
-          S[*values].send(method).should == result
+          expect(S[*values].send(method)).to eq(result)
         end
       end
     end

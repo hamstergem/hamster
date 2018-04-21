@@ -5,7 +5,7 @@ describe Hamster::List do
   [:append, :concat, :+].each do |method|
     describe "##{method}" do
       it "is lazy" do
-        -> { Hamster.stream { fail }.append(Hamster.stream { fail }) }.should_not raise_error
+        expect { Hamster.stream { fail }.append(Hamster.stream { fail }) }.not_to raise_error
       end
 
       [
@@ -21,16 +21,16 @@ describe Hamster::List do
 
           it "preserves the left" do
             result
-            left.should eql(L[*left_values])
+            expect(left).to eql(L[*left_values])
           end
 
           it "preserves the right" do
             result
-            right.should eql(L[*right_values])
+            expect(right).to eql(L[*right_values])
           end
 
           it "returns #{expected.inspect}" do
-            result.should eql(L[*expected])
+            expect(result).to eql(L[*expected])
           end
         end
       end

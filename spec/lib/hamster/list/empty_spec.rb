@@ -5,7 +5,7 @@ describe Hamster::List do
   describe "#empty?" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).select(&:nil?).empty? }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).select(&:nil?).empty? }.not_to raise_error
       end
     end
 
@@ -16,7 +16,7 @@ describe Hamster::List do
     ].each do |values, expected|
       context "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          L[*values].empty?.should == expected
+          expect(L[*values].empty?).to eq(expected)
         end
       end
     end

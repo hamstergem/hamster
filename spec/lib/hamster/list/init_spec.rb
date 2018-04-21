@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster::List do
   describe "#init" do
     it "is lazy" do
-      -> { Hamster.stream { false }.init }.should_not raise_error
+      expect { Hamster.stream { false }.init }.not_to raise_error
     end
 
     [
@@ -17,11 +17,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.init
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns the list without the last element: #{expected.inspect}" do
-          list.init.should eql(L[*expected])
+          expect(list.init).to eql(L[*expected])
         end
       end
     end

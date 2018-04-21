@@ -6,33 +6,33 @@ describe Hamster::Hash do
 
   describe "#eql?" do
     it "returns false when comparing with a standard hash" do
-      hash.eql?("A" => "aye", "B" => "bee", "C" => "see").should == false
+      expect(hash.eql?("A" => "aye", "B" => "bee", "C" => "see")).to eq(false)
     end
 
     it "returns false when comparing with an arbitrary object" do
-      hash.eql?(Object.new).should == false
+      expect(hash.eql?(Object.new)).to eq(false)
     end
 
     it "returns false when comparing with a subclass of Hamster::Hash" do
       subclass = Class.new(Hamster::Hash)
       instance = subclass.new("A" => "aye", "B" => "bee", "C" => "see")
-      hash.eql?(instance).should == false
+      expect(hash.eql?(instance)).to eq(false)
     end
   end
 
   describe "#==" do
     it "returns true when comparing with a standard hash" do
-      (hash == {"A" => "aye", "B" => "bee", "C" => "see"}).should == true
+      expect(hash == {"A" => "aye", "B" => "bee", "C" => "see"}).to eq(true)
     end
 
     it "returns false when comparing with an arbitrary object" do
-      (hash == Object.new).should == false
+      expect(hash == Object.new).to eq(false)
     end
 
     it "returns true when comparing with a subclass of Hamster::Hash" do
       subclass = Class.new(Hamster::Hash)
       instance = subclass.new("A" => "aye", "B" => "bee", "C" => "see")
-      (hash == instance).should == true
+      expect(hash == instance).to eq(true)
     end
   end
 
@@ -51,11 +51,11 @@ describe Hamster::Hash do
       ].each do |a, b, expected|
         describe "returns #{expected.inspect}" do
           it "for #{a.inspect} and #{b.inspect}" do
-            H[a].send(method, H[b]).should == expected
+            expect(H[a].send(method, H[b])).to eq(expected)
           end
 
           it "for #{b.inspect} and #{a.inspect}" do
-            H[b].send(method, H[a]).should == expected
+            expect(H[b].send(method, H[a])).to eq(expected)
           end
         end
       end
@@ -64,7 +64,7 @@ describe Hamster::Hash do
 
   it "returns true on a large hash which is modified and then modified back again" do
     hash = H.new((1..1000).zip(2..1001))
-    hash.put('a', 1).delete('a').should == hash
-    hash.put('b', 2).delete('b').should eql(hash)
+    expect(hash.put('a', 1).delete('a')).to eq(hash)
+    expect(hash.put('b', 2).delete('b')).to eql(hash)
   end
 end

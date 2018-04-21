@@ -14,11 +14,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.cons(new_value)
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.cons(new_value).should eql(L[*expected])
+          expect(list.cons(new_value)).to eql(L[*expected])
         end
       end
     end

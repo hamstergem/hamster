@@ -31,7 +31,7 @@ describe Hamster::SortedSet do
 
     it "raises a TypeError if set has a custom sort order" do
       # this is because comparator block can't be serialized
-      -> { Marshal.dump(SS.new([1, 2, 3]) { |x| -x }) }.should raise_error(TypeError)
+      expect { Marshal.dump(SS.new([1, 2, 3]) { |x| -x }) }.to raise_error(TypeError)
     end
   end
 end

@@ -4,12 +4,12 @@ require "hamster/list"
 describe Hamster do
   describe "#cycle" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.cycle }.should_not raise_error
+      expect { Hamster.stream { fail }.cycle }.not_to raise_error
     end
 
     context "with an empty list" do
       it "returns an empty list" do
-        L.empty.cycle.should be_empty
+        expect(L.empty.cycle).to be_empty
       end
     end
 
@@ -18,11 +18,11 @@ describe Hamster do
 
       it "preserves the original" do
         list.cycle
-        list.should == L["A", "B", "C"]
+        expect(list).to eq(L["A", "B", "C"])
       end
 
       it "infinitely cycles through all values" do
-        list.cycle.take(7).should == L["A", "B", "C", "A", "B", "C", "A"]
+        expect(list.cycle.take(7)).to eq(L["A", "B", "C", "A", "B", "C", "A"])
       end
     end
   end

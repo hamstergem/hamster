@@ -5,12 +5,12 @@ describe Hamster::List do
   describe "#reverse" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).reverse }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).reverse }.not_to raise_error
       end
     end
 
     it "is lazy" do
-      -> { Hamster.stream { fail }.reverse }.should_not raise_error
+      expect { Hamster.stream { fail }.reverse }.not_to raise_error
     end
 
     [
@@ -23,11 +23,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.reverse { |item| item.downcase }
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.reverse { |item| item.downcase }.should == L[*expected]
+          expect(list.reverse { |item| item.downcase }).to eq(L[*expected])
         end
       end
     end

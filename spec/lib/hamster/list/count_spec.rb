@@ -5,7 +5,7 @@ describe Hamster::List do
   describe "#count" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).count }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).count }.not_to raise_error
       end
     end
 
@@ -22,13 +22,13 @@ describe Hamster::List do
 
         context "with a block" do
           it "returns #{expected.inspect}" do
-            list.count(&:odd?).should == expected
+            expect(list.count(&:odd?)).to eq(expected)
           end
         end
 
         context "without a block" do
           it "returns length" do
-            list.count.should == list.length
+            expect(list.count).to eq(list.length)
           end
         end
       end

@@ -18,24 +18,24 @@ describe Hamster::Vector do
 
         it "preserves the original" do
           vector.drop(number)
-          vector.should eql(V[*values])
+          expect(vector).to eql(V[*values])
         end
 
         it "returns #{expected.inspect}" do
-          vector.drop(number).should eql(V[*expected])
+          expect(vector.drop(number)).to eql(V[*expected])
         end
       end
     end
 
     it "raises an ArgumentError if number of elements specified is negative" do
-      -> { V[1, 2, 3].drop(-1) }.should raise_error(ArgumentError)
-      -> { V[1, 2, 3].drop(-3) }.should raise_error(ArgumentError)
+      expect { V[1, 2, 3].drop(-1) }.to raise_error(ArgumentError)
+      expect { V[1, 2, 3].drop(-3) }.to raise_error(ArgumentError)
     end
 
     context "when number of elements specified is zero" do
       let(:vector) { V[1, 2, 3, 4, 5, 6] }
       it "returns self" do
-        vector.drop(0).should be(vector)
+        expect(vector.drop(0)).to be(vector)
       end
     end
   end

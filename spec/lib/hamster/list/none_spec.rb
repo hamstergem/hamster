@@ -5,17 +5,17 @@ describe Hamster::List do
   describe "#none?" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).none? { false } }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).none? { false } }.not_to raise_error
       end
     end
 
     context "when empty" do
       it "with a block returns true" do
-        L.empty.none? {}.should == true
+        expect(L.empty.none? {}).to eq(true)
       end
 
       it "with no block returns true" do
-        L.empty.none?.should == true
+        expect(L.empty.none?).to eq(true)
       end
     end
 
@@ -25,22 +25,22 @@ describe Hamster::List do
 
         ["A", "B", "C", nil].each do |value|
           it "returns false if the block ever returns true (#{value.inspect})" do
-            list.none? { |item| item == value }.should == false
+            expect(list.none? { |item| item == value }).to eq(false)
           end
         end
 
         it "returns true if the block always returns false" do
-          list.none? { |item| item == "D" }.should == true
+          expect(list.none? { |item| item == "D" }).to eq(true)
         end
       end
 
       context "with no block" do
         it "returns false if any value is truthy" do
-          L[nil, false, true, "A"].none?.should == false
+          expect(L[nil, false, true, "A"].none?).to eq(false)
         end
 
         it "returns true if all values are falsey" do
-          L[nil, false].none?.should == true
+          expect(L[nil, false].none?).to eq(true)
         end
       end
     end

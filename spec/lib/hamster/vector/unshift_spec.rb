@@ -17,11 +17,11 @@ describe Hamster::Vector do
 
         it "preserves the original" do
           vector.unshift(new_value)
-          vector.should eql(V[*values])
+          expect(vector).to eql(V[*values])
         end
 
         it "returns #{expected.inspect}" do
-          vector.unshift(new_value).should eql(V[*expected])
+          expect(vector.unshift(new_value)).to eql(V[*expected])
         end
       end
     end

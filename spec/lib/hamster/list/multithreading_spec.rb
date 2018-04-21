@@ -15,8 +15,8 @@ describe Hamster::List do
     end
     threads.each(&:join)
 
-    counter.get.should == 10000
-    list.sum.should == 100010000
+    expect(counter.get).to eq(10000)
+    expect(list.sum).to eq(100010000)
   end
 
   it "doesn't go into an infinite loop if lazy list block raises an exception" do
@@ -24,7 +24,7 @@ describe Hamster::List do
 
     threads = 10.times.collect do
       Thread.new do
-        -> { list.head }.should raise_error(RuntimeError)
+        expect { list.head }.to raise_error(RuntimeError)
       end
     end
     threads.each(&:join)
@@ -43,6 +43,6 @@ describe Hamster::List do
     threads.each(&:join)
 
     elapsed = Time.now - start
-    elapsed.should_not > 0.3
+    expect(elapsed).not_to be > 0.3
   end
 end

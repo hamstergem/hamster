@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster::List do
   describe "#grep" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.grep(Object) { |item| item } }.should_not raise_error
+      expect { Hamster.stream { fail }.grep(Object) { |item| item } }.not_to raise_error
     end
 
     context "without a block" do
@@ -16,7 +16,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            L[*values].grep(String).should eql(L[*expected])
+            expect(L[*values].grep(String)).to eql(L[*expected])
           end
         end
       end
@@ -34,11 +34,11 @@ describe Hamster::List do
 
           it "preserves the original" do
             list.grep(String, &:downcase)
-            list.should eql(L[*values])
+            expect(list).to eql(L[*values])
           end
 
           it "returns #{expected.inspect}" do
-            list.grep(String, &:downcase).should eql(L[*expected])
+            expect(list.grep(String, &:downcase)).to eql(L[*expected])
           end
         end
       end

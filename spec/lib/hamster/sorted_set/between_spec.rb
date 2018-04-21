@@ -11,9 +11,9 @@ describe Hamster::SortedSet do
           from,to = [rand(1000),rand(1000)].sort
           result  = set.between(from, to)
           array   = items.select { |x| x >= from && x <= to }.sort
-          result.class.should be(Hamster::SortedSet)
-          result.size.should == array.size
-          result.to_a.should == array
+          expect(result.class).to be(Hamster::SortedSet)
+          expect(result.size).to eq(array.size)
+          expect(result.to_a).to eq(array)
         end
       end
     end
@@ -27,25 +27,25 @@ describe Hamster::SortedSet do
           result  = []
           set.between(from, to) { |x| result << x }
           array  = items.select { |x| x >= from && x <= to }.sort
-          result.size.should == array.size
-          result.should == array
+          expect(result.size).to eq(array.size)
+          expect(result).to eq(array)
         end
       end
     end
 
     context "on an empty set" do
       it "returns an empty set" do
-        SS.empty.between(1, 2).should be_empty
-        SS.empty.between('abc', 'def').should be_empty
-        SS.empty.between(:symbol, :another).should be_empty
+        expect(SS.empty.between(1, 2)).to be_empty
+        expect(SS.empty.between('abc', 'def')).to be_empty
+        expect(SS.empty.between(:symbol, :another)).to be_empty
       end
     end
 
     context "with a 'to' argument lower than the 'from' argument" do
       it "returns an empty set" do
         result = SS.new(1..100).between(6, 5)
-        result.class.should be(Hamster::SortedSet)
-        result.should be_empty
+        expect(result.class).to be(Hamster::SortedSet)
+        expect(result).to be_empty
       end
     end
   end

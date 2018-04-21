@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster::List do
   describe "#zip" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.zip(Hamster.stream { fail }) }.should_not raise_error
+      expect { Hamster.stream { fail }.zip(Hamster.stream { fail }) }.not_to raise_error
     end
 
     [
@@ -16,7 +16,7 @@ describe Hamster::List do
     ].each do |left, right, expected|
       context "on #{left.inspect} and #{right.inspect}" do
         it "returns #{expected.inspect}" do
-          L[*left].zip(L[*right]).should eql(L[*expected])
+          expect(L[*left].zip(L[*right])).to eql(L[*expected])
         end
       end
     end

@@ -12,7 +12,7 @@ describe Hamster::Set do
     ].each do |values, expected|
       describe "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          S[*values].empty?.should == expected
+          expect(S[*values].empty?).to eq(expected)
         end
       end
     end
@@ -20,16 +20,16 @@ describe Hamster::Set do
 
   describe ".empty" do
     it "returns the canonical empty set" do
-      S.empty.should be_empty
-      S.empty.object_id.should be(S[].object_id)
-      S.empty.should be(Hamster::EmptySet)
+      expect(S.empty).to be_empty
+      expect(S.empty.object_id).to be(S[].object_id)
+      expect(S.empty).to be(Hamster::EmptySet)
     end
 
     context "from a subclass" do
       it "returns an empty instance of the subclass" do
         subclass = Class.new(Hamster::Set)
-        subclass.empty.class.should be(subclass)
-        subclass.empty.should be_empty
+        expect(subclass.empty.class).to be(subclass)
+        expect(subclass.empty).to be_empty
       end
 
       it "calls overridden #initialize when creating empty Set" do
@@ -38,7 +38,7 @@ describe Hamster::Set do
             @variable = 'value'
           end
         end
-        subclass.empty.instance_variable_get(:@variable).should == 'value'
+        expect(subclass.empty.instance_variable_get(:@variable)).to eq('value')
       end
     end
   end

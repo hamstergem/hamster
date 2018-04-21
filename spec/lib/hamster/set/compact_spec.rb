@@ -19,11 +19,11 @@ describe Hamster::Set do
 
         it "preserves the original" do
           set.compact
-          set.should eql(S[*values])
+          expect(set).to eql(S[*values])
         end
 
         it "returns #{expected.inspect}" do
-          set.compact.should eql(S[*expected])
+          expect(set.compact).to eql(S[*expected])
         end
       end
     end

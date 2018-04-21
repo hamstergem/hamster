@@ -8,8 +8,8 @@ describe Hamster::Hash do
     let(:result) { hash.values }
 
     it "returns the keys as a Vector" do
-      result.should be_a Hamster::Vector
-      result.to_a.sort.should == %w(aye bee see)
+      expect(result).to be_a Hamster::Vector
+      expect(result.to_a.sort).to eq(%w(aye bee see))
     end
 
     context "with duplicates" do
@@ -17,8 +17,8 @@ describe Hamster::Hash do
       let(:result) { hash.values }
 
       it "returns the keys as a Vector" do
-        result.class.should be(Hamster::Vector)
-        result.to_a.sort.should == [15, 15, 19]
+        expect(result.class).to be(Hamster::Vector)
+        expect(result.to_a.sort).to eq([15, 15, 19])
       end
     end
   end

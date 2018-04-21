@@ -14,21 +14,21 @@ describe Hamster::Set do
         let(:list) { set.to_list }
 
         it "returns a list" do
-          list.is_a?(Hamster::List).should == true
+          expect(list.is_a?(Hamster::List)).to eq(true)
         end
 
         it "doesn't change the original Set" do
           list
-          set.should eql(S.new(values))
+          expect(set).to eql(S.new(values))
         end
 
         describe "the returned list" do
           it "has the correct length" do
-            list.size.should == values.size
+            expect(list.size).to eq(values.size)
           end
 
           it "contains all values" do
-            list.to_a.sort.should == values.sort
+            expect(list.to_a.sort).to eq(values.sort)
           end
         end
       end

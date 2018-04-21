@@ -7,8 +7,8 @@ describe Hamster::Hash do
 
     it "returns a randomly chosen item" do
       chosen = 250.times.map { hash.sample }.sort.uniq
-      chosen.each { |item| hash.include?(item[0]).should == true }
-      hash.each { |item| chosen.include?(item).should == true }
+      chosen.each { |item| expect(hash.include?(item[0])).to eq(true) }
+      hash.each { |item| expect(chosen.include?(item)).to eq(true) }
     end
   end
 end

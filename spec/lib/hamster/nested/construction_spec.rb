@@ -39,7 +39,7 @@ describe Hamster do
     expectations.each do |input, expected_result|
       context "with #{input.inspect} as input" do
         it "should return #{expected_result.inspect}" do
-          Hamster.from(input).should eql(expected_result)
+          expect(Hamster.from(input)).to eql(expected_result)
         end
       end
     end
@@ -56,7 +56,7 @@ describe Hamster do
           "c" => Hamster::Hash["d" => "e"],
           "f" => Hamster::Vector["g", "h", Hamster::EmptyVector],
           "i" => Hamster::Hash["j" => Hamster::EmptyHash, "k" => Hamster::Set[Hamster::EmptyVector, Hamster::EmptyHash]] ]
-        Hamster.from(input).should eql(expected_result)
+        expect(Hamster.from(input)).to eql(expected_result)
       end
     end
   end
@@ -66,7 +66,7 @@ describe Hamster do
       unless one_way
         context "with #{input.inspect} as input" do
           it "should return #{expected_result.inspect}" do
-            Hamster.to_ruby(input).should eql(expected_result)
+            expect(Hamster.to_ruby(input)).to eql(expected_result)
           end
         end
       end
@@ -74,13 +74,13 @@ describe Hamster do
 
     context "with Hamster::Deque[] as input" do
       it "should return []" do
-        Hamster.to_ruby(Hamster::Deque[]).should eql([])
+        expect(Hamster.to_ruby(Hamster::Deque[])).to eql([])
       end
     end
 
     context "with Hamster::Deque[Hamster::Hash[\"a\" => 1]] as input" do
       it "should return [{\"a\" => 1}]" do
-        Hamster.to_ruby(Hamster::Deque[Hamster::Hash["a" => 1]]).should eql([{"a" => 1}])
+        expect(Hamster.to_ruby(Hamster::Deque[Hamster::Hash["a" => 1]])).to eql([{"a" => 1}])
       end
     end
 
@@ -96,7 +96,7 @@ describe Hamster do
           "c" => {"d" => "e"},
           "f" => ["g", "h"],
           "i" => {"j" => {}, "k" => Set.new([[], {}])} }
-        Hamster.to_ruby(input).should eql(expected_result)
+        expect(Hamster.to_ruby(input)).to eql(expected_result)
       end
     end
   end

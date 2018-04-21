@@ -14,7 +14,7 @@ describe Hamster::Set do
           let(:result) { set.min { |minimum, item| minimum.length <=> item.length }}
 
           it "returns #{expected.inspect}" do
-            result.should == expected
+            expect(result).to eq(expected)
           end
         end
       end
@@ -28,7 +28,7 @@ describe Hamster::Set do
       ].each do |values, expected|
         describe "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            S[*values].min.should == expected
+            expect(S[*values].min).to eq(expected)
           end
         end
       end

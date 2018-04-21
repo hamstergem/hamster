@@ -15,11 +15,11 @@ describe Hamster::SortedSet do
 
             it "preserves the original" do
               sorted_set.send(method, &:odd?)
-              sorted_set.should eql(SS[*values])
+              expect(sorted_set).to eql(SS[*values])
             end
 
             it "returns #{expected.inspect}" do
-              sorted_set.send(method, &:odd?).should eql(H[*expected])
+              expect(sorted_set.send(method, &:odd?)).to eql(H[*expected])
             end
           end
         end
@@ -36,11 +36,11 @@ describe Hamster::SortedSet do
 
             it "preserves the original" do
               sorted_set.group_by
-              sorted_set.should eql(SS[*values])
+              expect(sorted_set).to eql(SS[*values])
             end
 
             it "returns #{expected.inspect}" do
-              sorted_set.group_by.should eql(H[*expected])
+              expect(sorted_set.group_by).to eql(H[*expected])
             end
           end
         end
@@ -50,7 +50,7 @@ describe Hamster::SortedSet do
         it "returns an Hash whose values are instances of the subclass" do
           subclass = Class.new(Hamster::SortedSet)
           instance = subclass.new(['some', 'strings', 'here'])
-          instance.group_by { |x| x }.values.each { |v| v.class.should be(subclass) }
+          instance.group_by { |x| x }.values.each { |v| expect(v.class).to be(subclass) }
         end
       end
     end

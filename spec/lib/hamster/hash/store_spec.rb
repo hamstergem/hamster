@@ -10,11 +10,11 @@ describe Hamster::Hash do
 
       it "preserves the original" do
         result
-        hash.should eql(H["A" => "aye", "B" => "bee", "C" => "see"])
+        expect(hash).to eql(H["A" => "aye", "B" => "bee", "C" => "see"])
       end
 
       it "returns a copy with the superset of key/value pairs" do
-        result.should eql(H["A" => "aye", "B" => "bee", "C" => "see", "D" => "dee"])
+        expect(result).to eql(H["A" => "aye", "B" => "bee", "C" => "see", "D" => "dee"])
       end
     end
 
@@ -23,11 +23,11 @@ describe Hamster::Hash do
 
       it "preserves the original" do
         result
-        hash.should eql(H["A" => "aye", "B" => "bee", "C" => "see"])
+        expect(hash).to eql(H["A" => "aye", "B" => "bee", "C" => "see"])
       end
 
       it "returns a copy with the superset of key/value pairs" do
-        result.should eql(H["A" => "aye", "B" => "bee", "C" => "sea"])
+        expect(result).to eql(H["A" => "aye", "B" => "bee", "C" => "sea"])
       end
     end
 
@@ -36,7 +36,7 @@ describe Hamster::Hash do
       let(:result) { hash.store("X", 1) }
 
       it "returns the original hash unmodified" do
-        result.should be(hash)
+        expect(result).to be(hash)
       end
 
       context "with big hash (force nested tries)" do
@@ -47,7 +47,7 @@ describe Hamster::Hash do
         it "returns the original hash unmodified for all changes" do
           keys.each_with_index do |key, index|
             result = hash.store(key, values[index])
-            result.should be(hash)
+            expect(result).to be(hash)
           end
         end
       end
@@ -58,8 +58,8 @@ describe Hamster::Hash do
 
       it "stores and can retrieve both" do
         result = hash.store(DeterministicHash.new('b', 1), 'bee')
-        result.get(DeterministicHash.new('a', 1)).should eql('aye')
-        result.get(DeterministicHash.new('b', 1)).should eql('bee')
+        expect(result.get(DeterministicHash.new('a', 1))).to eql('aye')
+        expect(result.get(DeterministicHash.new('b', 1))).to eql('bee')
       end
     end
 
@@ -68,8 +68,8 @@ describe Hamster::Hash do
         string = "a string!"
         hash = H.empty.store(string, 'a value!')
         string.upcase!
-        hash['a string!'].should == 'a value!'
-        hash['A STRING!'].should be_nil
+        expect(hash['a string!']).to eq('a value!')
+        expect(hash['A STRING!']).to be_nil
       end
     end
   end

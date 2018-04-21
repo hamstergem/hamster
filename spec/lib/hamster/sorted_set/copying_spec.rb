@@ -13,7 +13,7 @@ describe Hamster::SortedSet do
         let(:sorted_set) { SS[*values] }
 
         it "returns self" do
-          sorted_set.send(method).should equal(sorted_set)
+          expect(sorted_set.send(method)).to equal(sorted_set)
         end
       end
     end

@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster::List do
   describe "#take" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.take(1) }.should_not raise_error
+      expect { Hamster.stream { fail }.take(1) }.not_to raise_error
     end
 
     [
@@ -19,11 +19,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.take(number)
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.take(number).should eql(L[*expected])
+          expect(list.take(number)).to eql(L[*expected])
         end
       end
     end
