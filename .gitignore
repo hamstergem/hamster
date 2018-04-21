@@ -18,6 +18,7 @@
 
 # Ignore all tempfiles
 /tmp
+spec/examples.txt
 
 # Ignores that should be in the global gitignore
 /coverage
