@@ -16,9 +16,9 @@ describe Hamster::Set do
           let(:set_b) { S[*b] }
 
           it "returns #{expected.inspect}, without changing the original Sets" do
-            set_a.send(method, set_b).should eql(S[*expected])
-            set_a.should eql(S.new(a))
-            set_b.should eql(S.new(b))
+            expect(set_a.send(method, set_b)).to eql(S[*expected])
+            expect(set_a).to eql(S.new(a))
+            expect(set_b).to eql(S.new(b))
           end
         end
 
@@ -27,15 +27,15 @@ describe Hamster::Set do
           let(:set_b) { S[*b] }
 
           it "returns #{expected.inspect}, without changing the original Sets" do
-            set_b.send(method, set_a).should eql(S[*expected])
-            set_a.should eql(S.new(a))
-            set_b.should eql(S.new(b))
+            expect(set_b.send(method, set_a)).to eql(S[*expected])
+            expect(set_a).to eql(S.new(a))
+            expect(set_b).to eql(S.new(b))
           end
         end
 
         context "when passed a Ruby Array" do
           it "returns the expected Set" do
-            S[*a].send(method, b.freeze).should eql(S[*expected])
+            expect(S[*a].send(method, b.freeze)).to eql(S[*expected])
           end
         end
       end
@@ -45,7 +45,7 @@ describe Hamster::Set do
           array1 = rand(100).times.map { rand(1000000).to_s(16) }
           array2 = rand(100).times.map { rand(1000000).to_s(16) }
           result = S.new(array1).send(method, S.new(array2))
-          result.to_a.sort.should eql((array1 & array2).sort)
+          expect(result.to_a.sort).to eql((array1 & array2).sort)
         end
       end
     end

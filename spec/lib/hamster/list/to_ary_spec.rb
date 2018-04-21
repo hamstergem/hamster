@@ -7,7 +7,7 @@ describe Hamster::List do
   describe "#to_ary" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).to_ary }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).to_ary }.not_to raise_error
       end
     end
 

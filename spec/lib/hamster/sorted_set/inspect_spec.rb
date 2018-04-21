@@ -12,11 +12,11 @@ describe Hamster::SortedSet do
         let(:sorted_set) { SS[*values] }
 
         it "returns #{expected.inspect}" do
-          sorted_set.inspect.should == expected
+          expect(sorted_set.inspect).to eq(expected)
         end
 
         it "returns a string which can be eval'd to get an equivalent set" do
-          eval(sorted_set.inspect).should eql(sorted_set)
+          expect(eval(sorted_set.inspect)).to eql(sorted_set)
         end
       end
     end
@@ -27,11 +27,11 @@ describe Hamster::SortedSet do
       let(:sorted_set) { MySortedSet[1, 2] }
 
       it "returns a programmer-readable representation of the set contents" do
-        sorted_set.inspect.should == 'MySortedSet[1, 2]'
+        expect(sorted_set.inspect).to eq('MySortedSet[1, 2]')
       end
 
       it "returns a string which can be eval'd to get an equivalent set" do
-        eval(sorted_set.inspect).should eql(sorted_set)
+        expect(eval(sorted_set.inspect)).to eql(sorted_set)
       end
     end
   end

@@ -7,8 +7,8 @@ describe Hamster::Vector do
       let(:vector) { V["A", "B", "C"] }
 
       it "returns an Enumerator" do
-        vector.each.class.should be(Enumerator)
-        vector.each.to_a.should == vector
+        expect(vector.each.class).to be(Enumerator)
+        expect(vector.each.to_a).to eq(vector)
       end
     end
 
@@ -19,18 +19,18 @@ describe Hamster::Vector do
 
           it "returns self" do
             items = []
-            vector.each { |item| items << item }.should be(vector)
+            expect(vector.each { |item| items << item }).to be(vector)
           end
 
           it "yields all the items" do
             items = []
             vector.each { |item| items << item }
-            items.should == (1..size).to_a
+            expect(items).to eq((1..size).to_a)
           end
 
           it "iterates over the items in order" do
-            vector.each.first.should == 1
-            vector.each.to_a.last.should == size
+            expect(vector.each.first).to eq(1)
+            expect(vector.each.to_a.last).to eq(size)
           end
         end
       end

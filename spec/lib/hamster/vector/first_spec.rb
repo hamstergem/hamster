@@ -11,7 +11,7 @@ describe Hamster::Vector do
     ].each do |values, expected|
       describe "on #{values.inspect}" do
         it "returns #{expected.inspect}" do
-          V[*values].first.should == expected
+          expect(V[*values].first).to eq(expected)
         end
       end
     end

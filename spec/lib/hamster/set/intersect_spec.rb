@@ -18,7 +18,7 @@ describe Hamster::Set do
     ].each do |a, b, expected|
       describe "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}" do
-          S[*a].intersect?(S[*b]).should be(expected)
+          expect(S[*a].intersect?(S[*b])).to be(expected)
         end
       end
     end

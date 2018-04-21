@@ -11,11 +11,11 @@ describe Hamster::Set do
 
         it "preserves the original" do
           result
-          original.should eql(S["A", "B", "C"])
+          expect(original).to eql(S["A", "B", "C"])
         end
 
         it "returns a copy with the superset of values" do
-          result.should eql(S["A", "B", "C", "D"])
+          expect(result).to eql(S["A", "B", "C", "D"])
         end
       end
 
@@ -24,16 +24,16 @@ describe Hamster::Set do
 
         it "preserves the original values" do
           result
-          original.should eql(S["A", "B", "C"])
+          expect(original).to eql(S["A", "B", "C"])
         end
 
         it "returns self" do
-          result.should equal(original)
+          expect(result).to equal(original)
         end
       end
 
       it "can add nil to a set" do
-        original.add(nil).should eql(S["A", "B", "C", nil])
+        expect(original.add(nil)).to eql(S["A", "B", "C", nil])
       end
 
       it "works on large sets, with many combinations of input" do
@@ -43,8 +43,8 @@ describe Hamster::Set do
           array = (1..500).to_a.sample(100).uniq
           set   = S.new(array)
           to_add = 1000 + rand(1000)
-          set.add(to_add).size.should == array.size + 1
-          set.add(to_add).include?(to_add).should == true
+          expect(set.add(to_add).size).to eq(array.size + 1)
+          expect(set.add(to_add).include?(to_add)).to eq(true)
         end
       end
     end
@@ -55,11 +55,11 @@ describe Hamster::Set do
       let(:result) { original.add?("D") }
 
       it "preserves the original" do
-        original.should eql(S["A", "B", "C"])
+        expect(original).to eql(S["A", "B", "C"])
       end
 
       it "returns a copy with the superset of values" do
-        result.should eql(S["A", "B", "C", "D"])
+        expect(result).to eql(S["A", "B", "C", "D"])
       end
     end
 
@@ -67,11 +67,11 @@ describe Hamster::Set do
       let(:result) { original.add?("C") }
 
       it "preserves the original values" do
-        original.should eql(S["A", "B", "C"])
+        expect(original).to eql(S["A", "B", "C"])
       end
 
       it "returns false" do
-        result.should equal(false)
+        expect(result).to equal(false)
       end
     end
   end

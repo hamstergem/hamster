@@ -5,10 +5,10 @@ describe Hamster::Deque do
   describe ".new" do
     it "accepts a single enumerable argument and creates a new deque" do
       deque = Hamster::Deque.new([1,2,3])
-      deque.size.should be(3)
-      deque.first.should be(1)
-      deque.dequeue.first.should be(2)
-      deque.dequeue.dequeue.first.should be(3)
+      expect(deque.size).to be(3)
+      expect(deque.first).to be(1)
+      expect(deque.dequeue.first).to be(2)
+      expect(deque.dequeue.dequeue.first).to be(3)
     end
 
     it "is amenable to overriding of #initialize" do
@@ -19,16 +19,16 @@ describe Hamster::Deque do
       end
 
       deque = SnazzyDeque.new
-      deque.size.should be(1)
-      deque.to_a.should == ['SNAZZY!!!']
+      expect(deque.size).to be(1)
+      expect(deque.to_a).to eq(['SNAZZY!!!'])
     end
 
     context "from a subclass" do
       it "returns a frozen instance of the subclass" do
         subclass = Class.new(Hamster::Deque)
         instance = subclass.new(["some", "values"])
-        instance.class.should be subclass
-        instance.frozen?.should be true
+        expect(instance.class).to be subclass
+        expect(instance.frozen?).to be true
       end
     end
   end
@@ -36,9 +36,9 @@ describe Hamster::Deque do
   describe ".[]" do
     it "accepts a variable number of items and creates a new deque" do
       deque = Hamster::Deque['a', 'b']
-      deque.size.should be(2)
-      deque.first.should == 'a'
-      deque.dequeue.first.should == 'b'
+      expect(deque.size).to be(2)
+      expect(deque.first).to eq('a')
+      expect(deque.dequeue.first).to eq('b')
     end
   end
 end

@@ -7,29 +7,29 @@ describe Hamster::SortedSet do
   describe "#delete" do
     context "on an empty set" do
       it "returns an empty set" do
-        SS.empty.delete(0).should be(SS.empty)
+        expect(SS.empty.delete(0)).to be(SS.empty)
       end
     end
 
     context "with an existing value" do
       it "preserves the original" do
         sorted_set.delete("B")
-        sorted_set.should eql(SS["A", "B", "C"])
+        expect(sorted_set).to eql(SS["A", "B", "C"])
       end
 
       it "returns a copy with the remaining of values" do
-        sorted_set.delete("B").should eql(SS["A", "C"])
+        expect(sorted_set.delete("B")).to eql(SS["A", "C"])
       end
     end
 
     context "with a non-existing value" do
       it "preserves the original values" do
         sorted_set.delete("D")
-        sorted_set.should eql(SS["A", "B", "C"])
+        expect(sorted_set).to eql(SS["A", "B", "C"])
       end
 
       it "returns self" do
-        sorted_set.delete("D").should equal(sorted_set)
+        expect(sorted_set.delete("D")).to equal(sorted_set)
       end
     end
 
@@ -38,12 +38,12 @@ describe Hamster::SortedSet do
         ss = SS.new(["peanuts", "jam", "milk"]) { |word| word.length }
         ss = ss.delete("jam").delete("peanuts").delete("milk")
         ss = ss.add("banana").add("sugar").add("spam")
-        ss.to_a.should == ['spam', 'sugar', 'banana']
+        expect(ss.to_a).to eq(['spam', 'sugar', 'banana'])
       end
 
       context "when the set is in natural order" do
         it "returns the canonical empty set" do
-          sorted_set.delete("B").delete("C").delete("A").should be(Hamster::EmptySortedSet)
+          expect(sorted_set.delete("B").delete("C").delete("A")).to be(Hamster::EmptySortedSet)
         end
       end
     end
@@ -56,8 +56,8 @@ describe Hamster::SortedSet do
           it "returns #{expected.inspect}" do
             set    = SS.new(values)
             result = to_delete.reduce(set) { |s,val| s.delete(val) }
-            result.should eql(SS.new(expected))
-            result.to_a.should eql(expected)
+            expect(result).to eql(SS.new(expected))
+            expect(result.to_a).to eql(expected)
           end
         end
       end
@@ -68,22 +68,22 @@ describe Hamster::SortedSet do
     context "with an existing value" do
       it "preserves the original" do
         sorted_set.delete?("B")
-        sorted_set.should eql(SS["A", "B", "C"])
+        expect(sorted_set).to eql(SS["A", "B", "C"])
       end
 
       it "returns a copy with the remaining values" do
-        sorted_set.delete?("B").should eql(SS["A", "C"])
+        expect(sorted_set.delete?("B")).to eql(SS["A", "C"])
       end
     end
 
     context "with a non-existing value" do
       it "preserves the original values" do
         sorted_set.delete?("D")
-        sorted_set.should eql(SS["A", "B", "C"])
+        expect(sorted_set).to eql(SS["A", "B", "C"])
       end
 
       it "returns false" do
-        sorted_set.delete?("D").should be(false)
+        expect(sorted_set.delete?("D")).to be(false)
       end
     end
   end

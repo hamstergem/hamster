@@ -19,7 +19,7 @@ describe Hamster::List do
   ].each do |values, method, expected|
     describe "##{method}" do
       it "is responded to" do
-        L.empty.respond_to?(method).should == true
+        expect(L.empty.respond_to?(method)).to eq(true)
       end
 
       context "on #{values.inspect}" do
@@ -27,11 +27,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.send(method)
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns #{expected.inspect}" do
-          list.send(method).should == expected
+          expect(list.send(method)).to eq(expected)
         end
       end
     end

@@ -7,15 +7,15 @@ describe Hamster::Hash do
       let(:hash) { H.new("A" => "aye") }
 
       it "returns a Proc instance" do
-        hash.to_proc.should be_kind_of(Proc)
+        expect(hash.to_proc).to be_kind_of(Proc)
       end
 
       it "returns a Proc that returns the value of an existing key" do
-        hash.to_proc.call("A").should == "aye"
+        expect(hash.to_proc.call("A")).to eq("aye")
       end
 
       it "returns a Proc that returns nil for a missing key" do
-        hash.to_proc.call("B").should be_nil
+        expect(hash.to_proc.call("B")).to be_nil
       end
     end
 
@@ -23,16 +23,16 @@ describe Hamster::Hash do
       let(:hash) { H.new("A" => "aye") { |key| "#{key}-VAL" } }
 
       it "returns a Proc instance" do
-        hash.to_proc.should be_kind_of(Proc)
+        expect(hash.to_proc).to be_kind_of(Proc)
       end
 
       it "returns a Proc that returns the value of an existing key" do
-        hash.to_proc.call("A").should == "aye"
+        expect(hash.to_proc.call("A")).to eq("aye")
       end
 
       it "returns a Proc that returns the result of the hash's default proc for a missing key" do
-        hash.to_proc.call("B").should == "B-VAL"
-        hash.should == H.new("A" => "aye")
+        expect(hash.to_proc.call("B")).to eq("B-VAL")
+        expect(hash).to eq(H.new("A" => "aye"))
       end
     end
   end

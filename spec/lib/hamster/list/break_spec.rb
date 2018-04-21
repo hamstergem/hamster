@@ -4,7 +4,7 @@ require "hamster/list"
 describe Hamster::List do
   describe "#break" do
     it "is lazy" do
-      -> { Hamster.stream { fail }.break { |item| false } }.should_not raise_error
+      expect { Hamster.stream { fail }.break { |item| false } }.not_to raise_error
     end
 
     [
@@ -27,21 +27,21 @@ describe Hamster::List do
 
           it "preserves the original" do
             result
-            list.should eql(L[*values])
+            expect(list).to eql(L[*values])
           end
 
           it "returns a frozen array with two items" do
-            result.class.should be(Array)
-            result.should be_frozen
-            result.size.should be(2)
+            expect(result.class).to be(Array)
+            expect(result).to be_frozen
+            expect(result.size).to be(2)
           end
 
           it "correctly identifies the prefix" do
-            prefix.should eql(L[*expected_prefix])
+            expect(prefix).to eql(L[*expected_prefix])
           end
 
           it "correctly identifies the remainder" do
-            remainder.should eql(L[*expected_remainder])
+            expect(remainder).to eql(L[*expected_remainder])
           end
         end
 
@@ -51,17 +51,17 @@ describe Hamster::List do
           let(:remainder) { result.last }
 
           it "returns a frozen array with two items" do
-            result.class.should be(Array)
-            result.should be_frozen
-            result.size.should be(2)
+            expect(result.class).to be(Array)
+            expect(result).to be_frozen
+            expect(result.size).to be(2)
           end
 
           it "returns self as the prefix" do
-            prefix.should equal(list)
+            expect(prefix).to equal(list)
           end
 
           it "leaves the remainder empty" do
-            remainder.should be_empty
+            expect(remainder).to be_empty
           end
         end
       end

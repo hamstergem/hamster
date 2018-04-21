@@ -13,11 +13,11 @@ describe Hamster::Set do
 
         it "preserves the original" do
           set.clear
-          set.should eql(S[*values])
+          expect(set).to eql(S[*values])
         end
 
         it "returns an empty set" do
-          set.clear.should equal(S.empty)
+          expect(set.clear).to equal(S.empty)
         end
       end
     end
@@ -26,8 +26,8 @@ describe Hamster::Set do
       it "returns an empty instance of the subclass" do
         subclass = Class.new(Hamster::Set)
         instance = subclass.new([:a, :b, :c, :d])
-        instance.clear.class.should be(subclass)
-        instance.clear.should be_empty
+        expect(instance.clear.class).to be(subclass)
+        expect(instance.clear).to be_empty
       end
     end
   end

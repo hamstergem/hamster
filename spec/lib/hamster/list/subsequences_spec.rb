@@ -8,16 +8,16 @@ describe Hamster::List do
     it "yields all sublists with 1 or more consecutive items" do
       result = []
       list.subsequences { |l| result << l }
-      result.size.should == (5 + 4 + 3 + 2 + 1)
-      result.sort.should == [[1], [1,2], [1,2,3], [1,2,3,4], [1,2,3,4,5],
-        [2], [2,3], [2,3,4], [2,3,4,5], [3], [3,4], [3,4,5], [4], [4,5], [5]]
+      expect(result.size).to eq(5 + 4 + 3 + 2 + 1)
+      expect(result.sort).to eq([[1], [1,2], [1,2,3], [1,2,3,4], [1,2,3,4,5],
+        [2], [2,3], [2,3,4], [2,3,4,5], [3], [3,4], [3,4,5], [4], [4,5], [5]])
     end
 
     context "with no block" do
       it "returns an Enumerator" do
-        list.subsequences.class.should be(Enumerator)
-        list.subsequences.to_a.sort.should == [[1], [1,2], [1,2,3], [1,2,3,4], [1,2,3,4,5],
-        [2], [2,3], [2,3,4], [2,3,4,5], [3], [3,4], [3,4,5], [4], [4,5], [5]]
+        expect(list.subsequences.class).to be(Enumerator)
+        expect(list.subsequences.to_a.sort).to eq([[1], [1,2], [1,2,3], [1,2,3,4], [1,2,3,4,5],
+        [2], [2,3], [2,3,4], [2,3,4,5], [3], [3,4], [3,4,5], [4], [4,5], [5]])
       end
     end
   end

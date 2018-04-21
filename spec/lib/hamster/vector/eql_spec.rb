@@ -6,19 +6,19 @@ describe Hamster::Vector do
     let(:vector) { V["A", "B", "C"] }
 
     it "returns false when comparing with an array with the same contents" do
-      vector.eql?(%w[A B C]).should == false
+      expect(vector.eql?(%w[A B C])).to eq(false)
     end
 
     it "returns false when comparing with an arbitrary object" do
-      vector.eql?(Object.new).should == false
+      expect(vector.eql?(Object.new)).to eq(false)
     end
 
     it "returns false when comparing an empty vector with an empty array" do
-      V.empty.eql?([]).should == false
+      expect(V.empty.eql?([])).to eq(false)
     end
 
     it "returns false when comparing with a subclass of Hamster::Vector" do
-      vector.eql?(Class.new(Hamster::Vector).new(%w[A B C])).should == false
+      expect(vector.eql?(Class.new(Hamster::Vector).new(%w[A B C]))).to eq(false)
     end
   end
 
@@ -26,24 +26,24 @@ describe Hamster::Vector do
     let(:vector) { V["A", "B", "C"] }
 
     it "returns true when comparing with an array with the same contents" do
-      (vector == %w[A B C]).should == true
+      expect(vector == %w[A B C]).to eq(true)
     end
 
     it "returns false when comparing with an arbitrary object" do
-      (vector == Object.new).should == false
+      expect(vector == Object.new).to eq(false)
     end
 
     it "returns true when comparing an empty vector with an empty array" do
-      (V.empty == []).should == true
+      expect(V.empty == []).to eq(true)
     end
 
     it "returns true when comparing with a subclass of Hamster::Vector" do
-      (vector == Class.new(Hamster::Vector).new(%w[A B C])).should == true
+      expect(vector == Class.new(Hamster::Vector).new(%w[A B C])).to eq(true)
     end
 
     it "works on larger vectors" do
       array = 2000.times.map { rand(10000) }
-      (V.new(array.dup) == array).should == true
+      expect(V.new(array.dup) == array).to eq(true)
     end
   end
 
@@ -64,11 +64,11 @@ describe Hamster::Vector do
           let(:vector_b) { V[*b] }
 
           it "for vectors #{a.inspect} and #{b.inspect}" do
-            vector_a.send(method, vector_b).should == expected
+            expect(vector_a.send(method, vector_b)).to eq(expected)
           end
 
           it "for vectors #{b.inspect} and #{a.inspect}" do
-            vector_b.send(method, vector_a).should == expected
+            expect(vector_b.send(method, vector_a)).to eq(expected)
           end
         end
       end

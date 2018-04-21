@@ -40,7 +40,7 @@ describe Hamster::Set do
       set = S[DeterministicHash.new('a', 1010), DeterministicHash.new('b', 1010)]
       yielded = []
       set.each { |obj| yielded << obj }
-      yielded.map(&:value).sort.should == ['a', 'b']
+      expect(yielded.map(&:value).sort).to eq(['a', 'b'])
     end
   end
 end

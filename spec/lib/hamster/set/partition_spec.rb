@@ -23,28 +23,28 @@ describe Hamster::Set do
 
           it "preserves the original" do
             result
-            set.should eql(S[*values])
+            expect(set).to eql(S[*values])
           end
 
           it "returns a frozen array with two items" do
-            result.class.should be(Array)
-            result.should be_frozen
-            result.size.should be(2)
+            expect(result.class).to be(Array)
+            expect(result).to be_frozen
+            expect(result.size).to be(2)
           end
 
           it "correctly identifies the matches" do
-            matches.should eql(S[*expected_matches])
+            expect(matches).to eql(S[*expected_matches])
           end
 
           it "correctly identifies the remainder" do
-            remainder.should eql(S[*expected_remainder])
+            expect(remainder).to eql(S[*expected_remainder])
           end
         end
 
         describe "without a block" do
           it "returns an Enumerator" do
-            set.partition.class.should be(Enumerator)
-            set.partition.each(&:odd?).should eql([S.new(expected_matches), S.new(expected_remainder)])
+            expect(set.partition.class).to be(Enumerator)
+            expect(set.partition.each(&:odd?)).to eql([S.new(expected_matches), S.new(expected_remainder)])
           end
         end
       end

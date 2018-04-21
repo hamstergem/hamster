@@ -15,16 +15,16 @@ describe Hamster::Vector do
         let(:list) { vector.to_list }
 
         it "returns a list" do
-          list.is_a?(Hamster::List).should == true
+          expect(list.is_a?(Hamster::List)).to eq(true)
         end
 
         describe "the returned list" do
           it "has the correct length" do
-            list.size.should == values.size
+            expect(list.size).to eq(values.size)
           end
 
           it "contains all values" do
-            list.to_a.should == values
+            expect(list.to_a).to eq(values)
           end
         end
       end

@@ -5,7 +5,7 @@ describe Hamster::List do
   describe "#max" do
     context "on a really big list" do
       it "doesn't run out of stack" do
-        -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).max }.should_not raise_error
+        expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).max }.not_to raise_error
       end
     end
 
@@ -17,7 +17,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            L[*values].max { |maximum, item| maximum.length <=> item.length }.should == expected
+            expect(L[*values].max { |maximum, item| maximum.length <=> item.length }).to eq(expected)
           end
         end
       end
@@ -31,7 +31,7 @@ describe Hamster::List do
       ].each do |values, expected|
         context "on #{values.inspect}" do
           it "returns #{expected.inspect}" do
-            L[*values].max.should == expected
+            expect(L[*values].max).to eq(expected)
           end
         end
       end

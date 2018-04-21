@@ -8,7 +8,7 @@ describe Hamster::Set do
 
       context "when nothing matches" do
         it "returns self" do
-          set.send(method) { |item| false }.should equal(set)
+          expect(set.send(method) { |item| false }).to equal(set)
         end
       end
 
@@ -18,18 +18,18 @@ describe Hamster::Set do
 
           it "preserves the original" do
             result
-            set.should eql(S["A", "B", "C"])
+            expect(set).to eql(S["A", "B", "C"])
           end
 
           it "returns a set with the matching values" do
-            result.should eql(S["B", "C"])
+            expect(result).to eql(S["B", "C"])
           end
         end
 
         context "with no block" do
           it "returns self" do
-            set.send(method).class.should be(Enumerator)
-            set.send(method).each { |item| item == "A" }.should == S["B", "C"]
+            expect(set.send(method).class).to be(Enumerator)
+            expect(set.send(method).each { |item| item == "A" }).to eq(S["B", "C"])
           end
         end
       end
@@ -40,9 +40,9 @@ describe Hamster::Set do
           set   = S.new(array)
           [0, 10, 100, 200, 500, 800, 900, 999, 1000].each do |threshold|
             result = set.send(method) { |item| item > threshold }
-            result.size.should == threshold
-            1.upto(threshold)  { |n| result.include?(n).should == true }
-            (threshold+1).upto(1000) { |n| result.include?(n).should == false }
+            expect(result.size).to eq(threshold)
+            1.upto(threshold)  { |n| expect(result.include?(n)).to eq(true) }
+            (threshold+1).upto(1000) { |n| expect(result.include?(n)).to eq(false) }
           end
         end
       end

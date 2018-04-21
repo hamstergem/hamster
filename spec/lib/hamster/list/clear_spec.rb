@@ -13,11 +13,11 @@ describe Hamster::List do
 
         it "preserves the original" do
           list.clear
-          list.should eql(L[*values])
+          expect(list).to eql(L[*values])
         end
 
         it "returns an empty list" do
-          list.clear.should equal(L.empty)
+          expect(list.clear).to equal(L.empty)
         end
       end
     end

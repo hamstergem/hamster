@@ -12,11 +12,11 @@ describe Hamster::Set do
         let(:set) { S[*values] }
 
         it "returns #{expected.inspect}" do
-          set.product.should == expected
+          expect(set.product).to eq(expected)
         end
 
         it "doesn't change the original Set" do
-          set.should eql(S.new(values))
+          expect(set).to eql(S.new(values))
         end
       end
     end

@@ -9,26 +9,26 @@ describe Hamster::Hash do
       [["A" => "aye", "B" => "bee", "C" => "see"], false],
     ].each do |pairs, result|
       it "returns #{result} for #{pairs.inspect}" do
-        H[*pairs].empty?.should == result
+        expect(H[*pairs].empty?).to eq(result)
       end
     end
 
     it "returns true for empty hashes which have a default block" do
-      H.new { 'default' }.empty?.should == true
+      expect(H.new { 'default' }.empty?).to eq(true)
     end
   end
 
   describe ".empty" do
     it "returns the canonical empty Hash" do
-      H.empty.should be_empty
-      H.empty.should be(Hamster::EmptyHash)
+      expect(H.empty).to be_empty
+      expect(H.empty).to be(Hamster::EmptyHash)
     end
 
     context "from a subclass" do
       it "returns an empty instance of the subclass" do
         subclass = Class.new(Hamster::Hash)
-        subclass.empty.class.should be subclass
-        subclass.empty.should be_empty
+        expect(subclass.empty.class).to be subclass
+        expect(subclass.empty).to be_empty
       end
 
       it "calls overridden #initialize when creating empty Hash" do
@@ -37,7 +37,7 @@ describe Hamster::Hash do
             @variable = 'value'
           end
         end
-        subclass.empty.instance_variable_get(:@variable).should == 'value'
+        expect(subclass.empty.instance_variable_get(:@variable)).to eq('value')
       end
     end
   end

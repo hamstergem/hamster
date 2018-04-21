@@ -14,11 +14,11 @@ describe Hamster::Set do
 
           it "preserves the original" do
             set.join("|")
-            set.should eql(S[*values])
+            expect(set).to eql(S[*values])
           end
 
           it "returns #{expected.inspect}" do
-            set.join("|").should eql(expected)
+            expect(set.join("|")).to eql(expected)
           end
         end
       end
@@ -35,11 +35,11 @@ describe Hamster::Set do
 
           it "preserves the original" do
             set.join
-            set.should eql(S[*values])
+            expect(set).to eql(S[*values])
           end
 
           it "returns #{expected.inspect}" do
-            set.join.should eql(expected)
+            expect(set.join).to eql(expected)
           end
         end
       end
@@ -53,11 +53,11 @@ describe Hamster::Set do
       context "on ['A', 'B', 'C']" do
         it "preserves the original" do
           set.join
-          set.should eql(S[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)])
+          expect(set).to eql(S[DeterministicHash.new("A", 1), DeterministicHash.new("B", 2), DeterministicHash.new("C", 3)])
         end
 
         it "returns #{@expected.inspect}" do
-          set.join.should == "A**B**C"
+          expect(set.join).to eq("A**B**C")
         end
       end
     end

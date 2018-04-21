@@ -18,9 +18,9 @@ describe Hamster::Set do
           let(:set_b) { S[*b] }
 
           it "returns #{expected.inspect}, without changing the original Sets" do
-            set_a.send(method, set_b).should eql(S[*expected])
-            set_a.should eql(S.new(a))
-            set_b.should eql(S.new(b))
+            expect(set_a.send(method, set_b)).to eql(S[*expected])
+            expect(set_a).to eql(S.new(a))
+            expect(set_b).to eql(S.new(b))
           end
         end
 
@@ -29,24 +29,24 @@ describe Hamster::Set do
           let(:set_b) { S[*b] }
 
           it "returns #{expected.inspect}, without changing the original Sets" do
-            set_b.send(method, set_a).should eql(S[*expected])
-            set_a.should eql(S.new(a))
-            set_b.should eql(S.new(b))
+            expect(set_b.send(method, set_a)).to eql(S[*expected])
+            expect(set_a).to eql(S.new(a))
+            expect(set_b).to eql(S.new(b))
           end
         end
 
         context "when passed a Ruby Array" do
           it "returns the expected Set" do
-            S[*a].send(method, b.freeze).should eql(S[*expected])
-            S[*b].send(method, a.freeze).should eql(S[*expected])
+            expect(S[*a].send(method, b.freeze)).to eql(S[*expected])
+            expect(S[*b].send(method, a.freeze)).to eql(S[*expected])
           end
         end
 
         context "from a subclass" do
           it "returns an instance of the subclass" do
             subclass = Class.new(Hamster::Set)
-            subclass.new(a).send(method, S.new(b)).class.should be(subclass)
-            subclass.new(b).send(method, S.new(a)).class.should be(subclass)
+            expect(subclass.new(a).send(method, S.new(b)).class).to be(subclass)
+            expect(subclass.new(b).send(method, S.new(a)).class).to be(subclass)
           end
         end
       end
@@ -56,7 +56,7 @@ describe Hamster::Set do
         let(:set_b) { S.new(1..200) }
 
         it "returns self" do
-          set_a.send(method, set_b).should be(set_a)
+          expect(set_a.send(method, set_b)).to be(set_a)
         end
       end
     end

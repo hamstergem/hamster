@@ -8,7 +8,7 @@ describe Hamster::Hash do
 
       context "when everything matches" do
         it "returns self" do
-          original.send(method) { |key, value| true }.should equal(original)
+          expect(original.send(method) { |key, value| true }).to equal(original)
         end
       end
 
@@ -17,26 +17,26 @@ describe Hamster::Hash do
           let(:result) { original.send(method) { |key, value| key == "A" && value == "aye" }}
 
           it "preserves the original" do
-            original.should eql(H["A" => "aye", "B" => "bee", "C" => "see"])
+            expect(original).to eql(H["A" => "aye", "B" => "bee", "C" => "see"])
           end
 
           it "returns a set with the matching values" do
-            result.should eql(H["A" => "aye"])
+            expect(result).to eql(H["A" => "aye"])
           end
         end
 
         it "yields entries as [key, value] pairs" do
           original.send(method) do |e|
-            e.should be_kind_of(Array)
-            ["A", "B", "C"].include?(e[0]).should == true
-            ["aye", "bee", "see"].include?(e[1]).should == true
+            expect(e).to be_kind_of(Array)
+            expect(["A", "B", "C"].include?(e[0])).to eq(true)
+            expect(["aye", "bee", "see"].include?(e[1])).to eq(true)
           end
         end
 
         context "with no block" do
           it "returns an Enumerator" do
-            original.send(method).class.should be(Enumerator)
-            original.send(method).to_a.sort.should == [['A', 'aye'], ['B', 'bee'], ['C', 'see']]
+            expect(original.send(method).class).to be(Enumerator)
+            expect(original.send(method).to_a.sort).to eq([['A', 'aye'], ['B', 'bee'], ['C', 'see']])
           end
         end
       end
@@ -47,11 +47,11 @@ describe Hamster::Hash do
         25.times do
           threshold = rand(1000)
           result    = original.send(method) { |k,v| k <= threshold }
-          result.size.should == threshold
-          result.each_key { |k| k.should <= threshold }
-          (threshold+1).upto(1000) { |k| result.key?(k).should == false }
+          expect(result.size).to eq(threshold)
+          result.each_key { |k| expect(k).to be <= threshold }
+          (threshold+1).upto(1000) { |k| expect(result.key?(k)).to eq(false) }
         end
-        original.should eql(H.new(keys.zip(2..1001))) # shouldn't have changed
+        expect(original).to eql(H.new(keys.zip(2..1001))) # shouldn't have changed
       end
     end
   end

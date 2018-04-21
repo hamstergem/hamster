@@ -14,7 +14,7 @@ describe Hamster::Immutable do
       end
 
       it "returns self" do
-        @result.should equal(@original)
+        expect(@result).to equal(@original)
       end
     end
   end

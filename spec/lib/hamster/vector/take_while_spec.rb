@@ -14,19 +14,19 @@ describe Hamster::Vector do
 
         describe "with a block" do
           it "returns #{expected.inspect}" do
-            result.should eql(V[*expected])
+            expect(result).to eql(V[*expected])
           end
 
           it "preserves the original" do
             result
-            vector.should eql(V[*values])
+            expect(vector).to eql(V[*values])
           end
         end
 
         describe "without a block" do
           it "returns an Enumerator" do
-            vector.take_while.class.should be(Enumerator)
-            vector.take_while.each { |item| item < "C" }.should eql(V[*expected])
+            expect(vector.take_while.class).to be(Enumerator)
+            expect(vector.take_while.each { |item| item < "C" }).to eql(V[*expected])
           end
         end
       end

@@ -11,18 +11,18 @@ describe Hamster::Set do
 
         context "on 'a'..'#{letter}'" do
           it "returns an equivalent array" do
-            result.sort.should == values.sort
+            expect(result.sort).to eq(values.sort)
           end
 
           it "doesn't change the original Set" do
             result
-            set.should eql(S[*values])
+            expect(set).to eql(S[*values])
           end
 
           it "returns a mutable array" do
             expect(result.last).to_not eq("The End")
             result << "The End"
-            result.last.should == "The End"
+            expect(result.last).to eq("The End")
           end
         end
       end

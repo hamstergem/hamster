@@ -4,6 +4,6 @@ require "hamster/set"
 
 describe Hamster::Set do
   it "includes Immutable" do
-    Hamster::Set.should include(Hamster::Immutable)
+    expect(Hamster::Set).to include(Hamster::Immutable)
   end
 end

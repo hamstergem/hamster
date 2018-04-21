@@ -13,11 +13,11 @@ describe Hamster::Vector do
 
         it "preserves the original" do
           vector.clear
-          vector.should eql(V[*values])
+          expect(vector).to eql(V[*values])
         end
 
         it "returns an empty vector" do
-          vector.clear.should equal(V.empty)
+          expect(vector.clear).to equal(V.empty)
         end
       end
 
@@ -25,8 +25,8 @@ describe Hamster::Vector do
         it "returns an instance of the subclass" do
           subclass = Class.new(Hamster::Vector)
           instance = subclass.new(%w{a b c})
-          instance.clear.class.should be(subclass)
-          instance.clear.should be_empty
+          expect(instance.clear.class).to be(subclass)
+          expect(instance.clear).to be_empty
         end
       end
     end

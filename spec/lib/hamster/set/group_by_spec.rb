@@ -14,8 +14,8 @@ describe Hamster::Set do
             let(:set) { S[*values] }
 
             it "returns #{expected.inspect}" do
-              set.send(method, &:odd?).should eql(H[*expected])
-              set.should eql(S.new(values)) # make sure it hasn't changed
+              expect(set.send(method, &:odd?)).to eql(H[*expected])
+              expect(set).to eql(S.new(values)) # make sure it hasn't changed
             end
           end
         end
@@ -31,8 +31,8 @@ describe Hamster::Set do
             let(:set) { S[*values] }
 
             it "returns #{expected.inspect}" do
-              set.group_by.should eql(H[*expected])
-              set.should eql(S.new(values)) # make sure it hasn't changed
+              expect(set.group_by).to eql(H[*expected])
+              expect(set).to eql(S.new(values)) # make sure it hasn't changed
             end
           end
         end
@@ -40,19 +40,19 @@ describe Hamster::Set do
 
       context "on an empty set" do
         it "returns an empty hash" do
-          S.empty.group_by { |x| x }.should eql(H.empty)
+          expect(S.empty.group_by { |x| x }).to eql(H.empty)
         end
       end
 
       it "returns a hash without default proc" do
-        S[1,2,3].group_by { |x| x }.default_proc.should be_nil
+        expect(S[1,2,3].group_by { |x| x }.default_proc).to be_nil
       end
 
       context "from a subclass" do
         it "returns an Hash whose values are instances of the subclass" do
           subclass = Class.new(Hamster::Set)
           instance = subclass.new([1, 'string', :symbol])
-          instance.group_by { |x| x.class }.values.each { |v| v.class.should be(subclass) }
+          instance.group_by { |x| x.class }.values.each { |v| expect(v.class).to be(subclass) }
         end
       end
     end

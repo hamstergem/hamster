@@ -8,33 +8,33 @@ describe Hamster::Vector do
 
     it "can add items at the beginning of a vector" do
       vector = original.insert(0, :a, :b)
-      vector.size.should be(5)
-      vector.at(0).should be(:a)
-      vector.at(2).should be(1)
+      expect(vector.size).to be(5)
+      expect(vector.at(0)).to be(:a)
+      expect(vector.at(2)).to be(1)
     end
 
     it "can add items in the middle of a vector" do
       vector = original.insert(1, :a, :b, :c)
-      vector.size.should be(6)
-      vector.to_a.should == [1, :a, :b, :c, 2, 3]
+      expect(vector.size).to be(6)
+      expect(vector.to_a).to eq([1, :a, :b, :c, 2, 3])
     end
 
     it "can add items at the end of a vector" do
       vector = original.insert(3, :a, :b, :c)
-      vector.size.should be(6)
-      vector.to_a.should == [1, 2, 3, :a, :b, :c]
+      expect(vector.size).to be(6)
+      expect(vector.to_a).to eq([1, 2, 3, :a, :b, :c])
     end
 
     it "can add items past the end of a vector" do
       vector = original.insert(6, :a, :b)
-      vector.size.should be(8)
-      vector.to_a.should == [1, 2, 3, nil, nil, nil, :a, :b]
+      expect(vector.size).to be(8)
+      expect(vector.to_a).to eq([1, 2, 3, nil, nil, nil, :a, :b])
     end
 
     it "accepts a negative index, which counts back from the end of the vector" do
       vector = original.insert(-2, :a)
-      vector.size.should be(4)
-      vector.to_a.should == [1, :a, 2, 3]
+      expect(vector.size).to be(4)
+      expect(vector.to_a).to eq([1, :a, 2, 3])
     end
 
     it "raises IndexError if a negative index is too great" do
@@ -43,12 +43,12 @@ describe Hamster::Vector do
 
     it "works when adding an item past boundary when vector trie needs to deepen" do
       vector = original.insert(32, :a, :b)
-      vector.size.should == 34
-      vector.to_a.size.should == 34
+      expect(vector.size).to eq(34)
+      expect(vector.to_a.size).to eq(34)
     end
 
     it "works when adding to an empty Vector" do
-      V.empty.insert(0, :a).should eql(V[:a])
+      expect(V.empty.insert(0, :a)).to eql(V[:a])
     end
 
     it "has the right size and contents after many insertions" do
@@ -59,10 +59,10 @@ describe Hamster::Vector do
         index = rand(vector.size)
         vector = vector.insert(index, *items)
         array.insert(index, *items)
-        vector.size.should == array.size
+        expect(vector.size).to eq(array.size)
         ary = vector.to_a
-        ary.size.should == vector.size
-        ary.should eql(array)
+        expect(ary.size).to eq(vector.size)
+        expect(ary).to eql(array)
       end
     end
   end

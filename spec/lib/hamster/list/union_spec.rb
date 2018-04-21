@@ -5,7 +5,7 @@ describe Hamster::List do
   [:union, :|].each do |method|
     describe "##{method}" do
       it "is lazy" do
-        -> { Hamster.stream { fail }.union(Hamster.stream { fail }) }.should_not raise_error
+        expect { Hamster.stream { fail }.union(Hamster.stream { fail }) }.not_to raise_error
       end
 
       [
@@ -19,11 +19,11 @@ describe Hamster::List do
           let(:list_b) { L[*b] }
 
           it "for #{a.inspect} and #{b.inspect}"  do
-            list_a.send(method, list_b).should eql(L[*expected])
+            expect(list_a.send(method, list_b)).to eql(L[*expected])
           end
 
           it "for #{b.inspect} and #{a.inspect}"  do
-            list_b.send(method, list_a).should eql(L[*expected])
+            expect(list_b.send(method, list_a)).to eql(L[*expected])
           end
         end
       end

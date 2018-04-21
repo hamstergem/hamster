@@ -9,22 +9,22 @@ describe Hamster::Vector do
       different = false
       10.times do
         shuffled = vector.shuffle
-        shuffled.sort.should eql(vector)
+        expect(shuffled.sort).to eql(vector)
         different ||= (shuffled != vector)
       end
-      different.should be(true)
+      expect(different).to be(true)
     end
 
     it "leaves the original unchanged" do
       vector.shuffle
-      vector.should eql(V[1,2,3,4])
+      expect(vector).to eql(V[1,2,3,4])
     end
 
     context "from a subclass" do
       it "returns an instance of the subclass" do
         subclass = Class.new(Hamster::Vector)
         instance = subclass.new([1,2,3])
-        instance.shuffle.class.should be(subclass)
+        expect(instance.shuffle.class).to be(subclass)
       end
     end
 
@@ -34,9 +34,9 @@ describe Hamster::Vector do
           vector = V.new(1..size)
           shuffled = vector.shuffle
           shuffled = vector.shuffle while shuffled.eql?(vector) # in case we get the same
-          vector.should eql(V.new(1..size))
-          shuffled.size.should == vector.size
-          shuffled.sort.should eql(vector)
+          expect(vector).to eql(V.new(1..size))
+          expect(shuffled.size).to eq(vector.size)
+          expect(shuffled.sort).to eql(vector)
         end
       end
     end

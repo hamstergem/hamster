@@ -12,7 +12,7 @@ describe Hamster::Deque do
         let(:deque) { D[*values] }
 
         it "returns self" do
-          deque.send(method).should equal(deque)
+          expect(deque.send(method)).to equal(deque)
         end
       end
     end

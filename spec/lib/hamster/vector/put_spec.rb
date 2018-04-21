@@ -13,8 +13,8 @@ describe Hamster::Vector do
       end
 
       it "allows indexes 0 and 1 to be put" do
-        vector.put(0, :a).should eql(V[:a])
-        vector.put(1, :a).should eql(V[nil, :a])
+        expect(vector.put(0, :a)).to eql(V[:a])
+        expect(vector.put(1, :a)).to eql(V[nil, :a])
       end
     end
 
@@ -25,31 +25,31 @@ describe Hamster::Vector do
         context "and a positive index" do
           context "within the absolute bounds of the vector" do
             it "passes the current value to the block" do
-              vector.put(1) { |value| value.should == "B" }
+              vector.put(1) { |value| expect(value).to eq("B") }
             end
 
             it "replaces the value with the result of the block" do
               result = vector.put(1) { |value| "FLIBBLE" }
-              result.should eql(V["A", "FLIBBLE", "C"])
+              expect(result).to eql(V["A", "FLIBBLE", "C"])
             end
 
             it "supports to_proc methods" do
               result = vector.put(1, &:downcase)
-              result.should eql(V["A", "b", "C"])
+              expect(result).to eql(V["A", "b", "C"])
             end
           end
 
           context "just past the end of the vector" do
             it "passes nil to the block and adds a new value" do
-              result = vector.put(3) { |value| value.should be_nil; "D" }
-              result.should eql(V["A", "B", "C", "D"])
+              result = vector.put(3) { |value| expect(value).to be_nil; "D" }
+              expect(result).to eql(V["A", "B", "C", "D"])
             end
           end
 
           context "further outside the bounds of the vector" do
             it "passes nil to the block, fills up missing nils, and adds a new value" do
-              result = vector.put(5) { |value| value.should be_nil; "D" }
-              result.should eql(V["A", "B", "C", nil, nil, "D"])
+              result = vector.put(5) { |value| expect(value).to be_nil; "D" }
+              expect(result).to eql(V["A", "B", "C", nil, nil, "D"])
             end
           end
         end
@@ -57,17 +57,17 @@ describe Hamster::Vector do
         context "and a negative index" do
           context "within the absolute bounds of the vector" do
             it "passes the current value to the block" do
-              vector.put(-2) { |value| value.should == "B" }
+              vector.put(-2) { |value| expect(value).to eq("B") }
             end
 
             it "replaces the value with the result of the block" do
               result = vector.put(-2) { |value| "FLIBBLE" }
-              result.should eql(V["A", "FLIBBLE", "C"])
+              expect(result).to eql(V["A", "FLIBBLE", "C"])
             end
 
             it "supports to_proc methods" do
               result = vector.put(-2, &:downcase)
-              result.should eql(V["A", "b", "C"])
+              expect(result).to eql(V["A", "b", "C"])
             end
           end
 
@@ -85,25 +85,25 @@ describe Hamster::Vector do
             let(:put) { vector.put(1, "FLIBBLE") }
 
             it "preserves the original" do
-              vector.should eql(V["A", "B", "C"])
+              expect(vector).to eql(V["A", "B", "C"])
             end
 
             it "puts the new value at the specified index" do
-              put.should eql(V["A", "FLIBBLE", "C"])
+              expect(put).to eql(V["A", "FLIBBLE", "C"])
             end
           end
 
           context "just past the end of the vector" do
             it "adds a new value" do
               result = vector.put(3, "FLIBBLE")
-              result.should eql(V["A", "B", "C", "FLIBBLE"])
+              expect(result).to eql(V["A", "B", "C", "FLIBBLE"])
             end
           end
 
           context "outside the absolute bounds of the vector" do
             it "fills up with nils" do
               result = vector.put(5, "FLIBBLE")
-              result.should eql(V["A", "B", "C", nil, nil, "FLIBBLE"])
+              expect(result).to eql(V["A", "B", "C", nil, nil, "FLIBBLE"])
             end
           end
         end
@@ -113,11 +113,11 @@ describe Hamster::Vector do
 
           it "preserves the original" do
             put
-            vector.should eql(V["A", "B", "C"])
+            expect(vector).to eql(V["A", "B", "C"])
           end
 
           it "puts the new value at the specified index" do
-            put.should eql(V["A", "FLIBBLE", "C"])
+            expect(put).to eql(V["A", "FLIBBLE", "C"])
           end
         end
 
@@ -133,7 +133,7 @@ describe Hamster::Vector do
       it "returns an instance of the subclass" do
         subclass = Class.new(Hamster::Vector)
         instance = subclass[1,2,3]
-        instance.put(1, 2.5).class.should be(subclass)
+        expect(instance.put(1, 2.5).class).to be(subclass)
       end
     end
 
@@ -147,11 +147,11 @@ describe Hamster::Vector do
             value = rand(10000)
             array[i] = value
             vector = vector.put(i, value)
-            vector[i].should be(value)
+            expect(vector[i]).to be(value)
           end
 
           0.upto(size-1) do |i|
-            vector.get(i).should == array[i]
+            expect(vector.get(i)).to eq(array[i])
           end
         end
       end
@@ -165,7 +165,7 @@ describe Hamster::Vector do
 
           it "returns self" do
             (0...size).each do |index|
-              vector.put(index, index * index).should equal(vector)
+              expect(vector.put(index, index * index)).to equal(vector)
             end
           end
         end

@@ -18,7 +18,7 @@ describe Hamster::Set do
     ].each do |a, b, expected|
       describe "for #{a.inspect} and #{b.inspect}" do
         it "returns #{expected}" do
-          S[*a].disjoint?(S[*b]).should be(expected)
+          expect(S[*a].disjoint?(S[*b])).to be(expected)
         end
       end
     end

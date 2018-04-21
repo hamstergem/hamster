@@ -10,13 +10,13 @@ describe Hamster::Hash do
 
       context "without a block" do
         it "returns true" do
-          hash.all?.should == true
+          expect(hash.all?).to eq(true)
         end
       end
 
       context "with a block" do
         it "returns true" do
-          hash.all? { false }.should == true
+          expect(hash.all? { false }).to eq(true)
         end
       end
     end
@@ -26,27 +26,27 @@ describe Hamster::Hash do
 
       context "without a block" do
         it "returns true" do
-          hash.all?.should == true
+          expect(hash.all?).to eq(true)
         end
       end
 
       context "with a block" do
         it "returns true if the block always returns true" do
-          hash.all? { true }.should == true
+          expect(hash.all? { true }).to eq(true)
         end
 
         it "returns false if the block ever returns false" do
-          hash.all? { |k,v| k != 'C' }.should == false
+          expect(hash.all? { |k,v| k != 'C' }).to eq(false)
         end
 
         it "propagates an exception from the block" do
-          -> { hash.all? { |k,v| raise "help" } }.should raise_error(RuntimeError)
+          expect { hash.all? { |k,v| raise "help" } }.to raise_error(RuntimeError)
         end
 
         it "stops iterating as soon as the block returns false" do
           yielded = []
           hash.all? { |k,v| yielded << k; false }
-          yielded.size.should == 1
+          expect(yielded.size).to eq(1)
         end
       end
     end

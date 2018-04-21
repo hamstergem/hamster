@@ -18,24 +18,24 @@ describe Hamster::SortedSet do
           context "with a block" do
             it "preserves the original" do
               sorted_set.send(method, &comparator)
-              sorted_set.to_a.should == SS.new(values) { |item| item.reverse }
+              expect(sorted_set.to_a).to eq(SS.new(values) { |item| item.reverse })
             end
 
             it "returns #{expected.inspect}" do
-              sorted_set.send(method, &comparator).class.should be(Hamster::SortedSet)
-              sorted_set.send(method, &comparator).to_a.should == expected
+              expect(sorted_set.send(method, &comparator).class).to be(Hamster::SortedSet)
+              expect(sorted_set.send(method, &comparator).to_a).to eq(expected)
             end
           end
 
           context "without a block" do
             it "preserves the original" do
               sorted_set.send(method)
-              sorted_set.to_a.should == SS.new(values) { |item| item.reverse }
+              expect(sorted_set.to_a).to eq(SS.new(values) { |item| item.reverse })
             end
 
             it "returns #{expected.sort.inspect}" do
-              sorted_set.send(method).class.should be(Hamster::SortedSet)
-              sorted_set.send(method).to_a.should == expected.sort
+              expect(sorted_set.send(method).class).to be(Hamster::SortedSet)
+              expect(sorted_set.send(method).to_a).to eq(expected.sort)
             end
           end
         end

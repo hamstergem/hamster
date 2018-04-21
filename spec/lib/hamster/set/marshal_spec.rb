@@ -18,12 +18,12 @@ describe Hamster::Set do
     end
 
     it "can survive dumping and loading into a new process" do
-      reloaded_hash.should eql(S[:one, :two])
+      expect(reloaded_hash).to eql(S[:one, :two])
     end
 
     it "is still possible to test items by key after loading" do
-      reloaded_hash.should include :one
-      reloaded_hash.should include :two
+      expect(reloaded_hash).to include :one
+      expect(reloaded_hash).to include :two
     end
   end
 end

@@ -16,18 +16,18 @@ describe Hamster::Vector do
 
           it "preserves the original" do
             result
-            vector.should eql(V[*values])
+            expect(vector).to eql(V[*values])
           end
 
           it "returns #{expected.inspect}" do
-            result.should eql(V[*expected])
+            expect(result).to eql(V[*expected])
           end
         end
 
         describe "without a block" do
           it "returns an Enumerator" do
-            vector.drop_while.class.should be(Enumerator)
-            vector.drop_while.each { |item| item < "C" }.should eql(V[*expected])
+            expect(vector.drop_while.class).to be(Enumerator)
+            expect(vector.drop_while.each { |item| item < "C" }).to eql(V[*expected])
           end
         end
       end
@@ -35,21 +35,21 @@ describe Hamster::Vector do
 
     context "on an empty vector" do
       it "returns an empty vector" do
-        V.empty.drop_while { false }.should eql(V.empty)
+        expect(V.empty.drop_while { false }).to eql(V.empty)
       end
     end
 
     it "returns an empty vector if block is always true" do
-      V.new(1..32).drop_while { true }.should eql(V.empty)
-      V.new(1..100).drop_while { true }.should eql(V.empty)
+      expect(V.new(1..32).drop_while { true }).to eql(V.empty)
+      expect(V.new(1..100).drop_while { true }).to eql(V.empty)
     end
 
     it "stops dropping items if block returns nil" do
-      V[1, 2, 3, nil, 4, 5].drop_while { |x| x }.should eql(V[nil, 4, 5])
+      expect(V[1, 2, 3, nil, 4, 5].drop_while { |x| x }).to eql(V[nil, 4, 5])
     end
 
     it "stops dropping items if block returns false" do
-      V[1, 2, 3, false, 4, 5].drop_while { |x| x }.should eql(V[false, 4, 5])
+      expect(V[1, 2, 3, false, 4, 5].drop_while { |x| x }).to eql(V[false, 4, 5])
     end
   end
 end

@@ -16,7 +16,7 @@ describe Hamster::Hash do
 
       it "doesn't modify the original Hash" do
         slice
-        hash.should eql(H.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
+        expect(hash).to eql(H.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
       end
     end
 
@@ -29,7 +29,7 @@ describe Hamster::Hash do
 
       it "doesn't modify the original Hash" do
         slice
-        hash.should eql(H.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
+        expect(hash).to eql(H.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL"))
       end
     end
 

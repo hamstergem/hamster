@@ -24,10 +24,10 @@ describe Hamster::Deque do
           deque = deque.unshift(value)
         end
 
-        deque.to_a.should eql(array)
-        deque.size.should == array.size
-        deque.first.should == array.first
-        deque.last.should == array.last
+        expect(deque.to_a).to eql(array)
+        expect(deque.size).to eq(array.size)
+        expect(deque.first).to eq(array.first)
+        expect(deque.last).to eq(array.last)
       end
     end
   end

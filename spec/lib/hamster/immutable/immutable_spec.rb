@@ -13,7 +13,7 @@ describe Hamster::Immutable do
       end
 
       it "returns true" do
-        @fixture.should be_immutable
+        expect(@fixture).to be_immutable
       end
     end
 
@@ -27,7 +27,7 @@ describe Hamster::Immutable do
 
       describe "that are not frozen" do
         it "returns false" do
-          @fixture.should_not be_immutable
+          expect(@fixture).not_to be_immutable
         end
       end
 
@@ -37,7 +37,7 @@ describe Hamster::Immutable do
         end
 
         it "returns true" do
-          @fixture.should be_immutable
+          expect(@fixture).to be_immutable
         end
       end
     end

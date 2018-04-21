@@ -16,13 +16,13 @@ describe Hamster::Set do
 
         context "with a block" do
           it "returns #{expected.inspect}" do
-            set.count(&:odd?).should == expected
+            expect(set.count(&:odd?)).to eq(expected)
           end
         end
 
         context "without a block" do
           it "returns length" do
-            set.count.should == set.length
+            expect(set.count).to eq(set.length)
           end
         end
       end
@@ -30,8 +30,8 @@ describe Hamster::Set do
 
     it "works on large sets" do
       set = Hamster::Set.new(1..2000)
-      set.count.should == 2000
-      set.count(&:odd?).should == 1000
+      expect(set.count).to eq(2000)
+      expect(set.count(&:odd?)).to eq(1000)
     end
   end
 end

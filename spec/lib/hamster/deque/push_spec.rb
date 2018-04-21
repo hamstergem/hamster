@@ -13,15 +13,15 @@ describe Hamster::Deque do
 
         it "preserves the original" do
           deque.push(item)
-          deque.should eql(D.new(original))
+          expect(deque).to eql(D.new(original))
         end
 
         it "returns #{expected.inspect}" do
-          deque.push(item).should eql(D.new(expected))
+          expect(deque.push(item)).to eql(D.new(expected))
         end
 
         it "returns a frozen instance" do
-          deque.push(item).should be_frozen
+          expect(deque.push(item)).to be_frozen
         end
       end
     end
@@ -30,7 +30,7 @@ describe Hamster::Deque do
       let(:subclass) { Class.new(Hamster::Deque) }
       let(:empty_instance) { subclass.new }
       it "returns an object of same class" do
-        empty_instance.push(1).class.should be subclass
+        expect(empty_instance.push(1).class).to be subclass
       end
     end
   end

@@ -12,7 +12,7 @@ describe Hamster::List do
         let(:list) { L[*values] }
 
         it "returns self" do
-          list.to_list.should equal(list)
+          expect(list.to_list).to equal(list)
         end
       end
     end

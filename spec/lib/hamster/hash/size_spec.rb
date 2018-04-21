@@ -11,7 +11,7 @@ describe Hamster::Hash do
       ].each do |values, result|
 
         it "returns #{result} for #{values.inspect}" do
-          H[*values].send(method).should == result
+          expect(H[*values].send(method)).to eq(result)
         end
       end
 
@@ -24,7 +24,7 @@ describe Hamster::Hash do
         random_things.each do |thing|
           h = h.put(thing, thing * 2)
         end
-        h.size.should == 10_842
+        expect(h.size).to eq(10_842)
       end
 
       random_actions = (lots.map { |x|[:add, x] } + lots.map { |x|[:add, x] } + lots.map { |x|[:remove, x] }).sort_by { |x|rand }
@@ -45,7 +45,7 @@ describe Hamster::Hash do
             h = h.delete(ob)
           end
         end
-        h.size.should == ending_size
+        expect(h.size).to eq(ending_size)
       end
     end
   end

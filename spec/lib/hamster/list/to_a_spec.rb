@@ -6,7 +6,7 @@ describe Hamster::List do
     describe "##{method}" do
       context "on a really big list" do
         it "doesn't run out of stack" do
-          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).to_a }.should_not raise_error
+          expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).to_a }.not_to raise_error
         end
       end
 
@@ -19,19 +19,19 @@ describe Hamster::List do
           let(:list) { L[*values] }
 
           it "returns #{values.inspect}" do
-            list.send(method).should == values
+            expect(list.send(method)).to eq(values)
           end
 
           it "leaves the original unchanged" do
             list.send(method)
-            list.should eql(L[*values])
+            expect(list).to eql(L[*values])
           end
 
           it "returns a mutable array" do
             result = list.send(method)
             expect(result.last).to_not eq("The End")
             result << "The End"
-            result.last.should == "The End"
+            expect(result.last).to eq("The End")
           end
         end
       end

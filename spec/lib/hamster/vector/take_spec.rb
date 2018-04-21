@@ -17,11 +17,11 @@ describe Hamster::Vector do
 
         it "preserves the original" do
           vector.take(number)
-          vector.should eql(V[*values])
+          expect(vector).to eql(V[*values])
         end
 
         it "returns #{expected.inspect}" do
-          vector.take(number).should eql(V[*expected])
+          expect(vector.take(number)).to eql(V[*expected])
         end
       end
     end
@@ -29,14 +29,14 @@ describe Hamster::Vector do
     context "when number of elements specified is identical to size" do
       let(:vector) { V[1, 2, 3, 4, 5, 6] }
       it "returns self" do
-        vector.take(vector.size).should be(vector)
+        expect(vector.take(vector.size)).to be(vector)
       end
     end
 
     context "when number of elements specified is bigger than size" do
       let(:vector) { V[1, 2, 3, 4, 5, 6] }
       it "returns self" do
-        vector.take(vector.size + 1).should be(vector)
+        expect(vector.take(vector.size + 1)).to be(vector)
       end
     end
   end

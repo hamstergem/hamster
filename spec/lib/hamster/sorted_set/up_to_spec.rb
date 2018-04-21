@@ -11,9 +11,9 @@ describe Hamster::SortedSet do
           threshold = rand(1000)
           result    = set.up_to(threshold)
           array     = items.select { |x| x <= threshold }.sort
-          result.class.should be(Hamster::SortedSet)
-          result.size.should == array.size
-          result.to_a.should == array
+          expect(result.class).to be(Hamster::SortedSet)
+          expect(result.size).to eq(array.size)
+          expect(result.to_a).to eq(array)
         end
       end
     end
@@ -27,26 +27,26 @@ describe Hamster::SortedSet do
           result    = []
           set.up_to(threshold) { |x| result << x }
           array  = items.select { |x| x <= threshold }.sort
-          result.size.should == array.size
-          result.should == array
+          expect(result.size).to eq(array.size)
+          expect(result).to eq(array)
         end
       end
     end
 
     context "on an empty set" do
       it "returns an empty set" do
-        SS.empty.up_to(1).should be_empty
-        SS.empty.up_to('abc').should be_empty
-        SS.empty.up_to(:symbol).should be_empty
-        SS.empty.up_to(nil).should be_empty
+        expect(SS.empty.up_to(1)).to be_empty
+        expect(SS.empty.up_to('abc')).to be_empty
+        expect(SS.empty.up_to(:symbol)).to be_empty
+        expect(SS.empty.up_to(nil)).to be_empty
       end
     end
 
     context "with an argument less than all the values in the set" do
       it "returns an empty set" do
         result = SS.new(1..100).up_to(0)
-        result.class.should be(Hamster::SortedSet)
-        result.should be_empty
+        expect(result.class).to be(Hamster::SortedSet)
+        expect(result).to be_empty
       end
     end
   end

@@ -6,7 +6,7 @@ describe Hamster::List do
     describe "##{method}" do
       context "on a really big list" do
         it "doesn't run out of stack" do
-          -> { Hamster.interval(0, STACK_OVERFLOW_DEPTH).send(method) }.should_not raise_error
+          expect { Hamster.interval(0, STACK_OVERFLOW_DEPTH).send(method) }.not_to raise_error
         end
       end
 
@@ -18,7 +18,7 @@ describe Hamster::List do
         ].each do |values, expected|
           context "on #{values.inspect}" do
             it "returns #{expected.inspect}" do
-              L[*values].send(method, &:odd?).should eql(H[*expected])
+              expect(L[*values].send(method, &:odd?)).to eql(H[*expected])
             end
           end
         end
@@ -32,7 +32,7 @@ describe Hamster::List do
         ].each do |values, expected|
           context "on #{values.inspect}" do
             it "returns #{expected.inspect}" do
-              L[*values].send(method).should eql(H[*expected])
+              expect(L[*values].send(method)).to eql(H[*expected])
             end
           end
         end
