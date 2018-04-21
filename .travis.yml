@@ -4,15 +4,24 @@ before_install:
   - gem --version
   - gem update bundler
   - bundle --version
+
 rvm:
   - 1.9.3
   - 2.0
   - 2.1
   - 2.2
+  - 2.3
+  - 2.4
+  - 2.5
+  - ruby-2.6.0-preview1
   - ruby-head
+  - jruby-1.7.9
+  - jruby-1.7.27
   - jruby-9.0.0.0
+  - jruby-9.1.16.0
   - jruby-head
   - rbx
+
 matrix:
   allow_failures:
     - rvm: ruby-head
