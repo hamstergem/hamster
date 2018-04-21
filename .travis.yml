@@ -15,7 +15,6 @@ rvm:
   - 2.5
   - ruby-2.6.0-preview1
   - ruby-head
-  - jruby-1.7.9
   - jruby-1.7.27
   - jruby-9.0.0.0
   - jruby-9.1.16.0
