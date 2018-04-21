@@ -1,4 +1,3 @@
-require "spec_helper"
 require "hamster/hash"
 
 RSpec.describe Hamster::Hash do

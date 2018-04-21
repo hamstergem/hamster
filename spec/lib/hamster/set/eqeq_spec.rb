@@ -1,4 +1,3 @@
-require "spec_helper"
 require "set"
 require "hamster/set"
 

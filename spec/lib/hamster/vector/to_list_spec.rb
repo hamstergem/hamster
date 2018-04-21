@@ -1,4 +1,3 @@
-require "spec_helper"
 require "hamster/vector"
 require "hamster/list"
 require "hamster/core_ext"

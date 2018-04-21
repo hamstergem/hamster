@@ -1,4 +1,3 @@
-require "spec_helper"
 require "hamster/immutable"
 
 describe Hamster::Immutable do

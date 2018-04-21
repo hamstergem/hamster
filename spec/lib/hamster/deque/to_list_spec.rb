@@ -1,4 +1,3 @@
-require "spec_helper"
 require "hamster/deque"
 require "hamster/list"
 

@@ -1,4 +1,3 @@
-require "spec_helper"
 require "hamster/core_ext/enumerable"
 
 describe Enumerable do
