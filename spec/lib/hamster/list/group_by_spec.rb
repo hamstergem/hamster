@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   [:group_by, :group].each do |method|
     describe "##{method}" do
       context "on a really big list" do

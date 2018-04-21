@@ -1,6 +1,6 @@
 require "hamster/deque"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   describe "#unshift" do
     [
       [[], "A", ["A"]],

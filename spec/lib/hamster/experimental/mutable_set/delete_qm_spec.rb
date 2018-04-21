@@ -1,6 +1,6 @@
 require "hamster/experimental/mutable_set"
 
-describe Hamster::MutableSet do
+RSpec.describe Hamster::MutableSet do
   let(:mutable) { Hamster::MutableSet[*values] }
 
   describe "#delete?" do

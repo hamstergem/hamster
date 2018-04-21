@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#reverse_each" do
     [2, 31, 32, 33, 1000, 1024, 1025, 2000].each do |size|
       context "on a #{size}-item vector" do

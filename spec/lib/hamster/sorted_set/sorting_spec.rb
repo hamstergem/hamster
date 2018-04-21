@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   [
     [:sort, ->(left, right) { left.length <=> right.length }],
     [:sort_by, ->(item) { item.length }],

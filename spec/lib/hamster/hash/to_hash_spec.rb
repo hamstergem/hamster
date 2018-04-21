@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   [:to_hash, :to_h].each do |method|
     describe "##{method}" do
       it "converts an empty Hamster::Hash to an empty Ruby Hash" do

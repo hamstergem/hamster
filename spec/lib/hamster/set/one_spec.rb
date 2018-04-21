@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   describe "#one?" do
     context "when empty" do
       it "with a block returns false" do

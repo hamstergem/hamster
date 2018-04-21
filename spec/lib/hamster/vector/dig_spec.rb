@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   let(:v) { V[1, 2, V[3, 4]] }
 
   describe "#dig" do

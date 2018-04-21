@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   [:dup, :clone].each do |method|
     [
       [],

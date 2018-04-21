@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   let(:hash) { H[toast: 'buttered', jam: 'strawberry'] }
 
   [:value?, :has_value?].each do |method|

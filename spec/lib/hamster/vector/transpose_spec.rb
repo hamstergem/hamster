@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#transpose" do
     it "takes a vector of vectors and transposes rows and columns" do
       expect(V[V[1, 'a'], V[2, 'b'], V[3, 'c']].transpose).to eql(V[V[1, 2, 3], V["a", "b", "c"]])

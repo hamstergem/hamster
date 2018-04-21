@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   [:dup, :clone].each do |method|
     let(:set) { S["A", "B", "C"] }
 

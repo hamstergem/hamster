@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#none?" do
     context "when empty" do
       it "with a block returns true" do

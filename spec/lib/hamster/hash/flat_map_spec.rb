@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 
   describe "#flat_map" do

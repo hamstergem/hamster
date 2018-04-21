@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   describe "#delete_at" do
     let(:sorted_set) { SS[1,2,3,4,5] }
 

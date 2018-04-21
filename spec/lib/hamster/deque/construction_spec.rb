@@ -1,6 +1,6 @@
 require "hamster/deque"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   describe ".[]" do
     context "with no arguments" do
       it "always returns the same instance" do

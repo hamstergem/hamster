@@ -1,7 +1,7 @@
 require "hamster/vector"
 require 'pry'
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#insert" do
     let(:original) { V[1, 2, 3] }
 

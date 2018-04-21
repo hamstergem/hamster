@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#count" do
     it "returns the number of elements" do
       expect(V[:a, :b, :c].count).to eq(3)

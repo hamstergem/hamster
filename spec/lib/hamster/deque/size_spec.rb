@@ -1,6 +1,6 @@
 require "hamster/deque"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   [:size, :length].each do |method|
     describe "##{method}" do
       [

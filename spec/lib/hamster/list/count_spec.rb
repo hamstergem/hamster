@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#count" do
     context "on a really big list" do
       it "doesn't run out of stack" do

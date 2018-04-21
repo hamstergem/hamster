@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#group_by" do
     context "with a block" do
       [

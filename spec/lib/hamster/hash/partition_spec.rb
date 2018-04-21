@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   let(:hash) { H["a" => 1, "b" => 2, "c" => 3, "d" => 4] }
   let(:partition) { hash.partition { |k,v| v % 2 == 0 }}
 

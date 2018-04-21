@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#product" do
     context "when passed no arguments" do
       it "multiplies all items in vector" do

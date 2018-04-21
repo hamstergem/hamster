@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   [:select, :find_all].each do |method|
     describe "##{method}" do
       let(:vector) { V["A", "B", "C"] }

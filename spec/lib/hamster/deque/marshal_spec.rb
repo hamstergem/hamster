@@ -1,6 +1,6 @@
 require "hamster/deque"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   describe "#marshal_dump/#marshal_load" do
     let(:ruby) do
       File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"])

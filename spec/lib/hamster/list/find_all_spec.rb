@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   let(:list) { L[*values] }
   let(:found_list) { L[*found_values] }
 

@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   [:exclusion, :^].each do |method|
     describe "##{method}" do
       [

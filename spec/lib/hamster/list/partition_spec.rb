@@ -1,7 +1,7 @@
 require "hamster/list"
 require "thread"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#partition" do
     it "is lazy" do
       expect { Hamster.stream { fail }.partition }.not_to raise_error

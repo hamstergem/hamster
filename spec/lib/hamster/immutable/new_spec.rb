@@ -1,6 +1,6 @@
 require "hamster/immutable"
 
-describe Hamster::Immutable do
+RSpec.describe Hamster::Immutable do
   class NewPerson < Struct.new(:first, :last)
     include Hamster::Immutable
   end

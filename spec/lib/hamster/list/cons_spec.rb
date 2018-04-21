@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#cons" do
     [
       [[], "A", ["A"]],

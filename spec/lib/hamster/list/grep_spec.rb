@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#grep" do
     it "is lazy" do
       expect { Hamster.stream { fail }.grep(Object) { |item| item } }.not_to raise_error

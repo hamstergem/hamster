@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   [:find, :detect].each do |method|
     describe "##{method}" do
       [

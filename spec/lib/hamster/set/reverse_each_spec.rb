@@ -1,7 +1,7 @@
 require "set"
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   let(:set) { S["A", "B", "C"] }
 
   describe "#reverse_each" do

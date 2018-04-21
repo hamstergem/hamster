@@ -1,7 +1,7 @@
 require "hamster/hash"
 require "hamster/set"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#keys" do
     let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
 

@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster do
+RSpec.describe Hamster do
   describe "#flatten" do
     [
       [["A"], ["A"]],

@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   [:select, :find_all].each do |method|
     describe "##{method}" do
       let(:set) { S["A", "B", "C"] }

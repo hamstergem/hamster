@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#chunk" do
     it "is lazy" do
       expect { Hamster.stream { fail }.chunk(2) }.not_to raise_error

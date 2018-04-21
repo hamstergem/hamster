@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   let(:vector) { V[1,2,3,4] }
   let(:big) { V.new(1..10000) }
 

@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   [:+, :concat].each do |method|
     describe "##{method}" do
       let(:vector) { V.new(1..100) }

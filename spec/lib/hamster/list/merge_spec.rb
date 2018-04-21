@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   context "without a comparator" do
     context "on an empty list" do
       subject { L.empty }

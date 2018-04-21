@@ -2,7 +2,7 @@ require "hamster/nested"
 require "hamster/deque"
 require "set"
 
-describe Hamster do
+RSpec.describe Hamster do
   expectations = [
     # [Ruby, Hamster]
     [ { "a" => 1,

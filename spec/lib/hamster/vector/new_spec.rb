@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe ".new" do
     it "accepts a single enumerable argument and creates a new vector" do
       vector = Hamster::Vector.new([1,2,3])

@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#delete" do
     it "removes elements that are #== to the argument" do
       expect(L[1,2,3].delete(1)).to eql(L[2,3])

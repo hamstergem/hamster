@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#sample" do
     let(:hash) { Hamster::Hash.new((:a..:z).zip(1..26)) }
 

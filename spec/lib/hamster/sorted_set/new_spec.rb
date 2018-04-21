@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   describe ".new" do
     it "accepts a single enumerable argument and creates a new sorted set" do
       sorted_set = SS.new([1,2,3])

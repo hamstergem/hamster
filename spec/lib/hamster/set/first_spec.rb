@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   describe "#first" do
     context "on an empty set" do
       it "returns nil" do

@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   [
     [[], :car, nil],
     [["A"], :car, "A"],

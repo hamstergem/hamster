@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe ".new" do
     it "is amenable to overriding of #initialize" do
       class SnazzyHash < Hamster::Hash

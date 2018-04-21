@@ -1,7 +1,7 @@
 require "hamster/set"
 require 'set'
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   [:include?, :member?].each do |method|
     describe "##{method}" do
       let(:set) { S["A", "B", "C", 2.0, nil] }

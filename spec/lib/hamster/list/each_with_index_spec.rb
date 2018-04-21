@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#each_with_index" do
     context "with no block" do
       let(:list) { L["A", "B", "C"] }

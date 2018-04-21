@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   let(:sorted_set) { SS[1,2,3,4] }
   let(:big) { SS.new(1..10000) }
 

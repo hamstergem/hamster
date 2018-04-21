@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#uniq" do
     let(:vector) { V['a', 'b', 'a', 'a', 'c', 'b'] }
 

@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster do
+RSpec.describe Hamster do
   describe ".list" do
     context "with no arguments" do
       it "always returns the same instance" do

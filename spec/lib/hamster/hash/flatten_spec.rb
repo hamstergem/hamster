@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#flatten" do
     context "with flatten depth of zero" do
       it "returns a vector of keys/value" do

@@ -1,7 +1,7 @@
 require "set"
 require "hamster/set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   let(:set) { SS[*values] }
   let(:comparison) { SS[*comparison_values] }
 

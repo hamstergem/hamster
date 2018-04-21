@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   describe "#sample" do
     let(:sorted_set) { Hamster::SortedSet.new(1..10) }
 

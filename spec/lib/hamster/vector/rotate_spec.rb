@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#rotate" do
     let(:vector) { V[1,2,3,4,5] }
 

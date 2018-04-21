@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   describe "#sample" do
     let(:set) { S.new(1..10) }
 

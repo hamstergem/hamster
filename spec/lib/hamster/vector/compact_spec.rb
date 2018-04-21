@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#compact" do
     it "returns a new Vector with all nils removed" do
       expect(V[1, nil, 2, nil].compact).to eql(V[1, 2])

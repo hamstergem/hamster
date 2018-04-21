@@ -2,7 +2,7 @@ require "hamster/hash"
 require "pp"
 require "stringio"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#pretty_print" do
     let(:hash) { Hamster::Hash.new(DeterministicHash.new(1,1) => "tin", DeterministicHash.new(2,2) => "earwax", DeterministicHash.new(3,3) => "neanderthal") }
     let(:stringio) { StringIO.new }

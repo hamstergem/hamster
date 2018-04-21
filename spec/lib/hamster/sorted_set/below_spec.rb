@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   describe "#below" do
     context "when called without a block" do
       it "returns a sorted set of all items lower than the argument" do

@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   describe ".set" do
     context "with no values" do
       it "returns the empty set" do

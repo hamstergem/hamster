@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   [:include?, :member?].each do |method|
     describe "##{method}" do
       let(:sorted_set) { SS[1, 2, 3, 4.0] }

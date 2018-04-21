@@ -1,6 +1,6 @@
 require "hamster/deque"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   describe "modification (using #push, #pop, #shift, and #unshift)" do
     it "works when applied in many random combinations" do
       array = [1,2,3]

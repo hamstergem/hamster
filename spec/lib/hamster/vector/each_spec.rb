@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#each" do
     describe "with no block" do
       let(:vector) { V["A", "B", "C"] }

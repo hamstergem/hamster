@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   [:get, :at].each do |method|
     describe "##{method}" do
       context "when empty" do

@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#fetch_values" do
     context "when the all the requests keys exist" do
       it "returns a vector of values for the given keys" do

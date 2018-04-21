@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   [:group_by, :group, :classify].each do |method|
     describe "##{method}" do
       context "with a block" do

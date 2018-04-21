@@ -1,7 +1,7 @@
 require "hamster/hash"
 require "hamster/vector"
 
-describe Hamster::Associable do
+RSpec.describe Hamster::Associable do
   describe "#update_in" do
     let(:hash) {
       Hamster::Hash[

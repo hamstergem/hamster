@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   [:to_a, :entries].each do |method|
     describe "##{method}" do
       ('a'..'z').each do |letter|

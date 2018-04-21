@@ -1,7 +1,7 @@
 require "hamster/immutable"
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   it "includes Immutable" do
     expect(Hamster::Set).to include(Hamster::Immutable)
   end

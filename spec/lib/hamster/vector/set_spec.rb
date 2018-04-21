@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
 
   # Note: Vector#set will be deprecated; use Vector#put instead. See
   # `spec/lib/hamster/vector/put_spec.rb` for the full specs of Vector#put.

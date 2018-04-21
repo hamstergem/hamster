@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#init" do
     it "is lazy" do
       expect { Hamster.stream { false }.init }.not_to raise_error

@@ -1,6 +1,6 @@
 require "hamster/core_ext/enumerable"
 
-describe Enumerable do
+RSpec.describe Enumerable do
   class TestEnumerable
     include Enumerable
 

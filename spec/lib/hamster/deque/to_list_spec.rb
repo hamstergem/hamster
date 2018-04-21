@@ -1,7 +1,7 @@
 require "hamster/deque"
 require "hamster/list"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   describe "#to_list" do
     [
       [],

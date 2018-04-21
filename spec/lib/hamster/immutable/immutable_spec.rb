@@ -1,6 +1,6 @@
 require "hamster/immutable"
 
-describe Hamster::Immutable do
+RSpec.describe Hamster::Immutable do
   describe "#immutable?" do
     describe "object constructed after its class becomes Immutable" do
       class Fixture

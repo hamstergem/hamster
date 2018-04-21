@@ -1,6 +1,6 @@
 require "hamster/deque"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   describe ".new" do
     it "accepts a single enumerable argument and creates a new deque" do
       deque = Hamster::Deque.new([1,2,3])

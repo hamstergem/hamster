@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#[]=" do
     it 'raises error pointing to #put' do
       expect { subject[:A] = 'aye' }

@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   let(:list) { L[1,2,3,4] }
   let(:big)  { (1..10000).to_list }
 

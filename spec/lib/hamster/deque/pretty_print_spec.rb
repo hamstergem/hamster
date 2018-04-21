@@ -2,7 +2,7 @@ require "hamster/deque"
 require "pp"
 require "stringio"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   describe "#pretty_print" do
     let(:deque) { Hamster::Deque["AAAA", "BBBB", "CCCC"] }
     let(:stringio) { StringIO.new }

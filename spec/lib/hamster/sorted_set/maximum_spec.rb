@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   describe "#max" do
     context "with a block" do
       [

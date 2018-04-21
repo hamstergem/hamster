@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#values_at" do
     context "on Hash without default proc" do
       let(:hash) { H[:a => 9, :b => 'a', :c => -10, :d => nil] }

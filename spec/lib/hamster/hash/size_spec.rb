@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   [:size, :length].each do |method|
     describe "##{method}" do
       [

@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   [:map, :collect].each do |method|
     describe "##{method}" do
       it "is lazy" do

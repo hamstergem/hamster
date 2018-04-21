@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#<<" do
     it "adds an item onto the end of a list" do
       list = L["a", "b"]

@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   let(:list) { L[*values] }
 
   describe "#flat_map" do

@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#to_a" do
     it "returns an Array of [key, value] pairs in same order as #each" do
       hash = H[:a => 1, 1 => :a, 3 => :b, :b => 5]

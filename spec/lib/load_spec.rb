@@ -3,7 +3,7 @@
 
 hamster_lib_dir = File.join(File.dirname(__FILE__), "..", "..", 'lib')
 
-describe :Hamster do
+RSpec.describe :Hamster do
   describe :Hash do
     it "can be loaded separately" do
       expect(system(%{ruby -e "$:.unshift('#{hamster_lib_dir}'); require 'hamster/hash'; Hamster::Hash.new"})).to be(true)

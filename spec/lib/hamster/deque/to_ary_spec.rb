@@ -1,6 +1,6 @@
 require "hamster/deque"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   let(:deque) { D["A", "B", "C", "D"] }
 
   describe "#to_ary" do

@@ -1,6 +1,6 @@
 require "hamster/vector"
 
-describe Hamster::Vector do
+RSpec.describe Hamster::Vector do
   describe "#flatten" do
     it "recursively flattens nested vectors into containing vector" do
       expect(V[V[1], V[2]].flatten).to eql(V[1,2])

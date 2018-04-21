@@ -1,7 +1,7 @@
 require "hamster/list"
 require "hamster/set"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#to_set" do
     [
       [],

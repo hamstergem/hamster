@@ -1,6 +1,6 @@
 require "hamster/sorted_set"
 
-describe Hamster::SortedSet do
+RSpec.describe Hamster::SortedSet do
   describe "#between" do
     context "when called without a block" do
       it "returns a sorted set of all items from the first argument to the second" do

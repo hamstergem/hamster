@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   let(:hash) { H.new("A" => "aye", "B" => "bee", "C" => "see", nil => "NIL") }
 
   describe "#slice" do

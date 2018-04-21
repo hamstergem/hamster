@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#invert" do
     let(:hash) { H[a: 3, b: 2, c: 1] }
 

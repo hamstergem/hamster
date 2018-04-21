@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   [:get, :[]].each do |method|
     describe "##{method}" do
       context "with a default block" do

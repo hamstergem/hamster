@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#to_proc" do
     context "on Hash without default proc" do
       let(:hash) { H.new("A" => "aye") }

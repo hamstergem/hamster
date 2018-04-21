@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#compact" do
     it "is lazy" do
       expect { Hamster.stream { fail }.compact }.not_to raise_error

@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster::List do
+RSpec.describe Hamster::List do
   describe "#at" do
     context "on a really big list" do
       let(:list) { Hamster.interval(0, STACK_OVERFLOW_DEPTH) }

@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe ".hash" do
     context "with nothing" do
       it "returns the canonical empty hash" do

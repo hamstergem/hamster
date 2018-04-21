@@ -1,6 +1,6 @@
 require "hamster/list"
 
-describe Hamster do
+RSpec.describe Hamster do
   describe "#flatten" do
     it "is lazy" do
       expect { Hamster.stream { fail }.flatten }.not_to raise_error

@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   describe ".new" do
     it "initializes a new set" do
       set = S.new([1,2,3])

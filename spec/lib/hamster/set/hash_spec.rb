@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   describe "#hash" do
     context "on an empty set" do
       it "returns 0" do

@@ -1,6 +1,6 @@
 require "hamster/core_ext/enumerable"
 
-describe Array do
+RSpec.describe Array do
   let(:array) { %w[A B C] }
 
   describe "#to_list" do

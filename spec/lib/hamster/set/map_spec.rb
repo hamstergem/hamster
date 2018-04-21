@@ -1,6 +1,6 @@
 require "hamster/set"
 
-describe Hamster::Set do
+RSpec.describe Hamster::Set do
   [:map, :collect].each do |method|
     describe "##{method}" do
       context "when empty" do

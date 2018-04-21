@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   describe "#dig" do
     let(:h) { H[:a => 9, :b => H[:c => 'a', :d => 4], :e => nil] }
     it "returns the value with one argument to dig" do

@@ -1,6 +1,6 @@
 require "hamster/deque"
 
-describe Hamster::Deque do
+RSpec.describe Hamster::Deque do
   describe "#inspect" do
     [
       [[], 'Hamster::Deque[]'],

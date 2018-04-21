@@ -1,6 +1,6 @@
 require "hamster/hash"
 
-describe Hamster::Hash do
+RSpec.describe Hamster::Hash do
   [:select, :find_all, :keep_if].each do |method|
     describe "##{method}" do
       let(:original) { H["A" => "aye", "B" => "bee", "C" => "see"] }
