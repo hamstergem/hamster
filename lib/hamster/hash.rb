@@ -332,9 +332,9 @@ module Hamster
     #
     # @yield [key, value] Once for each key/value pair.
     # @return [self]
-    def each(&block)
+    def each
       return to_enum if not block_given?
-      @trie.each(&block)
+      @trie.each { |entry| yield(entry) }
       self
     end
     alias :each_pair :each
@@ -352,9 +352,9 @@ module Hamster
     #
     # @yield [key, value] Once for each key/value pair.
     # @return [self]
-    def reverse_each(&block)
+    def reverse_each
       return enum_for(:reverse_each) if not block_given?
-      @trie.reverse_each(&block)
+      @trie.reverse_each { |entry| yield(entry) }
       self
     end
 
@@ -424,9 +424,9 @@ module Hamster
     # @yield [key, value] Once for each key/value pair.
     # @yieldreturn Truthy if this pair should be present in the new `Hash`.
     # @return [Hash]
-    def select(&block)
+    def select
       return enum_for(:select) unless block_given?
-      derive_new_hash(@trie.select(&block))
+      derive_new_hash(@trie.select { |entry| yield(entry) })
     end
     alias :find_all :select
     alias :keep_if  :select

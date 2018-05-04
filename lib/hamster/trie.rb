@@ -28,25 +28,17 @@ module Hamster
     end
 
     # Calls <tt>block</tt> once for each entry in the trie, passing the key-value pair as parameters.
-    def each(&block)
-      # TODO: Using block.call here is slower than using yield by 5-10%, but
-      # the latter segfaults on ruby 2.2 and above. Once that is fixed and
-      # broken versions are sufficiently old, we should revert back to yield
-      # with a warning that the broken versions are unsupported.
-      #
-      # For more context:
-      # * https://bugs.ruby-lang.org/issues/11451
-      # * https://github.com/hamstergem/hamster/issues/189
-      @entries.each { |entry| block.call(entry) if entry }
+    def each
+      @entries.each { |entry| yield(entry) if entry }
       @children.each do |child|
-        child.each(&block) if child
+        child.each { |child| yield(child) } if child
       end
       nil
     end
 
-    def reverse_each(&block)
+    def reverse_each
       @children.reverse_each do |child|
-        child.reverse_each(&block) if child
+        child.reverse_each { |child| yield(child) } if child
       end
       @entries.reverse_each { |entry| yield(entry) if entry }
       nil

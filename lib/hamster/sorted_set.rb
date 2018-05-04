@@ -86,7 +86,7 @@ module Hamster
       items = items.to_a
       if block
         if block.arity == 1 || block.arity == -1
-          comparator = lambda { |a,b| block.call(a) <=> block.call(b) }
+          comparator = lambda { |a,b| yield(a) <=> yield(b) }
           items = items.sort_by(&block)
         else
           comparator = block
@@ -354,9 +354,9 @@ module Hamster
     #
     # @yield [item]
     # @return [self, Enumerator]
-    def each(&block)
+    def each
       return @node.to_enum if not block_given?
-      @node.each(&block)
+      @node.each { |entry| yield(entry) }
       self
     end
 
@@ -373,9 +373,9 @@ module Hamster
     #   # => Hamster::SortedSet["A", "B", "C"]
     #
     # @return [self]
-    def reverse_each(&block)
+    def reverse_each
       return @node.enum_for(:reverse_each) if not block_given?
-      @node.reverse_each(&block)
+      @node.reverse_each { |entry| yield(entry) }
       self
     end
 
@@ -477,7 +477,7 @@ module Hamster
     #
     # @return [SortedSet]
     def sort(&block)
-      if block
+      if block_given?
         self.class.new(self.to_a, &block)
       else
         self.class.new(self.to_a.sort)
@@ -757,9 +757,9 @@ module Hamster
     #     # => nil
     #
     # @param item [Object]
-    def above(item, &block)
+    def above(item)
       if block_given?
-        @node.each_greater(item, false, &block)
+        @node.each_greater(item, false) { |n| yield(n) }
       else
         self.class.alloc(@node.suffix(item, false))
       end
@@ -788,9 +788,9 @@ module Hamster
     #     # => nil
     #
     # @param item [Object]
-    def below(item, &block)
+    def below(item)
       if block_given?
-        @node.each_less(item, false, &block)
+        @node.each_less(item, false) { |n| yield(n) }
       else
         self.class.alloc(@node.prefix(item, false))
       end
@@ -820,9 +820,9 @@ module Hamster
     #     # => nil
     #
     # @param item [Object]
-    def from(item, &block)
+    def from(item)
       if block_given?
-        @node.each_greater(item, true, &block)
+        @node.each_greater(item, true) { |n| yield(n) }
       else
         self.class.alloc(@node.suffix(item, true))
       end
@@ -854,9 +854,9 @@ module Hamster
     #     # => nil
     #
     # @param item [Object]
-    def up_to(item, &block)
+    def up_to(item)
       if block_given?
-        @node.each_less(item, true, &block)
+        @node.each_less(item, true) { |n| yield(n) }
       else
         self.class.alloc(@node.prefix(item, true))
       end
@@ -888,9 +888,9 @@ module Hamster
     #
     # @param from [Object]
     # @param to [Object]
-    def between(from, to, &block)
+    def between(from, to)
       if block_given?
-        @node.each_between(from, to, &block)
+        @node.each_between(from, to) { |n| yield(n) }
       else
         self.class.alloc(@node.between(from, to))
       end
@@ -1175,50 +1175,50 @@ module Hamster
         end
       end
 
-      def each_less(item, inclusive, &block)
+      def each_less(item, inclusive)
         dir = direction(item)
         if dir > 0 || (inclusive && dir == 0)
-          @left.each(&block)
+          @left.each { |entry| yield(entry) }
           yield @item
-          @right.each_less(item, inclusive, &block)
+          @right.each_less(item, inclusive) { |entry| yield(entry) }
         else
-          @left.each_less(item, inclusive, &block)
+          @left.each_less(item, inclusive) { |entry| yield(entry) }
         end
       end
 
-      def each_greater(item, inclusive, &block)
+      def each_greater(item, inclusive)
         dir = direction(item)
         if dir < 0 || (inclusive && dir == 0)
-          @left.each_greater(item, inclusive, &block)
+          @left.each_greater(item, inclusive) { |entry| yield(entry) }
           yield @item
-          @right.each(&block)
+          @right.each { |entry| yield(entry) }
         else
-          @right.each_greater(item, inclusive, &block)
+          @right.each_greater(item, inclusive) { |entry| yield(entry) }
         end
       end
 
-      def each_between(from, to, &block)
+      def each_between(from, to)
         if direction(from) > 0 # all on the right
-          @right.each_between(from, to, &block)
+          @right.each_between(from, to) { |entry| yield(entry) }
         elsif direction(to) < 0 # all on the left
-          @left.each_between(from, to, &block)
+          @left.each_between(from, to) { |entry| yield(entry) }
         else
-          @left.each_greater(from, true, &block)
+          @left.each_greater(from, true) { |entry| yield(entry) }
           yield @item
-          @right.each_less(to, true, &block)
+          @right.each_less(to, true) { |entry| yield(entry) }
         end
       end
 
-      def each(&block)
-        @left.each(&block)
+      def each
+        @left.each { |entry| yield(entry) }
         yield @item
-        @right.each(&block)
+        @right.each { |entry| yield(entry) }
       end
 
-      def reverse_each(&block)
-        @right.reverse_each(&block)
+      def reverse_each
+        @right.reverse_each { |entry| yield(entry) }
         yield @item
-        @left.reverse_each(&block)
+        @left.reverse_each { |entry| yield(entry) }
       end
 
       def drop(n)
