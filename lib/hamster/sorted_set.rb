@@ -503,7 +503,7 @@ module Hamster
         self.class.new(self.to_a, &block)
       else
         self.class.new(self.to_a.sort)
-      end      
+      end
     end
     alias :sort_by :sort
 
@@ -765,7 +765,7 @@ module Hamster
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.above(6)
     #     # => Hamster::SortedSet[8, 10]
-    #  
+    #
     # @overload above(item)
     #   @yield [item] Once for each item greater than `item`, in order from
     #                 lowest to highest.
@@ -773,7 +773,7 @@ module Hamster
     #   @example
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.above(6) { |e| puts "Element: #{e}" }
-    #  
+    #
     #     Element: 8
     #     Element: 10
     #     # => nil
@@ -796,7 +796,7 @@ module Hamster
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.below(6)
     #     # => Hamster::SortedSet[2, 4]
-    #  
+    #
     # @overload below(item)
     #   @yield [item] Once for each item less than `item`, in order from lowest
     #                 to highest.
@@ -804,9 +804,9 @@ module Hamster
     #   @example
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.below(6) { |e| puts "Element: #{e}" }
-    #  
+    #
     #     Element: 2
-    #     Element: 4 
+    #     Element: 4
     #     # => nil
     #
     # @param item [Object]
@@ -827,7 +827,7 @@ module Hamster
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.from(6)
     #     # => Hamster::SortedSet[6, 8, 10]
-    #  
+    #
     # @overload from(item)
     #   @yield [item] Once for each item greater than or equal to `item`, in
     #                 order from lowest to highest.
@@ -835,7 +835,7 @@ module Hamster
     #   @example
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.from(6) { |e| puts "Element: #{e}" }
-    #  
+    #
     #     Element: 6
     #     Element: 8
     #     Element: 10
@@ -853,7 +853,7 @@ module Hamster
     # Select elements less than or equal to a value.
     #
     # @overload up_to(item)
-    #   Return a new `SortedSet` containing all items less than or equal to 
+    #   Return a new `SortedSet` containing all items less than or equal to
     #   `item`.
     #
     #   @return [SortedSet]
@@ -861,7 +861,7 @@ module Hamster
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.upto(6)
     #     # => Hamster::SortedSet[2, 4, 6]
-    #  
+    #
     # @overload up_to(item)
     #   @yield [item] Once for each item less than or equal to `item`, in order
     #                 from lowest to highest.
@@ -869,10 +869,10 @@ module Hamster
     #   @example
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.up_to(6) { |e| puts "Element: #{e}" }
-    #  
+    #
     #     Element: 2
-    #     Element: 4 
-    #     Element: 6 
+    #     Element: 4
+    #     Element: 6
     #     # => nil
     #
     # @param item [Object]
@@ -895,7 +895,7 @@ module Hamster
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.between(5, 8)
     #     # => Hamster::SortedSet[6, 8]
-    #  
+    #
     # @overload between(item)
     #   @yield [item] Once for each item less than or equal to `to` and greater
     #                 than or equal to `from`, in order from lowest to highest.
@@ -903,9 +903,9 @@ module Hamster
     #   @example
     #     s = Hamster::SortedSet[2, 4, 6, 8, 10]
     #     s.between(5, 8) { |e| puts "Element: #{e}" }
-    #  
+    #
     #     Element: 6
-    #     Element: 8 
+    #     Element: 8
     #     # => nil
     #
     # @param from [Object]
