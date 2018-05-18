@@ -23,6 +23,11 @@ describe Hamster::SortedSet do
           end
         end
       end
+
+      it "filters out duplicates when passed an Array" do
+        sorted_set = SS['A', 'B', 'C', 'D'].union(['A', 'A', 'A', 'C', 'A', 'E', 'B'])
+        expect(sorted_set.to_a).to eq(['A', 'B', 'C', 'D', 'E'])
+      end
     end
   end
 end
