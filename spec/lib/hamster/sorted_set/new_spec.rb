@@ -68,5 +68,13 @@ describe Hamster::SortedSet do
       expect(sorted_set[0]).to eq('a')
       expect(sorted_set[1]).to eq('b')
     end
+
+    it "filters out duplicate items" do
+      sorted_set = SS['a', 'b', 'a', 'c', 'b', 'a', 'c', 'c']
+      expect(sorted_set.size).to be(3)
+      expect(sorted_set[0]).to eq('a')
+      expect(sorted_set[1]).to eq('b')
+      expect(sorted_set[2]).to eq('c')
+    end
   end
 end

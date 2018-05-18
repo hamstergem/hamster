@@ -22,6 +22,10 @@ describe Hamster::SortedSet do
           it "returns a new set with the mapped values" do
             expect(sorted_set.send(method, &:downcase)).to eql(SS["a", "b", "c"])
           end
+
+          it "filters out duplicates" do
+            sorted_set.send(method) { 'blah' }.should eq(SS['blah'])
+          end
         end
 
         context "with no block" do

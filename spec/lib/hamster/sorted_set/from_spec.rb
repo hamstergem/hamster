@@ -6,7 +6,7 @@ describe Hamster::SortedSet do
     context "when called without a block" do
       it "returns a sorted set of all items equal to or greater than the argument" do
         100.times do
-          items     = rand(100).times.collect { rand(1000) }
+          items     = rand(100).times.collect { rand(1000) }.uniq
           set       = SS.new(items)
           threshold = rand(1000)
           result    = set.from(threshold)
@@ -21,7 +21,7 @@ describe Hamster::SortedSet do
     context "when called with a block" do
       it "yields all the items equal to or greater than than the argument" do
         100.times do
-          items     = rand(100).times.collect { rand(1000) }
+          items     = rand(100).times.collect { rand(1000) }.uniq
           set       = SS.new(items)
           threshold = rand(1000)
           result    = []
