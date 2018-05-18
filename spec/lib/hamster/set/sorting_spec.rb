@@ -48,13 +48,13 @@ describe Hamster::Set do
   end
 
   describe "#sort_by" do
-    it "only calls the passed block once for each item" do
+    it "calls the passed block no more than twice for each item" do
       count = 0
       fn    = lambda { |x| count += 1; -x }
       items = 100.times.collect { rand(10000) }.uniq
 
       expect(S[*items].sort_by(&fn).to_a).to eq(items.sort.reverse)
-      expect(count).to eq(items.length)
+      expect(count).to be <= (items.length * 2)
     end
   end
 end

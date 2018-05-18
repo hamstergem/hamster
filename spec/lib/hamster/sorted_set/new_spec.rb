@@ -19,6 +19,19 @@ describe Hamster::SortedSet do
       expect(sorted_set[2]).to be(3)
     end
 
+    it "doesn't mutate the initializer" do
+      array = [3,2,1,3,2,1] # this will need to be sorted and duplicates filtered out
+      sorted_set = SS.new(array)
+      expect(array).to eq([3,2,1,3,2,1])
+    end
+
+    it "doesn't change if the initializer is later mutated" do
+      array = [3,2,1,3,2,1]
+      sorted_set = SS.new(array)
+      array.clear
+      expect(sorted_set.to_a).to eq([1,2,3])
+    end
+
     it "is amenable to overriding of #initialize" do
       class SnazzySortedSet < Hamster::SortedSet
         def initialize
@@ -49,6 +62,51 @@ describe Hamster::SortedSet do
       sorted_set = SS.new([Object, BasicObject], &:name.to_proc)
       expect(sorted_set[0]).to be(BasicObject)
       expect(sorted_set[1]).to be(Object)
+    end
+
+    it "filters out duplicates" do
+      sorted_set = SS.new(['a', 'b', 'a', 'c', 'b', 'a', 'c', 'c'])
+      expect(sorted_set.size).to be(3)
+    end
+
+    context "when passed a comparator with arity 2" do
+      it "still filters out duplicates" do
+        sorted_set = SS.new([1,2,7,8,9,10]) { |x,y| (x%7) <=> (y%7) }
+        expect(sorted_set.to_a).to eq([7,1,2,10])
+      end
+
+      it "still doesn't mutate the initializer" do
+        array = [3,2,1,3,2,1] # this will need to be sorted and duplicates filtered out
+        sorted_set = SS.new(array) { |x,y| y <=> x }
+        expect(array).to eq([3,2,1,3,2,1])
+      end
+
+      it "still doesn't change if the initializer is later mutated" do
+        array = [3,2,1,3,2,1]
+        sorted_set = SS.new(array) { |x,y| y <=> x }
+        array.clear
+        expect(sorted_set.to_a).to eq([3,2,1])
+      end
+    end
+
+    context "when passed a block with arity 1" do
+      it "still filters out duplicates" do
+        sorted_set = SS.new([1,2,7,8,9,10]) { |x| x % 7 }
+        expect(sorted_set.to_a).to eq([7,1,2,10])
+      end
+
+      it "still doesn't mutate the initializer" do
+        array = [3,2,1,3,2,1] # this will need to be sorted and duplicates filtered out
+        sorted_set = SS.new(array) { |x| x % 7 }
+        expect(array).to eq([3,2,1,3,2,1])
+      end
+
+      it "still doesn't change if the initializer is later mutated" do
+        array = [3,2,1,3,2,1]
+        sorted_set = SS.new(array) { |x| x % 7 }
+        array.clear
+        expect(sorted_set.to_a).to eq([1,2,3])
+      end
     end
 
     context "from a subclass" do

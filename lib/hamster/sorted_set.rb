@@ -80,19 +80,41 @@ module Hamster
         result.instance_variable_set(:@node, node)
         result
       end
+
+      # @private
+      # Run through array and remove duplicates, as determined by comparator
+      # (Unfortunately, Ruby's stdlib doesn't do this for us)
+      # Only works if array is sorted
+      def uniq_by_comparator!(array, comparator)
+        to_check, shift, sz, prev_obj = 1, 0, array.size, array[0]
+        while to_check < sz
+          next_obj = array[to_check]
+          if comparator.call(prev_obj, next_obj) == 0
+            shift += 1
+          else
+            if shift > 0
+              array[to_check - shift] = next_obj
+            end
+            prev_obj = next_obj
+          end
+          to_check += 1
+        end
+        array.pop(shift) if shift > 0
+      end
     end
 
     def initialize(items=[], &block)
       items = items.to_a
       if block
         if block.arity == 1 || block.arity == -1
-          comparator = lambda { |a,b| block.call(a) <=> block.call(b) }
-          items = items.sort_by(&block)
+          items = items.uniq(&block)
+          items.sort_by!(&block)
+          @node = AVLNode.from_items(items, lambda { |a,b| block.call(a) <=> block.call(b) })
         else
-          comparator = block
           items = items.sort(&block)
+          SortedSet.uniq_by_comparator!(items, block)
+          @node = AVLNode.from_items(items, block)
         end
-        @node = AVLNode.from_items(items, comparator)
       else
         @node = PlainAVLNode.from_items(items.uniq.sort!)
       end
@@ -985,7 +1007,8 @@ module Hamster
 
     # @private
     class AVLNode
-      def self.from_items(items, comparator, from = 0, to = items.size-1) # items must be sorted
+      def self.from_items(items, comparator, from = 0, to = items.size-1)
+        # items must be sorted, without duplicates (as determined by comparator)
         size = to - from + 1
         if size >= 3
           middle = (to + from) / 2
@@ -1009,7 +1032,9 @@ module Hamster
       attr_reader :item, :left, :right, :height, :size
 
       def from_items(items)
-        AVLNode.from_items(items.sort(&@comparator), @comparator)
+        items = items.sort(&@comparator)
+        SortedSet.uniq_by_comparator!(items, @comparator)
+        AVLNode.from_items(items, @comparator)
       end
 
       def natural_order?
@@ -1369,7 +1394,9 @@ module Hamster
         end
         def bulk_insert(items)
           items = items.to_a if !items.is_a?(Array)
-          AVLNode.from_items(items.sort(&@comparator), @comparator)
+          items = items.sort(&@comparator)
+          SortedSet.uniq_by_comparator!(items, @comparator)
+          AVLNode.from_items(items, @comparator)
         end
         def bulk_delete(items); self; end
         def keep_only(items);   self; end
