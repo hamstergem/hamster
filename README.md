@@ -2,7 +2,6 @@ Hamster
 =======
 
   - [![Build](http://img.shields.io/travis-ci/hamstergem/hamster.svg?style=flat-square)](https://travis-ci.org/hamstergem/hamster)
-  - [![Releases](http://img.shields.io/github/release/hamstergem/hamster.svg?style=flat-square)](http://github.com/hamstergem/hamster/releases)
   - [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
   - [![Version](http://img.shields.io/gem/v/hamster.svg?style=flat-square)](https://rubygems.org/gems/hamster)
 
