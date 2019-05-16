@@ -1,5 +1,6 @@
 require "spec_helper"
 require "hamster/hash"
+require "bigdecimal"
 
 describe Hamster::Hash do
   let(:hash) { H["A" => "aye", "B" => "bee", "C" => "see"] }
@@ -33,6 +34,11 @@ describe Hamster::Hash do
       subclass = Class.new(Hamster::Hash)
       instance = subclass.new("A" => "aye", "B" => "bee", "C" => "see")
       expect(hash == instance).to eq(true)
+    end
+
+    it "performs numeric conversions between floats and BigDecimals" do
+      expect(H[a: 0.0] == H[a: BigDecimal('0.0')]).to be true
+      expect(H[a: BigDecimal('0.0')] == H[a: 0.0]).to be true
     end
   end
 

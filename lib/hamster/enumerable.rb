@@ -106,7 +106,7 @@ module Hamster
     # Return true if `other` contains the same elements, in the same order.
     # @return [Boolean]
     def ==(other)
-      self.eql?(other) || other.respond_to?(:to_ary) && to_ary.eql?(other.to_ary)
+      self.eql?(other) || (other.respond_to?(:to_ary) && to_ary == other.to_ary)
     end
 
     # Convert all the elements into strings and join them together, separated by
