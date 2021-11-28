@@ -106,7 +106,7 @@ module Hamster
     def initialize(items=[], &block)
       items = items.to_a
       if block
-        if block.arity == 1 || block.arity == -1
+        if block.arity == 1 || block.arity == -1 || block.arity == -2
           items = items.uniq(&block)
           items.sort_by!(&block)
           @node = AVLNode.from_items(items, lambda { |a,b| block.call(a) <=> block.call(b) })
