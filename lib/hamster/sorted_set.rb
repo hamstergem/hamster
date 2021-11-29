@@ -106,14 +106,17 @@ module Hamster
     def initialize(items=[], &block)
       items = items.to_a
       if block
-        if block.arity == 1 || block.arity == -1
+        # In Ruby 2, &:method blocks have arity -1; in Ruby 3, it's -2
+        if block.arity == 1 || block.arity == -1 || block.arity == -2
           items = items.uniq(&block)
           items.sort_by!(&block)
           @node = AVLNode.from_items(items, lambda { |a,b| block.call(a) <=> block.call(b) })
-        else
+        elsif block.arity == 2 || block.arity == -3
           items = items.sort(&block)
           SortedSet.uniq_by_comparator!(items, block)
           @node = AVLNode.from_items(items, block)
+        else
+          raise "Comparator block for Hamster::SortedSet must accept 1 or 2 arguments"
         end
       else
         @node = PlainAVLNode.from_items(items.uniq.sort!)
