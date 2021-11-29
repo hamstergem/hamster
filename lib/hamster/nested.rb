@@ -1,4 +1,5 @@
 require "set"
+require "sorted_set"
 require "hamster/hash"
 require "hamster/set"
 require "hamster/vector"
