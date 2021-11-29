@@ -10,23 +10,19 @@ describe Hamster do
         "b" => [2, {"c" => 3}, 4],
         "d" => ::Set.new([5, 6, 7]),
         "e" => {"f" => 8, "g" => 9},
-        "h" => Regexp.new("ijk"),
-        "l" => ::SortedSet.new([1, 2, 3]) },
+        "h" => Regexp.new("ijk") },
       Hamster::Hash[
         "a" => 1,
         "b" => Hamster::Vector[2, Hamster::Hash["c" => 3], 4],
         "d" => Hamster::Set[5, 6, 7],
         "e" => Hamster::Hash["f" => 8, "g" => 9],
-        "h" => Regexp.new("ijk"),
-        "l" => Hamster::SortedSet.new([1, 2, 3])] ],
+        "h" => Regexp.new("ijk")] ],
     [ {}, Hamster::Hash[] ],
     [ {"a" => 1, "b" => 2, "c" => 3}, Hamster::Hash["a" => 1, "b" => 2, "c" => 3] ],
     [ [], Hamster::Vector[] ],
     [ [1, 2, 3], Hamster::Vector[1, 2, 3] ],
     [ ::Set.new, Hamster::Set[] ],
     [ ::Set.new([1, 2, 3]), Hamster::Set[1, 2, 3] ],
-    [ ::SortedSet.new, Hamster::SortedSet[] ],
-    [ ::SortedSet.new([1, 2, 3]), Hamster::SortedSet[1, 2, 3] ],
     [ 42, 42 ],
     [ STDOUT, STDOUT ],
 
@@ -81,6 +77,18 @@ describe Hamster do
     context "with Hamster::Deque[Hamster::Hash[\"a\" => 1]] as input" do
       it "should return [{\"a\" => 1}]" do
         expect(Hamster.to_ruby(Hamster::Deque[Hamster::Hash["a" => 1]])).to eql([{"a" => 1}])
+      end
+    end
+
+    context 'with Hamster::SortedSet[] as input' do
+      it 'should return ::SortedSet.new' do
+        Hamster.to_ruby(Hamster::SortedSet[]).should == ::SortedSet.new
+      end
+    end
+
+    context 'with Hamster::SortedSet[1, 2, 3] as input' do
+      it 'should return ::SortedSet.new' do
+        Hamster.to_ruby(Hamster::SortedSet[1, 2, 3]).should == ::SortedSet.new([1, 2, 3])
       end
     end
 
