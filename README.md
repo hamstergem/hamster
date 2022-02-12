@@ -1,17 +1,9 @@
 Hamster
 =======
 
-  - [![Quality](http://img.shields.io/codeclimate/github/hamstergem/hamster.svg?style=flat-square)](https://codeclimate.com/github/hamstergem/hamster)
-  - [![Coverage](http://img.shields.io/codeclimate/coverage/github/hamstergem/hamster.svg?style=flat-square)](https://codeclimate.com/github/hamstergem/hamster)
   - [![Build](http://img.shields.io/travis-ci/hamstergem/hamster.svg?style=flat-square)](https://travis-ci.org/hamstergem/hamster)
-  - [![Dependencies](http://img.shields.io/gemnasium/hamstergem/hamster.svg?style=flat-square)](https://gemnasium.com/hamstergem/hamster)
-  - [![Downloads](http://img.shields.io/gem/dtv/hamster.svg?style=flat-square)](https://rubygems.org/gems/hamster)
-  - [![Tags](http://img.shields.io/github/tag/hamstergem/hamster.svg?style=flat-square)](http://github.com/hamstergem/hamster/tags)
-  - [![Releases](http://img.shields.io/github/release/hamstergem/hamster.svg?style=flat-square)](http://github.com/hamstergem/hamster/releases)
-  - [![Issues](http://img.shields.io/github/issues/hamstergem/hamster.svg?style=flat-square)](http://github.com/hamstergem/hamster/issues)
   - [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
   - [![Version](http://img.shields.io/gem/v/hamster.svg?style=flat-square)](https://rubygems.org/gems/hamster)
-  - [![Discuss](http://img.shields.io/badge/discuss-join%20gitter-brightgreen.svg?style=flat-square)](https://gitter.im/hamstergem/hamster)
 
 Efficient, immutable, and thread-safe collection classes for Ruby.
 
